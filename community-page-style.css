@@ -1,0 +1,56 @@
+div {
+  border: 1px solid black;
+}
+.top-header {
+  height: 100px;
+}
+main {
+  margin: auto;
+  margin-top: 50px;
+  max-width: 1280px;
+}
+main > div {
+  width: 100%;
+}
+/* 공통요소 */
+.community_titlebar,
+.community_content,
+.community_control_bar {
+  display: flex;
+  justify-content: center;
+}
+
+/* 바 너비 */
+.community_titlebar {
+  max-width: 1280px;
+}
+.community_titlebar_number,
+.community_content_number {
+  width: 15%;
+}
+.community_titlebar_title,
+.community_content_title {
+  width: 55%;
+}
+.community_titlebar_rates,
+.community_content_rates {
+  width: 15%;
+}
+.community_titlebar_hits,
+.community_content_hits {
+  width: 15%;
+}
+/* 바 높이 및 설정 */
+.community_content > div {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  text-align: center;
+  justify-content: center;
+}
+
+.community_control_bar_leftbutton,
+.community_control_bar_rightbutton {
+  height: 24px;
+  width: 24px;
+}
