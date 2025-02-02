@@ -1,0 +1,50 @@
+/* 임시 */
+.community_menubar > div,
+.community_menubar > div > div {
+  border: 1px solid;
+}
+
+.community_menubar {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 5;
+}
+.community_menubar > div,
+.community_menubar > div > div {
+  min-width: 20%;
+  max-width: 250px;
+  height: 90px;
+  border-radius: 53px;
+  line-height: 90px;
+  z-index: 5;
+}
+/* 이미지 위치 조정 */
+.community_menubar > div > img,
+.community_menubar > div > div > img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10.5px;
+  margin: auto;
+}
+
+.community_menubar > div {
+  position: relative;
+  margin: auto 5px;
+  background-color: var(--community_menubar_div-color);
+  text-align: right;
+  padding-right: 10px;
+}
+.community_menubar > div > div {
+  position: relative;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  /* display: none; */
+}
+.community_menubar > div > div:first-child {
+  margin-top: 40px;
+}
+.community_menubar_exercise_soccer {
+  background-color: #31e94d;
+}
