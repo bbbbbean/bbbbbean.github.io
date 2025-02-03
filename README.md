@@ -5,6 +5,7 @@
 
 #### 250121 요구사항 분석
   - 주제 잡기, 유스케이스 그리기
+  - [유스케이스, 명세표, 플로우차트 등](https://drive.google.com/file/d/1gdVdWB2-2f94QmvW_aREpjty_a1mFzmR/view?usp=sharing)
 
 <br>
 
