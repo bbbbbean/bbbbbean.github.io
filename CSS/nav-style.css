@@ -22,11 +22,16 @@
 /* 이미지 위치 조정 */
 .community_menubar > div > img,
 .community_menubar > div > div > img {
+  width: 70px;
+  height: 70px;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 10.5px;
   margin: auto;
+}
+.community_menubar_logo {
+  position: absolute;
 }
 
 .community_menubar > div {
