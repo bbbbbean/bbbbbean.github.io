@@ -1,0 +1,26 @@
+.serch{
+    width: 100%;
+    height: 100px;
+    background-color: rgb(236, 236, 236);
+}
+.slide{
+    width: 100%;
+    height: 450px;
+    background-color: rgb(255, 183, 27);
+}
+.category{
+    width: 100%;
+    height: 100px;
+    background-color: rgb(50, 27, 255);
+}
+.community{
+    float: right;
+    width: 50%;
+    height: 350px;
+    background-color: rgb(255, 27, 95);
+}
+.match-go{
+    width: 50%;
+    height: 350px;
+    background-color: rgb(255, 130, 27);
+}
