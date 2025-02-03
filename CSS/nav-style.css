@@ -3,13 +3,28 @@
 .community_menubar > div > div {
   border: 1px solid;
 }
-
 .community_menubar {
   display: flex;
+  position: relative;
   justify-content: space-evenly;
-  align-items: center;
   z-index: 5;
 }
+.community_menubar_title {
+  position: absolute;
+}
+.community_menubar_title_top {
+  display: flex;
+  margin-bottom: 50px;
+}
+.community_menubar_title_list_button {
+  display: flex;
+}
+
+/* 
+
+
+
+
 .community_menubar > div,
 .community_menubar > div > div {
   min-width: 20%;
@@ -18,9 +33,10 @@
   border-radius: 53px;
   line-height: 90px;
   z-index: 5;
-}
+} */
+
 /* 이미지 위치 조정 */
-.community_menubar > div > img,
+/* .community_menubar > div > img,
 .community_menubar > div > div > img {
   width: 70px;
   height: 70px;
@@ -37,7 +53,7 @@
 .community_menubar > div {
   position: relative;
   margin: auto 5px;
-  background-color: var(--community_menubar_div-color);
+  background-color: var(--menubar-color);
   text-align: right;
   padding-right: 10px;
 }
@@ -45,11 +61,10 @@
   position: relative;
   margin-bottom: 10px;
   padding-right: 10px;
-  /* display: none; */
 }
 .community_menubar > div > div:first-child {
   margin-top: 40px;
 }
 .community_menubar_exercise_soccer {
   background-color: #31e94d;
-}
+} */

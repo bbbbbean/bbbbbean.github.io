@@ -1,3 +1,5 @@
+@import url(/root/font.css);
 :root {
-  --community_menubar_div-color: #6ec3ff;
+  --menubar-color: #6ec3ff;
+  --menu-bar_icon-color: #fbb00e;
 }
