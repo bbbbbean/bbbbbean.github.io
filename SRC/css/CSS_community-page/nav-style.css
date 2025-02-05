@@ -1,0 +1,195 @@
+/* 임시 */
+.community_menubar > div,
+.community_menubar > div > div {
+  border: 1px solid;
+}
+/*  */
+* {
+  box-sizing: border-box;
+}
+
+.community_menubar {
+  display: flex;
+  position: relative;
+  justify-content: space-evenly;
+  z-index: 5;
+}
+.community_menubar_text {
+  color: white;
+}
+.community_menubar_title_top {
+  display: flex;
+  margin-top: 3px;
+}
+.community_menubar_title_list {
+  margin-top: 30px;
+}
+.community_menubar_title_list_button {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+/* 버튼 크기 조정 */
+.community_menubar_title {
+  width: 250px;
+}
+.community_menubar_title_top,
+.community_menubar_title_list_button {
+  background-color: white;
+  border-radius: 53px;
+  align-items: center;
+  width: 100%;
+  height: 90px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.community_menubar_logo,
+.community_menubar_title_list_button_icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: 33%;
+  height: 100%;
+  min-width: 40px;
+  max-width: 100px;
+  max-height: 90px;
+}
+.community_menubar_text,
+.community_menubar_title_list_button_text {
+  margin-left: 45px;
+  font-size: 35px;
+}
+.community_menubar_logo > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  background-color: white;
+  border-radius: 100px;
+}
+.community_menubar_logo > div > img {
+  max-width: 45px;
+  height: auto;
+  width: 100%;
+  left: 0;
+}
+.community_menubar_title_list_button_icon > img {
+  max-width: 70px;
+  height: auto;
+  width: 100%;
+}
+
+/* 배경 및 각 속성 지정*/
+/* 운동 */
+.community_menubar_title_top {
+  background-color: var(--menubar-color);
+}
+.community_menubar_title_list_button_exercise_soccer {
+  background-color: #31e94d;
+}
+.community_menubar_title_list_button_exercise_baseball {
+  background-color: white;
+  border: 1px solid black;
+}
+.community_menubar_title_list_button_exercise_basketball {
+  background-color: #131125;
+  background-image: url(/SRC/image/image_community_page/community_농구\ 버튼\ 배경.png);
+  background-position: -5px -3px;
+  color: white;
+}
+.community_menubar_title_list_button_exercise_basketball
+  > .community_menubar_title_list_button_text {
+  margin-left: -40px;
+}
+.community_menubar_title_list_button_exercise_tennis {
+  background-image: url(/SRC/image/image_community_page/community_테니스\ 버튼\ 배경.png);
+  background-position: 0px 1px;
+  background-color: #2a75ba;
+  color: #f0f048;
+}
+.community_menubar_title_list_button_exercise_badminton {
+  background-color: #84d6fb;
+}
+
+.community_menubar_title_list_button_exercise_badminton
+  > .community_menubar_title_list_button_text {
+  margin-left: 16px;
+}
+/* 게임 */
+.community_menubar_title_list_button_game_LOL {
+  background-image: url(/SRC/image/image_community_page/community_LOL\ 버튼\ 배경.png);
+}
+.community_menubar_title_list_button_game_LOL
+  > .community_menubar_title_list_button_text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-left: 10px;
+}
+.community_menubar_title_list_button_game_apexlegend {
+  background-image: url(/SRC/image/image_community_page/community_에이펙스\ 버튼\ 배경.png);
+}
+.community_menubar_title_list_button_game_apexlegend
+  > .community_menubar_title_list_button_text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-left: 10px;
+}
+.community_menubar_title_list_button_game_overwatch {
+  background-image: url(/SRC/image/image_community_page/community_오버워치\ 버튼\ 배경.png);
+  background-repeat: no-repeat;
+  background-position: -5px 10px;
+  background-color: white;
+}
+.community_menubar_title_list_button_game_overwatch
+  > .community_menubar_title_list_button_text {
+  margin-left: 5px;
+}
+.community_menubar_title_list_button_game_PUBG {
+  background-color: #95550b;
+  justify-content: center;
+}
+.community_menubar_title_list_button_game_PUBG
+  > .community_menubar_title_list_button_icon {
+  width: 100%;
+  justify-content: center;
+}
+
+/* 리스트 숨기기 */
+/* .community_menubar_title_list {
+  display: none;
+  transition: all 5s ease-in-out;
+}
+.community_menubar_title:hover > .community_menubar_title_list {
+  display: block;} */
+
+/*
+
+.community_menubar > div,
+.community_menubar > div > div {
+  min-width: 20%;
+  max-width: 250px;
+  height: 90px;
+  border-radius: 53px;
+  line-height: 90px;
+  z-index: 5;
+} */
+
+/* 이미지 위치 조정 */
+/*
+.community_menubar > div {
+  position: relative;
+  margin: auto 5px;
+  background-color: var(--menubar-color);
+  text-align: right;
+  padding-right: 10px;
+}
+.community_menubar > div > div {
+  position: relative;
+  margin-bottom: 10px;
+  padding-right: 10px;
+}
+.community_menubar > div > div:first-child {
+  margin-top: 40px;
+}
+  */
