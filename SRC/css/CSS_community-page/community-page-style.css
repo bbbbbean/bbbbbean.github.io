@@ -1,0 +1,179 @@
+@import "/SRC/CSS/common_css/custom.css";
+@import "./nav-style.css";
+@import url(/SRC/CSS/common_css/main_header.css);
+
+/* 임시 */
+.community_page_location {
+  border: 1px solid black;
+}
+/* * {
+  border: 1px solid black;
+} */
+
+body {
+  background-color: #6ec3ff1f;
+}
+.top-header {
+  height: 100px;
+}
+main {
+  margin: auto;
+  max-width: 1280px;
+}
+main > div {
+  width: 100%;
+}
+
+/* 배치 */
+.community_page_location {
+  display: block;
+  padding-left: 30px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 20px;
+}
+.community_listofwriting_titlebar {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.community_content_content {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: start;
+}
+.community_control_bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+.community_control_bar > div {
+  display: inline-block;
+}
+.community_control_bar_write {
+  position: absolute;
+  right: 30px;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 10px;
+}
+.community_control_bar_pagenumber {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+}
+.community_control_bar_pagenumber > a {
+  margin: 0px 5px;
+}
+
+/* 바 너비 */
+.community_listofwriting {
+  position: relative;
+  max-width: 1170px;
+}
+.community_listofwriting_titlebar,
+.community_content,
+.community_control_bar,
+.colomn_border {
+  max-width: 100%;
+}
+.community_listofwriting_titlebar_number,
+.community_content_content_number,
+.colomn_border > div:first-child {
+  width: 100px;
+}
+.community_listofwriting_titlebar_title,
+.community_content_content_title,
+.colomn_border > div:nth-child(2) {
+  width: 820px;
+}
+.community_listofwriting_titlebar_rates,
+.community_content_content_rates,
+.colomn_border > div:nth-child(3) {
+  width: 125px;
+}
+.community_listofwriting_titlebar_hits,
+.community_content_content_hits,
+.colomn_border > div:last-child {
+  width: 125px;
+}
+.community_control_bar_pagenumber {
+  min-width: 150px;
+}
+
+/* 바 높이 및 설정 */
+header {
+  height: 100px;
+  border: 1px solid black;
+}
+.community_menubar {
+  height: 100px;
+  border: 1px solid black;
+}
+.community_listofwriting_titlebar {
+  height: 50px;
+  font-size: 32px;
+}
+.community_listofwriting_titlebar > div {
+  height: 100%;
+}
+.community_content {
+  min-height: 400px;
+}
+.community_content_content > div,
+.community_listofwriting_titlebar > div {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  text-align: center;
+  justify-content: center;
+}
+.community_control_bar_pagenumber {
+  height: auto;
+}
+
+/* 버튼 크기 */
+.community_control_bar_leftbutton,
+.community_control_bar_rightbutton {
+  height: 24px;
+  width: 24px;
+}
+.community_control_bar_write {
+  width: 100px;
+  height: 30px;
+  background-color: #e1e1e1;
+  border: none;
+  border-radius: 53px;
+  color: #7e7e7e;
+}
+
+.row_border {
+  background-color: var(--menubar-color);
+  border: none;
+  height: 3px;
+}
+.community_content_content {
+  border-bottom: 1px solid #7e7e7e60;
+  font-size: 24px;
+}
+
+/* 줄긋기 */
+.colomn_border {
+  position: absolute;
+  display: flex;
+  height: 90%;
+  top: 0;
+  z-index: -5;
+}
+.colomn_border > div {
+  border-right: 1px solid black;
+}
+.colomn_border > div:last-child {
+  border: none;
+}
