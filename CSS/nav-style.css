@@ -135,6 +135,25 @@
   font-weight: 800;
   margin-left: 10px;
 }
+.community_menubar_title_list_button_game_overwatch {
+  background-image: url(/images/community_오버워치\ 버튼\ 배경.png);
+  background-repeat: no-repeat;
+  background-position: -5px 10px;
+  background-color: white;
+}
+.community_menubar_title_list_button_game_overwatch
+  > .community_menubar_title_list_button_text {
+  margin-left: 5px;
+}
+.community_menubar_title_list_button_game_PUBG {
+  background-color: #95550b;
+  justify-content: center;
+}
+.community_menubar_title_list_button_game_PUBG
+  > .community_menubar_title_list_button_icon {
+  width: 100%;
+  justify-content: center;
+}
 
 /* 리스트 숨기기 */
 /* .community_menubar_title_list {
