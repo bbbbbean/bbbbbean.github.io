@@ -1,3 +1,5 @@
+@import url(/SRC/font/font.css);
+
 /* 임시 */
 .community_menubar > div,
 .community_menubar > div > div {
@@ -28,6 +30,11 @@
   display: flex;
   margin-bottom: 5px;
 }
+.community_menubar_text,
+.community_menubar_title_list_button_text {
+  font-family: Pretendard;
+  font-weight: 800;
+}
 
 /* 버튼 크기 조정 */
 .community_menubar_title {
@@ -56,8 +63,12 @@
 }
 .community_menubar_text,
 .community_menubar_title_list_button_text {
-  margin-left: 45px;
   font-size: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 .community_menubar_logo > div {
   display: flex;
@@ -100,6 +111,7 @@
 }
 .community_menubar_title_list_button_exercise_basketball
   > .community_menubar_title_list_button_text {
+  justify-content: start;
   margin-left: -40px;
 }
 .community_menubar_title_list_button_exercise_tennis {
@@ -114,8 +126,8 @@
 
 .community_menubar_title_list_button_exercise_badminton
   > .community_menubar_title_list_button_text {
-  margin-left: 16px;
 }
+
 /* 게임 */
 .community_menubar_title_list_button_game_LOL {
   background-image: url(/SRC/image/image_community_page/community_LOL\ 버튼\ 배경.png);
@@ -123,7 +135,6 @@
 .community_menubar_title_list_button_game_LOL
   > .community_menubar_title_list_button_text {
   font-size: 1.3rem;
-  font-weight: 800;
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_apexlegend {
@@ -132,7 +143,6 @@
 .community_menubar_title_list_button_game_apexlegend
   > .community_menubar_title_list_button_text {
   font-size: 1.3rem;
-  font-weight: 800;
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_overwatch {
@@ -141,18 +151,37 @@
   background-position: -5px 10px;
   background-color: white;
 }
-.community_menubar_title_list_button_game_overwatch
-  > .community_menubar_title_list_button_text {
-  margin-left: 5px;
-}
 .community_menubar_title_list_button_game_PUBG {
   background-color: #95550b;
   justify-content: center;
+  width: 100%;
 }
 .community_menubar_title_list_button_game_PUBG
   > .community_menubar_title_list_button_icon {
-  width: 100%;
+  max-width: none;
+  width: 80%;
   justify-content: center;
+}
+.community_menubar_title_list_button_game_PUBG
+  > .community_menubar_title_list_button_icon
+  > img {
+  max-width: none;
+  width: 100%;
+}
+.community_menubar_title_list_button_game_valorant {
+  background-image: url(/SRC/image/image_community_page/community_발로란트\ 버튼\ 배경.png);
+}
+.community_menubar_title_list_button_game_valorant
+  > .community_menubar_title_list_button_text {
+  color: #2df205;
+}
+
+/* 여행 */
+.community_menubar_title_list_button_travel_domestic {
+  background-image: url(/SRC/image/image_community_page/community_국내여행\ 버튼\ 배경.png);
+  background-position: -10px -50px;
+}
+.community_menubar_title_list_button_travel_japan {
 }
 
 /* 리스트 숨기기 */
