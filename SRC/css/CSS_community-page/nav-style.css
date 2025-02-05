@@ -94,7 +94,7 @@
 }
 .community_menubar_title_list_button_exercise_basketball {
   background-color: #131125;
-  background-image: url(/images/community_농구\ 버튼\ 배경.png);
+  background-image: url(/SRC/image/image_community_page/community_농구\ 버튼\ 배경.png);
   background-position: -5px -3px;
   color: white;
 }
@@ -103,7 +103,7 @@
   margin-left: -40px;
 }
 .community_menubar_title_list_button_exercise_tennis {
-  background-image: url(/images/community_테니스\ 버튼\ 배경.png);
+  background-image: url(/SRC/image/image_community_page/community_테니스\ 버튼\ 배경.png);
   background-position: 0px 1px;
   background-color: #2a75ba;
   color: #f0f048;
@@ -118,7 +118,7 @@
 }
 /* 게임 */
 .community_menubar_title_list_button_game_LOL {
-  background-image: url(/images/community_LOL\ 버튼\ 배경.png);
+  background-image: url(/SRC/image/image_community_page/community_LOL\ 버튼\ 배경.png);
 }
 .community_menubar_title_list_button_game_LOL
   > .community_menubar_title_list_button_text {
@@ -127,7 +127,7 @@
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_apexlegend {
-  background-image: url(/images/community_에이펙스\ 버튼\ 배경.png);
+  background-image: url(/SRC/image/image_community_page/community_에이펙스\ 버튼\ 배경.png);
 }
 .community_menubar_title_list_button_game_apexlegend
   > .community_menubar_title_list_button_text {
@@ -136,7 +136,7 @@
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_overwatch {
-  background-image: url(/images/community_오버워치\ 버튼\ 배경.png);
+  background-image: url(/SRC/image/image_community_page/community_오버워치\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: -5px 10px;
   background-color: white;
