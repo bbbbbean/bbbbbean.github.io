@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../font/font.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Pretendard";
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        .wrapper {}
+
+        .nav-menu {
+            display: flex;
+            justify-content: end;
+            padding-right: 10px;
+        }
+
+        .nav-menu>ul {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-menu>ul>li {
+            width: 150px;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            transition: 1s;
+            background-color: #6EC3FF;
+            border-radius: 50px;
+        }
+
+        .nav-menu>ul>li:has(.menu-hover:hover) {
+            width: 500px;
+        }
+        .nav-menu>ul>li>div{
+            display: flex;
+        }
+
+        .nav-menu>ul>li>div>.menu-btn {
+            width: 150px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-menu>ul>li>div>.menu-btn>p {
+            color: white;
+            position: absolute;
+            font-size: 24px;
+            right: 35px;
+            font-weight: bold;
+        }
+
+        .nav-menu>ul>li>div>.menu-btn>.img-bg {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            padding: 10px;
+            position: absolute;
+            left: 10px;
+        }
+        .nav-menu>ul>li>div>.sub-menu{
+            width: 150px;
+            height: 60px;
+            background-color: #6EC3FF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-menu>ul>li>div>.menu-btn>.img-bg>.material-symbols-outlined {
+            color: #FBB00E;
+            font-size: 32px;
+            font-weight: 200;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav-menu">
+            <ul>
+                <li>
+                    <div>
+                        <a href="" class="menu-btn menu-hover">
+                            <div class="img-bg">
+                                <span class="material-symbols-outlined">sports_volleyball</span>
+                            </div>
+                            <p>운동</p>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="" class="menu-hover sub-menu">
+                            <p>운동</p>
+                        </a>
+                        <a href="" class="menu-hover sub-menu">
+                            <p>운동</p>
+                        </a>
+                        <a href="" class="menu-hover sub-menu">
+                            <p>운동</p>
+                        </a>
+                        <a href="" class="menu-hover sub-menu">
+                            <p>운동</p>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="" class="menu-btn menu-hover">
+                            <div class="img-bg">
+                                <span class="material-symbols-outlined">airplane_ticket</span>
+                            </div>
+                            <p>여행</p>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="" class="menu-btn menu-hover">
+                            <div class="img-bg">
+                                <span class="material-symbols-outlined">stadia_controller</span>
+                            </div>
+                            <p>게임</p>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="" class="menu-btn menu-hover">
+                            <div class="img-bg">
+                                <span class="material-symbols-outlined">handshake</span>
+                            </div>
+                            <p>기타</p>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <main>
+            <section>
+
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
