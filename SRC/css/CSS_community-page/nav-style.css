@@ -29,6 +29,8 @@
 .community_menubar_title_list_button {
   display: flex;
   margin-bottom: 5px;
+
+  overflow: hidden;
 }
 .community_menubar_text,
 .community_menubar_title_list_button_text {
@@ -182,6 +184,25 @@
   background-position: -10px -50px;
 }
 .community_menubar_title_list_button_travel_japan {
+  background-image: url(/SRC/image/image_community_page/community_일본여행\ 버튼\ 배경.png);
+  background-repeat: no-repeat;
+  background-position: 0px 10px;
+  background-size: 100%;
+  background-color: #a5c6e8;
+}
+.community_menubar_title_list_button_travel_asia {
+  background-image: url(/SRC/image/image_community_page/community_아시아여행\ 버튼\ 배경.png);
+  background-repeat: no-repeat;
+  background-position: -50px 0;
+  background-color: #aee2b1;
+}
+.community_menubar_title_list_button_travel_europe {
+  background-color: #003399;
+  color: #ffcc00;
+}
+.community_menubar_title_list_button_travel_america {
+  background-color: #002664;
+  color: white;
 }
 
 /* 리스트 숨기기 */
