@@ -20,7 +20,7 @@
       <nav class="menu-box">
         <ul>
           <li class="mainmenu">
-            <a href="javascript:void(0)" target="content">매칭</a>
+            <a href="./matching-page.html" target="content">매칭</a>
             <ul class="submenu">
               <li><a href="javascript:void(0)" target="content">운동</a></li>
               <div class="submenu-line"></div>
@@ -71,22 +71,30 @@
       </nav>
       <div class="line"></div>
     </div>
-    <iframe id="content" onload="autoHeight()" src="main.html" frameborder="0" name="content" scrolling="no" width="1280px" height="1150px"></iframe>
+    <div class="iframe-content">
+      <iframe id="content" onload="autoHeight()" src="main.html" frameborder="0" name="content" scrolling="no"
+        height="1150px"></iframe>
+    </div>
   </div>
   <script>
     function autoHeight() {
       $('#content').on('load', function () {
         if (this.contentDocument) {
           $(this).height(this.contentDocument.documentElement.scrollHeight);
-          console.log("test :"+this.contentDocument.documentElement.scrollHeight);
+          console.log("test :" + this.contentDocument.documentElement.scrollHeight);
         }
         else {
           $(this).height(this.contentWindow.document.body.scrollHeight);
-          console.log("test :"+this.contentWindow.document.body.scrollHeight);
+          console.log("test :" + this.contentWindow.document.body.scrollHeight);
         }
       });
     }
   </script>
+  <style>
+    iframe {
+      width: 100%;
+    }
+  </style>
 </body>
 
 </html>
