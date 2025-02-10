@@ -248,6 +248,7 @@ body {
     border-radius: 10px;
     font-weight: 500;
     line-height: 50px;
+    margin-right: 15px;
 }
 
 .match-list>ul>li>ul>li>.dead {
