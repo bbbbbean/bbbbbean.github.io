@@ -5,15 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PlayMatch</title>
 
+    <!-- 구글 아이콘 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <link rel="stylesheet" href="/SRC/CSS/common_css/main_header.css" />
     <link rel="stylesheet" href="/SRC/CSS/common_css/main_main.css" />
     <link rel="stylesheet" href="/SRC/CSS/common_css/main_footer.css" />
   </head>
   <body>
       <main>
-        <section class="serch">검색바</section>
-        <section class="slide">슬라이드</section>
-        <section class="category">카테고리별 이동</section>
+        <section class="serch">
+            <!-- 검색 카테고리 선택, 검색창 -->
+            <div class="serch-wrap">
+              <ul class="serch-bar">
+                <li>
+                  <select name="serch-category" id="">
+                    <!-- 나중에 커스텀 -->
+                    <option value="all">전체</option>
+                    <option value="loca">지역별</option>
+                    <option value="etc">등등..</option>
+                  </select>
+                </li>
+                <li>
+                  <!-- 글자수 제한 -->
+                  <input type="text">
+                </li>
+                <li>
+                  <button><span class="material-symbols-outlined">
+                    search
+                    </span></button>
+                </li>
+              </ul>
+            </div> 
+        </section>
+        <!-- js처리 -->
+        <section class="slide">
+          <div class="slide-wrap layout-1280">
+            <div class="slide-arrow">
+              <span class="material-symbols-outlined">Keyboard_Double_Arrow_left</span>
+              <span class="material-symbols-outlined">Keyboard_Double_Arrow_right</span>
+            </div>
+            <div class="slide-content">
+              <div class="slide-item">slide1</div>
+              <div class="slide-item">slide2</div>
+              <div div class="slide-item">slide3</div>
+            </div>
+          </div>
+        </section>
+        <section class="category layout-1280">
+          <span>문구 넣을 공간</span>
+          <ul class="category-list">
+            <li>
+              <a href="">
+                <span class="material-symbols-outlined round">Sports_Soccer</span>
+                <span>운동</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <span class="material-symbols-outlined round">Travel</span>
+                <span>여행</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <span class="material-symbols-outlined round">Sports_Esports</span>
+                <span>게임</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <span class="material-symbols-outlined round">Sports_Soccer</span>
+                <span>기타</span>
+              </a>
+            </li>
+          </ul>
+          
+        </section>
         <section class="community">게시판</section>
         <section class="match-go">바로가기</section>
       </main>
