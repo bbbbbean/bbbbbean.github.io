@@ -10,17 +10,31 @@
         'GRAD' 0,
         'opsz' 24
 }
+
 ul {
     list-style: none;
-    padding:0; margin:0;
-}
-a{
-    text-decoration: none;
-}
-body{
+    padding: 0;
     margin: 0;
 }
-.wrapper {}
+
+a {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+}
+
+.match-line{
+    height: 1px;
+    background-color: black;
+}
+
+.wrapper {
+}
 
 .nav-menu {
     display: flex;
@@ -90,10 +104,12 @@ body{
     align-items: center;
     transition: .5s;
 }
-.nav-menu>ul>li>div>.sub-menu-btn:hover p{
+
+.nav-menu>ul>li>div>.sub-menu-btn:hover p {
     font-size: 24px;
 }
-.nav-menu>ul>li>div>.sub-menu-btn>p{
+
+.nav-menu>ul>li>div>.sub-menu-btn>p {
     color: white;
     font-size: 20px;
     right: 35px;
@@ -106,28 +122,32 @@ body{
     font-weight: 200;
 }
 
-.match-title-container{
+.match-title-container {
     position: relative;
     background-color: #263D3D;
     height: 200px;
     color: white;
     font-weight: 100;
 }
-.match-title-container>.quick-menu>a{
+
+.match-title-container>.quick-menu>a {
     color: white;
     padding: 0 5px;
-    
+
 }
-.match-title-container>.match-title{
+
+.match-title-container>.match-title {
     padding: 0 15px;
     margin-top: 40px;
 }
-.match-title-container>.match-title>p{
+
+.match-title-container>.match-title>p {
     font-size: 28px;
     line-height: 0px;
     font-weight: 500;
 }
-.match-title-container>.user-reg-btn{
+
+.match-title-container>.user-reg-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,7 +160,8 @@ body{
     top: 135px;
     left: 15px;
 }
-.match-title-container>.match-reg-btn{
+
+.match-title-container>.match-reg-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -153,20 +174,22 @@ body{
     top: 135px;
     right: 15px;
 }
-.match-title-container>.user-reg-btn>a{
+
+.match-title-container>.user-reg-btn>a {
     color: black;
     font-weight: 200;
 }
-.match-title-container>.match-reg-btn>a{
+
+.match-title-container>.match-reg-btn>a {
     color: white;
     font-size: 24px;
     font-weight: 500;
 }
-.match-list{
-    height: 1000px;
-    background-color: lightgray;
+
+.match-list {
 }
-.match-list>ul>li>.match-day{
+
+.match-list>ul>li>.match-day {
     height: 100px;
     display: flex;
     align-items: end;
@@ -175,25 +198,79 @@ body{
     line-height: 0;
     padding-left: 30px;
 }
-.match-list>ul>li>ul>li>div{
-    background-color: antiquewhite;
+
+.match-list>ul>li>ul>li>div {
 }
-.match-list>ul>li>ul>li{
+
+.match-list>ul>li>ul>li {
     height: 100px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    background-color: aqua;
+    gap: 20px;
 }
-.match-list>ul>li>ul>li>.match-time{
 
+.match-list>ul>li>ul>li>.match-time {
+    width: 200px;
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    font-weight: bold;
 }
-.match-list>ul>li>ul>li>.match-title{
+
+.match-list>ul>li>ul>li>.match-title {
     flex-grow: 1;
 }
-.match-list>ul>li>ul>li>.match-count{
+.match-list>ul>li>ul>li>.match-title>p{
+    font-size: 24px;
+    margin: 0;
 }
-.match-list>ul>li>ul>li>.match-content-btn{
-
+.match-list>ul>li>ul>li>.match-title>span{
+    margin-left: 15px;
+    color: #767474;
+}
+.match-list>ul>li>ul>li>.match-content-count{
+    height: 100px;
+    display: flex;
+    align-items: end;
+    padding-bottom: 10px;
+    color: #767474;
+    
+}
+.match-list>ul>li>ul>li>.match-content-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 500;
+    line-height: 50px;
 }
 
+.match-list>ul>li>ul>li>.dead {
+    background-color: #EEEEEE;
+}
+
+.match-list>ul>li>ul>li>.dead>a {
+    color: rgba(0, 0, 0, .4);
+}
+
+.match-list>ul>li>ul>li>.avai {
+    background-color: #1570FF;
+}
+
+.match-list>ul>li>ul>li>.avai>a {
+    color: white;
+}
+
+.match-list>ul>li>ul>li>.immi {
+    background-color: #FF4D37;
+}
+
+.match-list>ul>li>ul>li>.immi>a {
+
+    color: white;
+}
