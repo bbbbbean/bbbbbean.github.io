@@ -1,10 +1,10 @@
 @import url(/SRC/font/font.css);
 
-/* 임시 */
+/* 임시
 .community_menubar > div,
 .community_menubar > div > div {
   border: 1px solid;
-}
+} */
 /*  */
 * {
   box-sizing: border-box;
@@ -15,6 +15,9 @@
   position: relative;
   justify-content: space-between;
   z-index: 5;
+}
+.community_menubar_title {
+  margin: 0 4px;
 }
 .community_menubar_text {
   color: white;
@@ -38,7 +41,6 @@
 .community_menubar_title_list_button_text {
   font-family: Pretendard;
   font-weight: 800;
-  font-size: ;
 }
 
 /* 버튼 크기 조정 */
