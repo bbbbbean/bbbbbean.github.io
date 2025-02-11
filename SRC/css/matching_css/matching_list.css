@@ -260,15 +260,11 @@ body {
     background-color: #1570FF;
 }
 
-.match-list>ul>li>ul>li>.avai>a {
+.match-list>ul>li>ul>li>.avai>a,
+.match-list>ul>li>ul>li>.immi>a {
     color: white;
 }
 
 .match-list>ul>li>ul>li>.immi {
     background-color: #FF4D37;
-}
-
-.match-list>ul>li>ul>li>.immi>a {
-
-    color: white;
 }
