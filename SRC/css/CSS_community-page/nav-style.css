@@ -28,7 +28,8 @@
   padding: 0 10%;
 }
 .community_menubar_title_list {
-  margin-top: 30px;
+  padding-top: 20px;
+  height: 500px;
 }
 .community_menubar_title_list_button {
   display: flex;
@@ -261,10 +262,12 @@
 /* 리스트 숨기기 */
 /* .community_menubar_title_list {
   display: none;
-  transition: all 5s ease-in-out;
+  transition: 5s ease-in-out;
 }
 .community_menubar_title:hover > .community_menubar_title_list {
-  display: block;} */
+  display: block;
+  height: none;
+} */
 
 @media (max-width: 720px) {
   .community_menubar_logo,
