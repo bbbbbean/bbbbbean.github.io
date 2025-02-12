@@ -29,7 +29,7 @@
 }
 .community_menubar_title_list {
   padding-top: 20px;
-  height: 500px;
+  padding-right: 3px;
 }
 .community_menubar_title_list_button {
   display: flex;
@@ -260,14 +260,15 @@
 }
 
 /* 리스트 숨기기 */
-/* .community_menubar_title_list {
-  display: none;
-  transition: 5s ease-in-out;
+.community_menubar_title_list {
+  height: 0;
+  overflow: hidden;
+  transition: 0.5s ease-in-out;
 }
 .community_menubar_title:hover > .community_menubar_title_list {
+  height: 500px;
   display: block;
-  height: none;
-} */
+}
 
 @media (max-width: 720px) {
   .community_menubar_logo,
