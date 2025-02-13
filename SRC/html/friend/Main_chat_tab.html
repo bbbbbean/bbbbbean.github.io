@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/SRC/CSS/common_css/main_header.css" />
+    <link rel="stylesheet" href="../css/common_css/message-page.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<style>
+    /* 전체 틀 */
+    .wrapper {
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* 상단 메시지 , 채팅방 생성, 친구 추가 탭 */
+    .wrapper>.menu-tab {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100px;
+        align-items: center;
+    }
+
+    .wrapper>.menu-tab>div {
+        display: flex;
+        align-items: center;
+    }
+
+    .wrapper>.menu-tab>div>a {
+        color: black;
+        font-size: 40px;
+    }
+
+    .wrapper>.menu-tab>div>a>span {
+        color: #D2D5F9;
+        font-size: 40px;
+    }
+
+    /* 메시지 탭 */
+    .wrapper>.menu-tab>.left-side {
+        width: 200px;
+        height: 50px;
+        font-size: 50px;
+        text-align: center;
+    }
+
+    /* 채팅방 생성, 친구 추가 탭 */
+    .wrapper>.menu-tab>.right-side {
+        display: flex;
+        gap: 20px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat {
+        width: 190px;
+        height: 55px;
+        text-align: center;
+        background-color: #A6C8FF;
+        font-size: 25px;
+        line-height: 55px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat>a {
+        color: white;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat>a>span {
+        color: #FBB00E;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend {
+        width: 160px;
+        height: 55px;
+        background-color: #A6C8FF;
+        font-size: 25px;
+        text-align: center;
+        line-height: 55px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend>a {
+        color: white;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend>a>span {
+        color: #FBB00E;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    /* 검색 창 */
+    .wrapper>.search-tab {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        height: 40px;
+    }
+    .wrapper>.search-tab>input {
+        text-align: center;
+        width: 80%;
+        background-color: #F3EDF7;
+        border: none;
+    }
+    .wrapper>.search-tab>a{
+        margin: 8px 7px 0 0;
+        color: black;
+    }
+
+    /* 채팅 친구 창-1 */
+    .wrapper>.chat-tab {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .wrapper>.chat-tab>.chat-a1 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 30px 180px 10px 180px;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a1>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a1>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-2 */
+    .wrapper>.chat-tab>.chat-a2 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a2>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a2>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-3 */
+    .wrapper>.chat-tab>.chat-a3 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a3>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a3>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-4 */
+    .wrapper>.chat-tab>.chat-a4 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a4>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a4>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-5 */
+    .wrapper>.chat-tab>.chat-a5 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a5>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a5>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-6 */
+    .wrapper>.chat-tab>.chat-a6 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a6>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a6>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-7 */
+    .wrapper>.chat-tab>.chat-a7 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a7>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a7>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <div class="menu-tab">
+            <div class="left-side">
+                <a href="javascript:void(0)">메시지
+                    <span class="material-symbols-outlined">Chat</span>
+                </a>
+            </div>
+            <div class="right-side">
+                <div class="mk-chat">
+                    <a href="javascript:void(0)">채팅방 생성
+                        <span class="material-symbols-outlined">add_comment</span>
+                    </a>
+                </div>
+                <div class="mk-friend">
+                    <a href="javascript:void(0)">친구 추가
+                        <span class="material-symbols-outlined">person_add</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="search-tab">
+            <a href="javascript:void(0)">
+                <span class="material-symbols-outlined">search</span>
+            </a>
+            <input type="text" name="search-bar">
+        </div>
+        <div class="chat-tab">
+            <ul class="chat-a1">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a2">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a3">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a4">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a5">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a6">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+            <ul class="chat-a7">
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Account_Circle</span></li>
+                </a>
+                <a href="javascript:void(0)">
+                    <li><span class="material-symbols-outlined">Pending</span></li>
+                </a>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
