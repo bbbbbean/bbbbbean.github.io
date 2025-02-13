@@ -23,6 +23,9 @@ color: #9e9e9e;
 }
 /* 그리드 설정 */
 main{
+  max-width: 1280px;
+  margin: 0 auto;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr 500px 1fr 3fr;
