@@ -38,9 +38,15 @@ header {
 }
 
 .logo {
-  width: 20%;
-  /* 임시 */
-  background-color: #6ec3ff;
+  width: 15%;
+}
+.logo>a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo img{
+  width: 100%;
 }
 .menu-box {
   width: 65%;
