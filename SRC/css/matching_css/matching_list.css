@@ -277,7 +277,7 @@ body {
     min-width: 600px;
     max-width: 1000px;
     width: 85%;
-    display: grid;
+    display: none;
     grid-auto-rows: 25px;
     grid-gap: 15px;
     background-color: #F0F0F0;
