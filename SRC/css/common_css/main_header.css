@@ -158,7 +158,7 @@ header {
 
 @media (width <= 800px) {
   .icon > ul {
-    height: 20%;
+    height: 127px;
     display: block;
     position: fixed;
     top: 30vh;

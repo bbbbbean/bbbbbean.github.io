@@ -187,10 +187,3 @@ main > div {
 .colomn_border > div:last-child {
   border: none;
 }
-
-@media (width <= 800px) {
-  .icon > ul {
-    display: block;
-    position: fixed;
-  }
-}
