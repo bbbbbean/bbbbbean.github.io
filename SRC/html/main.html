@@ -24,17 +24,39 @@
             </ul>
           </div> 
       </section>
-      <!-- js처리 -->
       <section class="slide">
-        <div class="slide-wrap">
-          <div class="slide-arrow">
-            <span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span>
-            <span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span>
-          </div>
-          <div class="slide-content">
-            <div class="slide-item">slide1</div>
-            <div class="slide-item">slide2</div>
-            <div div class="slide-item">slide3</div>
+        
+
+        <div class="slider">
+          <input type="radio" id="forward-2" name="slideradio">
+          <input type="radio" id="forward-3" name="slideradio">
+          <input type="radio" id="backend-1" name="slideradio" checked>
+          <input type="radio" id="backend-2" name="slideradio">
+          <div class="slide-wrap">
+            <div class="slide-item">
+              <div class="slide-arrow">
+                <label label for="" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
+                <label for="forward-2" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
+              </div>
+              <div class="slide-item-show1"></div>
+            </div>
+
+            <div class="slide-item">
+              <div class="slide-arrow">
+                <label for="backend-1" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
+                <label for="forward-3" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
+              </div>
+              <div class="slide-item-show2"></div>
+            </div>
+
+            <div class="slide-item">
+              <div class="slide-arrow">
+                <label for="backend-2" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
+                <label for="" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
+              </div>
+              <div class="slide-item-show3"></div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -123,20 +145,6 @@
                                 <span class="material-symbols-outlined">handshake</span>
                             </div>
                             <p>기타</p>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>...</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>...</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>...</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>...</p>
                         </a>
                     </div>
                 </li>
