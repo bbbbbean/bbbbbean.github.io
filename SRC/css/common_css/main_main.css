@@ -236,7 +236,7 @@ align-items: center;
 
 }
 
-.row>a{
+.commu-row>a{
 padding: 11px 5%;
 
 display: grid;
@@ -341,7 +341,7 @@ color: #fff;
 }
 
 /* hover이벤트 */
-.row:hover{
+.commu-row:hover{
   background-color: #f1f1f1;
 }
 .match-go-item-box:hover{
@@ -366,7 +366,6 @@ color: #fff;
   display: flex;
   gap: 10px;
 }
-
 .nav-menu>ul>li {
   width: 150px;
   display: flex;
