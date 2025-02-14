@@ -14,9 +14,6 @@
 } */
 /* 임시끝 */
 
-body {
-  background-color: #6ec3ff1f;
-}
 .top-header {
   height: 100px;
 }
@@ -65,7 +62,10 @@ main > div {
   right: 30px;
   text-align: center;
   text-decoration: none;
-  padding-top: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .community_control_bar_pagenumber {
   display: flex;
@@ -89,6 +89,7 @@ main > div {
 
 .community_listofwriting {
   position: relative;
+  width: 100%;
   max-width: 1170px;
 }
 .community_listofwriting_titlebar,
@@ -106,6 +107,12 @@ main > div {
 .community_content_content_title,
 .colomn_border > div:nth-child(2) {
   width: 820px;
+}
+.community_content_content_title {
+  cursor: pointer;
+}
+.community_content_content_title:hover {
+  text-decoration: underline;
 }
 .community_listofwriting_titlebar_rates,
 .community_content_content_rates,
@@ -143,6 +150,7 @@ main > div {
   height: 50px;
   text-align: center;
   justify-content: center;
+  font-size: 90%;
 }
 .community_control_bar_pagenumber {
   height: auto;
@@ -153,6 +161,9 @@ main > div {
 .community_control_bar_rightbutton {
   height: 24px;
   width: 24px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
 }
 .community_control_bar_write {
   width: 100px;
