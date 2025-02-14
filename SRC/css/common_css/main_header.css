@@ -40,12 +40,12 @@ header {
 .logo {
   width: 15%;
 }
-.logo>a{
+.logo > a {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.logo img{
+.logo img {
   width: 100%;
 }
 .menu-box {
@@ -122,6 +122,8 @@ header {
   text-align: center;
   background-color: #6ec3ff;
   border-radius: 5px;
+
+  right: 0;
 }
 .icon > ul > li > .submenu > li {
   height: 48px;
@@ -152,4 +154,20 @@ header {
   top: 98px;
   background-color: #6ec3ff;
   z-index: -2;
+}
+
+@media (width <= 800px) {
+  .icon > ul {
+    height: 20%;
+    display: block;
+    position: fixed;
+    top: 30vh;
+    right: 10px;
+    background-color: var(--menubar-color);
+    border-radius: 8px;
+  }
+  .submenu {
+    right: 5px;
+    top: 0px;
+  }
 }
