@@ -339,6 +339,9 @@ align-items: center;
 
 color: #fff;
 }
+.match-go-btn-hidden{
+  display: none;
+}
 
 /* hover이벤트 */
 .commu-row:hover{
@@ -516,6 +519,25 @@ color: #fff;
     display: none;
   }
   .match-go-btn-hidden{
-    
+    display: block;
+
+    width: 90%;
+    margin: 7px auto 0;
+    padding: 10px 0;
+    border-radius: 5px;
+
+    background-color: #6EC3FF;
+  }
+  .match-go-btn-hidden>a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .match-go-btn-hidden>a>span:last-child{
+    color: #fff;
+  }
+  .match-go-btn-hidden:hover{
+    background-color: #7fcaff;
   }
 }
