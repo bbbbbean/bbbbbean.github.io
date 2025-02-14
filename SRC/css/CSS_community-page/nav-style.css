@@ -25,15 +25,15 @@
 .community_menubar_title_top {
   display: flex;
   margin-top: 2px;
-  padding: 0 10%;
+  padding: 0 5%;
 }
 .community_menubar_title_list {
-  padding-top: 20px;
+  padding-top: 15px;
   padding-right: 3px;
 }
 .community_menubar_title_list_button {
   display: flex;
-  margin-bottom: 5px;
+  margin: 3px 0;
   padding: 0 5%;
 
   overflow: hidden;
@@ -63,9 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: right;
-  min-width: 40px;
-  max-width: 100px;
-  max-height: 90px;
+  min-width: 30%;
 
   flex-direction: column;
 }
@@ -76,14 +74,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   flex-grow: 1;
 }
 .community_menubar_logo > div {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70px;
-  height: 70px;
+  width: 5vw;
+  max-width: 70px;
+  height: 5vw;
+  max-height: 70px;
+
   background-color: white;
   border-radius: 100px;
   left: 0;
@@ -93,7 +95,7 @@
 .community_menubar_logo > div > img {
   max-width: 45px;
   height: auto;
-  width: 100%;
+  width: 70%;
   left: 0;
 }
 .community_menubar_title_list_button_icon > img {
@@ -123,7 +125,7 @@
 .community_menubar_title_list_button_exercise_basketball
   > .community_menubar_title_list_button_text {
   justify-content: start;
-  margin-left: -15%;
+  margin-left: 15%;
 }
 .community_menubar_title_list_button_exercise_tennis {
   background-image: url(/SRC/image/image_community_page/community_테니스\ 버튼\ 배경.png);
@@ -282,6 +284,7 @@
     > .community_menubar_title_list_button_icon {
     display: flex;
   }
+  /*  */
   .community_menubar_title_list_button_text,
   .community_menubar_title_list_button_exercise_basketball
     > .community_menubar_title_list_button_text,
