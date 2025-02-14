@@ -1,0 +1,312 @@
+    /* 전체 틀 */
+    .wrapper {
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* 상단 메시지 , 채팅방 생성, 친구 추가 탭 */
+    .wrapper>.menu-tab {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100px;
+        align-items: center;
+    }
+
+    .wrapper>.menu-tab>div {
+        display: flex;
+        align-items: center;
+    }
+
+    .wrapper>.menu-tab>div>a {
+        color: black;
+        font-size: 40px;
+    }
+
+    .wrapper>.menu-tab>div>a>span {
+        color: #D2D5F9;
+        font-size: 40px;
+    }
+
+    /* 메시지 탭 */
+    .wrapper>.menu-tab>.left-side {
+        width: 200px;
+        height: 50px;
+        font-size: 50px;
+        text-align: center;
+    }
+
+    /* 채팅방 생성, 친구 추가 탭 */
+    .wrapper>.menu-tab>.right-side {
+        display: flex;
+        gap: 20px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat {
+        width: 190px;
+        height: 55px;
+        text-align: center;
+        background-color: #A6C8FF;
+        font-size: 25px;
+        line-height: 55px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat>a {
+        color: white;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-chat>a>span {
+        color: #FBB00E;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend {
+        width: 160px;
+        height: 55px;
+        background-color: #A6C8FF;
+        font-size: 25px;
+        text-align: center;
+        line-height: 55px;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend>a {
+        color: white;
+    }
+
+    .wrapper>.menu-tab>.right-side>.mk-friend>a>span {
+        color: #FBB00E;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    /* 검색 창 */
+    .wrapper>.search-tab {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        background-color: #F3EDF7;
+    }
+
+    .wrapper>.search-tab>input {
+        text-align: center;
+        width: 65%;
+        background-color: #F3EDF7;
+        border: none;
+    }
+
+    .wrapper>.search-tab>a {
+        margin: 8px 7px 0 0;
+        color: black;
+    }
+
+    /* 채팅 친구 창-1 */
+    .wrapper>.chat-tab {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .wrapper>.chat-tab>.chat-a1 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 30px 180px 10px 180px;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a1>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a1>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-2 */
+    .wrapper>.chat-tab>.chat-a2 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a2>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a2>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-3 */
+    .wrapper>.chat-tab>.chat-a3 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a3>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a3>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-4 */
+    .wrapper>.chat-tab>.chat-a4 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a4>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a4>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-5 */
+    .wrapper>.chat-tab>.chat-a5 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a5>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a5>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-6 */
+    .wrapper>.chat-tab>.chat-a6 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .wrapper>.chat-tab>.chat-a6>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a6>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* 채팅 친구 창-7 */
+    .wrapper>.chat-tab>.chat-a7 {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        height: 30px;
+        margin: 15px auto;
+        background-color: #A6C8FF;
+        list-style: none;
+    }
+
+    .pending-btn {
+        position: relative;
+    }
+
+    .chat-menu {
+        display: none;
+        position: absolute;
+        right: -150px;
+        top: -3px;
+        width: 150px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        list-style: none;
+        padding: 5px 0;
+    }
+
+    .chat-menu li {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: black;
+    }
+
+    .chat-menu li:hover {
+        background: #f5f5f5;
+    }
+
+    /* Pending 버튼을 hover하면 메뉴 보이기 */
+    .chat-a1:hover .chat-menu,
+    .chat-a2:hover .chat-menu,
+    .chat-a3:hover .chat-menu,
+    .chat-a4:hover .chat-menu,
+    .chat-a5:hover .chat-menu,
+    .chat-a6:hover .chat-menu,
+    .chat-a7:hover .chat-menu {
+        display: block;
+    }
+
+    .wrapper>.chat-tab>.chat-a7>a>li {
+        width: 80%;
+    }
+
+    .wrapper>.chat-tab>.chat-a7>a>li>.material-symbols-outlined {
+        color: gray;
+        margin: 3px 0 0 -30px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }

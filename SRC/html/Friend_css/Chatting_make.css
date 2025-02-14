@@ -1,0 +1,34 @@
+    body {
+        width: 480px;
+        height: 450px;
+    }
+
+    .search-tab {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        height: 30px;
+        background-color: #F3EDF7;
+    }
+
+    .search-tab>input {
+        text-align: center;
+        width: 70%;
+        background-color: #F3EDF7;
+        border: none;
+    }
+
+    .search-tab>a {
+        margin: 3px 5px 0 0;
+        color: black;
+    }
+
+    .back-tab {
+        display: flex;
+        margin-top: 380px;
+        padding-left: 35px;
+    }
+
+    .back-tab>a {
+        color: black;
+    }
