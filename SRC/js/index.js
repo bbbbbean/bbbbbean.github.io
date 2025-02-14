@@ -7,4 +7,5 @@ $(document).ready(function () {
     const html = (page[1] == undefined) ? "./main.html" : "./"+page[1] + ".html";
     $('header').load("./header.html");
     $('main').load(html);
+    $('footer').load("./footer.html");
 });
