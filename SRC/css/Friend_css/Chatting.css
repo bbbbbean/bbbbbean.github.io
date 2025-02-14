@@ -11,7 +11,7 @@ li {
     list-style: none;
 }
 
-.search-tab {
+.chat-search-tab {
     display: flex;
     justify-content: center;
     height: 30px;
@@ -19,24 +19,24 @@ li {
 
 }
 
-.search-tab>input {
+.chat-search-tab>input {
     text-align: center;
     width: 70%;
     background-color: #F3EDF7;
     border: none;
 }
 
-.search-tab>a {
+.chat-search-tab>a {
     margin: 3px 10px 0 10px;
     color: black;
 }
 
-.back-tab {
+.chat-back-tab {
     display: flex;
     padding-left: 35px;
 }
 
-.back-tab>a {
+.chat-back-tab>a {
     color: black;
 }
 
