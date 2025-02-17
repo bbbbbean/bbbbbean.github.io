@@ -196,15 +196,13 @@ body {
     padding-left: 30px;
 }
 
-.match-list>ul>li>ul>li>div {
-}
-
 .match-list>ul>li>ul>li {
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
+    position: relative;
 }
 
 .match-list>ul>li>ul>li>.match-time {
@@ -247,6 +245,13 @@ body {
     line-height: 50px;
     margin-right: 15px;
     cursor: pointer;
+}
+.match-list>ul>li>ul>li>.match-line{
+    background-color: black;
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    top: 100px;
 }
 
 .match-list>ul>li>ul>li>.dead {
