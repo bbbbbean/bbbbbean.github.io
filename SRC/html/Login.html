@@ -8,9 +8,9 @@
 
     <style>
         form {
-            width: 31.25vw;
+            width: 30.25vw;
             min-width: 400px;
-            height: 37.037vh;
+            height: 25.037vh;
             min-height: 320px;
             background-color: #EFEFEF;
             margin: 20vh auto;
@@ -19,7 +19,10 @@
             width: 100%;
             height: 100%;
             display: grid;
+            padding-top: 10px;
+            padding-bottom: 20px;
         }
+        /* 로그인 타이틀 */
         .login-continer>.item:nth-child(1){
             display: flex;
             justify-content: center;
@@ -30,6 +33,7 @@
             font-size: 32px;
             font-weight: 800;
         }
+        /* 아이디 패스워드 인풋 */
         .login-continer>.item:nth-child(2),
         .login-continer>.item:nth-child(3){
             display: flex;
@@ -52,6 +56,7 @@
             border-radius: 5px;
             font-size: 20px;
         }
+        /* 로그인 버튼 */
         .login-continer>.item:nth-child(4){
             padding: 20px;
         }
@@ -65,7 +70,12 @@
             border-radius: 5px;
             font-size: 24px;
             font-weight: 500;
+            transition: 0.1s;
         }
+        .login-continer>.item:nth-child(4)>a:hover{
+            background-color: #6ec3ff;
+        }
+        /* 회원가입, 아이디찾기, 비밀번호 찾기 */
         .login-continer>.item:nth-child(5){
             display: flex;
             justify-content: center;
@@ -87,7 +97,7 @@
             </div>
             <div class="item">
                 <label for="">비밀번호</label>
-                <input type="text">
+                <input type="password">
             </div>
             <div class="item">
                 <a href="javascript:void(0)">
