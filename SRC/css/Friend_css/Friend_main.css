@@ -2,7 +2,6 @@ a {
     text-decoration: none;
 }
 
-/* 상단 메시지 , 채팅방 생성, 친구 추가 탭 */
 .chat-menu-tab {
     display: flex;
     justify-content: space-between;
@@ -10,80 +9,62 @@ a {
     align-items: center;
 }
 
-.chat-menu-tab>div {
+.chat-menu-tab > div {
     display: flex;
     align-items: center;
 }
 
-.chat-menu-tab>div>a {
+.chat-menu-tab > div > a {
     color: black;
     font-size: 40px;
 }
 
-.chat-menu-tab>div>a>span {
+.chat-menu-tab > div > a > span {
     color: #D2D5F9;
     font-size: 40px;
 }
 
-/* 메시지 탭 */
-.chat-menu-tab>.chat-left-side {
+.chat-left-side {
     width: 200px;
     height: 50px;
     font-size: 50px;
     text-align: center;
 }
 
-/* 채팅방 생성, 친구 추가 탭 */
-.chat-menu-tab>.chat-right-side {
+.chat-right-side {
     display: flex;
     gap: 20px;
 }
 
-.chat-menu-tab>.chat-right-side>.chat-mk-chat {
-    width: 190px;
-    height: 55px;
-    text-align: center;
-    background-color: #A6C8FF;
-    font-size: 25px;
-    line-height: 55px;
-}
-
-.chat-menu-tab>.chat-right-side>.chat-mk-chat>a {
-    color: white;
-}
-
-.chat-menu-tab>.chat-right-side>.chat-mk-chat>a>span {
-    color: #FBB00E;
-    background-color: white;
-    border-radius: 5px;
-}
-
-.chat-menu-tab>.chat-right-side>.chat-mk-friend {
+.chat-mk-chat, .chat-mk-friend {
     width: 160px;
     height: 55px;
     background-color: #A6C8FF;
     font-size: 25px;
     text-align: center;
     line-height: 55px;
-}
-
-.chat-menu-tab>.chat-right-side>.chat-mk-friend>a {
-    color: white;
-}
-
-.chat-menu-tab>.chat-right-side>.chat-mk-friend>a>span {
-    color: #FBB00E;
-    background-color: white;
     border-radius: 5px;
 }
 
-/* 검색 창 */
+.chat-mk-chat>a, .chat-mk-friend>a {
+    color: white;
+}
+
+.chat-mk-chat>a>span, .chat-mk-friend>a>span {
+    color: #FBB00E;
+    background-color: white;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
 .chat-search-tab {
     margin-top: 50px;
     display: flex;
     justify-content: center;
     height: 40px;
     background-color: #F3EDF7;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .chat-search-tab>input {
@@ -91,40 +72,37 @@ a {
     width: 65%;
     background-color: #F3EDF7;
     border: none;
+    outline: none;
 }
 
 .chat-search-tab>a {
-    margin: 8px 7px 0 0;
     color: black;
 }
 
-/* 채팅 친구 창 */
 .chat-tab {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    margin: 20px 0 0 190px;
+    width: 950px;
 }
 
-.chat-tab>.chat-a {
+.chat-a {
+    margin-top: 20px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 800px;
-    height: 30px;
-    margin: 30px 180px 10px 180px;
+    width: 100%;
+    height: 50px;
     background-color: #A6C8FF;
+    border-radius: 10px;
+    padding: 10px;
     list-style: none;
 }
 
-.chat-tab>.chat-a>a>li {
-    width: 80%;
-}
-
-.chat-tab>.chat-a>a>li>.material-symbols-outlined {
-    color: gray;
-    margin: 3px 0 0 -30px;
-    background-color: white;
-    border-radius: 10px;
-    text-align: center;
+.chat-b>a {
+    color: black;
 }
 
 .chat-pending-btn {
@@ -134,8 +112,8 @@ a {
 .chat-menu {
     display: none;
     position: absolute;
-    right: -150px;
-    top: -3px;
+    left: 27px;
+    top: 5%;
     width: 150px;
     background: white;
     border: 1px solid #ccc;
@@ -143,38 +121,20 @@ a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     list-style: none;
     padding: 5px 0;
+    z-index: 1000;
 }
 
-.chat-menu li {
+.chat-menu>li {
     padding: 10px;
     cursor: pointer;
     font-size: 14px;
     color: black;
 }
 
-.chat-menu li:hover {
+.chat-menu>li:hover {
     background: #f5f5f5;
 }
 
-/* Pending 버튼을 hover하면 메뉴 보이기 */
-.chat-a1:nth-child(2):hover .chat-menu,
-.chat-a2:hover .chat-menu,
-.chat-a3:hover .chat-menu,
-.chat-a4:hover .chat-menu,
-.chat-a5:hover .chat-menu,
-.chat-a6:nth-child(2)>.chat-pending-btn:hover .chat-menu,
-.chat-a7:hover .chat-menu {
+.chat-pending-btn:hover .chat-menu {
     display: block;
-}
-
-.chat-tab>.chat-a7>a>li {
-    width: 80%;
-}
-
-.chat-tab>.chat-a7>a>li>.material-symbols-outlined {
-    color: gray;
-    margin: 3px 0 0 -30px;
-    background-color: white;
-    border-radius: 10px;
-    text-align: center;
 }
