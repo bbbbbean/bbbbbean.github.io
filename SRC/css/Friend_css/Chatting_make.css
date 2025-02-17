@@ -1,0 +1,45 @@
+.chat-pop-mkchat {
+    position: absolute;
+    display: none;
+    width: 480px;
+    height: 450px;
+
+    top: 15%;
+    left: 38%;
+    background-color: white;
+    border: 1px solid gray;
+}
+
+.chat-search-tab {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    height: 30px;
+    background-color: #F3EDF7;
+}
+
+.chat-search-tab>a {
+    margin: -2px 5px 0 0;
+    color: black;
+}
+
+.chat-search-tab>input {
+    text-align: center;
+    width: 70%;
+    background-color: #F3EDF7;
+    border: none;
+}
+
+.chat-back-tab {
+    display: flex;
+    margin-top: 380px;
+    padding-left: 35px;
+}
+.chat-back-tab:visited{
+    display: none;
+}
+
+.chat-back-tab>a {
+    color: black;
+    margin-top: -30px;
+}
