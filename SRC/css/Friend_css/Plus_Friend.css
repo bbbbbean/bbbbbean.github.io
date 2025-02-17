@@ -1,6 +1,13 @@
-body {
+.chat-pop-mkfriend {
+    position: absolute;
+    display: none;
     width: 480px;
     height: 450px;
+
+    top: 15%;
+    left: 38%;
+    background-color: white;
+    border: 1px solid gray;
 }
 
 .chat-search-tab {
@@ -19,7 +26,7 @@ body {
 }
 
 .chat-search-tab>a {
-    margin: 3px 5px 0 0;
+    margin: -2px 5px 0 0;
     color: black;
 }
 
@@ -31,4 +38,5 @@ body {
 
 .chat-back-tab>a {
     color: black;
+    margin-top: -30px;
 }

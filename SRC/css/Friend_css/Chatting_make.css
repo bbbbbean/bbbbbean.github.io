@@ -1,6 +1,13 @@
-body {
+.chat-pop-mkchat {
+    position: absolute;
+    display: none;
     width: 480px;
     height: 450px;
+
+    top: 15%;
+    left: 38%;
+    background-color: white;
+    border: 1px solid gray;
 }
 
 .chat-search-tab {
@@ -11,6 +18,11 @@ body {
     background-color: #F3EDF7;
 }
 
+.chat-search-tab>a {
+    margin: -2px 5px 0 0;
+    color: black;
+}
+
 .chat-search-tab>input {
     text-align: center;
     width: 70%;
@@ -18,17 +30,16 @@ body {
     border: none;
 }
 
-.chat-search-tab>a {
-    margin: 3px 5px 0 0;
-    color: black;
-}
-
 .chat-back-tab {
     display: flex;
     margin-top: 380px;
     padding-left: 35px;
 }
+.chat-back-tab:visited{
+    display: none;
+}
 
 .chat-back-tab>a {
     color: black;
+    margin-top: -30px;
 }
