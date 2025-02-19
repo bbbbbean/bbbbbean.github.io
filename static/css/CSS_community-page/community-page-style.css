@@ -1,6 +1,5 @@
-@import "/SRC/CSS/common_css/custom.css";
+@import "./custom.css";
 @import "./nav-style.css";
-@import url(/SRC/CSS/common_css/main_header.css);
 
 /* 임시시작 */
 /* .community_page_location {
