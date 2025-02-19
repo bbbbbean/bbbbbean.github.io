@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const URLSearchParam = new URLSearchParams(window.location.search);
+    console.log(URLSearchParam);
     const param = URLSearchParam.toString();
 
     console.log(param);
