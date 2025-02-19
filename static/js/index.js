@@ -4,8 +4,8 @@ $(document).ready(function () {
 
     console.log(param);
     let page = param.split('=');
-    const html = (page[1] == undefined) ? "../pages/main/main.html" : "../pages/"+page[1] + ".html";
-    $('header').load("../pages/common/header.html");
+    const html = (page[1] == undefined) ? "../Team2/pages/main/main.html" : "../Team2/pages/"+page[1] + ".html";
+    $('header').load("../Team2/pages/common/header.html");
     $('main').load(html);
-    $('footer').load("../pages/common/footer.html");
+    $('footer').load("../Team2/pages/common/footer.html");
 });
