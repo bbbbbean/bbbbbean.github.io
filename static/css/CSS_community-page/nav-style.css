@@ -1,4 +1,4 @@
-@import url(../../font/font.css);
+@import url(font/font.css);
 
 /* 임시
 .community_menubar > div,
@@ -118,7 +118,7 @@
 }
 .community_menubar_title_list_button_exercise_basketball {
   background-color: #131125;
-  background-image: url(../../image/image_community_page/community_농구\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_농구\ 버튼\ 배경.png);
   background-position: -5px -3px;
   color: white;
 }
@@ -128,7 +128,7 @@
   margin-left: 15%;
 }
 .community_menubar_title_list_button_exercise_tennis {
-  background-image: url(../../image/image_community_page/community_테니스\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_테니스\ 버튼\ 배경.png);
   background-position: 0px 1px;
   background-color: #2a75ba;
   color: #f0f048;
@@ -143,7 +143,7 @@
 
 /* 게임 */
 .community_menubar_title_list_button_game_LOL {
-  background-image: url(../../image/image_community_page/community_LOL\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_LOL\ 버튼\ 배경.png);
 }
 .community_menubar_title_list_button_game_LOL
   > .community_menubar_title_list_button_text {
@@ -151,7 +151,7 @@
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_apexlegend {
-  background-image: url(../../image/image_community_page/community_에이펙스\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_에이펙스\ 버튼\ 배경.png);
 }
 .community_menubar_title_list_button_game_apexlegend
   > .community_menubar_title_list_button_text {
@@ -159,7 +159,7 @@
   margin-left: 10px;
 }
 .community_menubar_title_list_button_game_overwatch {
-  background-image: url(../../image/image_community_page/community_오버워치\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_오버워치\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: -5px 10px;
   background-color: white;
@@ -182,7 +182,7 @@
   width: 100%;
 }
 .community_menubar_title_list_button_game_valorant {
-  background-image: url(../../image/image_community_page/community_발로란트\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_발로란트\ 버튼\ 배경.png);
 }
 .community_menubar_title_list_button_game_valorant
   > .community_menubar_title_list_button_text {
@@ -234,18 +234,18 @@
 
 /* 여행 */
 .community_menubar_title_list_button_travel_domestic {
-  background-image: url(../../image/image_community_page/community_국내여행\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_국내여행\ 버튼\ 배경.png);
   background-position: -10px -50px;
 }
 .community_menubar_title_list_button_travel_japan {
-  background-image: url(../../image/image_community_page/community_일본여행\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_일본여행\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: 0px 10px;
   background-size: 100%;
   background-color: #a5c6e8;
 }
 .community_menubar_title_list_button_travel_asia {
-  background-image: url(../../image/image_community_page/community_아시아여행\ 버튼\ 배경.png);
+  background-image: url(image/image_community_page/community_아시아여행\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: -50px 0;
   background-color: #aee2b1;
