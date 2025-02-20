@@ -93,19 +93,19 @@
             </div>
             <div class="item">
                 <label for="id">아이디</label>
-                <input type="text">
+                <input type="text" id="userid">
             </div>
             <div class="item">
                 <label for="pw">비밀번호</label>
-                <input type="password">
+                <input type="password" id="pwd">
             </div>
             <div class="item">
-                <a href="javascript:void(0)">
+                <a onclick="Login()">
                     <span>로그인하기</span>
                 </a>
             </div>
             <div class="item">
-                <a href="javascript:void(0)">
+                <a href="?page=user/signup">
                     <span>회원가입</span>
                 </a>
                 <span>|</span>
@@ -119,7 +119,22 @@
             </div>
         </div>
     </form>
-
+    <script>
+        function Login(){
+            const idInput = document.querySelector('#userid');
+            const passwordInput = document.querySelector('#pwd');
+            const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+            console.log(userInfo);
+            const userEmail = userInfo.email;
+            const userPassword = userInfo.password;
+            
+            if(idInput.value === userEmail && passwordInput.value === userPassword){
+                alert('로그인 성공');
+                window.location.href = "https://bbbbbean.github.io/";
+            }
+            
+        }
+    </script>
 </body>
 
 </html>

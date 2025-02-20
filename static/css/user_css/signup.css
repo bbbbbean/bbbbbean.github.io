@@ -1,0 +1,157 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: var(--font-size-regular);
+    --media-base-size: 900px;
+    --main-color: white;
+    --bg-color: black;
+
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+li {
+    list-style: none;
+}
+
+* {
+    --main-width: 450px;
+}
+
+.login-section {
+    /*font-family: ;*/
+    width: var(--main-width);
+    margin: 60px auto 0 auto;
+    padding: 20px 60px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.login-section>img {
+    width: 220px;
+}
+
+.login-section>h2 {
+    margin-bottom: 20px;
+}
+
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--color-Light-Grays-3-rgba);
+}
+
+#login-form #email-auth-input {
+    text-align: center;
+}
+
+#login-form #email-auth-btn {
+    font-family: Medium;
+    background-color: var(--color-RockON-3);
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+#login-form #email-auth-btn:hover {
+    background-color: var(--color-Big-Machine-5);
+}
+
+#login-form .duplicate-message {
+    display: none;
+    color: var(--color-RockON-5);
+    text-align: left;
+    font-size: var(--font-size-extralight);
+}
+
+#login-form .duplicate-message[active] {
+    display: block;
+}
+
+
+
+
+#login-form>button {
+    margin: 15px 0;
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--color-Teal-and-Mint-2);
+    font-family: Bold;
+    cursor: pointer;
+}
+
+#login-form>button:hover {
+    opacity: 0.8;
+}
+
+.login-span-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.login-span-container>span {
+    flex: 1;
+}
+
+.login-span-container>span:not(:nth-child(2)) {
+    border-top: 1px solid #ccc;
+}
+
+#login-btn {
+    border: none;
+    background-color: unset;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#login-btn>img {
+    width: 100%;
+}
+
+.login-section>a {
+    font-family: Light;
+    font-size: var(--font-size-light);
+}
+
+
+.no-account-section {
+    width: var(--main-width);
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.no-account-section>a {
+    color: var(--color-RockON-5);
+    font-family: Medium;
+}
