@@ -5,6 +5,7 @@ document.querySelector('.chat-back-tab').addEventListener('click', function () {
 document.querySelectorAll('.chat-mk-chat').forEach((item) => {
     item.addEventListener('click', () => {
         mkchat.style.display = "block";
+        mkfriend.style.display = "none";
     });
 });
 
@@ -17,5 +18,6 @@ document.querySelectorAll('.chat-back-tab').forEach((item) => {
 document.querySelectorAll('.chat-mk-friend').forEach((item) => {
     item.addEventListener('click', () => {
         mkfriend.style.display = "block";
+        mkchat.style.display = "none";
     });
 });
