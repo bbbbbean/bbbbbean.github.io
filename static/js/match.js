@@ -7,6 +7,6 @@ document.querySelectorAll('.match-content-btn').forEach((item) => {
         matchInfoContianer.style.display = "grid";
     });
 });
-window.addEventListener('scroll',()=>{
-    matchInfoContianer.style.top = scrollY+50+'px';
+window.addEventListener('scroll', () => {
+    matchInfoContianer.style.top = scrollY + 50 + 'px';
 });

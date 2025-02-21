@@ -34,6 +34,9 @@
     display: flex;
     margin-top: 380px;
     padding-left: 35px;
+    position: absolute;
+    top: 70px;
+    left: -30px;
 }
 
 .chat-back-tab>a {
