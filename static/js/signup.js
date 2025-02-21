@@ -7,6 +7,11 @@ const userPassWordInput = document.querySelector('#pwd');
 const submitBtn = document.querySelector('.submit');
 let emailAuthValue = 694063409423;
 emailAuthBtn.addEventListener('click', () => {
+    const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+    if(!regEmail.test(emailInput.value)) {
+        alert('이메일을 입력해주세요');
+        return;
+    }
     emailAuthValue = Math.floor(Math.random() * 55535 + 10000);
     alert(`인증번호는 ${emailAuthValue} 입니다.`);
 });
