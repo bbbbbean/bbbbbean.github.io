@@ -13,7 +13,7 @@
 .community_menubar {
   display: flex;
   position: relative;
-  justify-content: space-between;
+  justify-content: space-around;
   z-index: 5;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .community_menubar_title_list {
-  padding-top: 15px;
+  padding-top: 5px;
   padding-right: 3px;
 }
 
@@ -52,12 +52,15 @@
 
 /* 버튼 크기 조정 */
 .community_menubar_title {
-  width: 250px;
+  width: 80vw;
+  max-width: 180px;
 }
 
 .community_menubar_title_top,
 .community_menubar_title_list_button {
   background-color: white;
+  background-size: 170px;
+  background-repeat: repeat;
   border-radius: 53px;
   align-items: center;
   width: 100%;
@@ -72,13 +75,15 @@
   align-items: center;
   justify-content: right;
   min-width: 30%;
+  max-height: 50px;
+  max-width: 50px;
 
   flex-direction: column;
 }
 
 .community_menubar_text,
 .community_menubar_title_list_button_text {
-  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
 
   display: flex;
   justify-content: center;
@@ -91,7 +96,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5vw;
+  width: 100%;
   max-width: 70px;
   height: 5vw;
   max-height: 70px;
@@ -111,7 +116,7 @@
 }
 
 .community_menubar_title_list_button_icon>img {
-  max-width: 70px;
+  max-width: 50px;
   height: auto;
   width: 100%;
 }
@@ -162,7 +167,6 @@
 }
 
 .community_menubar_title_list_button_game_LOL>.community_menubar_title_list_button_text {
-  font-size: 1.3rem;
   margin-left: 10px;
 }
 
@@ -171,14 +175,14 @@
 }
 
 .community_menubar_title_list_button_game_apexlegend>.community_menubar_title_list_button_text {
-  font-size: 1.3rem;
   margin-left: 10px;
 }
 
 .community_menubar_title_list_button_game_overwatch {
   background-image: url(../../image/image_community_page/community_오버워치\ 버튼\ 배경.png);
+  background-size: 110px;
   background-repeat: no-repeat;
-  background-position: -5px 10px;
+  background-position: -20px 0px;
   background-color: white;
 }
 
@@ -221,10 +225,7 @@
   width: 100%;
 }
 
-.community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_text {
-  justify-content: start;
-  padding-left: 8%;
-}
+.community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_text {}
 
 .community_menubar_title_list_button_hobby_drone {
   background-color: #619afe;
@@ -233,6 +234,8 @@
 .community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_icon {
   max-width: none;
   width: 50%;
+  top: -20px;
+
 }
 
 .community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_icon>img {
@@ -252,14 +255,16 @@
 /* 여행 */
 .community_menubar_title_list_button_travel_domestic {
   background-image: url(../../image/image_community_page/community_국내여행\ 버튼\ 배경.png);
-  background-position: -10px -50px;
+  background-size: 250px;
+  background-position: -10px -35px;
+
 }
 
 .community_menubar_title_list_button_travel_japan {
   background-image: url(../../image/image_community_page/community_일본여행\ 버튼\ 배경.png);
   background-repeat: no-repeat;
-  background-position: 0px 10px;
-  background-size: 100%;
+  background-position: 0px 0px;
+  background-size: 190px;
   background-color: #a5c6e8;
 }
 
@@ -287,11 +292,11 @@
 }
 
 /* 리스트 숨기기 */
-.community_menubar_title_list {
+/* .community_menubar_title_list {
   height: 0;
   overflow: hidden;
   transition: 0.5s ease-in-out;
-}
+} */
 
 .community_menubar_title:hover>.community_menubar_title_list {
   height: 500px;
