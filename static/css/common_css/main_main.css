@@ -71,19 +71,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 35px 0;
+  padding: 25px 0;
 
 }
 
 .serch-bar {
   display: flex;
-  justify-content: left;
+  justify-content: space-around;
   align-items: center;
   padding-left: 30px;
 
-  height: 30px;
-  flex-basis: 500px;
-  border-radius: 15px;
+  height: 50px;
+  flex-basis: 600px;
+  border-radius: 30px;
   border: 1px solid #6EC3FF;
 }
 
@@ -104,7 +104,7 @@
 /* 검색 입력칸 */
 .serch-bar>li>input[type="text"] {
   height: 80%;
-  width: 330px;
+  width: 400px;
   outline: none;
   border: 0;
   border-radius: 3px;
