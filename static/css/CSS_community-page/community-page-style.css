@@ -32,9 +32,13 @@ main>div {
   display: block;
   width: 100%;
   padding-left: 30px;
-  height: 80px;
-  line-height: 80px;
+  height: 50px;
+  line-height: 60px;
   font-size: 20px;
+}
+
+.community_page_location_present_location {
+  text-decoration: underline rgba(128, 128, 128, 0.5);
 }
 
 .community_listofwriting_titlebar {
@@ -86,6 +90,10 @@ main>div {
   margin: 0px 5px;
 }
 
+.community_control_bar_pagenumber_presentpage {
+  text-decoration: underline solid black;
+}
+
 /* 바 너비 */
 .community_main {
   width: 100%;
@@ -101,10 +109,13 @@ main>div {
   max-width: 1170px;
 }
 
-.community_listofwriting_titlebar,
-.community_content,
+.community_listofwriting>div:nth-child(2) {
+  height: 0;
+}
+
 .community_control_bar,
 .colomn_border {
+  margin-top: 20px;
   max-width: 100%;
 }
 
@@ -200,6 +211,7 @@ main>div {
   background-color: var(--menubar-color);
   border: none;
   height: 3px;
+  margin: 0;
 }
 
 .community_content_content {
@@ -211,8 +223,8 @@ main>div {
 .colomn_border {
   position: absolute;
   display: flex;
-  height: 90%;
-  top: 0;
+  height: 92%;
+  top: -11px;
   z-index: -5;
 }
 
