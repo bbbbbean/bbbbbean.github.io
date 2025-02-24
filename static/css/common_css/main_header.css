@@ -60,11 +60,11 @@ header {
 }
 
 .menu-box {
-  width: 65%;
+  width: 55%;
 }
 
 .icon {
-  width: 15%;
+  width: 25%;
 }
 
 /* 네비 메뉴 */
@@ -90,6 +90,16 @@ header {
   display: block;
   padding: 45px 0 20px;
 }
+
+.icon>ul>li>a{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: .8rem;
+}
+
 
 /* 메인 네비 드롭메뉴 설정 */
 .menu-box>ul>li>.submenu {
