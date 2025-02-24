@@ -40,6 +40,7 @@ header {
 
 .submenu {
   display: none;
+  border: 1px solid #20a2ff;
 }
 
 .logo {
@@ -67,6 +68,10 @@ header {
   width: 25%;
 }
 
+.icon>ul>li {
+  min-width: 50px;
+}
+
 /* 네비 메뉴 */
 .menu-box {
   margin: 0 auto;
@@ -91,7 +96,7 @@ header {
   padding: 45px 0 20px;
 }
 
-.icon>ul>li>a{
+.icon>ul>li>a {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,17 +121,22 @@ header {
   font-weight: 400;
   font-size: 1rem;
 }
-.menu-box>ul>li>.submenu>li>a{
+
+.menu-box>ul>li>.submenu>li>a {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.menu-box>ul>.mainmenu {
+  min-width: 75px;
 }
 
 .menu-box>ul>.mainmenu:hover>ul {
   display: block;
 }
 
-.menu-box>ul>li>.submenu>li:hover a{
+.menu-box>ul>li>.submenu>li:hover a {
   color: #fff;
 }
 
@@ -171,13 +181,14 @@ header {
 .icon>ul>li:last-child:hover>ul {
   display: block;
 }
-.icon>ul>li:last-child>ul>li>a{
+
+.icon>ul>li:last-child>ul>li>a {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.icon>ul>li:last-child>ul>li:hover a{
+.icon>ul>li:last-child>ul>li:hover a {
   color: #fff;
 }
 
