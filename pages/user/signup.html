@@ -14,15 +14,6 @@
         <h2>임시 회원가입 페이지입니다.<br>사용하고 있는 비밀번호를 입력하지마세요.</h2>
         <form id="login-form" onsubmit="return false">
             <label>
-                <input id="email-input" type="email" name="email" placeholder="이메일">
-            </label>
-            <label>
-                <input id="email-auth-input" type="text" name="email-auth" placeholder="인증번호 입력">
-            </label>
-            <label>
-                <input id="email-auth-btn" type="button" value="인증번호전송">
-            </label>
-            <label>
                 <input type="text" id="name" name="name" placeholder="이름">
             </label>
             <label>
@@ -31,7 +22,17 @@
             <label>
                 <input type="password" id="pwd" name="password" placeholder="비밀번호">
             </label>
-
+            <label>
+                <input id="email-input" type="email" name="email" placeholder="이메일">
+            </label>
+            <div class="email-auth-pack">
+                <label>
+                    <input id="email-auth-input" type="text" name="email-auth" placeholder="인증번호 입력">
+                </label>
+                <label>
+                    <input id="email-auth-btn" type="button" value="인증번호전송">
+                </label>
+            </div>
             <button class="submit">회원가입</button>
         </form>
 
