@@ -292,11 +292,11 @@
 }
 
 /* 리스트 숨기기 */
-/* .community_menubar_title_list {
+.community_menubar_title_list {
   height: 0;
   overflow: hidden;
   transition: 0.5s ease-in-out;
-} */
+}
 
 .community_menubar_title:hover>.community_menubar_title_list {
   height: 500px;
