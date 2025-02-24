@@ -16,21 +16,26 @@
   justify-content: space-between;
   z-index: 5;
 }
+
 .community_menubar_title {
   margin: 0 4px;
 }
+
 .community_menubar_text {
   color: white;
 }
+
 .community_menubar_title_top {
   display: flex;
   margin-top: 2px;
   padding: 0 5%;
 }
+
 .community_menubar_title_list {
   padding-top: 15px;
   padding-right: 3px;
 }
+
 .community_menubar_title_list_button {
   display: flex;
   margin: 3px 0;
@@ -38,6 +43,7 @@
 
   overflow: hidden;
 }
+
 .community_menubar_text,
 .community_menubar_title_list_button_text {
   font-family: Pretendard;
@@ -48,15 +54,17 @@
 .community_menubar_title {
   width: 250px;
 }
+
 .community_menubar_title_top,
 .community_menubar_title_list_button {
   background-color: white;
   border-radius: 53px;
   align-items: center;
   width: 100%;
-  height: 90px;
+  height: 60px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
+
 .community_menubar_logo,
 .community_menubar_title_list_button_icon {
   position: relative;
@@ -67,6 +75,7 @@
 
   flex-direction: column;
 }
+
 .community_menubar_text,
 .community_menubar_title_list_button_text {
   font-size: clamp(1rem, 2.5vw, 2rem);
@@ -77,7 +86,8 @@
   text-align: center;
   flex-grow: 1;
 }
-.community_menubar_logo > div {
+
+.community_menubar_logo>div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,13 +102,15 @@
   right: 0;
   margin: 0 auto;
 }
-.community_menubar_logo > div > img {
+
+.community_menubar_logo>div>img {
   max-width: 45px;
   height: auto;
   width: 70%;
   left: 0;
 }
-.community_menubar_title_list_button_icon > img {
+
+.community_menubar_title_list_button_icon>img {
   max-width: 70px;
   height: auto;
   width: 100%;
@@ -109,83 +121,89 @@
 .community_menubar_title_top {
   background-color: var(--menubar-color);
 }
+
 .community_menubar_title_list_button_exercise_soccer {
   background-color: #31e94d;
 }
+
 .community_menubar_title_list_button_exercise_baseball {
   background-color: white;
   border: 1px solid black;
 }
+
 .community_menubar_title_list_button_exercise_basketball {
   background-color: #131125;
   background-image: url(../../image/image_community_page/community_농구\ 버튼\ 배경.png);
   background-position: -5px -3px;
   color: white;
 }
-.community_menubar_title_list_button_exercise_basketball
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_exercise_basketball>.community_menubar_title_list_button_text {
   justify-content: start;
   margin-left: 15%;
 }
+
 .community_menubar_title_list_button_exercise_tennis {
   background-image: url(../../image/image_community_page/community_테니스\ 버튼\ 배경.png);
   background-position: 0px 1px;
   background-color: #2a75ba;
   color: #f0f048;
 }
+
 .community_menubar_title_list_button_exercise_badminton {
   background-color: #84d6fb;
 }
 
-.community_menubar_title_list_button_exercise_badminton
-  > .community_menubar_title_list_button_text {
-}
+.community_menubar_title_list_button_exercise_badminton>.community_menubar_title_list_button_text {}
 
 /* 게임 */
 .community_menubar_title_list_button_game_LOL {
   background-image: url(../../image/image_community_page/community_LOL\ 버튼\ 배경.png);
 }
-.community_menubar_title_list_button_game_LOL
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_game_LOL>.community_menubar_title_list_button_text {
   font-size: 1.3rem;
   margin-left: 10px;
 }
+
 .community_menubar_title_list_button_game_apexlegend {
   background-image: url(../../image/image_community_page/community_에이펙스\ 버튼\ 배경.png);
 }
-.community_menubar_title_list_button_game_apexlegend
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_game_apexlegend>.community_menubar_title_list_button_text {
   font-size: 1.3rem;
   margin-left: 10px;
 }
+
 .community_menubar_title_list_button_game_overwatch {
   background-image: url(../../image/image_community_page/community_오버워치\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: -5px 10px;
   background-color: white;
 }
+
 .community_menubar_title_list_button_game_PUBG {
   background-color: #95550b;
   justify-content: center;
   width: 100%;
 }
-.community_menubar_title_list_button_game_PUBG
-  > .community_menubar_title_list_button_icon {
+
+.community_menubar_title_list_button_game_PUBG>.community_menubar_title_list_button_icon {
   max-width: none;
   width: 80%;
   justify-content: center;
 }
-.community_menubar_title_list_button_game_PUBG
-  > .community_menubar_title_list_button_icon
-  > img {
+
+.community_menubar_title_list_button_game_PUBG>.community_menubar_title_list_button_icon>img {
   max-width: none;
   width: 100%;
 }
+
 .community_menubar_title_list_button_game_valorant {
   background-image: url(../../image/image_community_page/community_발로란트\ 버튼\ 배경.png);
 }
-.community_menubar_title_list_button_game_valorant
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_game_valorant>.community_menubar_title_list_button_text {
   color: #2df205;
 }
 
@@ -193,40 +211,39 @@
 .community_menubar_title_list_button_hobby_lego {
   border: 1px solid;
 }
-.community_menubar_title_list_button_hobby_lego
-  > .community_menubar_title_list_button_icon {
+
+.community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_icon {
   width: 50%;
 }
-.community_menubar_title_list_button_hobby_lego
-  > .community_menubar_title_list_button_icon
-  > img {
+
+.community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_icon>img {
   max-width: none;
   width: 100%;
 }
-.community_menubar_title_list_button_hobby_lego
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_text {
   justify-content: start;
   padding-left: 8%;
 }
+
 .community_menubar_title_list_button_hobby_drone {
   background-color: #619afe;
 }
-.community_menubar_title_list_button_hobby_drone
-  > .community_menubar_title_list_button_icon {
+
+.community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_icon {
   max-width: none;
   width: 50%;
 }
-.community_menubar_title_list_button_hobby_drone
-  > .community_menubar_title_list_button_icon
-  > img {
+
+.community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_icon>img {
   max-width: none;
   width: 200%;
   max-width: 170px;
   position: relative;
   left: 20%;
 }
-.community_menubar_title_list_button_hobby_drone
-  > .community_menubar_title_list_button_text {
+
+.community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_text {
   justify-content: start;
   padding-left: 5%;
   z-index: 6;
@@ -237,6 +254,7 @@
   background-image: url(../../image/image_community_page/community_국내여행\ 버튼\ 배경.png);
   background-position: -10px -50px;
 }
+
 .community_menubar_title_list_button_travel_japan {
   background-image: url(../../image/image_community_page/community_일본여행\ 버튼\ 배경.png);
   background-repeat: no-repeat;
@@ -244,20 +262,24 @@
   background-size: 100%;
   background-color: #a5c6e8;
 }
+
 .community_menubar_title_list_button_travel_asia {
   background-image: url(../../image/image_community_page/community_아시아여행\ 버튼\ 배경.png);
   background-repeat: no-repeat;
   background-position: -50px 0;
   background-color: #aee2b1;
 }
+
 .community_menubar_title_list_button_travel_europe {
   background-color: #003399;
   color: #ffcc00;
 }
+
 .community_menubar_title_list_button_travel_america {
   background-color: #002664;
   color: white;
 }
+
 /* 자유게시판 */
 .community_menubar_title_list_button_general-forum {
   background-color: var(--menubar-color);
@@ -270,28 +292,28 @@
   overflow: hidden;
   transition: 0.5s ease-in-out;
 }
-.community_menubar_title:hover > .community_menubar_title_list {
+
+.community_menubar_title:hover>.community_menubar_title_list {
   height: 500px;
   display: block;
 }
 
 @media (max-width: 720px) {
+
   .community_menubar_logo,
   .community_menubar_title_list_button_icon {
     display: none;
   }
-  .community_menubar_title_list_button_game_PUBG
-    > .community_menubar_title_list_button_icon {
+
+  .community_menubar_title_list_button_game_PUBG>.community_menubar_title_list_button_icon {
     display: flex;
   }
+
   /*  */
   .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_exercise_basketball
-    > .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_hobby_lego
-    > .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_hobby_drone
-    > .community_menubar_title_list_button_text {
+  .community_menubar_title_list_button_exercise_basketball>.community_menubar_title_list_button_text,
+  .community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_text,
+  .community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_text {
     justify-content: center;
     margin: 0;
   }
