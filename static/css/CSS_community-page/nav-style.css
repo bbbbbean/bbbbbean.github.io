@@ -299,8 +299,12 @@
 }
 
 .community_menubar_title:hover>.community_menubar_title_list {
-  height: 500px;
+  height: 350px;
   display: block;
+}
+
+.community_menubar_title:hover>.community_menubar_title_list:nth-child(3) {
+  height: 15px;
 }
 
 @media (max-width: 720px) {
