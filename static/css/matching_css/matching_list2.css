@@ -19,6 +19,7 @@
   right: 50px;
 }
 .pm-center {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,10 +34,10 @@
 .promotion-swiper > .swiper-wrapper {
 }
 .promotion-swiper > .swiper-wrapper > .swiper-slide {
-  max-width: 260px;
+  min-width: 256px;
 }
 .promotion-match {
-  width: 260px;
+  width: 236px;
   height: 430px;
   display: flex;
   justify-content: space-between;
@@ -54,6 +55,7 @@
 .pm-match-container p {
   font-size: 24px;
   font-weight: bold;
+  padding-right: 15px;
 }
 .pm-match-container span {
   border: 1px solid white;
@@ -144,23 +146,28 @@
 }
 .match-data > ul > li > .match-sub-info p {
   min-width: 60px;
+  text-align: center;
   margin: 0;
 }
 .match-data > ul > li > .match-info-btn {
-  min-width: 130px;
+  display: flex;
+}
+.match-data > ul > li > .match-info-btn > a {
+  display: block;
+  width: 130px;
   height: 40px;
   text-align: center;
   line-height: 40px;
   border-radius: 5px;
 }
-.match-data > ul > li > .no {
+.match-data > ul > li > .match-info-btn .no {
   background-color: #dcdcdc;
   color: #959595;
 }
-.match-data > ul > li > .ok {
+.match-data > ul > li > .match-info-btn .ok {
   background-color: #6ec2fe;
 }
-.match-data > ul > li > .end {
+.match-data > ul > li > .match-info-btn .end {
   background-color: #ffbb28;
 }
 /* -------------------- */
@@ -187,4 +194,40 @@
   position: absolute;
   top: 70px;
   left: 0;
+}
+
+@media (width <= 870px) {
+  .match-data > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .match-data > ul > li {
+    display: block;
+    width: 400px;
+    height: 180px;
+  }
+  .match-data > ul > li > .match-time {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .match-data > ul > li > .match-content {
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  .match-data > ul > li > .match-sub-info {
+    justify-content: center;
+    padding-bottom: 10px;
+  }
+  .match-data > ul > li > .match-info-btn {
+    justify-content: center;
+  }
+  .match-line {
+    top: 170px;
+  }
+  .match-blue-line {
+    top: 170px;
+    background-color: #aaaaaa;
+    height: 1px;
+  }
 }
