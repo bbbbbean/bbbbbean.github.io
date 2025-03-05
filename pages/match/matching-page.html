@@ -153,9 +153,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -169,9 +169,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -185,9 +185,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn ok" href="javascript:void(0)"
-                >신청 가능</a
-              >
+              <div class="match-info-btn">
+                <a class="ok" href="javascript:void(0)">신청 가능</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -201,9 +201,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn end" href="javascript:void(0)"
-                >마감 임박</a
-              >
+              <div class="match-info-btn">
+                <a class="end" href="javascript:void(0)">마감 임박</a>
+              </div>
               <div class="match-blue-line"></div>
             </li>
           </ul>
@@ -229,9 +229,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -245,9 +245,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -261,9 +261,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn ok" href="javascript:void(0)"
-                >신청 가능</a
-              >
+              <div class="match-info-btn">
+                <a class="ok" href="javascript:void(0)">신청 가능</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -277,9 +277,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn end" href="javascript:void(0)"
-                >마감 임박</a
-              >
+              <div class="match-info-btn">
+                <a class="end" href="javascript:void(0)">마감 임박</a>
+              </div>
               <div class="match-blue-line"></div>
             </li>
           </ul>
@@ -305,9 +305,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -321,9 +321,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn no" href="javascript:void(0)"
-                >모집 완료</a
-              >
+              <div class="match-info-btn">
+                <a class="no" href="javascript:void(0)">모집 완료</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -337,9 +337,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn ok" href="javascript:void(0)"
-                >신청 가능</a
-              >
+              <div class="match-info-btn">
+                <a class="ok" href="javascript:void(0)">신청 가능</a>
+              </div>
               <div class="match-line"></div>
             </li>
             <li>
@@ -353,9 +353,9 @@
                 <p>11vs11</p>
                 <p>일반</p>
               </div>
-              <a class="match-info-btn end" href="javascript:void(0)"
-                >마감 임박</a
-              >
+              <div class="match-info-btn">
+                <a class="end" href="javascript:void(0)">마감 임박</a>
+              </div>
               <div class="match-blue-line"></div>
             </li>
           </ul>
@@ -366,25 +366,26 @@
       const swiper = new Swiper(".promotion-swiper", {
         // Optional parameters
         direction: "horizontal", // 슬라이드 방향 (수평)
-        slidesPerView: 4, // 한번에 보여줄 슬라이드 수
-        spaceBetween: 50, // 슬라이드 간의 간격 (px 단위)
+        slidesPerView: 5,
         slidesPerGroup: 1, // 한번에 이동할 슬라이드 수
+        slidesOffsetBefore: 10,
         autoplay: {
           delay: 2500, // 자동 전환 시간 간격 (밀리초 단위)
           disableOnInteraction: false, // 사용자 상호작용 후에도 자동 전환이 계속되도록 설정
-          pauseOnMouseEnter: true, // 마우스를 올리면 자동 전환 멈춤
         },
         speed: 1000, // 슬라이드 전환 속도 (밀리초 단위)
         loop: true, // 반복 설정 (무한 루프)
         breakpoints: {
-          500: {
-            slidesPerView: 2, // 500px 이하에서 2개의 슬라이드
+          512: {
+            slidesPerView: 2, // 512px 이하에서 2개의 슬라이드
+            slidesOffsetBefore: 70,
           },
           768: {
             slidesPerView: 3, // 768px 이하에서 3개의 슬라이드
           },
-          1280: {
-            slidesPerView: 4, // 1280px 이하에서 4개의 슬라이드
+          1024: {
+            slidesPerView: 4, // 1024px 이하에서 4개의 슬라이드
+            slidesOffsetBefore: 40,
           },
         },
       });
