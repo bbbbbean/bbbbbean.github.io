@@ -1,6 +1,5 @@
 @import "./custom.css";
 @import "./nav-style.css";
-@import "../../font/font.css";
 
 /* 임시시작 */
 /* .community_page_location {
@@ -14,11 +13,6 @@
 } */
 /* 임시끝 */
 
-* {
-  text-decoration: none;
-  font-family: pretendard;
-}
-
 .top-header {
   height: 100px;
 }
@@ -28,7 +22,7 @@ main {
   max-width: 1280px;
 }
 
-main > div {
+main>div {
   width: 100%;
 }
 
@@ -43,30 +37,8 @@ main > div {
   font-size: 20px;
 }
 
-.community_breadcrumb {
-  width: 100%;
-  padding: 10px 30px;
-
-  display: flex;
-  justify-content: start;
-  align-items: start;
-  height: 50px;
-  font-size: 20px;
-}
-.community_breadcrumb > nav > ol > li > a {
-  color: #7e7e7e;
-}
-.community_breadcrumb > nav > ol > li.active {
-  color: black;
-}
-
-.community_submenu {
-  width: 100%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 60px;
-  padding: 0 10px;
+.community_page_location_present_location {
+  text-decoration: underline rgba(128, 128, 128, 0.5);
 }
 
 .community_listofwriting_titlebar {
@@ -91,7 +63,7 @@ main > div {
   height: 10px;
 }
 
-.community_control_bar > div {
+.community_control_bar>div {
   display: inline-block;
 }
 
@@ -114,7 +86,7 @@ main > div {
   font-size: 24px;
 }
 
-.community_control_bar_pagenumber > a {
+.community_control_bar_pagenumber>a {
   margin: 0px 5px;
 }
 
@@ -137,7 +109,7 @@ main > div {
   max-width: 1170px;
 }
 
-.community_listofwriting > div:nth-child(2) {
+.community_listofwriting>div:nth-child(2) {
   height: 0;
 }
 
@@ -149,13 +121,13 @@ main > div {
 
 .community_listofwriting_titlebar_number,
 .community_content_content_number,
-.colomn_border > div:first-child {
+.colomn_border>div:first-child {
   width: 100px;
 }
 
 .community_listofwriting_titlebar_title,
 .community_content_content_title,
-.colomn_border > div:nth-child(2) {
+.colomn_border>div:nth-child(2) {
   width: 820px;
 }
 
@@ -169,13 +141,13 @@ main > div {
 
 .community_listofwriting_titlebar_rates,
 .community_content_content_rates,
-.colomn_border > div:nth-child(3) {
+.colomn_border>div:nth-child(3) {
   width: 125px;
 }
 
 .community_listofwriting_titlebar_hits,
 .community_content_content_hits,
-.colomn_border > div:last-child {
+.colomn_border>div:last-child {
   width: 125px;
 }
 
@@ -194,7 +166,7 @@ main > div {
   font-size: 32px;
 }
 
-.community_listofwriting_titlebar > div {
+.community_listofwriting_titlebar>div {
   height: 100%;
 }
 
@@ -202,8 +174,8 @@ main > div {
   min-height: 400px;
 }
 
-.community_content_content > div,
-.community_listofwriting_titlebar > div {
+.community_content_content>div,
+.community_listofwriting_titlebar>div {
   display: flex;
   flex-direction: column;
   height: 50px;
@@ -256,10 +228,10 @@ main > div {
   z-index: -5;
 }
 
-.colomn_border > div {
+.colomn_border>div {
   border-right: 1px solid black;
 }
 
-.colomn_border > div:last-child {
+.colomn_border>div:last-child {
   border: none;
 }
