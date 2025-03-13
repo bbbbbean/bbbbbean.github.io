@@ -362,6 +362,139 @@
         </div>
       </div>
     </div>
+    <div class="match-modal-container">
+      <div class="match-modal">
+        <div class="match-left">
+          <div class="match-modal-img"></div>
+          <div class="match-modal-title">
+            <p>시흥 서울대학교 스포츠파크(풋살) 11VS11</p>
+          </div>
+          <div class="modal-blue-line"></div>
+          <div class="match-modal-info">
+            <div class="match-modal-info-left">
+              <div class="match-symbol-container">
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">Swords</span>
+                  <p>11vs11</p>
+                </div>
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">Check</span>
+                  <p>조건사항4</p>
+                </div>
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">Groups</span>
+                  <p>20-25</p>
+                </div>
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">Wc</span>
+                  <p>남녀모두</p>
+                </div>
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">question_mark</span>
+                  <p>...</p>
+                </div>
+                <div class="match-symbol">
+                  <span class="material-symbols-outlined">question_mark</span>
+                  <p>...</p>
+                </div>
+              </div>
+            </div>
+            <div class="match-modal-info-right">
+              <div class="match-info-tag">
+                <span>예약 가능</span>
+                <span>운동</span>
+              </div>
+              <div class="match-info-content">
+                <p>1월22일 수요일</p>
+                <p>19:00</p>
+                <p>시흥 서울대학교 스포츠파크</p>
+                <a href="javascript:void(0);">겅기도 시흥시 서울대학로</a>
+              </div>
+              <div class="match-info-user">
+                <a href="javascript:void(0);">호스트 닉네임</a>
+              </div>
+              <div class="match-modal-btn">
+                <a href="javascript:void(0);">신청하기</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="match-right">
+          <div class="match-chat-container">
+            <div class="match-chat-title">
+              <div class="match-chat-img">
+                <img
+                  src="https://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
+                  alt="기본이미지"
+                />
+              </div>
+              <div class="match-chat-name">
+                <p>호스트 닉네임(기본)</p>
+                <span class="material-symbols-outlined">Person</span>
+                <span>8</span>
+              </div>
+            </div>
+            <div class="match-chat-content">
+              <div class="user-chat-container">
+                <img
+                  class="prf-image"
+                  src="static/image/user/profile.png"
+                  alt="prf-i"
+                />
+                <div class="user-chat">
+                  <div class="user-name">닉네임1</div>
+                  <div class="user-content">
+                    경기도 시흥시 서울대학교에서 1월 22일 풋살경기합니다.
+                  </div>
+                  <div class="user-chat-time">오후7:39</div>
+                </div>
+              </div>
+              <div class="user-chat-container">
+                <img
+                  class="prf-image"
+                  src="static/image/user/profile.png"
+                  alt="prf-i"
+                />
+                <div class="user-chat">
+                  <div class="user-name">닉네임2</div>
+                  <div class="user-content">네</div>
+                  <div class="user-chat-time">오후7:40</div>
+                </div>
+              </div>
+              <div class="your-chat-container">
+                <div class="user-chat">
+                  <div class="your-content">시흥 서울대학교 스포츠파크</div>
+                  <div class="your-chat-time">오후7:40</div>
+                </div>
+              </div>
+              <div class="your-chat-container">
+                <div class="user-chat">
+                  <div class="your-content">
+                    채팅창위에 마우스를 놓고 마우스 휠을 움직여보세요
+                  </div>
+                  <div class="your-chat-time">오후7:40</div>
+                </div>
+              </div>
+              <div class="your-chat-container">
+                <div class="user-chat">
+                  <div class="your-content">
+                    나의 말풍선......나의 말풍선......나의 말풍선......나의
+                    말풍선......나의 말풍선......
+                  </div>
+                  <div class="your-chat-time">오후7:40</div>
+                </div>
+              </div>
+            </div>
+            <div class="match-chat-input">
+              <input type="text" />
+            </div>
+            <a href="javascript:void(0)">
+              <span class="material-symbols-outlined">Send</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       const swiper = new Swiper(".promotion-swiper", {
         // Optional parameters
@@ -388,6 +521,55 @@
             slidesOffsetBefore: 40,
           },
         },
+      });
+    </script>
+    <script>
+      const matchInfoBtn = document.querySelectorAll(".match-info-btn>a");
+      const matchModal = document.querySelector(".match-modal");
+      const matchChatContent = document.querySelector(".match-chat-content");
+
+      matchChatContent.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        matchChatContent.scrollTop += e.deltaY / 5;
+      });
+
+      let modalOut = true;
+      matchModal.addEventListener("mouseenter", (e) => {
+        modalOut = !modalOut;
+      });
+      matchModal.addEventListener("mouseleave", (e) => {
+        modalOut = !modalOut;
+      });
+
+      const matchModalContainer = document.querySelector(
+        ".match-modal-container"
+      );
+      matchModalContainer.addEventListener("click", (e) => {
+        if (modalOut) {
+          matchModalContainer.style.display = "none";
+          document.body.removeEventListener("wheel", preventScroll, {
+            passive: false,
+          });
+        }
+      });
+      matchInfoBtn.forEach((item) => {
+        item.addEventListener("click", (e) => {
+          matchModalContainer.style.display = "flex";
+          document.body.addEventListener("wheel", preventScroll, {
+            passive: false,
+          });
+        });
+      });
+      function preventScroll(event) {
+        event.preventDefault();
+      }
+      window.document.addEventListener("keydown", (e) => {
+        if (e.keyCode == 27) {
+          matchModalContainer.style.display = "none";
+          document.body.removeEventListener("wheel", preventScroll, {
+            passive: false,
+          });
+        }
       });
     </script>
   </body>
