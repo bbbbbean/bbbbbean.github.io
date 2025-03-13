@@ -67,11 +67,16 @@
 .community_menubar_title_list_button {
   background-size: 170px;
   background-repeat: repeat;
-  border-radius: 10%;
+  border-radius: 3%;
   align-items: center;
   width: 100%;
   height: 60px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.present-page {
+  width: 50%;
+  border-bottom: solid var(--menubar-color) 3px;
 }
 
 .community_menubar_text,
@@ -85,7 +90,7 @@
   flex-grow: 1;
 }
 
-.community_menubar_logo > div {
+.community_menubar_logo>div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,18 +106,20 @@
   margin: 0 auto;
 }
 
-.community_menubar_logo > div > img {
+.community_menubar_logo>div>img {
   max-width: 45px;
   height: auto;
   width: 70%;
   left: 0;
 }
 
-.community_menubar_title_list_button_icon > img {
+.community_menubar_title_list_button_icon>img {
   max-width: 50px;
   height: auto;
   width: 100%;
 }
+
+
 
 /* 배경 및 각 속성 지정*/
 /* 운동 */
@@ -127,35 +134,32 @@
   transition: 0.5s ease-in-out;
 }
 
-.community_menubar_title:hover > .community_menubar_title_list {
+.community_menubar_title:hover>.community_menubar_title_list {
   height: 350px;
   display: block;
 }
 
-.community_menubar_title:hover > .community_menubar_title_list:nth-child(3) {
+.community_menubar_title:hover>.community_menubar_title_list:nth-child(3) {
   height: 15px;
 }
 
 /* 미디어쿼리 */
 @media (max-width: 720px) {
+
   .community_menubar_logo,
   .community_menubar_title_list_button_icon {
     display: none;
   }
 
-  .community_menubar_title_list_button_game_PUBG
-    > .community_menubar_title_list_button_icon {
+  .community_menubar_title_list_button_game_PUBG>.community_menubar_title_list_button_icon {
     display: flex;
   }
 
   /*  */
   .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_exercise_basketball
-    > .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_hobby_lego
-    > .community_menubar_title_list_button_text,
-  .community_menubar_title_list_button_hobby_drone
-    > .community_menubar_title_list_button_text {
+  .community_menubar_title_list_button_exercise_basketball>.community_menubar_title_list_button_text,
+  .community_menubar_title_list_button_hobby_lego>.community_menubar_title_list_button_text,
+  .community_menubar_title_list_button_hobby_drone>.community_menubar_title_list_button_text {
     justify-content: center;
     margin: 0;
   }
