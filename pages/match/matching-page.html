@@ -420,6 +420,10 @@
           </div>
         </div>
         <div class="match-right">
+          <div class="match-chat-lock">
+            <span class="material-symbols-outlined">Lock</span>
+            <p>매칭 신청하고 채팅 참가하기</p>
+          </div>
           <div class="match-chat-container">
             <div class="match-chat-title">
               <div class="match-chat-img">
@@ -434,6 +438,7 @@
                 <span>8</span>
               </div>
             </div>
+            <div class="match-chat-line"></div>
             <div class="match-chat-content">
               <div class="user-chat-container">
                 <img
@@ -527,6 +532,14 @@
       const matchInfoBtn = document.querySelectorAll(".match-info-btn>a");
       const matchModal = document.querySelector(".match-modal");
       const matchChatContent = document.querySelector(".match-chat-content");
+      const matchModalBtn = document.querySelector(".match-modal-btn");
+      const matchChatLock = document.querySelector(".match-chat-lock");
+
+      matchModalBtn.addEventListener("click", (e) => {
+        if (confirm("신청 하시겠습니까?")) {
+          matchChatLock.style.display = "none";
+        }
+      });
 
       matchChatContent.addEventListener("wheel", (e) => {
         e.preventDefault();
@@ -550,6 +563,7 @@
           document.body.removeEventListener("wheel", preventScroll, {
             passive: false,
           });
+          matchChatLock.style.display = "flex";
         }
       });
       matchInfoBtn.forEach((item) => {
@@ -569,6 +583,7 @@
           document.body.removeEventListener("wheel", preventScroll, {
             passive: false,
           });
+          matchChatLock.style.display = "flex";
         }
       });
     </script>
