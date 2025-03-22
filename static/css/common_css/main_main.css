@@ -33,11 +33,16 @@
   justify-content: center;
   align-items: flex-end;
 
-  margin: 80px 0;
+  margin: 60px 0;
 }
-.main-wording-box,
-.main-wording{
+.main-wording-box{
   width: 50%;
+}
+.main-wording{
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 
 .main-wording>span{
@@ -143,4 +148,230 @@
   background-color: transparent;
 }
 
+.main-ranking{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* 검색 순위 */
+.main-rank{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.main-rank-title{
+  width: 100%;
+  position: relative;
+  padding-right: 25px;
+}
+.main-rank-title span{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: 2.3rem;
+}
+.main-rank-title>span p{
+  font-weight: 900;
+}
+.main-rank-title>span p:last-child{
+  margin-left: 5px;
+}
+.main-textbox{
+  position: absolute;
+  left: 297px;
+  top: 29%;
+  height: 50px;
+  width: 170px;
+  z-index: -1;
+}
+.main-rank-els{
+  width: 100%;
+}
+.main-rank-el{
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #6EC3FF;
+  margin-top: 30px;
+}
+.main-rank-el:first-child{
+  margin-top: 0;
+}
+.main-rank-el ul{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-items: center;
+}
+.main-rank-el-num{
+  font-weight: 900;
+  font-size: 2.6rem;
+  color: #F9AF0E;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+.main-rank-el-con{
+  width: 80%;
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-left: 20px;
+}
+.main-rank-el-go{
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-rank-el-go a{
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-ranking-match{
+  height: 100%;
+  width: 50%;
+  padding-left: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.main-ranking-match ul{
+  width: 100%;
+}
+.main-rank-match{
+  width: 100%;
+  height: 150px;
+  border-radius: 40px 0 0 0;
+  padding: 0 20px 0 35px;
+  margin-top: 10px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+  gap: 7px;
+
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(0,0,0,0.7)),
+    url(../../image/slide1.png);
+  background-size: cover;
+  background-origin: border-box;
+
+}
+.main-rank-match span{
+  color: #fff;
+}
+.main-rank-match span:first-child{
+  font-size: 1.4rem;
+  font-weight: 700;
+  align-self: flex-start;
+}
+.main-rank-match span:nth-child(2),
+.main-rank-match span:nth-child(3)
+{
+  font-size: 1.1rem;
+}
+.main-rank-match span:last-child{
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+/* match list */
+.main-matchlist{
+  width: 100%;
+  margin-top: 130px;
+}
+.main-matchlist>ul{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+.main-matchlist-els{
+  width: 24%;
+  height: 450px;
+  border: 1px solid #6EC3FF;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+
+  box-shadow: 0px 0px 10px rgba(42, 44, 49, 0.3)
+}
+.main-matchlist-els>ul{
+  height: 50%;
+  background-image: url(../../image/slide1.png);
+  background-size: cover;
+  border-radius: 19px 19px 0 0;
+  z-index: -1;
+}
+.main-matchlist-el-bg{
+  height: 100%;
+  padding: 20px;
+
+  display: flex;
+  gap: 10px;
+}
+.main-matchlist-tag{
+  display: block;
+  height: 40px;
+  width: 100px;
+  border: 2px solid #F9AF0E;
+  border-radius: 30px;
+  background-color: rgba(228, 156, 0, 0.4);
+
+  text-align: center;
+  line-height: 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+.main-matchlist-el{
+  position: relative;
+  height: 50%;
+  padding: 20px;
+}
+.main-matchlist-el-tit{
+  height: 50%;
+}
+.main-matchlist-el-tit span{
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.main-matchlist-el-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 7px;
+}
+.main-matchlist-el-info span{
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.main-matchlist-el a{
+  display: block;
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
