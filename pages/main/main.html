@@ -2,278 +2,359 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayMatch</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlayMatch</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
 </head>
     
+<section class="main">
+  <div class="banner-section">
+    <!-- Slider main container -->
+    <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide">1</div>
+            <div class="swiper-slide">2</div>
+            <div class="swiper-slide">3</div>
+            <div class="swiper-slide">4</div>
+            <div class="swiper-slide">5</div>
+        </div>
     
-    <div class="main-grid"> 
-      <section class="serch">
-          <!-- 검색 카테고리 선택, 검색창 -->
-          <div class="serch-wrap">
-            <ul class="serch-bar">
-              <li>
-                <select name="serch-category" id="serch-category-check">
-                  <!-- 나중에 커스텀 -->
-                  <option value="all">전체</option>
-                  <option value="loca">지역별</option>
-                  <option value="etc">등등..</option>
-                </select>
-              </li>
-              <li>
-                <!-- 글자수 제한 -->
-                <input type="text">
-              </li>
-              <li>
-                <button><span class="material-symbols-outlined">
-                  search
-                  </span></button>
-              </li>
-            </ul>
-          </div> 
-      </section>
-      <section class="slide">
-        
-
-        <div class="slider">
-          <input type="radio" id="forward-2" name="slideradio">
-          <input type="radio" id="forward-3" name="slideradio">
-          <input type="radio" id="backend-1" name="slideradio" checked>
-          <input type="radio" id="backend-2" name="slideradio">
-          <div class="slide-wrap">
-            <div class="slide-item">
-              <div class="slide-arrow">
-                <label label for="" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
-                <label for="forward-2" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
-              </div>
-              <div class="slide-item-show1"><img src="static/image/slide1.png" alt="slide1"></div>
-            </div>
-
-            <div class="slide-item">
-              <div class="slide-arrow">
-                <label for="backend-1" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
-                <label for="forward-3" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
-              </div>
-              <div class="slide-item-show2"><img src="static/image/slide2.png" alt="slide2"></div>
-            </div>
-
-            <div class="slide-item">
-              <div class="slide-arrow">
-                <label for="backend-2" class="prev"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_left</span></label>
-                <label for="" class="next"><span class="material-symbols-outlined icon-size-color">Keyboard_Double_Arrow_right</span></label>
-              </div>
-              <div class="slide-item-show3"><img src="static/image/slide3.png" alt="slide3"></div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-      <section class="category">
-        <div class="category-wrap">
-          <span class="font-subtitle">문구 넣을 공간 요만치의 길이</span>
-          <!-- 전체 병합 후 글씨 조정 -->
-          <div class="main-nav-menu">
-            <ul>
-                <li class="menu-hover">
-                    <div>
-                        <a href="?page=match/matching-page" class="menu-btn">
-                            <div class="img-bg">
-                                <span class="material-symbols-outlined">sports_volleyball</span>
-                            </div>
-                            <p>운동</p>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>축구</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>농구</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>야구</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>기타</p>
-                        </a>
-                    </div>
-                </li>
-                <li class="menu-hover">
-                    <div>
-                        <a href="javascript:void(0)" class="menu-btn">
-                            <div class="img-bg">
-                                <span class="material-symbols-outlined">airplane_ticket</span>
-                            </div>
-                            <p>여행</p>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>국내</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>해외</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>익스트림</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>기타</p>
-                        </a>
-                    </div>
-                </li>
-                <li class="menu-hover">
-                    <div>
-                        <a href="javascript:void(0)" class="menu-btn">
-                            <div class="img-bg">
-                                <span class="material-symbols-outlined">stadia_controller</span>
-                            </div>
-                            <p>게임</p>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>RPG</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>FPS</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>스팀</p>
-                        </a>
-                        <a href="javascript:void(0)" class="sub-menu-btn">
-                            <p>기타</p>
-                        </a>
-                    </div>
-                </li>
-                <li class="">
-                    <div>
-                        <a href="javascript:void(0)" class="menu-btn">
-                            <div class="img-bg">
-                                <span class="material-symbols-outlined">handshake</span>
-                            </div>
-                            <p>기타</p>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-      <section class="community">
-          <div class="community-board-idx">
-            <span class="font-subtitle font-bold">커뮤니티</span>
-            <a href="?page=community/community-page"><span class="material-symbols-outlined icon-size-color">Add</span></a>
-          </div>
-          <div class="community-board-con">
-            <!-- 게시판 연결 -->
-            <div class="bold-row"></div>
-            <div class="row-idx">
-                <span>글번호</span>
-                <span>글제목</span>
-                <span>작성자</span>
-                <span>날짜</span>
-            </div>
-            <div class="commu-line"></div>
-            <div class="commu-row">
-              <a href="?page=community/community-page">
-                <span class="font-small">1111</span>
-                <span>이런저런제목들</span>
-                <span class="font-small">에이이</span>
-                <span class="font-small">25.02.12</span>
-              </a>
-            </div>
-            <div class="commu-line"></div>
-            <div class="commu-row">
-              <a href="?page=community/community-page">
-                <span class="font-small">1110</span>
-                <span>요론저론제목들</span>
-                <span class="font-small">비비비</span>
-                <span class="font-small">25.02.12</span>
-              </a>
-            </div>
-            <div class="commu-line"></div>
-            <div class="commu-row">
-              <a href="?page=community/community-page">
-                <span class="font-small">1109</span>
-                <span>이런저런제목들</span>
-                <span class="font-small">씨씨씨</span>
-                <span class="font-small">25.02.12</span>
-              </a>
-            </div>
-            <div class="commu-line"></div>
-            <div class="commu-row">
-              <a href="?page=community/community-page">
-                <span class="font-small">1108</span>
-                <span>요론저론제목들</span>
-                <span class="font-small">디디디</span>
-                <span class="font-small">25.02.12</span>
-              </a>
-            </div>
-            <div class="commu-line"></div>
-            <div class="commu-row">
-              <a href="?page=community/community-page">
-                <span class="font-small">1107</span>
-                <span>이런저런제목들</span>
-                <span class="font-small">이이이</span>
-                <span class="font-small">25.02.12</span>
-              </a>
-            </div>      
-            <div class="bold-row"></div>
-          </div>
-        
-      </section>
-      <section class="match-go">
-          <span class="font-subtitle">최근 올라온 <span class="font-bold">매칭</span></span>
-          <ul>
-            <li class="match-go-item-box">
-              <a href="?page=match/matching-page">
-                <ul>
-                  <li class="match-go-item-img"><img src="https://cdn.news.hidoc.co.kr/news/photo/201906/19490_46387_0817.jpg" alt=""></li>
-                  <li class="match-go-item-li-title">매칭 설정 제목</li>
-                  <li class="match-go-item-li"><span>종목</span><span>배구</span></li>
-                  <li class="match-go-item-li"><span>장소</span><span>반월당</span></li>
-                  <li class="match-go-item-li"><span>인원</span><span>3명</span></li>
-                </ul>
-              </a>
-            </li>
-            <li class="match-go-item-box">
-              <a href="?page=match/matching-page">
-                <ul>
-                  <li class="match-go-item-img"><img src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg" alt=""></li>
-                  <li class="match-go-item-li-title">매칭 설정 제목</li>
-                  <li class="match-go-item-li"><span>종목</span><span>배구</span></li>
-                  <li class="match-go-item-li"><span>장소</span><span>반월당</span></li>
-                  <li class="match-go-item-li"><span>인원</span><span>3명</span></li>
-                </ul>
-              </a>
-            </li>
-            <li class="match-go-item-box">
-              <a href="?page=match/matching-page">
-                <ul>
-                  <li class="match-go-item-img"><img src="https://img-cf.kurly.com/hdims/resize/%3E720x/quality/90/src/shop/data/goodsview/20211014/gv30000233748_1.jpg" alt=""></li>
-                  <li class="match-go-item-li-title">매칭 설정 제목</li>
-                  <li class="match-go-item-li"><span>종목</span><span>배구</span></li>
-                  <li class="match-go-item-li"><span>장소</span><span>반월당</span></li>
-                  <li class="match-go-item-li"><span>인원</span><span>3명</span></li>
-                </ul>
-              </a>
-            </li>
-            <li class="match-go-btn">
-              <a href="?page=match/matching-page">
-                <span class="material-symbols-outlined">Add</span>
-                <span>더보기</span>
-              </a>
-            </li>
-          </ul>
-          <ul>
-            <li class="match-go-btn-hidden">
-              <a href="?page=match/matching-page">
-                <span>더보기</span>
-                <span class="material-symbols-outlined">Add</span>
-              </a>
-            </li>
-          </ul>
-      </section>
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
+  </div>
+
+  <div class="main-wording-section">
+    <div class="main-wording">
+      <span><p class="semibold">딱</p>맞는 사람들과 <p class="bold"> MATCH!</p></span>
+      <span>즐겁게! 다함께! <p class="bold"> PLAY!</p></span>
+    </div>
+    <div class="main-wording-box">
+      <ul>
+        <li>테니스</li>
+        <li>힐링 해외 여행</li>
+        <li class="main-imoji">👋</li>
+      </ul>
+      <ul>
+        <li class="main-sky">축구</li>
+        <li>배틀 그라운드</li>
+        <li>레고</li>
+      </ul>
+      <ul>
+        <li>방탈출</li>
+        <li class="main-imoji">🤩</li>
+        <li class="main-orange">패러글라이딩</li>
+      </ul>
+      <ul>
+        <li>보드게임</li>
+        <li>풋볼</li>
+        <li class="main-imoji">🚗</li>
+        <li>온라인</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-serch">
+    <span>지금 나만의 <p class="semibold">MATCH</p>를 찾는다면?</span>
+    <!-- 검색창 -->
+    <ul class="serch-bar">
+      <li class="main-search-input">
+        <!-- 글자수 제한 -->
+        <input type="text" placeholder="검색어를 입력하세요">
+      </li>
+      <li class="main-search-btn">
+        <button><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-ranking">
+    <div class="main-rank">
+      <div class="main-rank-title">
+        <span>지금 <p>PLAY 친구</p>들의 <p>관심사</p>는?</span>
+        <div class="main-textbox main-sky"></div>
+      </div>
+      <ul class="main-rank-els">
+        <li class="main-rank-el">
+          <ul>
+            <li class="main-rank-el-num">1</li>
+            <li class="main-rank-el-con">달리기</li>
+            <li class="main-rank-el-go"><a href="javascript:void(0)" class="main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a></li>
+          </ul>
+        </li>
+        <li class="main-rank-el">
+          <ul>
+            <li class="main-rank-el-num">2</li>
+            <li class="main-rank-el-con">보드게임</li>
+            <li class="main-rank-el-go"><a href="javascript:void(0)" class="main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a></li>
+          </ul>
+        </li>
+        <li class="main-rank-el">
+          <ul>
+            <li class="main-rank-el-num">3</li>
+            <li class="main-rank-el-con">발로란트</li>
+            <li class="main-rank-el-go"><a href="javascript:void(0)" class="main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a></li>
+          </ul>
+        </li>
+        <li class="main-rank-el">
+          <ul>
+            <li class="main-rank-el-num">4</li>
+            <li class="main-rank-el-con">배드민턴</li>
+            <li class="main-rank-el-go"><a href="javascript:void(0)" class="main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a></li>
+          </ul>
+        </li>
+        <li class="main-rank-el">
+          <ul>
+            <li class="main-rank-el-num">5</li>
+            <li class="main-rank-el-con">당일치기</li>
+            <li class="main-rank-el-go"><a href="javascript:void(0)" class="main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="main-ranking-match">
+      <ul>
+        <li class="main-rank-match">
+          <a href="javascript:void(0)">
+            <span>1월22일</span>
+            <span>11VS11</span>
+            <span>시흥 서울대학교 스포츠 파크</span>
+            <span>시흥 서울대학교 스포츠 파크(풋살) 11VS11</span>
+          </a>
+        </li>
+        <li class="main-rank-match">
+          <a href="javascript:void(0)">
+            <span>1월22일</span>
+            <span>11VS11</span>
+            <span>시흥 서울대학교 스포츠 파크</span>
+            <span>시흥 서울대학교 스포츠 파크(풋살) 11VS11</span>
+          </a>
+        </li>
+        <li class="main-rank-match">
+          <a href="javascript:void(0)">
+            <span>1월22일</span>
+            <span>11VS11</span>
+            <span>시흥 서울대학교 스포츠 파크</span>
+            <span>시흥 서울대학교 스포츠 파크(풋살) 11VS11</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-matchlist">
+    <ul>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">운동</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>한강에서 1시간 러닝하실 분</span></div>
+            <div class="main-matchlist-el-info">
+              <span>한강둔치</span>
+              <span>5명</span>
+              <span>1/23</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">관람</span>
+            <span class="main-matchlist-tag">마감임박</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>대구 간송미술관 특별전 함께 보러 가실 분~!</span></div>
+            <div class="main-matchlist-el-info">
+              <span>대구간송미술관</span>
+              <span>2명</span>
+              <span>1/21</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">게임</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>롤체 ㄱ</span></div>
+            <div class="main-matchlist-el-info">
+              <span>온라인</span>
+              <span>8명</span>
+              <span>1/25</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+    </ul>
+    <ul>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">운동</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>한강에서 1시간 러닝하실 분</span></div>
+            <div class="main-matchlist-el-info">
+              <span>한강둔치</span>
+              <span>5명</span>
+              <span>1/23</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">관람</span>
+            <span class="main-matchlist-tag">마감임박</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>대구 간송미술관 특별전 함께 보러 가실 분~!</span></div>
+            <div class="main-matchlist-el-info">
+              <span>대구간송미술관</span>
+              <span>2명</span>
+              <span>1/21</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">게임</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>롤체 ㄱ</span></div>
+            <div class="main-matchlist-el-info">
+              <span>온라인</span>
+              <span>8명</span>
+              <span>1/25</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+    </ul>
+    <ul>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">운동</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>한강에서 1시간 러닝하실 분</span></div>
+            <div class="main-matchlist-el-info">
+              <span>한강둔치</span>
+              <span>5명</span>
+              <span>1/23</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">관람</span>
+            <span class="main-matchlist-tag">마감임박</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>대구 간송미술관 특별전 함께 보러 가실 분~!</span></div>
+            <div class="main-matchlist-el-info">
+              <span>대구간송미술관</span>
+              <span>2명</span>
+              <span>1/21</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>
+        </div>
+      </li>
+      <li class="main-matchlist-els">
+        <ul>
+          <li class="main-matchlist-el-bg">
+            <span class="main-matchlist-tag">게임</span>
+          </li>
+        </ul>
+        <div class="main-matchlist-el">
+          <a href="javascript:void(0)" class="main-matchlist-el-link">
+            <div class="main-matchlist-el-tit"><span>롤체 ㄱ</span></div>
+            <div class="main-matchlist-el-info">
+              <span>온라인</span>
+              <span>8명</span>
+              <span>1/25</span>
+            </div>
+            <a href="javascript:void(0)" class="main-matchlist-el-btn main-sky"><img src="../../static/image/image_main/serch-icon.svg" alt="돋보기"></a>
+          </a>  
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div id="Accordion_wrap">
+    <div class="que">
+      <img src="../../static/image/image_main/chat-icon.svg" alt="알림">
+      <span>채팅</span>
+    </div>
+    <div class="anw">
+      <div>채팅 연결</div>
+    </div>
+      <div class="que">
+      <img src="../../static/image/image_main/calendar-icon.svg" alt="알림">
+      <span>달력</span>
+    </div>
+    <div class="anw">
+      <div>달력 연결</div>
+    </div>
+    <div class="que">
+      <img src="../../static/image/image_main/call-icon.svg" alt="알림">
+      <span>1:1 문의</span>
+    </div>
+    <div class="anw">
+      <div>챗봇 연결</div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+</section>
+
+    
