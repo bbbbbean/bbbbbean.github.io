@@ -115,7 +115,7 @@ header {
   margin: 0 auto;
   text-align: center;
   background-color: rgba(255,255,255,0.95);
-  border-radius: 0 0 3px 3px;
+  border-radius: 3px;
 }
 
 .menu-box>ul>li>.submenu>li {
@@ -158,6 +158,7 @@ header {
 .icon>ul>li>a>img {
   width: 28px;
 }
+
 
 .icon>ul>li:last-child {
   position: relative;
