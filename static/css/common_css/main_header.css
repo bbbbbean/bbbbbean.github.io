@@ -41,6 +41,9 @@ header {
 .submenu {
   display: none;
   border: 1px solid #20a2ff;
+  /* border-left: 1px solid #20a2ff; */
+  /* border-right: 1px solid #20a2ff; */
+  /* border-bottom: 1px solid #20a2ff; */
 }
 
 .logo {
@@ -111,8 +114,8 @@ header {
   width: 120px;
   margin: 0 auto;
   text-align: center;
-  background-color: #6ec3ff;
-  border-radius: 5px;
+  background-color: rgba(255,255,255,0.95);
+  border-radius: 3px;
 }
 
 .menu-box>ul>li>.submenu>li {
@@ -137,7 +140,7 @@ header {
 }
 
 .menu-box>ul>li>.submenu>li:hover a {
-  color: #fff;
+  color: #20a2ff;
 }
 
 /* 아이콘들들 */
@@ -156,6 +159,7 @@ header {
   width: 28px;
 }
 
+
 .icon>ul>li:last-child {
   position: relative;
 }
@@ -165,8 +169,8 @@ header {
   position: absolute;
   width: 120px;
   text-align: center;
-  background-color: #6ec3ff;
-  border-radius: 5px;
+  background-color: #fff;
+  border-radius: 3px;
 
   right: 0;
 }
@@ -189,7 +193,7 @@ header {
 }
 
 .icon>ul>li:last-child>ul>li:hover a {
-  color: #fff;
+  color: #20a2ff;
 }
 
 /* 라인 */
@@ -197,7 +201,7 @@ header {
   margin: 0 auto;
   width: 80%;
   height: 1px;
-  background-color: #fff;
+  background-color: #20a2ff;
 }
 
 /* .line {
