@@ -399,11 +399,11 @@
 }
 
 /* hover event */
-.main-rank-match:hover{
+/* .main-rank-match:hover{
   background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(0,0,0,0.3)),
     url(../../image/slide1.png);
   transition: .4s;
-}
+} */
 .main-matchlist-els:hover{
   border: 1px solid #F9AF0E;
   transform: scale(1.03);
