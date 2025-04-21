@@ -1,0 +1,22 @@
+.info-container {
+    display: flex;
+    justify-content: left;
+    align-items: top;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.info-container>.info-left {
+    width: 30%;
+}
+
+.info-container>.info-right {
+    width: 70%;
+    padding-left: 45px;
+}
