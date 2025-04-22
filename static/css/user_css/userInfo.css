@@ -20,3 +20,92 @@ p {
     width: 70%;
     padding-left: 45px;
 }
+
+.info-container>.info-right>.user-info-title {
+    text-align: end;
+    padding-right: 15px;
+}
+
+.info-container>.info-right>.info-title>span:nth-child(1),
+.info-container>.info-right>.user-info-title>.info-title>span:nth-child(1) {
+    font-size: 36px;
+    font-weight: lighter;
+}
+
+.info-container>.info-right>.info-title>span:nth-child(2),
+.info-container>.info-right>.user-info-title>.info-title>span:nth-child(2) {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.info-container>.info-right>.info-title {
+    margin: 50px 0px;
+}
+/*  */
+.user-info-content {
+    width: 100%;
+    height: 100%;
+}
+
+.user-info-content>span {
+    display: block;
+    height: 1px;
+    background-color: #D9D9D9;
+    margin: 10px 0;
+}
+
+.user-info-content>span:first-child,
+.user-info-content>span:last-child {
+    background-color: #6EC3FF;
+    margin: 30px 0;
+}
+
+.user-info-content>div>label,
+.info-edit>label {
+    display: inline-block;
+    min-width: 150px;
+    width: 15%;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.user-info-content>div>span {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.user-info-content>div>.info-edit>input,
+.user-info-content>div>.info-edit>.info-edit>input {
+    width: 30%;
+    height: 35px;
+    border: 1px solid #6EC3FF;
+    border-radius: 5px;
+    padding: 0 5px;
+    margin-bottom: 5px;
+}
+
+.user-info-content>div {
+    position: relative;
+}
+
+.user-info-content>div>button {
+    position: absolute;
+    top: 5px;
+    right: 20%;
+}
+
+.user-info-content>div>button,
+.user-info-content>div>.info-edit>button,
+.user-info-content>div>.info-edit>.info-edit>button {
+    min-width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6EC3FF;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 5px;
+}

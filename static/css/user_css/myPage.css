@@ -1,0 +1,120 @@
+.info-container>.info-right>.user-info-tag>.date-tag {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin: 25px;
+}
+
+.info-container>.info-right>.user-info-tag>.date-tag>.tag-item {
+    display: inline;
+    border-radius: 30px;
+    border: 1px solid #6EC3FF;
+    padding: 5px 25px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-color: #cceaff
+}
+
+.info-container>.info-right>.user-info-match>.user-info-match-content {
+    display: flex;
+    justify-self: left;
+    width: 100%;
+}
+
+.info-container>.info-right>.user-info-match>.user-info-match-content>.left {
+    width: 60%;
+}
+
+.info-container>.info-right>.user-info-match>.user-info-match-content>.right {
+    width: 40%;
+}
+
+.user-info-match-content>.left>.title,
+.user-info-match-content>.right>.title {
+    width: 100%;
+    font-size: 26px;
+    font-weight: 200;
+    margin: 20px 0px;
+}
+
+.user-info-match-content>.left>span {
+    display: block;
+    width: 90%;
+    margin: 5px 0px;
+    height: 2px;
+    background-color: #6EC3FF;
+}
+
+.user-info-match-content>.left>.prev-match {
+    overflow-y: hidden;
+    height: 350px;
+}
+
+.user-info-match-content>.left>.prev-match>span {
+    display: block;
+    width: 90%;
+    margin: 5px 0px;
+    height: 1px;
+    background-color: #AAAAAA;
+}
+
+.user-info-match-content>.left>.prev-match>a>.prev-match-item {
+    display: flex;
+    justify-content: left;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.user-info-match-content>.left>.prev-match>a>.prev-match-item>span:nth-child(1) {
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 15px;
+}
+
+.user-info-match-content>.left>.prev-match>a>.prev-match-item>span:nth-child(2) {
+    font-size: 16px;
+}
+
+.book-mark-container {
+    overflow-y: hidden;
+    height: 350px;
+}
+
+.book-mark-item {
+    position: relative;
+    background-color: #E0F2FF;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.book-mark-item>a>.day .title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.book-mark-item>a>.info {
+    display: flex;
+    gap: 15px;
+    color: #6B6B6B;
+    font-size: 16px;
+}
+
+.book-mark-item>a>.tag {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.info-container>.info-right>.user-info-calendar>.calendar-container {
+    width: 100%;
+    height: 500px;
+    background-color: #E0F2FF;
+    margin-top: 20px;
+}
