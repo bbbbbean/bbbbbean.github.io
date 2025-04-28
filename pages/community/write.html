@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>커뮤니티 글쓰기</title>
+    <link rel="stylesheet" href="/static/css/CSS_community-page/write.css" />
+  </head>
+  <body>
+    <div class="container">
+      <span class="now-page">게임>배틀그라운드 게시판>글쓰기</span>
+      <form action="#" method="post">
+        <div class="title-form">
+          <label for="title">제목</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="제목을 입력하세요"
+          />
+        </div>
+        <br />
+        <div class="content-form">
+          <label for="content">내용:</label> <br />
+          <textarea
+            id="content"
+            name="content"
+            rows="10"
+            placeholder="내용을 입력하세요"
+          ></textarea>
+        </div>
+        <br />
+        <button type="submit">글쓰기</button>
+      </form>
+    </div>
+  </body>
+</html>
