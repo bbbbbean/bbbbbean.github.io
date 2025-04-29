@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="container">
-      <span class="now-page">게임 > 배틀그라운드 게시판 > 글쓰기</span>
+      <span class="now-page">게임 > 글쓰기</span>
       <form action="" method="post">
         <div class="title-form">
           <label for="title">제목</label>
@@ -162,33 +162,82 @@
         </div>
         <!-- 태그 부분 -->
         <div class="tag">
-          <input
-            type="text"
-            id="tag"
-            name="tag"
-            placeholder="#"
-            oninput="this.style.width = ((this.value.length + 3) * 10) + 'px'; this.value = this.value.startsWith('#') ? this.value : '#' + this.value;"
-          />
-          <a href="javascript::void(0)"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
-          </a>
+          <div class="tag-container">
+            <input
+              type="text"
+              class="tag-input"
+              name="tag-input"
+              placeholder="#"
+              oninput="this.style.width = ((this.value.length +4) * 10) + 'px'; this.value = this.value.startsWith('#') ? this.value : '#' + this.value;"
+            />
+            <a href="javascript::void(0)" class="delete-typedtag-button"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </a>
+          </div>
+          <div class="tag-list"></div>
         </div>
         <br />
         <button type="submit">글쓰기</button>
       </form>
     </div>
   </body>
+
+  <script>
+    const fontSizeSelect = document.getElementById("font-size");
+    const tagInput = document.querySelector(".tag-input");
+    const tagList = document.querySelector(".tag-list");
+    const deleteTypedTagButton = document.querySelector(
+      ".delete-typedtag-button"
+    );
+
+    // font size 변경
+    fontSizeSelect.addEventListener("change", function () {
+      const selectedSize = fontSizeSelect.value;
+      document.querySelector(".content-form textarea").style.fontSize =
+        selectedSize;
+    });
+
+    // 태그 추가 및 삭제 기능
+    tagInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // 엔터 입력했을 때 폼 제출 방지
+        const tagValue = tagInput.value.trim();
+        if (tagValue && !tagValue.startsWith("#")) {
+          tagInput.value = "#" + tagValue;
+        }
+        if (tagValue) {
+          const tagItem = document.createElement("span");
+          tagItem.className = "tag-item";
+          tagItem.textContent = tagValue;
+          const removeButton = document.createElement("a");
+          removeButton.href = "javascript:void(0)";
+          removeButton.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
+          removeButton.onclick = function () {
+            tagList.removeChild(tagItem);
+          };
+          tagItem.appendChild(removeButton);
+          tagList.appendChild(tagItem);
+          tagInput.value = "";
+        }
+      }
+    });
+    deleteTypedTagButton.addEventListener("click", function () {
+      tagInput.value = "";
+      tagInput.style.width = "20px";
+    });
+  </script>
 </html>

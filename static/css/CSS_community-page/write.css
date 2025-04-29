@@ -73,8 +73,13 @@ hr {
   align-items: center;
   justify-content: start;
 }
+.title-form > label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 40px;
+}
 .title-form > input[type="text"] {
-  width: 80%;
+  width: calc(100% - 50px);
   margin-left: 10px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -104,13 +109,28 @@ hr {
 .content-form > textarea:focus::placeholder {
   color: #4caf50;
 }
+
+/* 태그 부분 */
 .tag {
   display: flex;
   justify-content: start;
   align-items: center;
   margin-top: 10px;
 }
-.tag input[type="text"] {
+.tag-container,
+.tag-container a {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.tag-container input {
+  min-width: 50px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px;
+  margin-right: 5px;
+}
+.tag input {
   height: 30px;
   min-width: 60px;
   width: 60px;
@@ -118,13 +138,49 @@ hr {
   border: 1px solid #ccc;
   border-radius: 40px;
 }
-.tag svg {
-  margin-left: 5px;
+.tag-container a {
   margin-right: 10px;
-  width: 15px;
-  height: 15px;
+  color: black;
+  text-decoration: none;
+}
+.tag svg:hover {
   color: red;
 }
+.tag svg {
+  width: 20px;
+  height: 20px;
+}
+.tag-list,
+.tag-list span,
+.tag-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+.tag-list a {
+  max-width: 30px;
+}
+.tag-list > span {
+  height: 100%;
+  font-size: 1rem;
+}
+.tag-item {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  background-color: rgb(162, 113, 226);
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+.tag-item a {
+  margin-left: 5px;
+  color: black;
+  text-decoration: none;
+}
+
 button {
   background-color: #4caf50;
   color: white;
