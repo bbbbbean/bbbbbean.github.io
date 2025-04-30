@@ -1,0 +1,282 @@
+.match-titlebar {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background-color: #6ec3ff;
+  font-size: 35px;
+  font-weight: bold;
+  padding: 0px 50px;
+  height: 70px;
+  position: relative;
+  top: 0;
+  right: 0;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.match-titlebar p {
+  position: absolute;
+  color: white;
+  font-size: 104px;
+  top: -130px;
+  right: 50px;
+}
+
+.pm-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.promotion-swiper {
+  align-items: center;
+  margin: 50px 0;
+  width: 1280px;
+  height: 430px;
+  overflow: hidden;
+}
+
+.promotion-swiper>.swiper-wrapper {}
+
+.promotion-swiper>.swiper-wrapper>.swiper-slide {
+  min-width: 256px;
+}
+
+.promotion-match {
+  width: 236px;
+  height: 430px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: lightgray;
+  border-radius: 50px 0 0 0;
+}
+
+.pm-match-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+.pm-match-container p {
+  font-size: 24px;
+  font-weight: bold;
+  padding-right: 15px;
+}
+
+.pm-match-container span {
+  border: 1px solid white;
+  width: 90px;
+  font-size: 22px;
+  text-align: center;
+  border-radius: 30px;
+  color: white;
+}
+
+.pm-match-title {
+  padding: 20px;
+  color: white;
+}
+
+.pm-match-title p {
+  font-size: 19px;
+  margin: 0;
+  margin-bottom: 10px;
+  font-weight: 100;
+}
+
+.pm-match-title span {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.match-list {
+  position: relative;
+}
+
+.match-list>.match-reg-btn {
+  width: 160px;
+  border-radius: 5px;
+  background-color: #ffbb28;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  right: 20px;
+  top: -5px;
+  border: none;
+}
+
+.match-continer {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.match-continer>.match-day {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 40px;
+}
+
+.match-continer>.match-day p {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.match-continer>.match-day span {
+  font-size: 45px;
+  font-weight: bold;
+  color: #fbb00e;
+}
+
+.match-data {
+  min-width: 500px;
+}
+
+.match-data>ul>li {
+  display: flex;
+  min-height: 70px;
+  justify-content: center;
+  align-items: center;
+  padding-right: 50px;
+  position: relative;
+}
+
+.match-data>ul>li>.match-time {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  min-width: 150px;
+}
+
+.match-data>ul>li>.match-content {
+  flex-grow: 2;
+  font-size: 20px;
+  font-weight: bold;
+  min-width: 300px;
+}
+
+.match-data>ul>li>.match-sub-info {
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+  color: #949494;
+  gap: 10px;
+  padding-right: 20px;
+}
+
+.match-data>ul>li>.match-sub-info p {
+  min-width: 60px;
+  text-align: center;
+  margin: 0;
+}
+
+.match-data>ul>li>.match-info-btn {
+  display: flex;
+}
+
+.match-data>ul>li>.match-info-btn>button {
+  display: block;
+  width: 130px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+}
+
+.match-data>ul>li>.match-info-btn .no {
+  background-color: #dcdcdc;
+  color: #959595;
+}
+
+.match-data>ul>li>.match-info-btn .ok {
+  background-color: #6ec2fe;
+}
+
+.match-data>ul>li>.match-info-btn .end {
+  background-color: #ffbb28;
+}
+
+/* -------------------- */
+.match-continer>.match-blue-line {
+  width: 100%;
+  height: 2px;
+  background-color: #6ec3ff;
+  position: absolute;
+  top: 50px;
+  left: 0;
+}
+
+.match-blue-line {
+  width: 100%;
+  height: 2px;
+  background-color: #6ec3ff;
+  position: absolute;
+  top: 70px;
+  left: 0;
+}
+
+.match-line {
+  width: 100%;
+  height: 1px;
+  background-color: #aaaaaa;
+  position: absolute;
+  top: 70px;
+  left: 0;
+}
+
+/* 미디어 */
+@media (width <=870px) {
+  .match-data>ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .match-data>ul>li {
+    display: block;
+    width: 400px;
+    height: 180px;
+  }
+
+  .match-data>ul>li>.match-time {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .match-data>ul>li>.match-content {
+    text-align: center;
+    padding-bottom: 10px;
+  }
+
+  .match-data>ul>li>.match-sub-info {
+    justify-content: center;
+    padding-bottom: 10px;
+  }
+
+  .match-data>ul>li>.match-info-btn {
+    justify-content: center;
+  }
+
+  .match-line {
+    top: 170px;
+  }
+
+  .match-blue-line {
+    top: 170px;
+    background-color: #aaaaaa;
+    height: 1px;
+  }
+}

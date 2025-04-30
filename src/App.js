@@ -1,0 +1,54 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
+
+import MainHeader from "./components/MainHeader";
+import Main from "./components/Main";
+import Footer from "./components/Footer";
+import MatchList from "./components/match/matchList";
+import EventList from "./components/event/Event";
+import Login from "./components/user/Login";
+import MyPageLayout from "./components/user/MypageLayout";
+import AdminPage from './AdminPage';
+
+
+function AppComponent() {
+
+  const location = useLocation().pathname;
+  return (
+    <>
+      {!location.includes('admin') ? (
+        <>
+          <div className="wrapper">
+            <MainHeader />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/match/list" element={<MatchList />} />
+              <Route path="/event/list" element={<EventList />} />
+              <Route path="/user/login" element={<Login />} />
+              <Route path="/user/mypage/*" element={<MyPageLayout />} />
+            </Routes>
+          </div>
+          <Footer />
+        </>
+        )
+        :
+        <Routes>
+          <Route path="/admin/*" element={<AdminPage />} />
+        </Routes>
+      }
+
+    </>
+  );
+}
+
+function App() {
+
+  return (
+    <Router>
+      <AppComponent />
+    </Router>
+  );
+}
+
+export default App;
