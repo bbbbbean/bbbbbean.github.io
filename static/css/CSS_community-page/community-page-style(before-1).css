@@ -1,6 +1,5 @@
 @import "./custom.css";
 @import "./nav-style.css";
-@import "../../font/font.css";
 
 /* 임시시작 */
 /* .community_page_location {
@@ -14,11 +13,6 @@
 } */
 /* 임시끝 */
 
-* {
-  text-decoration: none;
-  font-family: pretendard;
-}
-
 .top-header {
   height: 100px;
 }
@@ -28,7 +22,7 @@ main {
   max-width: 1280px;
 }
 
-main > div {
+main>div {
   width: 100%;
 }
 
@@ -43,118 +37,11 @@ main > div {
   font-size: 20px;
 }
 
-.community_breadcrumb {
-  width: 100%;
-  padding: 10px 20px;
-  margin: 0;
-
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 50px;
-  font-size: 20px;
-}
-
-.community_breadcrumb > nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.community_breadcrumb > nav > ol.breadcrumb {
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  padding: 0;
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-  content: ">";
-  color: #7e7e7e;
-  margin-left: 4px;
-}
-
-.community_breadcrumb > nav > ol > li > a {
-  color: #7e7e7e;
-}
-
-.community_breadcrumb > nav > ol > li.active {
-  color: black;
-}
-
-/* 소메뉴 */
-.community_submenu {
-  width: 100%;
-  max-width: 1170px;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: end;
-  height: 100%;
-  margin: 0 0px;
-  padding: 0 0px;
-
-  border-bottom: solid 1px var(--menubar-color);
-}
-
-.community-list-item {
-  display: flex;
-  flex-direction: row;
-  font-size: 25px;
-  margin: 0px 10px;
-  padding: 0 10px;
-}
-
-.community_submenu > ul {
-  display: flex;
-  flex-direction: row;
-}
-
-.lv2-nav-item > a > span::after {
-  content: ">";
-  margin-left: 4px;
-}
-
-.lv2-nav-item {
-  margin-bottom: 0;
-}
-
-.lv2-nav-item > a.nav-link {
-  width: 11vw;
-  max-width: 100px;
-  height: 45px;
-  line-height: 45px;
-  background-color: var(--menubar-color);
-
-  border: 1px solid var(--menubar-color);
-  border-radius: 5px 5px 0 0;
-  text-align: center;
-}
-
-.lv2-nav-item > ul {
-  display: flex;
-  flex-direction: row;
-}
-
-.lv3-nav-item {
-  border-radius: 4px;
-  margin: 2px 3px;
-  width: 11vw;
-  height: 40px;
-  line-height: 40px;
-
-  max-width: 110px;
-  text-align: center;
-
-  background-color: #cae9ff;
-
-  cursor: pointer;
+.community_page_location_present_location {
+  text-decoration: underline rgba(128, 128, 128, 0.5);
 }
 
 .community_listofwriting_titlebar {
-  width: 100%;
-
   display: flex;
   justify-content: center;
   text-align: center;
@@ -176,7 +63,7 @@ main > div {
   height: 10px;
 }
 
-.community_control_bar > div {
+.community_control_bar>div {
   display: inline-block;
 }
 
@@ -199,7 +86,7 @@ main > div {
   font-size: 24px;
 }
 
-.community_control_bar_pagenumber > a {
+.community_control_bar_pagenumber>a {
   margin: 0px 5px;
 }
 
@@ -222,7 +109,7 @@ main > div {
   max-width: 1170px;
 }
 
-.community_listofwriting > div:nth-child(2) {
+.community_listofwriting>div:nth-child(2) {
   height: 0;
 }
 
@@ -234,15 +121,14 @@ main > div {
 
 .community_listofwriting_titlebar_number,
 .community_content_content_number,
-.colomn_border > div:first-child {
-  width: 70px;
+.colomn_border>div:first-child {
+  width: 100px;
 }
 
 .community_listofwriting_titlebar_title,
 .community_content_content_title,
-.colomn_border > div:nth-child(2) {
-  width: 100%;
-  min-width: 600px;
+.colomn_border>div:nth-child(2) {
+  width: 820px;
 }
 
 .community_content_content_title {
@@ -255,20 +141,14 @@ main > div {
 
 .community_listofwriting_titlebar_rates,
 .community_content_content_rates,
-.colomn_border > div:nth-child(3) {
-  width: 100px;
+.colomn_border>div:nth-child(3) {
+  width: 125px;
 }
 
 .community_listofwriting_titlebar_hits,
 .community_content_content_hits,
-.colomn_border > div:nth-child(4) {
-  width: 100px;
-}
-
-.community_listofwriting_titlebar_date,
-.community_content_content_date,
-.colomn_border > div:last-child {
-  width: 100px;
+.colomn_border>div:last-child {
+  width: 125px;
 }
 
 .community_control_bar_pagenumber {
@@ -286,7 +166,7 @@ main > div {
   font-size: 32px;
 }
 
-.community_listofwriting_titlebar > div {
+.community_listofwriting_titlebar>div {
   height: 100%;
 }
 
@@ -294,8 +174,8 @@ main > div {
   min-height: 400px;
 }
 
-.community_content_content > div,
-.community_listofwriting_titlebar > div {
+.community_content_content>div,
+.community_listofwriting_titlebar>div {
   display: flex;
   flex-direction: column;
   height: 50px;
@@ -348,10 +228,10 @@ main > div {
   z-index: -5;
 }
 
-.colomn_border > div {
+.colomn_border>div {
   border-right: 1px solid black;
 }
 
-.colomn_border > div:last-child {
+.colomn_border>div:last-child {
   border: none;
 }
