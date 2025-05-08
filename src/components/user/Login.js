@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { createCookie, NavLink } from "react-router-dom";
 import "../../css/user_css/login.css";
+import axios from "axios";
 
 const LoginForm = () => {
     const [userId, setUserId] = useState("");
@@ -8,9 +9,15 @@ const LoginForm = () => {
     const [remember, setRemember] = useState(false);
 
     const handleLogin = (e) => {
-        e.preventDefault(); // 폼 제출 막기
-        // 로그인 로직 여기에 작성
-        console.log("로그인 시도:", { userId, password, remember });
+        e.preventDefault();
+        axios.post("/api/auth/login", { userId, password })
+            .then((response) => {
+                localStorage.setItem("accessToken", response.data.jwtToken.accessToken);
+                document.cookie = `refreshToken=${response.data.jwtToken.refreshToken}; expires=${new Date(Date.now() * 1000 * 60 * 60 * 24)}; path=/;`;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -22,7 +29,7 @@ const LoginForm = () => {
                 <div className="login-id">
                     <input
                         type="text"
-                        id="userid"
+                        id="userId"
                         placeholder="아이디"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
@@ -31,7 +38,7 @@ const LoginForm = () => {
                 <div className="login-pw">
                     <input
                         type="password"
-                        id="pwd"
+                        id="password"
                         placeholder="비밀번호"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

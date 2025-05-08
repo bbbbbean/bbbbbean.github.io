@@ -1,28 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
-const PasswordCheck = ({  }) => {
+const PasswordCheck = ({ }) => {
     const navigate = useNavigate();
     const [password, setPassword] = useState("");
 
     const handleConfirmClick = () => {
-        axios.post("/api/user/checkPassword", { password })
+        console.log("accessToken : " + window.localStorage.getItem('accessToken'));
+        axios.post("/api/auth/pwdCheck", { password },
+            {
+                headers: {
+                    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+                }
+            }
+        )
             .then((response) => {
                 console.log(response.data);
                 if (response.data.success) {
-                    navigate("/user/mypage/edit",{ state: { userDTO : response.data.userDTO } });
+                    navigate("/user/mypage/edit", { state: { userDTO: response.data.userDTO } });
                 } else {
                     alert("비밀번호가 일치하지 않습니다.");
                 }
             })
             .catch((error) => {
-                console.error("Error checking password:", error);
+                console.error("type : ", error.response.data.type);
+                console.error("message : ", error.response.data.message);
+                if(error.response.data.message.includes("만료")){
+                    console.log("토큰 재발급 코드 실행");
+                } else {
+                    navigate("/user/login");
+                }
             });
     };
 
     return (
-        
+
         <div className="info-right">
             <div className="user-info-title">
                 <div className="info-title">
