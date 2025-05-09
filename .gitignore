@@ -21,6 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-/match/.idea/gradle.xml
-/match/match/logs/app.log
