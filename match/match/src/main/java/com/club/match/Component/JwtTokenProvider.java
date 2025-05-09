@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key;
-    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000*10*1;
-    private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000*60*60*24;
+    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000*60*30;
+    private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000*60*60*24; //60*60*24;
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -53,6 +53,9 @@ public class JwtTokenProvider {
 
         String refreshToken = Jwts.builder()
                 .subject(authentication.getName())
+                .claim("auth",authorities)
+                .claim("userId", userId)
+                .issuedAt(now)
                 .expiration(refreshExpiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -86,7 +89,7 @@ public class JwtTokenProvider {
         } catch (SecurityException | MalformedJwtException e) {
             throw new TokenException("유효하지 않는 JWT 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
-            throw new TokenException("만료된 JWT 토큰입니다.", e);
+            throw new TokenException("만료된 JWT 토큰입니다. refresh", e);
         } catch (UnsupportedJwtException e) {
             throw new TokenException("지원되지 않는 JWT 토큰입니다.", e);
         } catch (IllegalArgumentException e) {

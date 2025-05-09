@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
+import instance from "../../axios"
 
 const PasswordCheck = ({ }) => {
     const navigate = useNavigate();
     const [password, setPassword] = useState("");
 
     const handleConfirmClick = () => {
-        console.log("accessToken : " + window.localStorage.getItem('accessToken'));
-        axios.post("/api/auth/pwdCheck", { password },
-            {
-                headers: {
-                    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
-                }
-            }
-        )
+        instance.post("/api/auth/pwdCheck", { password })
             .then((response) => {
-                console.log(response.data);
+                console.log("실행됨");
                 if (response.data.success) {
                     navigate("/user/mypage/edit", { state: { userDTO: response.data.userDTO } });
                 } else {
@@ -24,14 +18,7 @@ const PasswordCheck = ({ }) => {
                 }
             })
             .catch((error) => {
-                console.error("type : ", error.response.data.type);
-                console.error("message : ", error.response.data.message);
-                if(error.response.data.message.includes("만료")){
-                    console.log("토큰 재발급 코드 실행");
-                } else {
-                    navigate("/user/login");
-                }
-            });
+            })
     };
 
     return (

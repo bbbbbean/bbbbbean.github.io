@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { createCookie, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import "../../css/user_css/login.css";
 import axios from "axios";
 
@@ -12,8 +13,8 @@ const LoginForm = () => {
         e.preventDefault();
         axios.post("/api/auth/login", { userId, password })
             .then((response) => {
-                localStorage.setItem("accessToken", response.data.jwtToken.accessToken);
-                document.cookie = `refreshToken=${response.data.jwtToken.refreshToken}; expires=${new Date(Date.now() * 1000 * 60 * 60 * 24)}; path=/;`;
+                localStorage.setItem("accessToken", response.data.jwtToken);
+                window.location.href = '/';
             })
             .catch((error) => {
                 console.log(error);
