@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/auth/login","/api/auth/reneToken").permitAll();
-            auth.requestMatchers("/admin/**").permitAll();
+            auth.requestMatchers("/admin/**").hasRole("ADMIN");
             auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
             auth.anyRequest().authenticated();
         })

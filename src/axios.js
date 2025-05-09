@@ -41,6 +41,9 @@ instance.interceptors.response.use(
                     window.location.href = '/user/login';
                     return;
                 });
+        } else {
+            window.location.href = '/user/login';
+                    return;
         }
     }
 );
