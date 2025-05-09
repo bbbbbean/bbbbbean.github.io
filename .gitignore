@@ -22,6 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/match/.idea
-/match/match/.idea
+/match/.idea/gradle.xml
 /.idea
