@@ -2,6 +2,8 @@ package com.club.match.Domain.Service;
 
 import com.club.match.Component.JwtTokenProvider;
 import com.club.match.Domain.DTO.JwtTokenDTO;
+import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,8 +23,11 @@ public class AuthService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    UserMapper userMapper;
 
-    @Transactional
+
+    @Transactional(rollbackFor = Exception.class)
     public JwtTokenDTO login(String userId, String password){
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(userId,password);
@@ -34,4 +39,11 @@ public class AuthService {
 
         return jwtTokenDTO;
     }
+
+    public UserDTO selectOne(String userId){
+        UserDTO userDTO = userMapper.selectAt(userId);
+        return userDTO;
+    }
+
+
 }

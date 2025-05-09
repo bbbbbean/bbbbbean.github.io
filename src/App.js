@@ -10,6 +10,7 @@ import EventList from "./components/event/Event";
 import Login from "./components/user/Login";
 import MyPageLayout from "./components/user/MypageLayout";
 import AdminPage from './AdminPage';
+import Logout from "./components/user/Logout"
 
 
 function AppComponent() {
@@ -26,6 +27,7 @@ function AppComponent() {
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
               <Route path="/user/login" element={<Login />} />
+              <Route path="/user/logout" element={<Logout />} />
               <Route path="/user/mypage/*" element={<MyPageLayout />} />
             </Routes>
           </div>

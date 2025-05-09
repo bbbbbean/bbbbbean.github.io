@@ -8,12 +8,14 @@ import com.club.match.Component.JwtTokenProvider;
 import com.club.match.Domain.DTO.JwtTokenDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Domain.Service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +57,32 @@ public class AuthController {
                 .path("/")
                 .maxAge(Duration.ofDays(1))
                 .build();
+
+        userDTO = authService.selectOne(userId);
+        userDTO.setPassword(null);
+        userDTO.setRole(null);
+        userDTO.setProfile(null);
+        userDTO.setAddress(null);
+        userDTO.setPhone(null);
+
+        resp.put("userDTO",userDTO);
+
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> userLogout() {
+        Map<String, Object> resp = new HashMap<>();
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(null);
+    }
+
+
     @PostMapping("/reneToken")
     public ResponseEntity<?> reneToken(@CookieValue("refreshToken") String refreshToken){
 

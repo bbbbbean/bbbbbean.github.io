@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.disable());
 
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/api/auth/login","/api/auth/reneToken").permitAll();
+            auth.requestMatchers("/api/auth/login","/api/auth/reneToken","/api/auth/logout").permitAll();
             auth.requestMatchers("/admin/**").hasRole("ADMIN");
             auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
             auth.anyRequest().authenticated();

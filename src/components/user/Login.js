@@ -1,20 +1,51 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../css/user_css/login.css";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store"
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
+
+    const isAuth = useSelector(state => state.auth.isAuth);
+    const dispatch = useDispatch();
 
     const handleLogin = (e) => {
         e.preventDefault();
         axios.post("/api/auth/login", { userId, password })
             .then((response) => {
                 localStorage.setItem("accessToken", response.data.jwtToken);
-                window.location.href = '/';
+
+                const {
+                    userId,
+                    email,
+                    name,
+                    nickName,
+                    points,
+                    isPrivate,
+                    manner,
+                    gender,
+                    introduction,
+                } = response.data.userDTO;
+
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("email", email);
+                localStorage.setItem("name", name);
+                localStorage.setItem("nickName", nickName);
+                localStorage.setItem("points", points);
+                localStorage.setItem("isPrivate", isPrivate);
+                localStorage.setItem("manner", manner);
+                localStorage.setItem("gender", gender);
+                localStorage.setItem("introduction", introduction);
+
+                dispatch(login());
+
+                navigate("/");
             })
             .catch((error) => {
                 console.log(error);
