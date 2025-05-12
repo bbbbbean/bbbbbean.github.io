@@ -19,10 +19,17 @@ form {
     align-items: end;
     padding-bottom: 10px;
 }
-.login-tit>span{
+.login-tit>span:nth-child(1) {
     font-size: 1.6rem;
     font-weight: 900;
     color: #6ec3ff;
+}
+
+.login-tit>span:nth-child(2) {
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #dd3e3e;
+    padding-left: 10px;
 }
 /* 아이디 패스워드 인풋 */
 .login-id>input,

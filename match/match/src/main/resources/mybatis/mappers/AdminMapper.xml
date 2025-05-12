@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.AdminMapper">
+
+    <select id="selectAllUser" resultType="UserDTO" parameterType="pageDTO">
+        SELECT b.id, a.*
+        FROM user_tbl a
+        INNER JOIN (
+        SELECT ROW_NUMBER() OVER(ORDER BY ${field} ${order}) AS id, ${field}
+        <if test='!field.equals("userId")'>
+            , userId
+        </if>
+        FROM user_tbl
+        <if test='!field.equals("isPrivate")'>
+            where ${field} LIKE CONCAT('%', #{filter}, '%')
+        </if>
+        <if test='field.equals("isPrivate") and (filter.equals("true") or filter.equals("false"))'>
+            where ${field} = ${filter}
+        </if>
+
+        ) b ON a.userId = b.userId limit #{start},#{perPage};
+    </select>
+
+    <select id="allUserCount" resultType="int">
+        SELECT count(*) from user_tbl;
+    </select>
+
+    <select id="registCount" resultType="LineChartDTO">
+        SELECT DATE_FORMAT(createAt , '%Y-%m-%d') as x, count(*) as y
+        FROM bb.user_tbl
+        GROUP BY DATE_FORMAT(createAt , '%Y-%m-%d') order by DATE_FORMAT(createAt , '%Y-%m-%d');
+    </select>
+
+</mapper>
+

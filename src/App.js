@@ -1,6 +1,7 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { login } from "./store"
 
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
@@ -15,6 +16,13 @@ import Logout from "./components/user/Logout"
 
 function AppComponent() {
 
+  //로그인 여부 확인
+    const dispatch = useDispatch();
+  if(localStorage.getItem("isAuth")){
+    dispatch(login());
+  }
+
+  //어드민 페이지 여부 확인용
   const location = useLocation().pathname;
   return (
     <>

@@ -1,10 +1,13 @@
 package com.club.match.Controller;
 
 
+import com.club.match.Domain.DTO.PageDTO;
+import com.club.match.Domain.Service.AdminService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,21 +19,23 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("/books")
-    public ResponseEntity<?> test(){
-        return ResponseEntity.ok().body(null);
-    }
-
-
+    @Autowired
+    AdminService adminService;
     
-//    @GetMapping("/books")
-//    public ResponseEntity<Map<String, Object>> getBooks(@Validated PageDTO pageDTO) {
-//
-//        Map<String, Object> resp = new HashMap<>();
-//
-//        resp = bookService.adminBook(pageDTO);
-//
-//        return ResponseEntity.ok().body(resp);
-//    }
+    @PostMapping("/users")
+    public ResponseEntity<Map<String, Object>> getBooks(@Validated PageDTO pageDTO) {
+
+        Map<String, Object> resp;
+
+        log.info("PageDTO : " + pageDTO);
+
+        resp = adminService.allUserSelect(pageDTO);
+
+        log.info("data : " + resp.get("data"));
+
+        resp.put("chartData", adminService.registCount());
+
+        return ResponseEntity.ok().body(resp);
+    }
 
 }

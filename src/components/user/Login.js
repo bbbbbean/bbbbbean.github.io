@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../css/user_css/login.css";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../store"
 
 const LoginForm = () => {
@@ -11,8 +11,7 @@ const LoginForm = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
-
-    const isAuth = useSelector(state => state.auth.isAuth);
+    const [loginfail, setLoginFail] = useState("");
     const dispatch = useDispatch();
 
     const handleLogin = (e) => {
@@ -20,6 +19,7 @@ const LoginForm = () => {
         axios.post("/api/auth/login", { userId, password })
             .then((response) => {
                 localStorage.setItem("accessToken", response.data.jwtToken);
+                localStorage.setItem("isAuth", true);
 
                 const {
                     userId,
@@ -47,8 +47,10 @@ const LoginForm = () => {
 
                 navigate("/");
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                setLoginFail("아이디 혹은 비밀번호가 일치하지 않습니다.")
+                setPassword("");
+                document.getElementById('password').focus();
             });
     };
 
@@ -57,6 +59,7 @@ const LoginForm = () => {
             <div className="login-continer">
                 <div className="login-tit">
                     <span>회원 로그인</span>
+                    <span>{loginfail}</span>
                 </div>
                 <div className="login-id">
                     <input
@@ -64,7 +67,11 @@ const LoginForm = () => {
                         id="userId"
                         placeholder="아이디"
                         value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
+                        onChange={(e) => {
+                            setUserId(e.target.value);
+                            setLoginFail("");
+                            }
+                        }
                     />
                 </div>
                 <div className="login-pw">
@@ -73,7 +80,11 @@ const LoginForm = () => {
                         id="password"
                         placeholder="비밀번호"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            setLoginFail("");
+                            }
+                        }
                     />
                 </div>
                 <div className="login-check">
@@ -86,9 +97,15 @@ const LoginForm = () => {
                     <span>아이디 저장하기</span>
                 </div>
                 <div className="login-btn">
-                    <button type="submit">
-                        <span>로그인</span>
-                    </button>
+                    {(userId.length && password) ?
+                        <button type="submit">
+                            <span>로그인</span>
+                        </button>
+                        :
+                        <button type="button" style={{ backgroundColor: '#666666' }}>
+                            <span>로그인</span>
+                        </button>
+                    }
                 </div>
                 <div className="login-menu">
                     <NavLink to="/user/register">

@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import "../css/common_css/main_footer.css";
 import logo from "../image/로고_w.png";
 

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { redirect, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import instance from "../../axios"
 
 const PasswordCheck = ({ }) => {
@@ -18,6 +17,7 @@ const PasswordCheck = ({ }) => {
                 }
             })
             .catch((error) => {
+                console.log(error);
             })
     };
 

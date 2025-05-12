@@ -4,18 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserDTO {
+    private int id;
     private String userId;
     private String password;
     private String name;
     private String nickName;
-    private Integer gender;
+    private String gender;
     private String email;
     private String phone;
     private String address;
@@ -24,5 +29,7 @@ public class UserDTO {
     private String introduction;
     private Integer points;
     private boolean isPrivate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createAt;
     private String role;
 }

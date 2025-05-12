@@ -9,5 +9,7 @@
     </settings>
     <typeAliases>
         <typeAlias type="com.club.match.Domain.DTO.UserDTO" alias="UserDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.PageDTO" alias="PageDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.LineChartDTO" alias="LineChartDTO" />
     </typeAliases>
 </configuration>

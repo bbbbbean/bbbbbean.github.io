@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import "../../css/matching_css/matchModalContent.css";
 import profile from "../../image/user/profile.png";
 
@@ -39,10 +38,10 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
             });
 
             window.document.addEventListener("keydown", (e) => {
-                if (e.keyCode == 27) setMatchList(null);
+                if (e.keyCode === 27) setMatchList(null);
             });
 
-        }, []);
+        }, [setMatchList]);
     return (
         <div className="match-modal-container">
             <div className="match-modal">
@@ -72,7 +71,7 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
                                 <p>1월22일 수요일</p>
                                 <p>19:00</p>
                                 <p>시흥 서울대학교 스포츠파크</p>
-                                <a>경기도 시흥시 서울대학로</a>
+                                <a href="#">경기도 시흥시 서울대학로</a>
                             </div>
                             <div className="match-info-user">
                                 <button>호스트 닉네임</button>

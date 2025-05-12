@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
-import { BookList } from './BookList';
-
+import { UserList } from './UserList';
+import instance from './axios'
+import "../src/css/admin.css"
 const AdminPage = () => {
   const baseDataProvider = simpleRestProvider('http://localhost:8100');
+
+  const [chartData,setchartData] = useState([]);
+  const [chartId,setchartId] = useState([]);
 
   const dataProvider = {
     ...baseDataProvider,
@@ -18,23 +22,20 @@ const AdminPage = () => {
       if (typeof(filter.q) === "string") {
         url = url + `&filter=${filter.q}`;
       }
-      console.log(url)
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await instance.post(url);
+      setchartData(response.data.chartData.data);
+      setchartId(response.data.chartData.id);
       return {
-        data: data.data,
-        total: data.total,
+        data: response.data.data,
+        total: response.data.total,
       };
     }
   };
 
   return (
     <Admin dataProvider={dataProvider} basename="/admin">
-      <Resource name="books" list={BookList} />
-      <Resource name="users" list={BookList} />
-      <Resource name="alert" list={BookList} />
-      <Resource name="chat" list={BookList} />
-      <Resource name="report" list={BookList} />=
+      <Resource name="users" list={<UserList chartData={chartData} chartId={chartId} />} />
+      <Resource name="match" list={<UserList chartData={chartData} chartId={chartId} />} />
     </Admin>
   );
 };

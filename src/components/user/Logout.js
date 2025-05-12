@@ -8,7 +8,6 @@ const Logout = () => {
 
     const navigate = useNavigate();
 
-    const isAuth = useSelector(state => state.auth.isAuth);
     const dispatch = useDispatch();
 
 
