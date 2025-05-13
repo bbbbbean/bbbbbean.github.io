@@ -62,7 +62,8 @@ p {
 }
 
 .user-info-content>div>label,
-.info-edit>label {
+.info-edit>label,
+.info-edit>form>label {
     display: inline-block;
     min-width: 150px;
     width: 15%;
@@ -76,9 +77,16 @@ p {
     font-size: 20px;
     font-weight: normal;
 }
+.user-info-content>div>.info-edit>form{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 .user-info-content>div>.info-edit>input,
-.user-info-content>div>.info-edit>.info-edit>input {
+.user-info-content>div>.info-edit>form>input,
+.user-info-content>div>.info-edit>.info-edit>input,
+.user-info-content>div>.info-edit>.info-edit>form>input {
     width: 30%;
     height: 35px;
     border: 1px solid #6EC3FF;
@@ -99,7 +107,9 @@ p {
 
 .user-info-content>div>button,
 .user-info-content>div>.info-edit>button,
-.user-info-content>div>.info-edit>.info-edit>button {
+.user-info-content>div>.info-edit>form>button,
+.user-info-content>div>.info-edit>.info-edit>button,
+.user-info-content>div>.info-edit>.info-edit>form>button {
     min-width: 100px;
     height: 40px;
     border: none;

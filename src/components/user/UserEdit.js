@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function MyInfo() {
+
     const [userDTO, setUserDTO] = useState(useLocation().state.userDTO);
     const [editField, setEditField] = useState(null);
     const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ export default function MyInfo() {
         address: ""
     });
 
-
+    console.log(userDTO);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -24,7 +25,7 @@ export default function MyInfo() {
     const showEdit = (field) => setEditField(field);
     const hideEdit = (e) => {
         const btnClass = e.target.className.split(" ");
-        axios.post("/api/user/update", { "userid" : userDTO.userid, "value" : formData[btnClass[0]], "authCode" : formData[btnClass[1]], "type" : btnClass[0] })
+        axios.post("/api/user/update", { "userId": userDTO.userId, "value": formData[btnClass[0]], "authCode": formData[btnClass[1]], "type": btnClass[0] })
             .then((response) => {
                 setUserDTO(response.data.userDTO);
                 alert("수정되었습니다.");
@@ -34,8 +35,8 @@ export default function MyInfo() {
 
     return (
         <div className="info-right">
-            <div class="user-info-title">
-                <div class="info-title">
+            <div className="user-info-title">
+                <div className="info-title">
                     <span>내정보</span>
                     <span>관리</span>
                 </div>
@@ -44,17 +45,17 @@ export default function MyInfo() {
                 <span></span>
                 <div className="userid">
                     <label>아이디</label>
-                    <span>{userDTO.userid}</span>
+                    <span>{userDTO.userId}</span>
                 </div>
                 <span></span>
                 <div className="username">
                     <label>이름</label>
-                    <span>{userDTO.username}</span>
+                    <span>{userDTO.name}</span>
                 </div>
                 <span></span>
                 <div className="nickname">
                     <label>닉네임</label>
-                    <span>{userDTO.nickname}</span>
+                    <span>{userDTO.nickName}</span>
                     {editField !== "nickname" ? (
                         <button className="btn-edit" onClick={() => showEdit("nickname")}>수정하기</button>
                     ) : (

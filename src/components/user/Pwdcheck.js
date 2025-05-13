@@ -5,15 +5,19 @@ import instance from "../../axios"
 const PasswordCheck = ({ }) => {
     const navigate = useNavigate();
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
-    const handleConfirmClick = () => {
-        instance.post("/api/auth/pwdCheck", { password })
+    const handleConfirmClick = (e) => {
+        e.preventDefault();
+        instance.post("/api/auth/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
             .then((response) => {
                 console.log("실행됨");
                 if (response.data.success) {
                     navigate("/user/mypage/edit", { state: { userDTO: response.data.userDTO } });
                 } else {
-                    alert("비밀번호가 일치하지 않습니다.");
+                    setPassword("")
+                    setMessage(response.data.message);
+                    document.getElementById('password').focus();
                 }
             })
             .catch((error) => {
@@ -36,18 +40,32 @@ const PasswordCheck = ({ }) => {
                         <div className="password-check-form info-edit">
                             <h2>비밀번호를 확인하세요</h2>
                             <p>비밀번호를 입력하여 계속하세요</p>
+                            <span style={{ color: '#dd3e3e' }}>{message}</span>
                             <br />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="비밀번호"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <br />
-                            <button className="btn-submit-password" onClick={handleConfirmClick}>
-                                확인
-                            </button>
+                            <form onSubmit={handleConfirmClick}>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    placeholder="비밀번호"
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value)
+                                        setMessage("");
+                                    }}
+                                />
+                                <br />
+                                {(password.length >= 4) ?
+                                    <button className="btn-submit-password" type="submit">
+                                        확인
+                                    </button>
+                                    :
+                                    <button className="btn-submit-password" type="button" style={{ backgroundColor: '#666666' }}>
+                                        확인
+                                    </button>
+                                }
+                            </form>
+
                         </div>
                     </div>
                     <span></span>

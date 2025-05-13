@@ -12,13 +12,15 @@ import Login from "./components/user/Login";
 import MyPageLayout from "./components/user/MypageLayout";
 import AdminPage from './AdminPage';
 import Logout from "./components/user/Logout"
+import Kakao from "./components/user/Kakao"
+import KakaoCode from './components/user/KakaoCode';
 
 
 function AppComponent() {
 
   //로그인 여부 확인
-    const dispatch = useDispatch();
-  if(localStorage.getItem("isAuth")){
+  const dispatch = useDispatch();
+  if (localStorage.getItem("isAuth")) {
     dispatch(login());
   }
 
@@ -34,14 +36,16 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
+              <Route path="/user/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/login" element={<Login />} />
               <Route path="/user/logout" element={<Logout />} />
-              <Route path="/user/mypage/*" element={<MyPageLayout />} />
+              <Route path="/user/kakao" element={<Kakao />} />
+              <Route path="/user/kakaoCode" element={<KakaoCode />} />
             </Routes>
           </div>
           <Footer />
         </>
-        )
+      )
         :
         <Routes>
           <Route path="/admin/*" element={<AdminPage />} />

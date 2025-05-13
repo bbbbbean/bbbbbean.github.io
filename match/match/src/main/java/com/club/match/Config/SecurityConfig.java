@@ -3,6 +3,7 @@ package com.club.match.Config;
 
 import com.club.match.Filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,17 +27,18 @@ public class SecurityConfig {
     public JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain SecurityFilterChain(HttpSecurity http,@Value("${react.url}") String url) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource(url)));
 
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/api/auth/login","/api/auth/reneToken","/api/auth/logout").permitAll();
+            auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
+                                "/api/auth/logout", "/api/auth/kakao").permitAll();
             auth.requestMatchers("/admin/**").hasRole("ADMIN");
             auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
             auth.anyRequest().authenticated();
@@ -48,10 +50,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(String url) {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of(url));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

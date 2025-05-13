@@ -1,4 +1,4 @@
-import { BrowserRouter as Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import "../../css/user_css/userInfo.css";
 
@@ -22,7 +22,6 @@ const MyPageLayout = () => {
                 <Route path="/edit_my_password" element={<PwdEdit />} />
                 <Route path="/account_link" element={<AccountLink />} />
                 <Route path="/delete_account" element={<UserDelete />} />
-
             </Routes>
         </div>
     );

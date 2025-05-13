@@ -7,5 +7,9 @@
         select * from user_tbl where userId=#{userId}
     </select>
 
+    <select id="userLinkAt" resultType="SocialLinkDTO">
+        SELECT * FROM sociallink_tbl where platformType = #{platformType} and linkedId = #{linkedId};
+    </select>
+
 </mapper>
 
