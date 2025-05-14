@@ -5,14 +5,10 @@ import profile from "../../image/user/profile.png"
 import { NavLink } from "react-router-dom";
 
 const MyPageSiderbar = () => {
-  const [activeMenu, setActiveMenu] = useState("Mypage");
+  const [activeMenu, setActiveMenu] = useState("");
   const userId = localStorage.getItem("userId");
   const nickName = localStorage.getItem("nickName");
   const [manner, setManner] = useState(localStorage.getItem("manner") / 6 +0.5);
-  const percent = manner/100
-  const red = Math.round(255 * (1 - percent));
-  const green = Math.round(255 * (0.07 + percent));
-  const blue = 0;;
 
   const menuItems = [
     { label: "내 정보", url: "" },
@@ -29,7 +25,7 @@ const MyPageSiderbar = () => {
         <span>매너</span>
         <span style={{paddingLeft:'5px', color:'#dd3e3e', fontWeight:'bold'}}>{manner <= 20 && "매너지수가 낮습니다" }</span>
         <div className="manner-gauge-bar">
-          <p style={{ width: `${manner}%`, backgroundColor: `rgb(${red},${green},${blue})` }}></p>
+          <p style={{ width: `${manner}%`}}></p>
         </div>
         <div style={{ textAlign: "end", color: "#6B6B6B" }}>60단위</div>
       </div>

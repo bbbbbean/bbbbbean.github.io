@@ -39,7 +39,7 @@ const MainHeader = () => {
             </ul>
           </li>
           <li className="mainmenu">
-            <NavLink to="/friend/list">친구</NavLink>
+            <NavLink to="/friend">친구</NavLink>
           </li>
           <li className="mainmenu">
             <NavLink to="/community/list">커뮤니티</NavLink>

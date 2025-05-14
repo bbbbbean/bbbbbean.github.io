@@ -15,6 +15,24 @@
     margin-left: 10px;
     background-color: #cceaff
 }
+.info-container>.info-right>.user-info-tag>.date-tag>.tag-item>span{
+    display: none;
+    position: relative;
+    right: -15px;
+    cursor: pointer;
+}
+.info-container>.info-right>.user-info-tag>.date-tag>.tag-item:hover span{
+    display: inline;
+}
+.info-container>.info-right>.user-info-tag>.date-tag>.tag-add{
+    padding: 5px;
+}
+.info-container>.info-right>.user-info-tag>.date-tag>.tag-add>form>input{
+    background-color: #cceaff;
+    border: none;
+    text-align: center;
+    width: 75px;
+}
 
 .info-container>.info-right>.user-info-match>.user-info-match-content {
     display: flex;

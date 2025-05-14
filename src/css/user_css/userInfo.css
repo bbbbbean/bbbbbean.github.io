@@ -73,9 +73,14 @@ p {
     padding: 10px 0;
 }
 
-.user-info-content>div>span {
+.user-info-content>div>span:nth-child(2) {
     font-size: 20px;
     font-weight: normal;
+}
+.user-info-content>div>span:nth-child(3) {
+    color: #dd3e3e;
+    font-size: 12px;
+    font-weight: bold;
 }
 .user-info-content>div>.info-edit>form{
     width: 100%;

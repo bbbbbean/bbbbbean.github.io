@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, replace } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../css/user_css/login.css";
 import axios from "axios";
@@ -13,6 +13,24 @@ const LoginForm = () => {
     const [remember, setRemember] = useState(false);
     const [loginfail, setLoginFail] = useState("");
     const dispatch = useDispatch();
+
+
+    const errorMessage = (errorCode) => {
+        if(errorCode === '2'){
+            setLoginFail("연동되지 않는 카카오 아이디입니다.");
+        }
+    };
+
+    useEffect(() => {
+        new URL(window.location.href).search
+            .substring(1).replace("?", "").split("&")
+            .forEach((item) => {
+                if (!item.indexOf("errorCode")) {
+                    const errorCode = item.split("=")[1]
+                    errorMessage(errorCode);
+                }
+            });
+    }, []);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -42,6 +60,7 @@ const LoginForm = () => {
                 localStorage.setItem("manner", manner);
                 localStorage.setItem("gender", gender);
                 localStorage.setItem("introduction", introduction);
+                localStorage.setItem("loginPlatform", 0);
 
                 dispatch(login());
 
@@ -70,7 +89,7 @@ const LoginForm = () => {
                         onChange={(e) => {
                             setUserId(e.target.value);
                             setLoginFail("");
-                            }
+                        }
                         }
                     />
                 </div>
@@ -83,7 +102,7 @@ const LoginForm = () => {
                         onChange={(e) => {
                             setPassword(e.target.value);
                             setLoginFail("");
-                            }
+                        }
                         }
                     />
                 </div>
@@ -127,7 +146,7 @@ const LoginForm = () => {
                             <a href="#"></a>
                         </li>
                         <li>
-                             <NavLink to="/user/kakao"/>
+                            <NavLink to="/user/kakao" />
                         </li>
                         <li>
                             <a href="#"></a>

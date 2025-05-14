@@ -8,5 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class KakaoDTO {
-    private long id;
+    private String id;
+    private KakaoAccountDTO kakao_account;
+    public String token_type;
+    public String access_token;
+    public String id_token;
+    public Integer expires_in;
+    public String refresh_token;
+    public Integer refresh_token_expires_in;
+    public String scope;
 }

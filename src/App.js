@@ -14,6 +14,7 @@ import AdminPage from './AdminPage';
 import Logout from "./components/user/Logout"
 import Kakao from "./components/user/Kakao"
 import KakaoCode from './components/user/KakaoCode';
+import Friend from './components/message/Friend'
 
 
 function AppComponent() {
@@ -36,6 +37,7 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
+              <Route path="/friend" element={<Friend />} />
               <Route path="/user/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/login" element={<Login />} />
               <Route path="/user/logout" element={<Logout />} />

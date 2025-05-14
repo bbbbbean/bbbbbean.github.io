@@ -38,7 +38,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                                "/api/auth/logout", "/api/auth/kakao").permitAll();
+                                "/api/auth/logout", "/api/auth/kakaoLogin").permitAll();
             auth.requestMatchers("/admin/**").hasRole("ADMIN");
             auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
             auth.anyRequest().authenticated();

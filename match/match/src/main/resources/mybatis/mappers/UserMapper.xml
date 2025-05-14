@@ -4,11 +4,36 @@
 <mapper namespace="com.club.match.Mapper.UserMapper">
 
     <select id="selectAt" resultType="UserDTO">
-        select * from user_tbl where userId=#{userId}
+        SELECT * FROM user_tbl WHERE userId=#{userId}
     </select>
 
+    <select id="selectUserTag" resultType="String">
+        SELECT tag FROM preferencetag_tbl WHERE userId = #{userId};
+    </select>
+
+    <insert id="insertUserTag">
+        INSERT INTO preferencetag_tbl VALUES(#{userId},#{tag});
+    </insert>
+
+    <delete id="deleteUserTag">
+        DELETE FROM preferencetag_tbl where userId = #{userId} and tag = #{tag};
+    </delete>
+
+
+    <insert id="insertAccountLink">
+        INSERT INTO sociallink_tbl VALUES(#{userId},#{platformType},#{linkedId},#{email});
+    </insert>
+
     <select id="userLinkAt" resultType="SocialLinkDTO">
-        SELECT * FROM sociallink_tbl where platformType = #{platformType} and linkedId = #{linkedId};
+
+        SELECT * FROM sociallink_tbl where
+        <if test='!platformType.equals("0")'>
+            platformType = #{platformType} and linkedId = #{linkedId};
+        </if>
+        <if test='platformType.equals("0")'>
+            userId = #{userId};
+        </if>
+
     </select>
 
 </mapper>

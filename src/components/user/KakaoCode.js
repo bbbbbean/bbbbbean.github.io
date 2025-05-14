@@ -12,7 +12,7 @@ const KakaoCode = () => {
     const url = new URL(window.location.href);
     const code = url.search.substring(6)
 
-    axios.post("/api/auth/kakao", { code })
+    axios.post("/api/auth/kakaoLogin", {"url":window.location.href, code })
             .then((response) => {
             localStorage.setItem("accessToken", response.data.jwtToken);
             localStorage.setItem("isAuth", true);
@@ -38,12 +38,14 @@ const KakaoCode = () => {
             localStorage.setItem("manner", manner);
             localStorage.setItem("gender", gender);
             localStorage.setItem("introduction", introduction);
+            localStorage.setItem("loginPlatform", 2);
 
             dispatch(login());
 
             navigate("/");
         }).catch((error) => {
-            navigate("/user/login");
+            const errorCode = error.response.data.errorCode;            
+            navigate(`/user/login?errorCode=${errorCode}`);
         });
 };
 

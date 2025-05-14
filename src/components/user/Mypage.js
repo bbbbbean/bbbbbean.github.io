@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
+import instance from "../../axios"
 
 import "../../css/user_css/myPage.css";
 
 const MyPageSection = () => {
+
+  const [tags, setTags] = useState([]);
+  const [tag, setTag] = useState("");
+
   useEffect(() => {
     const prevMatchScroll = document.querySelector('.prev-match');
     const bookMarkScroll = document.querySelector('.book-mark-container');
@@ -16,11 +21,43 @@ const MyPageSection = () => {
       e.preventDefault();
       bookMarkScroll.scrollTop += e.deltaY / 5;
     });
+
+    instance.post("/api/user/getTag", { "userId": localStorage.getItem("userId") })
+      .then((response) => {
+        setTags([...response.data.tags]);
+      })
+      .catch((error) =>{
+      });
+
   }, []);
-  const tags = [
-    "#대구", "#봉명동", "#남구", "#동성로", "#부산",
-    "#운동", "#배구", "#야구", "#게임", "#배틀그라운드"
-  ];
+
+  const tagAdd = (e) => {
+    e.preventDefault();
+    if(tag.trim() === ""){
+      return;
+    }
+    instance.post("/api/user/addTag", { "userId": localStorage.getItem("userId"), "tag":tag.trim() })
+      .then((response) => {
+        setTags([...response.data.tags]);
+        setTag("");
+      })
+      .catch((error) =>{
+        setTag("");
+      });
+      ;
+  };
+
+  const tagDel = (e) => {
+    const tag = e.currentTarget.dataset.tag;
+    instance.post("/api/user/delTag", { "userId": localStorage.getItem("userId"), tag })
+      .then((response) => {
+        setTags([...response.data.tags]);
+      })
+      .catch((error) =>{
+      });
+      ;
+  }
+
 
   const matches = Array(10).fill({
     date: "23.10.01",
@@ -49,9 +86,28 @@ const MyPageSection = () => {
         <span>Tag</span>
         <div className="date-tag">
           {tags.map((tag, idx) => (
-            <div key={idx} className="tag-item">{tag}</div>
+            <div key={idx} className="tag-item">
+              {tag}
+              <span data-tag={tag} onClick={tagDel}>-</span>
+            </div>
           ))}
-          <div className="tag-item tag-add">+</div>
+          {tags.length < 10 &&
+            <div className="tag-item tag-add">
+              <form onSubmit={tagAdd}>
+                <input
+                  type="text"
+                  id="tag"
+                  placeholder="태그추가"
+                  value={tag}
+                  onChange={(e) => {
+                    if(e.target.value.length>10){
+                      e.target.value = e.target.value.substring(0,10);
+                    }
+                    setTag(e.target.value);
+                  }}
+                />
+              </form>
+            </div>}
         </div>
       </div>
 

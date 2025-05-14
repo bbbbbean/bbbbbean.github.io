@@ -1,24 +1,120 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import instance from "../../axios"
 
 export default function AccountLink() {
-    const [showGoogleForm, setShowGoogleForm] = useState(false);
-    const [showKakaoForm, setShowKakaoForm] = useState(false);
 
-    const [googleInfo, setGoogleInfo] = useState({ account: "", code: "" });
-    const [kakaoInfo, setKakaoInfo] = useState({ account: "", code: "" });
+    const [naverEmail, setNaverEmail] = useState("미연동");
+    const [kakaoEmail, setKakaoEmail] = useState("미연동");
+    const [googleEmail, setGoogleEmail] = useState("미연동");
 
-    const handleGoogleSubmit = () => {
-        console.log("구글 계정 연결:", googleInfo);
+    const [naverFail, setNaverFail] = useState("");
+    const [kakaoFail, setKakaoFail] = useState("");
+    const [googleFail, setGoogleFail] = useState("");
+
+    useEffect(() => {
+
+        let platform = "";
+        let code = "";
+        let failCode = "";
+        new URL(window.location.href).search
+            .substring(1).replace("?", "").split("&")
+            .forEach((item) => {
+                if (!item.indexOf("platform")) {
+                    platform = Number(item.split("=")[1]);
+                } else if (!item.indexOf("code")) {
+                    code = item.split("=")[1];
+                } else if (!item.indexOf("FailCode")) {
+                    failCode = item.split("=")[1];
+                }
+            });
+
+        switch (platform) {
+            case 1: // 네이버
+                break;
+            case 2: // 카카오
+                KakaoLinkApi(code)
+                break;
+            case 3: // 구글
+                break;
+        }
+
+        switch (failCode) {
+            case '1': // 네이버 로그인 실패?
+                setNaverFail("이미 연결된 네이버 계정입니다.");
+                break;
+            case '2': // 카카오
+                setKakaoFail("이미 연결된 카카오 계정입니다.");
+                break;
+            case '3': // 구글
+                setGoogleFail("이미 연결된 구글 계정입니다.");
+                break;
+        }
+
+        instance.post("/api/user/getAccountLink", { "userId": localStorage.getItem("userId") })
+            .then((response) => {
+                const socialLinkDTO = response.data.socialLinkDTO;
+                socialLinkDTO.forEach((item) => {
+                    const platform = item.platformType;
+                    const email = item.email;
+                    switch (platform) {
+                        case '1': // 네이버
+                            setNaverEmail(email);
+                            break;
+                        case '2': // 카카오
+                            setKakaoEmail(email);
+                            break;
+                        case '3': // 구글
+                            setGoogleEmail(email);
+                            break;
+                    }
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    const handleNaverLink = (item) => {
+        console.log("네이버 계정 연결:", item);
     };
 
-    const handleKakaoSubmit = () => {
-        console.log("카카오 계정 연결:", kakaoInfo);
+    const handleGoogleLink = (item) => {
+        console.log("구글 계정 연결:", item);
     };
+
+    const handleKakaoLink = () => {
+        const REDIRECT_URI = "http://localhost:3000/user/mypage/account_link?platform=2";
+        const CLIENT_ID = "";
+        const RESPONSE_TYPE = "code";
+        const url = "https://kauth.kakao.com/oauth/authorize" +
+            "?client_id=" + CLIENT_ID +
+            "&redirect_uri=" + REDIRECT_URI +
+            "&response_type=" + RESPONSE_TYPE;
+        console.log(url);
+
+        window.location.href = url;
+    };
+    const KakaoLinkApi = (code) => {
+        instance.post("/api/auth/kakaoLink", {
+            "userId": localStorage.getItem("userId"),
+            code,
+            "url": window.location.href
+        })
+            .then((response) => {
+                if (response.data.success) {
+                    window.location.href = "/user/mypage/account_link"
+                } else {
+                    window.location.href = "/user/mypage/account_link?FailCode=" + response.data.FailCode;
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
 
     return (
         <div className="info-right">
-            <div class="user-info-title">
-                <div class="info-title">
+            <div className="user-info-title">
+                <div className="info-title">
                     <span>계정</span>
                     <span>연동</span>
                 </div>
@@ -27,71 +123,40 @@ export default function AccountLink() {
                 <span></span>
                 <div className="naver-link">
                     <label>네이버</label>
-                    <span>admin@naver.com</span>
-                    <button className="btn-edit-naver btn-link">연결해제</button>
-                </div>
-                <span></span>
-                <div className="google-link">
-                    <label>구글</label>
-                    <span>미연동</span>
-                    <button className="btn-edit-google btn-link" onClick={() => setShowGoogleForm(true)}>연결하기</button>
-                    {showGoogleForm && (
-                        <div className="google-edit info-edit">
-                            <label></label>
-                            <input
-                                type="text"
-                                name="google"
-                                placeholder="연결할 구글계정을 입력해주세요."
-                                value={googleInfo.account}
-                                onChange={(e) => setGoogleInfo({ ...googleInfo, account: e.target.value })}
-                            />
-                            <button className="btn-submit-google" onClick={handleGoogleSubmit}>완료</button>
-                            <div className="info-edit">
-                                <label></label>
-                                <input
-                                    type="text"
-                                    name="google-code"
-                                    placeholder="인증코드 입력"
-                                    value={googleInfo.code}
-                                    onChange={(e) => setGoogleInfo({ ...googleInfo, code: e.target.value })}
-                                />
-                                <button className="btn-code-google">인증코드 전송</button>
-                            </div>
-                        </div>
-                    )}
+                    <span>{naverEmail}   </span>
+                    <span>{naverFail}</span>
+                    {naverEmail.indexOf("미연동") ?
+                        <button className="btn-edit-naver btn-link">연결해제</button>
+                        :
+                        <button className="btn-edit-naver btn-link" onClick={() => handleNaverLink()}>연결하기</button>
+                    }
+
                 </div>
                 <span></span>
                 <div className="kakao-link">
                     <label>카카오</label>
-                    <span>미연동</span>
-                    <button className="btn-edit-kakao btn-link" onClick={() => setShowKakaoForm(true)}>연결하기</button>
-                    {showKakaoForm && (
-                        <div className="kakao-edit info-edit">
-                            <label></label>
-                            <input
-                                type="text"
-                                name="kakao"
-                                placeholder="연결할 카카오계정 입력해주세요."
-                                value={kakaoInfo.account}
-                                onChange={(e) => setKakaoInfo({ ...kakaoInfo, account: e.target.value })}
-                            />
-                            <button className="btn-submit-kakao" onClick={handleKakaoSubmit}>완료</button>
-                            <div className="info-edit">
-                                <label></label>
-                                <input
-                                    type="text"
-                                    name="kakao-code"
-                                    placeholder="인증코드 입력"
-                                    value={kakaoInfo.code}
-                                    onChange={(e) => setKakaoInfo({ ...kakaoInfo, code: e.target.value })}
-                                />
-                                <button className="btn-code-kakao">인증코드 전송</button>
-                            </div>
-                        </div>
-                    )}
+                    <span>{kakaoEmail}   </span>
+                    <span>{kakaoFail}</span>
+                    {kakaoEmail.indexOf("미연동") ?
+                        <button className="btn-edit-kakao btn-link">연결해제</button>
+                        :
+                        <button className="btn-edit-kakao btn-link" onClick={() => handleKakaoLink()}>연결하기</button>
+                    }
+
+                </div>
+                <span></span>
+                <div className="google-link">
+                    <label>구글</label>
+                    <span>{googleEmail}   </span>
+                    <span>{googleFail}</span>
+                    {googleEmail.indexOf("미연동") ?
+                        <button className="btn-edit-google btn-link">연결해제</button>
+                        :
+                        <button className="btn-edit-google btn-link" onClick={() => handleGoogleLink()}>연결하기</button>
+                    }
                 </div>
                 <span></span>
             </div>
-        </div>
+        </div >
     );
 }
