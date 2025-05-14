@@ -24,3 +24,4 @@ yarn-error.log*
 
 /match/.idea/gradle.xml
 /.idea
+.vscode/settings.json
