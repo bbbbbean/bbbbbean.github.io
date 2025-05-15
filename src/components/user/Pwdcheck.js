@@ -12,8 +12,9 @@ const PasswordCheck = ({ }) => {
         instance.post("/api/auth/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
             .then((response) => {
                 console.log("실행됨");
+                console.log(response);
                 if (response.data.success) {
-                    navigate("/user/mypage/edit", { state: { userDTO: response.data.userDTO } });
+                    navigate("/user/mypage/edit");
                 } else {
                     setPassword("")
                     setMessage(response.data.message);
@@ -50,6 +51,9 @@ const PasswordCheck = ({ }) => {
                                     placeholder="비밀번호"
                                     value={password}
                                     onChange={(e) => {
+                                        if (e.target.value.length > 15) {
+                                            e.target.value = e.target.value.substring(0, 15);
+                                        }
                                         setPassword(e.target.value)
                                         setMessage("");
                                     }}

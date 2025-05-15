@@ -13,11 +13,17 @@ public interface UserMapper {
 
     List<String> selectUserTag(String userId);
 
+    int updateUserInfo(String userId, String value, String type);
+
+    int updateUserPassword(String userId, String password);
+
     List<SocialLinkDTO> userLinkAt(SocialLinkDTO socialLinkDTO);
 
     int insertUserTag(String userId, String tag);
 
-    int insertAccountLink(SocialLinkDTO socialLinkDTO);
+    int insertSocialLink(SocialLinkDTO socialLinkDTO);
+
+    int deleteSocialLink(SocialLinkDTO socialLinkDTO);
 
     int deleteUserTag(String userId, String tag);
 }

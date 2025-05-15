@@ -1,28 +1,28 @@
-.wrapper{
-    width: 1920px;
-    height: 4000px;
-}
-.wrapper>main{
+.friend-container {
     width: 1280px;
     height: 4000px;
     display: flex;
 }
-.wrapper>main>section{
+
+.friend-container>section {
     width: 50%;
     height: 4000px;
     margin-top: 20px;
 }
-.wrapper>main>.left>.all{
+
+.friend-container>.left>.all {
     /* position: relative; */
     width: 640px;
     height: 1552px;
 }
-.wrapper>main>.left>.all>.friend{
+
+.friend-container>.left>.all>.friend {
     height: 73px;
     background-color: #6EC3FF;
     position: relative;
 }
-.wrapper>main>.left>.all>.friend>h1{
+
+.friend-container>.left>.all>.friend>h1 {
     position: absolute;
     width: 100px;
     height: 25px;
@@ -31,11 +31,13 @@
     font-size: 29px;
     align-content: center;
 }
-.wrapper>main>.left>.all>.find{
+
+.friend-container>.left>.all>.find {
     position: relative;
     display: flex;
 }
-.wrapper>main>.left>.all>.find>input{
+
+.friend-container>.left>.all>.find>input {
     border: 1px solid #6EC3FF;
     border-radius: 49px 49px 49px 49px;
     width: 588px;
@@ -45,56 +47,65 @@
     font-size: 20px;
     padding-left: 5%;
 }
-.wrapper>main>.left>.all>.find>button{
+
+.friend-container>.left>.all>.find>button {
     background-color: white;
     border: none;
     position: absolute;
     top: 31px;
     right: 45px;
     width: 40px;
-    height: 40px; 
+    height: 40px;
     cursor: pointer;
 }
-.wrapper>main>.left>.all>.find>button>img{
+
+.friend-container>.left>.all>.find>button>img {
     width: 30px;
 }
-.wrapper>main>.left>.all>.usually>h1{
+
+.friend-container>.left>.all>.usually>h1 {
     margin-left: 24px;
     font-size: 20px;
     font-weight: 350;
     color: #6B6B6B;
 }
-.wrapper>main>.left>.all>.person{
+
+.friend-container>.left>.all>.person {
     display: flex;
     margin-bottom: 20px;
     position: relative;
     /* border: 1px solid; */
     /* width: 400px; */
 }
-.wrapper>main>.left>.all>.person>.profile{
+
+.friend-container>.left>.all>.person>.profile {
     border-radius: 50%;
     width: 52px;
     height: 52px;
     background-color: #FBB00E;
     margin-left: 24px;
 }
-.wrapper>main>.left>.all>.person>.word1{
+
+.friend-container>.left>.all>.person>.word1 {
     /* border: 1px solid; */
     width: 200px;
     height: 30px;
     margin-left: 10px;
 }
-.wrapper>main>.left>.all>.person>.word1>.name{
+
+.friend-container>.left>.all>.person>.word1>.name {
     font-size: 20px;
     font-weight: 600;
 }
-.wrapper>main>.left>.all>.person>.word1>.oneline{
-   /* border: 1px solid; */
+
+.friend-container>.left>.all>.person>.word1>.oneline {
+    /* border: 1px solid; */
     font-size: 16px;
     /* width: 100px; */
     color: #6B6B6B;
 }
-.wrapper>main>.left>.all>.person>button{
+
+.friend-container>.left>.all>.person>button {
     cursor: pointer;
     position: absolute;
     border: none;
@@ -105,7 +116,8 @@
     /* border: 1px solid; */
     /* height: 20px; */
 }
-.wrapper>main>.left>.all>.person>.friendmenu{
+
+.friend-container>.left>.all>.person>.friendmenu {
     display: none;
     position: absolute;
     border: 1px solid #6B6B6B;
@@ -120,15 +132,18 @@
     border-radius: 0px 10px 10px 10px;
     background-color: white;
 }
-.wrapper>main>.left>.all>.person>.friendmenu.show{
+
+.friend-container>.left>.all>.person>.friendmenu.show {
     display: block;
 }
-.wrapper>main>.left>.all>hr{
-   border: none;
-   border-bottom: 1px solid #6EC3FF;
-   margin-bottom: 20px;
+
+.friend-container>.left>.all>hr {
+    border: none;
+    border-bottom: 1px solid #6EC3FF;
+    margin-bottom: 20px;
 }
-.wrapper>main>.right{
+
+.friend-container>.right {
     width: 612px;
     height: 1223px;
     border: #6EC3FF solid;
@@ -136,7 +151,8 @@
     border-radius: 20px 20px 20px 20px;
     position: relative;
 }
-.wrapper>main>.right>.nonechat{
+
+.friend-container>.right>.nonechat {
     width: 180px;
     height: 140px;
     position: absolute;
@@ -145,19 +161,24 @@
     left: 50%;
     margin: -70px 0 0 -90px;
 }
-.wrapper>main>.right>.nonechat>img{
+
+.friend-container>.right>.nonechat>img {
     width: 110px;
     height: 110px;
 }
-.wrapper>main>.right>.nonechat>.startchat{
+
+.friend-container>.right>.nonechat>.startchat {
     font-size: 20px;
 }
-.wrapper>main>.right>.friendlist{
+
+.friend-container>.right>.friendlist {
     display: flex;
     margin-left: 24px;
     margin-top: 20px;
 }
-.wrapper>main>.right>.friendlist>.myfriend, .im-in{
+
+.friend-container>.right>.friendlist>.myfriend,
+.im-in {
     border: 3px solid #6EC3FF;
     border-radius: 30px 30px 30px 30px;
     font-size: 24px;
@@ -165,7 +186,8 @@
     margin-bottom: 20px;
 
 }
-.wrapper>main>.right>.friendlist>.myfriend{
+
+.friend-container>.right>.friendlist>.myfriend {
     background-color: rgb(110, 195, 255, 0.55);
     width: 95px;
     height: 35px;
@@ -173,7 +195,8 @@
     font-size: 20px;
     font-weight: 700;
 }
-.wrapper>main>.right>.friendlist>.im-in{
+
+.friend-container>.right>.friendlist>.im-in {
     width: 194px;
     height: 35px;
     margin-left: 10px;

@@ -19,10 +19,22 @@
         DELETE FROM preferencetag_tbl where userId = #{userId} and tag = #{tag};
     </delete>
 
+    <update id="updateUserInfo">
+        UPDATE user_tbl SET ${type} = #{value} where userId = #{userId};
+    </update>
 
-    <insert id="insertAccountLink">
+    <update id="updateUserPassword">
+        UPDATE user_tbl SET password = #{password} where userId = #{userId};
+    </update>
+
+
+    <insert id="insertSocialLink">
         INSERT INTO sociallink_tbl VALUES(#{userId},#{platformType},#{linkedId},#{email});
     </insert>
+
+    <delete id="deleteSocialLink">
+        DELETE FROM sociallink_tbl WHERE userId = #{userId} and platformType = #{platformType};
+    </delete>
 
     <select id="userLinkAt" resultType="SocialLinkDTO">
 

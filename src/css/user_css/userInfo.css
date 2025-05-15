@@ -41,6 +41,7 @@ p {
 .info-container>.info-right>.info-title {
     margin: 50px 0px;
 }
+
 /*  */
 .user-info-content {
     text-align: left;
@@ -77,12 +78,14 @@ p {
     font-size: 20px;
     font-weight: normal;
 }
+
 .user-info-content>div>span:nth-child(3) {
     color: #dd3e3e;
     font-size: 12px;
     font-weight: bold;
 }
-.user-info-content>div>.info-edit>form{
+
+.user-info-content>div>.info-edit>form {
     width: 100%;
     margin: 0;
     padding: 0;
@@ -98,6 +101,32 @@ p {
     border-radius: 5px;
     padding: 0 5px;
     margin-bottom: 5px;
+}
+
+.user-info-content>div>.info-edit>input[type="radio"] {
+    display: none;
+}
+
+.user-info-content>div>.info-edit>textarea {
+    width: 390px;
+    height: 90px;
+    font-size: 18px;
+    background-color: #c4e5fc;
+    resize: none;
+    color: black;
+    border: none;
+    padding: 5px;
+    border-radius: 20px;
+    border-bottom: 2px solid #0000007e;
+    outline: none;
+}
+
+.user-info-content>div>.info-edit>.select {
+    font-size: 2.0rem;
+}
+
+.user-info-content>div>.info-edit>.noselect {
+    color: #D9D9D9;
 }
 
 .user-info-content>div {

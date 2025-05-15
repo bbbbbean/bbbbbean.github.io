@@ -3,11 +3,23 @@ import React, { useState } from "react";
 import "../../css/user_css/userInfo_sidebar.css";
 import profile from "../../image/user/profile.png"
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserName } from "../../store";
+
 
 const MyPageSiderbar = () => {
-  const [activeMenu, setActiveMenu] = useState("");
+
+  const dispatch = useDispatch();
+  
+  
+
+  let url = new URL(window.location.href).href.split("/")[5];
+  if(url === "edit"){
+    url = "password_check";
+  }
+  const [activeMenu, setActiveMenu] = useState(url);
   const userId = localStorage.getItem("userId");
-  const nickName = localStorage.getItem("nickName");
+  const nickName = useSelector((state) => state.user.userName);
   const [manner, setManner] = useState(localStorage.getItem("manner") / 6 +0.5);
 
   const menuItems = [
@@ -17,6 +29,8 @@ const MyPageSiderbar = () => {
     { label: "계정 연동", url: "account_link" },
     { label: "회원 탈퇴", url: "delete_account" },
   ];
+
+  dispatch(setUserName(localStorage.getItem("nickName")));
 
   return (
     <div className="info-left">

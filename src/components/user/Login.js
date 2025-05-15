@@ -48,6 +48,8 @@ const LoginForm = () => {
                     isPrivate,
                     manner,
                     gender,
+                    phone,
+                    address,
                     introduction,
                 } = response.data.userDTO;
 
@@ -59,6 +61,8 @@ const LoginForm = () => {
                 localStorage.setItem("isPrivate", isPrivate);
                 localStorage.setItem("manner", manner);
                 localStorage.setItem("gender", gender);
+                localStorage.setItem("phone", phone);
+                localStorage.setItem("address", address);
                 localStorage.setItem("introduction", introduction);
                 localStorage.setItem("loginPlatform", 0);
 

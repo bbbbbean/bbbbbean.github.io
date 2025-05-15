@@ -48,7 +48,7 @@ public class AuthService {
     @Autowired
     UserMapper userMapper;
 
-    String CLIENT_ID = System.getenv("KAKAO");
+    String CLIENT_ID = "";
     String RESPONSE_TYPE = "code";
 
 
@@ -72,10 +72,17 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean addAccountLink(SocialLinkDTO socialLinkDTO) {
-        boolean isAdded = userMapper.insertAccountLink(socialLinkDTO) > 0;
+    public boolean addSocialLink(SocialLinkDTO socialLinkDTO) {
+        boolean isAdded = userMapper.insertSocialLink(socialLinkDTO) > 0;
 
         return isAdded;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean unSocialLink(SocialLinkDTO socialLinkDTO) {
+        boolean isDel = userMapper.deleteSocialLink(socialLinkDTO) > 0;
+
+        return isDel;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -104,8 +111,6 @@ public class AuthService {
         userDTO.setPassword(null);
         userDTO.setRole(null);
         userDTO.setProfile(null);
-        userDTO.setAddress(null);
-        userDTO.setPhone(null);
 
         resp.put("userDTO", userDTO);
 

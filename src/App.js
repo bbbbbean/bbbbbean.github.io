@@ -20,9 +20,7 @@ import Friend from './components/message/Friend'
 function AppComponent() {
 
   //로그인 여부 확인
-  const dispatch = useDispatch();
   if (localStorage.getItem("isAuth")) {
-    dispatch(login());
   }
 
   //어드민 페이지 여부 확인용

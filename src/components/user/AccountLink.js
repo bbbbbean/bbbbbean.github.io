@@ -20,7 +20,7 @@ export default function AccountLink() {
             .substring(1).replace("?", "").split("&")
             .forEach((item) => {
                 if (!item.indexOf("platform")) {
-                    platform = Number(item.split("=")[1]);
+                    platform = item.split("=")[1];
                 } else if (!item.indexOf("code")) {
                     code = item.split("=")[1];
                 } else if (!item.indexOf("FailCode")) {
@@ -29,17 +29,17 @@ export default function AccountLink() {
             });
 
         switch (platform) {
-            case 1: // 네이버
+            case "1": // 네이버
                 break;
-            case 2: // 카카오
+            case "2": // 카카오
                 KakaoLinkApi(code)
                 break;
-            case 3: // 구글
+            case "3": // 구글
                 break;
         }
 
         switch (failCode) {
-            case '1': // 네이버 로그인 실패?
+            case '1': // 네이버
                 setNaverFail("이미 연결된 네이버 계정입니다.");
                 break;
             case '2': // 카카오
@@ -73,6 +73,38 @@ export default function AccountLink() {
                 console.log(error);
             });
     }, []);
+
+    const handleUnLink = (e) => {
+        const platformType = e.target.className.split(" ")[0];
+        instance.post("/api/auth/unLink", { userId: localStorage.getItem("userId"), platformType })
+            .then((response) => {
+                if (response.status == 200) {
+                    switch (platformType) {
+                        case '1': // 네이버
+                            setNaverEmail("미연동");
+                            break;
+                        case '2': // 카카오
+                            setKakaoEmail("미연동");
+                            break;
+                        case '3': // 구글
+                            setGoogleEmail("미연동");
+                            break;
+                    }
+                } else {
+                    switch (platformType) {
+                        case '1': // 네이버
+                            setNaverFail("연동해제 실패");
+                            break;
+                        case '2': // 카카오
+                            setKakaoFail("연동해제 실패");
+                            break;
+                        case '3': // 구글
+                            setGoogleFail("연동해제 실패");
+                            break;
+                    }
+                }
+            });
+    };
 
     const handleNaverLink = (item) => {
         console.log("네이버 계정 연결:", item);
@@ -126,9 +158,9 @@ export default function AccountLink() {
                     <span>{naverEmail}   </span>
                     <span>{naverFail}</span>
                     {naverEmail.indexOf("미연동") ?
-                        <button className="btn-edit-naver btn-link">연결해제</button>
+                        <button className="1 btn-link" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-naver btn-link" onClick={() => handleNaverLink()}>연결하기</button>
+                        <button className="btn-edit-naver btn-link" onClick={handleNaverLink}>연결하기</button>
                     }
 
                 </div>
@@ -138,9 +170,9 @@ export default function AccountLink() {
                     <span>{kakaoEmail}   </span>
                     <span>{kakaoFail}</span>
                     {kakaoEmail.indexOf("미연동") ?
-                        <button className="btn-edit-kakao btn-link">연결해제</button>
+                        <button className="2 btn-link" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-kakao btn-link" onClick={() => handleKakaoLink()}>연결하기</button>
+                        <button className="btn-edit-kakao btn-link" onClick={handleKakaoLink}>연결하기</button>
                     }
 
                 </div>
@@ -150,9 +182,9 @@ export default function AccountLink() {
                     <span>{googleEmail}   </span>
                     <span>{googleFail}</span>
                     {googleEmail.indexOf("미연동") ?
-                        <button className="btn-edit-google btn-link">연결해제</button>
+                        <button className="3 btn-link" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-google btn-link" onClick={() => handleGoogleLink()}>연결하기</button>
+                        <button className="btn-edit-google btn-link" onClick={handleGoogleLink}>연결하기</button>
                     }
                 </div>
                 <span></span>

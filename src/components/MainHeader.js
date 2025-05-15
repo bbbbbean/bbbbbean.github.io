@@ -5,14 +5,18 @@ import logo from "../image/로고_color.png";
 import loginIcon from "../image/image_index/login-b-icon.svg";
 import noticeIcon from "../image/image_index/notice-b-icon.svg";
 import menuIcon from "../image/image_index/menu-icon.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {setIsAuth} from "../store";
 
 
 
 
 const MainHeader = () => {
 
+  const dispatch = useDispatch();
+
   const isAuth = useSelector(state => state.auth.isAuth);
+  dispatch(setIsAuth(localStorage.getItem("isAuth")));
 
   return (
     <header>

@@ -37,43 +37,41 @@ const FriendItem = ({ name, intro }) => {
 
 const Friend = () => {
   return (
-    <div className="wrapper">
-      <main>
-        <section className="left">
-          <div className="all">
-            <div className="friend">
-              <h1>친구</h1>
-            </div>
-            <div className="find">
-              <input type="text" placeholder="친구 검색하기" />
-              <button>
-                <img src={searchIcon} alt="친구찾기" />
-              </button>
-            </div>
-            <div className="usually">
-              <h1>즐겨찾는 친구</h1>
-            </div>
-            {friendsData.slice(0, 2).map((friend, idx) => (
-              <FriendItem key={idx} {...friend} />
-            ))}
-            <hr />
-            {friendsData.slice(2).map((friend, idx) => (
-              <FriendItem key={idx + 2} {...friend} />
-            ))}
+    <div className='friend-container'>
+      <section className="left">
+        <div className="all">
+          <div className="friend">
+            <h1>친구</h1>
           </div>
-        </section>
+          <div className="find">
+            <input type="text" placeholder="친구 검색하기" />
+            <button>
+              <img src={searchIcon} alt="친구찾기" />
+            </button>
+          </div>
+          <div className="usually">
+            <h1>즐겨찾는 친구</h1>
+          </div>
+          {friendsData.slice(0, 2).map((friend, idx) => (
+            <FriendItem key={idx} {...friend} />
+          ))}
+          <hr />
+          {friendsData.slice(2).map((friend, idx) => (
+            <FriendItem key={idx + 2} {...friend} />
+          ))}
+        </div>
+      </section>
 
-        <section className="right">
-          <div className="nonechat">
-            <img src={chatIcon} alt="채팅" />
-            <div className="startchat">친구와 채팅 시작하기</div>
-          </div>
-          <div className="friendlist">
-            <div className="myfriend">친구</div>
-            <div className="im-in">내가 참여한 매칭</div>
-          </div>
-        </section>
-      </main>
+      <section className="right">
+        <div className="nonechat">
+          <img src={chatIcon} alt="채팅" />
+          <div className="startchat">친구와 채팅 시작하기</div>
+        </div>
+        <div className="friendlist">
+          <div className="myfriend">친구</div>
+          <div className="im-in">내가 참여한 매칭</div>
+        </div>
+      </section>
     </div>
   );
 };

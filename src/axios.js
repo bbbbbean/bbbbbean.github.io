@@ -23,27 +23,30 @@ instance.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
-        const {
-            config,
-        } = error;
+    async (error) => {
+        if (error.response.status != 401) {
+            return error.response;
+        }
+        const { config } = error;
         if (error.response.data.message.includes("refresh")) {
-            const originalRequest = config;
-            axios.post("/api/auth/reneToken",
-                {},
-                { withCredentials: true })
-                .then(async (response) => {
-                    localStorage.setItem("accessToken", response.data.jwtToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${response.data.jwtToken}`;
-                    alert("reissue Token");
-                })
-                .catch((error) => {
-                    window.location.href = '/user/login';
-                    return;
-                });
+            try {
+                const response = await axios.post(
+                    "/api/auth/reneToken",
+                    {},
+                    { withCredentials: true }
+                );
+                console.log(response);
+                localStorage.setItem("accessToken", response.data.jwtToken);
+                config.headers['Authorization'] = `Bearer ${response.data.jwtToken}`;
+                return axios(config);
+            } catch (e) {
+                window.location.href = '/user/logout';
+                return;
+            }
+
         } else {
-            window.location.href = '/user/login';
-                    return;
+            window.location.href = '/user/logout';
+            return;
         }
     }
 );

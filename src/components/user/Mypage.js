@@ -86,13 +86,13 @@ const MyPageSection = () => {
         <span>Tag</span>
         <div className="date-tag">
           {tags.map((tag, idx) => (
-            <div key={idx} className="tag-item">
+            <div key={idx} className="tag-item drag-prevent" data-tag={tag} onClick={tagDel}>
               {tag}
-              <span data-tag={tag} onClick={tagDel}>-</span>
+              <span>-</span>
             </div>
           ))}
           {tags.length < 10 &&
-            <div className="tag-item tag-add">
+            <div className="tag-add">
               <form onSubmit={tagAdd}>
                 <input
                   type="text"

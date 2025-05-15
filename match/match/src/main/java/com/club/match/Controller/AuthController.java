@@ -56,10 +56,6 @@ public class AuthController {
         resp.put("success", isOk);
         if (!isOk) {
             resp.put("message", "비밀번호가 일치하지 않습니다");
-        } else {
-            userDTO.setPassword("");
-            userDTO.setRole("");
-            resp.put("userDTO", userDTO);
         }
         return ResponseEntity.ok().body(resp);
     }
@@ -85,8 +81,6 @@ public class AuthController {
         userDTO.setPassword(null);
         userDTO.setRole(null);
         userDTO.setProfile(null);
-        userDTO.setAddress(null);
-        userDTO.setPhone(null);
 
         resp.put("userDTO", userDTO);
 
@@ -133,6 +127,18 @@ public class AuthController {
         return ResponseEntity.badRequest().body(null);
     }
 
+    @PostMapping("/unLink")
+    public ResponseEntity<?> UnLink(@RequestBody @Validated SocialLinkDTO socialLinkDTO) {
+
+        boolean isOk = authService.unSocialLink(socialLinkDTO);
+
+        if(!isOk){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.ok().body(null);
+    }
+
     @PostMapping("/kakaoLink")
     public ResponseEntity<?> kakaoLink(@RequestBody Map<String, Object> req) {
 
@@ -163,7 +169,7 @@ public class AuthController {
             return ResponseEntity.ok().body(resp);
         }
 
-        boolean isAdded = authService.addAccountLink(socialLinkDTO);
+        boolean isAdded = authService.addSocialLink(socialLinkDTO);
 
         resp.put("success",true);
         return ResponseEntity.ok().body(resp);

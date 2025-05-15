@@ -26,19 +26,24 @@ const KakaoCode = () => {
                 isPrivate,
                 manner,
                 gender,
+                phone,
+                address,
                 introduction,
             } = response.data.userDTO;
 
-            localStorage.setItem("userId", userId);
-            localStorage.setItem("email", email);
-            localStorage.setItem("name", name);
-            localStorage.setItem("nickName", nickName);
-            localStorage.setItem("points", points);
-            localStorage.setItem("isPrivate", isPrivate);
-            localStorage.setItem("manner", manner);
-            localStorage.setItem("gender", gender);
-            localStorage.setItem("introduction", introduction);
-            localStorage.setItem("loginPlatform", 2);
+
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("email", email);
+                localStorage.setItem("name", name);
+                localStorage.setItem("nickName", nickName);
+                localStorage.setItem("points", points);
+                localStorage.setItem("isPrivate", isPrivate);
+                localStorage.setItem("manner", manner);
+                localStorage.setItem("gender", gender);
+                localStorage.setItem("phone", phone);
+                localStorage.setItem("address", address);
+                localStorage.setItem("introduction", introduction);
+                localStorage.setItem("loginPlatform", 2);
 
             dispatch(login());
 
