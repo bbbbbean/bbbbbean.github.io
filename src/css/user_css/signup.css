@@ -66,16 +66,12 @@ li {
     background-color: var(--color-Light-Grays-3-rgba);
 }
 
-.email-auth-pack{
-    display: flex;
-    gap: 10px;
-}
-
-#login-form #email-auth-input {
-    text-align: center;
-}
-
-#login-form #email-auth-btn {
+#login-form .auth-btn {
+    width: 100%;
+    height: 20px;
+    border: 1px solid;
+    line-height: 20px;
+    padding: 20px;
     font-family: Medium;
     background-color: var(--color-RockON-3);
     cursor: pointer;
@@ -84,7 +80,7 @@ li {
     font-size: .9rem;
 }
 
-#login-form #email-auth-btn:hover {
+#login-form .auth-btn:hover {
     background-color: var(--color-Big-Machine-5);
 }
 
@@ -99,9 +95,6 @@ li {
     display: block;
 }
 
-
-
-
 #login-form>button {
     margin: 15px 0;
     padding: 10px 0;
@@ -111,6 +104,7 @@ li {
     font-family: 900;
     cursor: pointer;
     color: #fff;
+    transition: 0.2s;
 }
 
 #login-form>button:hover {
@@ -163,4 +157,8 @@ li {
 .no-account-section>a {
     color: var(--color-RockON-5);
     font-family: Medium;
+}
+
+#login-form .success{
+    background-color: #4ebf8a;
 }

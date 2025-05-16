@@ -9,12 +9,12 @@ const PasswordCheck = ({ }) => {
 
     const handleConfirmClick = (e) => {
         e.preventDefault();
-        instance.post("/api/auth/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
+        instance.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
             .then((response) => {
                 console.log("실행됨");
                 console.log(response);
                 if (response.data.success) {
-                    navigate("/user/mypage/edit");
+                    navigate("/mypage/edit");
                 } else {
                     setPassword("")
                     setMessage(response.data.message);

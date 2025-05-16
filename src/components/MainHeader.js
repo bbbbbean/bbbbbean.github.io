@@ -7,6 +7,7 @@ import noticeIcon from "../image/image_index/notice-b-icon.svg";
 import menuIcon from "../image/image_index/menu-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {setIsAuth} from "../store";
+import { useEffect } from "react";
 
 
 
@@ -16,8 +17,10 @@ const MainHeader = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(state => state.auth.isAuth);
-  dispatch(setIsAuth(localStorage.getItem("isAuth")));
 
+  useEffect(()=>{
+    dispatch(setIsAuth(localStorage.getItem("isAuth")));
+  },[])
   return (
     <header>
       <ul className="logo">
@@ -78,7 +81,7 @@ const MainHeader = () => {
               <a href="#"><img src={noticeIcon} alt="" /><span>알림</span></a>
             </li>
             <li>
-              <NavLink to="/user/mypage">
+              <NavLink to="/mypage/">
                 <img src={menuIcon} alt="" />
               </NavLink>
             </li>

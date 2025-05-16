@@ -40,9 +40,6 @@ public class AuthService {
     AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Autowired
-    PrincipalDetailsService principalDetailsService;
-
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired

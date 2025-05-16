@@ -1,11 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import instance from "../../axios"
 import { setUserName } from "../../store";
 import { useDispatch } from "react-redux";
 
-export default function MyInfo() {
+const UserEdit = () => {
 
     const dispatch = useDispatch();
 
@@ -53,7 +51,7 @@ export default function MyInfo() {
         console.log(btnClass[0]);
         instance.post("/api/user/infoUpdate", { "userId": userDTO.userId, "value": formData[btnClass[0]], "authCode": formData[btnClass[1]], "type": btnClass[0] })
             .then((response) => {
-                if(btnClass[0] === "nickname"){
+                if (btnClass[0] === "nickname") {
                     dispatch(setUserName(response.data.userDTO.nickName));
                 }
                 setUserDTO(response.data.userDTO);
@@ -291,3 +289,6 @@ export default function MyInfo() {
         </div>
     );
 }
+
+
+export default UserEdit;

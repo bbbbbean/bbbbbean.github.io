@@ -131,7 +131,7 @@ const LoginForm = () => {
                     }
                 </div>
                 <div className="login-menu">
-                    <NavLink to="/user/register">
+                    <NavLink to="/user/signup">
                         <span>회원가입</span>
                     </NavLink>
                     <span>|</span>
@@ -150,7 +150,7 @@ const LoginForm = () => {
                             <a href="#"></a>
                         </li>
                         <li>
-                            <NavLink to="/user/kakao" />
+                            <NavLink to="http://localhost:8100/oauth2/authorization/kakao" />
                         </li>
                         <li>
                             <a href="#"></a>

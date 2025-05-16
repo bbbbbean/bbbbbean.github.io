@@ -44,13 +44,13 @@ dependencies {
 	//DataSource
 	implementation 'org.apache.commons:commons-dbcp2:2.13.0'
 
-	//JSP
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // 추가
-
 	//JSTL
 	implementation 'jakarta.servlet:jakarta.servlet-api' //스프링부트 3.0 이상
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //스프링부트 3.0 이상
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' //스프링부트 3.0 이상
+
+	//Oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 	//JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'

@@ -12,22 +12,13 @@ import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Domain.Service.AuthService;
 import com.club.match.Domain.Service.UserService;
-import jakarta.servlet.http.HttpSession;
-import lombok.Data;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @Slf4j
@@ -43,20 +34,10 @@ public class AuthController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @PostMapping("/myInfoPwdCheck")
-    public ResponseEntity<?> pwdCheck(@RequestBody Map<String, Object> req) {
+    @PostMapping("/sign")
+    public ResponseEntity<?> userSign(@RequestBody Map<String,String> req) {
         Map<String, Object> resp = new HashMap<>();
-        String userId = (String) req.get("userId");
-        String password = (String) req.get("password");
-        UserDTO userDTO = authService.selectOne(userId);
-        boolean isOk = passwordEncoder.matches(password, userDTO.getPassword());
-        resp.put("success", isOk);
-        if (!isOk) {
-            resp.put("message", "비밀번호가 일치하지 않습니다");
-        }
+
         return ResponseEntity.ok().body(resp);
     }
 
@@ -147,6 +128,9 @@ public class AuthController {
         String code = (String) req.get("code");
         String redirect_url = ((String) req.get("url")).split("&")[0];
 
+        log.info("code : " + code);
+        log.info("redirect_url : " + redirect_url);
+
         ResponseEntity<KakaoDTO> oauthResponse = authService.oauth(code,redirect_url);
 
         ResponseEntity<KakaoDTO> kakaoUserInfoResponse = authService.getUserKakaoId(oauthResponse.getBody().access_token);
@@ -173,41 +157,5 @@ public class AuthController {
 
         resp.put("success",true);
         return ResponseEntity.ok().body(resp);
-    }
-        @PostMapping("/kakaoLogin")
-    public ResponseEntity<?> kakaoLogin(@RequestBody Map<String, Object> req) {
-
-        String code = (String) req.get("code");
-        String redirect_url = ((String) req.get("url")).split("\\?")[0];
-        log.info(redirect_url);
-
-        ResponseEntity<KakaoDTO> oauthResponse = authService.oauth(code,redirect_url);
-
-        ResponseEntity<KakaoDTO> kakaoUserInfoResponse = authService.getUserKakaoId(oauthResponse.getBody().access_token);
-
-        Map<String, Object> authResp = authService.socialLogin(SocialLinkDTO
-                .builder()
-                .platformType("2")
-                .linkedId(kakaoUserInfoResponse.getBody().getId()).build());
-
-        Map<String, Object> resp = new HashMap<>();
-
-        if ((String)authResp.get("errorCode") != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authResp);
-        }
-
-        JwtTokenDTO jwtTokenDTO = (JwtTokenDTO) authResp.get("jwtTokenDTO");
-        UserDTO userDTO = (UserDTO) authResp.get("userDTO");
-
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
-                .httpOnly(true)
-                .path("/")
-                .maxAge(Duration.ofDays(1))
-                .build();
-
-        resp.put("jwtToken", jwtTokenDTO.getAccessToken());
-        resp.put("userDTO", userDTO);
-
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
     }
 }

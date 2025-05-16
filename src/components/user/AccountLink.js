@@ -115,7 +115,7 @@ export default function AccountLink() {
     };
 
     const handleKakaoLink = () => {
-        const REDIRECT_URI = "http://localhost:3000/user/mypage/account_link?platform=2";
+        const REDIRECT_URI = "http://localhost:3000/mypage/account_link?platform=2";
         const CLIENT_ID = "";
         const RESPONSE_TYPE = "code";
         const url = "https://kauth.kakao.com/oauth/authorize" +
@@ -134,9 +134,9 @@ export default function AccountLink() {
         })
             .then((response) => {
                 if (response.data.success) {
-                    window.location.href = "/user/mypage/account_link"
+                    window.location.href = "/mypage/account_link"
                 } else {
-                    window.location.href = "/user/mypage/account_link?FailCode=" + response.data.FailCode;
+                    window.location.href = "/mypage/account_link?FailCode=" + response.data.FailCode;
                 }
             }).catch((error) => {
                 console.log(error);

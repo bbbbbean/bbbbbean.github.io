@@ -8,21 +8,33 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 	private UserDTO userDto;
+
+	@Override
+	public Map<String, Object> getAttributes() {
+		return Map.of();
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority(userDto.getRole()));
 		return authorities;
+	}
+
+	@Override
+	public String getName() {
+		return "";
 	}
 
 	@Override
@@ -54,5 +66,5 @@ public class PrincipalDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }

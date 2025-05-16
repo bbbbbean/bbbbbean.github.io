@@ -1,20 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
-import { useDispatch } from "react-redux";
-import { login } from "./store"
 
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
 import MatchList from "./components/match/matchList";
 import EventList from "./components/event/Event";
-import Login from "./components/user/Login";
-import MyPageLayout from "./components/user/MypageLayout";
+import MyPageLayout from "./components/layout/MypageLayout";
 import AdminPage from './AdminPage';
-import Logout from "./components/user/Logout"
-import Kakao from "./components/user/Kakao"
-import KakaoCode from './components/user/KakaoCode';
 import Friend from './components/message/Friend'
+import UserLayout from './components/layout/UserLayout'
+import SuccessLogin from './SuccessLogin'
 
 
 function AppComponent() {
@@ -35,12 +31,10 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<Friend />} />
-              <Route path="/user/mypage/*" element={<MyPageLayout />} />
-              <Route path="/user/login" element={<Login />} />
-              <Route path="/user/logout" element={<Logout />} />
-              <Route path="/user/kakao" element={<Kakao />} />
-              <Route path="/user/kakaoCode" element={<KakaoCode />} />
+              <Route path="/friend" element={<Friend />} />              
+              <Route path="/mypage/*" element={<MyPageLayout />} />
+              <Route path="/user/*" element={<UserLayout />} />
+              <Route path="/ok" element={<SuccessLogin />} />
             </Routes>
           </div>
           <Footer />

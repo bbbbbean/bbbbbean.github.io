@@ -2,13 +2,13 @@ import { Route, Routes } from 'react-router-dom';
 
 import "../../css/user_css/userInfo.css";
 
-import MyPageSiderbar from "./MypageSidebar";
-import Mypage from "./Mypage";
-import PasswordCheck from "./Pwdcheck";
-import UserEdit from "./UserEdit";
-import PwdEdit from "./PwdEdit";
-import AccountLink from "./AccountLink";
-import UserDelete from "./UserDelete";
+import MyPageSiderbar from "../user/MypageSidebar";
+import Mypage from "../user/Mypage";
+import PasswordCheck from "../user/Pwdcheck";
+import UserEdit from "../user/UserEdit";
+import PwdEdit from "../user/PwdEdit";
+import AccountLink from "../user/AccountLink";
+import UserDelete from "../user/UserDelete";
 
 
 const MyPageLayout = () => {

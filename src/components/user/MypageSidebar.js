@@ -17,6 +17,10 @@ const MyPageSiderbar = () => {
   if(url === "edit"){
     url = "password_check";
   }
+  if(url === undefined){
+    url = ""
+  }
+  console.log(url);
   const [activeMenu, setActiveMenu] = useState(url);
   const userId = localStorage.getItem("userId");
   const nickName = useSelector((state) => state.user.userName);
@@ -64,7 +68,7 @@ const MyPageSiderbar = () => {
               className={`item ${activeMenu === item.url ? "active" : ""}`}
               onClick={() => setActiveMenu(item.url)}
             >
-              <NavLink to={`/user/mypage/${item.url}`}>{item.label}</NavLink>
+              <NavLink to={`/mypage/${item.url}`}>{item.label}</NavLink>
             </div>
             {index !== menuItems.length - 1 && <span />}
           </React.Fragment>

@@ -28,6 +28,20 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @PostMapping("/myInfoPwdCheck")
+    public ResponseEntity<?> pwdCheck(@RequestBody Map<String, Object> req) {
+        Map<String, Object> resp = new HashMap<>();
+        String userId = (String) req.get("userId");
+        String password = (String) req.get("password");
+        UserDTO userDTO = userService.serchUserOne(userId);
+        boolean isOk = passwordEncoder.matches(password, userDTO.getPassword());
+        resp.put("success", isOk);
+        if (!isOk) {
+            resp.put("message", "비밀번호가 일치하지 않습니다");
+        }
+        return ResponseEntity.ok().body(resp);
+    }
+
     @PostMapping("/getTag")
     public ResponseEntity<?> getTag(@RequestBody Map<String, Object> req){
 
