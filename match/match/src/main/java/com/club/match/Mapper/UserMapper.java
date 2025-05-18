@@ -9,9 +9,15 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
+    int insertUser(UserDTO userDTO);
+
+    int deleteUser(String userId);
+
     UserDTO selectAt(String userId);
 
     List<String> selectUserTag(String userId);
+
+    int selectUserPhone(String phone);
 
     int updateUserInfo(String userId, String value, String type);
 

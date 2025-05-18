@@ -102,9 +102,7 @@ public class UserController {
 
         log.info(type);
 
-        if(type.equals("email")){
-            log.info("이메일 변경");
-        } else if(type.equals("phone")) {
+        if(type.equals("phone")) {
             log.info("폰번호 변경");
         } else { // 나머지
             boolean isOk = userService.changeUserInfo(userId,value,type);

@@ -1,20 +1,25 @@
 package com.club.match.Controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.club.match.Component.JwtTokenProvider;
-import com.club.match.Domain.DTO.JwtTokenDTO;
-import com.club.match.Domain.DTO.KakaoDTO;
-import com.club.match.Domain.DTO.SocialLinkDTO;
-import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.AuthService;
 import com.club.match.Domain.Service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.Claims;
+import org.apache.catalina.User;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +39,112 @@ public class AuthController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @PostMapping("/check-id")
+    public ResponseEntity<?> userCheck(@RequestBody Map<String,String> req) {
+
+        String userId = (String) req.get("userId");
+        UserDTO userDTO = authService.selectOne(userId);
+        if(userDTO == null) {
+            return ResponseEntity.ok().body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @PostMapping("/sign")
-    public ResponseEntity<?> userSign(@RequestBody Map<String,String> req) {
+    public ResponseEntity<?> userSign(@RequestBody @Validated SignDTO signDTO) {
         Map<String, Object> resp = new HashMap<>();
 
-        return ResponseEntity.ok().body(resp);
+        log.info("signDTO : " + signDTO);
+
+        if(!signDTO.isIdCheck()){
+            resp.put("fail","아이디 중복을 확인해주세요");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if(!signDTO.isAuthCheck()){
+            resp.put("fail","본인인증이 진행되지 않았습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if(!signDTO.getPassword().equals(signDTO.getRepassword())){
+            resp.put("fail","비밀번호가 일치하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        String portoneToken = authService.portOneGetToken();
+
+
+
+        PortOneDTO portOneDTO = authService.portOneGetData(signDTO.getImp_uid(), portoneToken);
+
+        boolean isPhone = authService.phoneCkeck(portOneDTO.getResponse().getPhone());
+
+        if(isPhone){
+            resp.put("fail","같은 명의로 등록된 계정이 있습니다.");
+            resp.put("authReset",1);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        UserDTO userDTO = UserDTO.builder()
+                .userId(signDTO.getUserId())
+                .nickName(signDTO.getNickName())
+                .password(passwordEncoder.encode(signDTO.getPassword()))
+                .name(portOneDTO.getResponse().getName())
+                .gender(portOneDTO.getResponse().getGender())
+                .phone(portOneDTO.getResponse().getPhone())
+                .birthday(portOneDTO.getResponse().getBirthday())
+                .introduction("기본 소개")
+                .address("지역을 설정해주세요")
+                .profile("http://localhost:8100/profile/"+signDTO.getUserId())
+                .manner(100)
+                .points(0)
+                .isPrivate(false)
+                .createAt(LocalDate.now())
+                .build();
+
+        String Path = "src/main/resources/defaultUser"; // 복사할 원본 폴더
+        String copyPath = "src/main/resources/Users/" + signDTO.getUserId(); // 복사할 위치
+
+        File Dir = new File(Path);
+        File copyDir = new File(copyPath);
+
+        try{
+            FileUtils.copyDirectory(Dir,copyDir);
+        } catch (IOException e) {
+            log.error("폴더 생성 실패 : " + e.getMessage());
+        }
+
+        boolean isOk = authService.joinUser(userDTO);
+
+        System.out.println(userDTO);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> userRemove(@RequestBody Map<String,String> req, @RequestHeader String Authorization) throws IOException {
+
+        String userId = (String) req.get("userId");
+        String accessToken = (String)(Authorization.substring(7));
+
+        String userPath = "src/main/resources/Users/" + userId;
+
+        // 토큰 ID값과 USERID값 비교
+        Claims claims = jwtTokenProvider.parseClaims(accessToken);
+
+        boolean isOk = userId.equals(claims.get("sub"));
+        System.out.println(isOk);
+
+        if(!isOk) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        File userDir = new File(userPath);
+
+        FileUtils.deleteDirectory(userDir);
+
+        boolean isDelete = authService.leaveUser(userId);
+
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("/login")
@@ -61,11 +167,22 @@ public class AuthController {
         userDTO = authService.selectOne(userId);
         userDTO.setPassword(null);
         userDTO.setRole(null);
-        userDTO.setProfile(null);
 
         resp.put("userDTO", userDTO);
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
+    }
+
+    @PostMapping("/oAuthLogin")
+    public ResponseEntity<?> oAuthLogin(@RequestBody Map<String,String> req) {
+        Map<String, Object> resp = new HashMap<>();
+
+        String userId = (String)req.get("userId");
+
+        UserDTO userDTO = authService.selectOne(userId);
+        resp.put("userDTO", userDTO);
+
+        return ResponseEntity.ok().body(resp);
     }
 
     @PostMapping("/logout")
@@ -131,7 +248,7 @@ public class AuthController {
         log.info("code : " + code);
         log.info("redirect_url : " + redirect_url);
 
-        ResponseEntity<KakaoDTO> oauthResponse = authService.oauth(code,redirect_url);
+        ResponseEntity<KakaoDTO> oauthResponse = authService.kakaoOauth(code,redirect_url);
 
         ResponseEntity<KakaoDTO> kakaoUserInfoResponse = authService.getUserKakaoId(oauthResponse.getBody().access_token);
 

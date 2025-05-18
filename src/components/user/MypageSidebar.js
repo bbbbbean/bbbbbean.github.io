@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import "../../css/user_css/userInfo_sidebar.css";
-import profile from "../../image/user/profile.png"
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserName } from "../../store";
@@ -23,6 +22,7 @@ const MyPageSiderbar = () => {
   console.log(url);
   const [activeMenu, setActiveMenu] = useState(url);
   const userId = localStorage.getItem("userId");
+  const profile = localStorage.getItem("profile");
   const nickName = useSelector((state) => state.user.userName);
   const [manner, setManner] = useState(localStorage.getItem("manner") / 6 +0.5);
 

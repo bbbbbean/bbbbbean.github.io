@@ -2,6 +2,7 @@ package com.club.match.Config;
 
 
 import com.club.match.Component.JwtTokenProvider;
+import com.club.match.Config.Handler.CustomFailureHandler;
 import com.club.match.Config.Handler.CustomLoginSuccessHandler;
 import com.club.match.Filter.JwtAuthenticationFilter;
 import jakarta.servlet.ServletException;
@@ -46,12 +47,13 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //.formLogin(form -> form.disable())
+                .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
         http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                            "/api/auth/logout").permitAll();
+                            "/api/auth/logout","/api/auth/sign"
+                            ,"/api/auth/check-id","/profile/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();
@@ -61,15 +63,10 @@ public class SecurityConfig {
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource(url)));
 
-        http.formLogin((form ) ->{
-            form.loginProcessingUrl("/login");
-            form.usernameParameter("userId");
-            form.successHandler(new CustomLoginSuccessHandler(jwtTokenProvider, url));
-        });
-
         http.oauth2Login((oauth2)->{
             oauth2.loginPage("/login");
             oauth2.successHandler(new CustomLoginSuccessHandler(jwtTokenProvider, url));
+            oauth2.failureHandler(new CustomFailureHandler(url));
         });
 
         return http.build();

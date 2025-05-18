@@ -8,16 +8,16 @@ import { login } from "../../store"
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
     const [loginfail, setLoginFail] = useState("");
-    const dispatch = useDispatch();
 
 
     const errorMessage = (errorCode) => {
         if(errorCode === '2'){
-            setLoginFail("연동되지 않는 카카오 아이디입니다.");
+            setLoginFail("해당 소셜계정은 연동된 계정이 없습니다.");
         }
     };
 
@@ -41,29 +41,29 @@ const LoginForm = () => {
 
                 const {
                     userId,
-                    email,
+                    birthday,
                     name,
                     nickName,
                     points,
-                    isPrivate,
                     manner,
                     gender,
                     phone,
                     address,
                     introduction,
+                    profile,
                 } = response.data.userDTO;
 
                 localStorage.setItem("userId", userId);
-                localStorage.setItem("email", email);
+                localStorage.setItem("birthday", birthday);
                 localStorage.setItem("name", name);
                 localStorage.setItem("nickName", nickName);
                 localStorage.setItem("points", points);
-                localStorage.setItem("isPrivate", isPrivate);
                 localStorage.setItem("manner", manner);
                 localStorage.setItem("gender", gender);
                 localStorage.setItem("phone", phone);
                 localStorage.setItem("address", address);
                 localStorage.setItem("introduction", introduction);
+                localStorage.setItem("profile", profile);
                 localStorage.setItem("loginPlatform", 0);
 
                 dispatch(login());

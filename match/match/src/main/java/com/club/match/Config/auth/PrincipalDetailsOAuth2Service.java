@@ -24,7 +24,6 @@ public class PrincipalDetailsOAuth2Service extends DefaultOAuth2UserService {
     @Autowired
     UserMapper userMapper;
 
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         System.out.println("PrincipalDetailsOAuth2Service's loadUser invoke..");
@@ -42,21 +41,21 @@ public class PrincipalDetailsOAuth2Service extends DefaultOAuth2UserService {
         LocalDateTime connected_at = OffsetDateTime.parse( attributes.get("connected_at").toString() ).toLocalDateTime();
         Map<String,Object> properties = (Map<String,Object>)attributes.get("properties");
         Map<String,Object> kakao_account = (Map<String,Object>) attributes.get("kakao_account");
-        System.out.println("id :" + id);
-        System.out.println("connected_at :" + connected_at);
-        System.out.println("properties :" + properties);
-        System.out.println("kakao_account :" + kakao_account);
         oAuth2UserInfo = new KakaoUserInfo(id,connected_at,properties,kakao_account);
-        System.out.println("oAuth2UserInfo : " + oAuth2UserInfo);
+
+        System.out.println("oAuth2UserInfo : " + oAuth2UserInfo.getProvider());
 
         List<SocialLinkDTO> socialLinkDTO = userMapper.userLinkAt(SocialLinkDTO.builder()
                         .platformType(oAuth2UserInfo.getProvider())
                         .linkedId(oAuth2UserInfo.getProviderId())
                 .build());
 
-        UserDTO userDTO = userMapper.selectAt(socialLinkDTO.get(0).getUserId());
+        if(socialLinkDTO.size() == 0){
+            throw new OAuth2AuthenticationException("a");
+        }
 
-        System.out.print(userDTO);
+        UserDTO userDTO = userMapper.selectAt(socialLinkDTO.get(0).getUserId());
+        userDTO.setRole("ROLE_"+userDTO.getRole());
 
         return new PrincipalDetails(userDTO);
     }

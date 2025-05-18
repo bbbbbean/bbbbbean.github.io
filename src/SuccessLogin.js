@@ -1,15 +1,53 @@
 import { useEffect } from "react"
 import instance from "./axios"
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "./store"
 
 
 const SuccessLogin = () => {
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const token = new URL(window.location.href).search.split("=")[1];
+    const token = new URL(window.location.href).search.split("=")[1].split("&")[0];
+    const userId = new URL(window.location.href).search.split("=")[2];
     localStorage.setItem("accessToken", token);
-    localStorage.setItem("isAuth",true);
-    instance.post()
-    window.location.href = "/"
+    localStorage.setItem("isAuth", true);
+    instance.post("/api/auth/oAuthLogin", { userId })
+      .then((response) => {
+        const {
+          userId,
+          birthday,
+          name,
+          nickName,
+          points,
+          manner,
+          gender,
+          phone,
+          address,
+          introduction,
+          profile,
+        } = response.data.userDTO;
+
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("birthday", birthday);
+        localStorage.setItem("name", name);
+        localStorage.setItem("nickName", nickName);
+        localStorage.setItem("points", points);
+        localStorage.setItem("manner", manner);
+        localStorage.setItem("gender", gender);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("address", address);
+        localStorage.setItem("introduction", introduction);
+        localStorage.setItem("profile", profile);
+        localStorage.setItem("loginPlatform", 2);
+
+        dispatch(login());
+
+        navigate("/");
+      });
   })
 
   return (

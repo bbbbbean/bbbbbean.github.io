@@ -9,7 +9,7 @@ const UserEdit = () => {
 
     const [userDTO, setUserDTO] = useState({
         userId: localStorage.getItem("userId"),
-        email: localStorage.getItem("email"),
+        birthday: localStorage.getItem("birthday"),
         name: localStorage.getItem("name"),
         nickName: localStorage.getItem("nickName"),
         private: localStorage.getItem("isPrivate"),
@@ -25,13 +25,9 @@ const UserEdit = () => {
 
     const [formData, setFormData] = useState({
         nickname: "",
-        email: "",
-        emailCode: "",
         phone: "",
-        phoneCode: "",
         address: "",
         introduction: userDTO.introduction,
-        gender: userDTO.gender,
         isPrivate: ""
     });
 
@@ -57,7 +53,7 @@ const UserEdit = () => {
                 setUserDTO(response.data.userDTO);
                 const {
                     userId,
-                    email,
+                    birthday,
                     name,
                     nickName,
                     points,
@@ -68,7 +64,7 @@ const UserEdit = () => {
                 } = response.data.userDTO;
 
                 localStorage.setItem("userId", userId);
-                localStorage.setItem("email", email);
+                localStorage.setItem("birthday", birthday);
                 localStorage.setItem("name", name);
                 localStorage.setItem("nickName", nickName);
                 localStorage.setItem("points", points);
@@ -101,6 +97,16 @@ const UserEdit = () => {
                     <span>{userDTO.name}</span>
                 </div>
                 <span></span>
+                <div className="gender">
+                    <label>성별</label>
+                    <span>{userDTO.gender === "male" ? "남자" : "여자"}</span>
+                </div>
+                <span></span>
+                <div className="birthday">
+                    <label>생일</label>
+                    <span>{userDTO.birthday}</span>
+                </div>
+                <span></span>
                 <div className="introduction">
                     <label>소개</label>
                     <span>{userDTO.introduction}</span>
@@ -125,37 +131,6 @@ const UserEdit = () => {
                     )}
                 </div>
                 <span></span>
-                <div className="gender">
-                    <label>성별</label>
-                    <span>{userDTO.gender === "1" ? "남자" : "여자"}</span>
-                    {editField !== "gender" ? (
-                        <button className="btn-edit" onClick={() => showEdit("gender")}>수정하기</button>
-                    ) : (
-                        <div className="info-edit">
-                            <label></label>
-                            <label className={formData.gender === "1" ? "select" : "noselect"} htmlFor="man">
-                                남자
-                            </label>
-                            <input
-                                id="man"
-                                type="radio"
-                                name="gender"
-                                value="1"
-                                onChange={handleInput}
-                            />
-                            <label className={formData.gender === "2" ? "select" : "noselect"} htmlFor="woman">여자</label>
-                            <input
-                                id="woman"
-                                type="radio"
-                                name="gender"
-                                value="2"
-                                onChange={handleInput}
-                            />
-                            <button className="gender" onClick={hideEdit}>완료</button>
-                        </div>
-                    )}
-                </div>
-                <span></span>
                 <div className="nickname">
                     <label>닉네임</label>
                     <span>{userDTO.nickName}</span>
@@ -176,35 +151,6 @@ const UserEdit = () => {
                     )}
                 </div>
                 <span></span>
-                <div className="email">
-                    <label>이메일</label>
-                    <span>{userDTO.email}</span>
-                    {editField !== "email" ? (
-                        <button className="btn-edit" onClick={() => showEdit("email")}>수정하기</button>
-                    ) : (
-                        <div className="info-edit">
-                            <label></label>
-                            <input
-                                type="text"
-                                name="email"
-                                placeholder="새로운 이메일을 입력해주세요."
-                                value={formData.email}
-                                onChange={handleInput}
-                            /><br></br>
-                            <label></label>
-                            <input
-                                type="text"
-                                name="emailCode"
-                                placeholder="인증코드 입력"
-                                value={formData.emailCode}
-                                onChange={handleInput}
-                            />
-                            <button className="btn-code-email">인증코드 전송</button>
-                            <button className="email emailCode" onClick={hideEdit}>완료</button>
-                        </div>
-                    )}
-                </div>
-                <span></span>
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
@@ -213,29 +159,14 @@ const UserEdit = () => {
                     ) : (
                         <div className="info-edit">
                             <label></label>
-                            <input
-                                type="text"
-                                name="phone"
-                                placeholder="새로운 연락처를 입력해주세요."
-                                value={formData.phone}
-                                onChange={handleInput}
-                            /><br></br>
-                            <label></label>
-                            <input
-                                type="text"
-                                name="phoneCode"
-                                placeholder="인증코드 입력"
-                                value={formData.phoneCode}
-                                onChange={handleInput}
-                            />
                             <button className="btn-code-phone">본인인증</button>
-                            <button className="phone phoneCode" onClick={hideEdit}>완료</button>
+                            <button className="address" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
                 <span></span>
                 <div className="address">
-                    <label>내주소</label>
+                    <label>활동지역</label>
                     <span>{userDTO.address}</span>
                     {editField !== "address" ? (
                         <button className="btn-edit" onClick={() => showEdit("address")}>수정하기</button>

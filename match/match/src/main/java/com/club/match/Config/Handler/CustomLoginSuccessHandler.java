@@ -32,7 +32,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
         System.out.println("");
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(auth);
-        System.out.println(jwtTokenDTO.getRefreshToken());
         Cookie cookie = new Cookie("refreshToken", jwtTokenDTO.getRefreshToken());
         cookie.setHttpOnly(true);
         cookie.setPath("/");
@@ -40,6 +39,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         resp.addCookie(cookie);
 
-        resp.sendRedirect(url+"/ok?token="+jwtTokenDTO.getAccessToken());
+        resp.sendRedirect(url+"/ok?token="+jwtTokenDTO.getAccessToken()+"&userId="+auth.getName());
     }
 }

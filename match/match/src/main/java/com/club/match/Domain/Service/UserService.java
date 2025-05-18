@@ -72,5 +72,4 @@ public class UserService {
         boolean isChange = userMapper.updateUserPassword(userId,password) > 0;
         return isChange;
     }
-
 }

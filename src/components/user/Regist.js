@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import '../../css/user_css/signup.css';
 import logo from '../../image/로고_color.png'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Regist = () => {
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         let script = document.createElement("script");
@@ -17,34 +20,65 @@ const Regist = () => {
         nickName: "",
         password: "",
         repassword: "",
-        Auth: "",
+        imp_uid: "",
     });
 
+    const [idCheck, setIdCheck] = useState({
+        message: "",
+        success: false
+    });
     const [Auth, setAuth] = useState(false);
+
+    const [AuthError, setAuthError] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            if (formData.userId.trim() === "") {
+                return;
+            }
+            console.log(formData.userId);
+            axios.post("/api/auth/check-id", { "userId": formData.userId })
+                .then((response) => {
+                    setIdCheck({
+                        message: "사용 가능한 아이디입니다.",
+                        success: true
+                    });
+                })
+                .catch((error) => {
+                    setIdCheck({
+                        message: "이미 사용중인 아이디입니다.",
+                        success: false
+                    });
+                });
+        }, 1000);
+
+        return () => {
+            clearTimeout(timerId);
+        }
+    }, [formData.userId])
+
     const handleAuth = () => {
-        window.IMP.init("imp08830045");
+        setAuthError("");
+        window.IMP.init("");
 
         window.IMP.certification(
             {
                 // param
-                channelKey: "channel-key-168ba60d-6f3e-42f0-aae7-471b8d1f9e23",
-                merchant_uid: "MIIiasTest", // 주문 번호
+                channelKey: "",
+                merchant_uid: "", // 주문 번호
                 m_redirect_url: "", // 모바일환경에서 popup:false(기본값) 인 경우 필수, 예: https://www.myservice.com/payments/complete/mobile
                 popup: true, // PC환경에서는 popup 파라미터가 무시되고 항상 true 로 적용됨
             },
             function (resp) {
                 const value = resp.imp_uid;
-                setAuth(true);
-                setFormData((prev) => ({ ...prev, ["Auth"]: value }));
                 if (resp.success) {
                     setAuth(true);
-                    setFormData((prev) => ({ ...prev, ["Auth"]: value }));
+                    setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
                 }
             },
         );
@@ -52,9 +86,20 @@ const Regist = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("/").then((response) =>{
-
-        });
+        if(!idCheck.success){
+            document.getElementById("userId").focus();
+            return;
+        }
+        axios.post("/api/auth/sign", {"authCheck": Auth,"idCheck": idCheck.success, ...formData })
+            .then(() => {
+                navigate("/user/login");
+            })
+            .catch((error)=>{
+                setAuthError(error.response.data.fail);
+                if(error.response.data.authReset){
+                    setAuth(false);
+                }
+            });
     };
 
     const dummy = (e) => {
@@ -70,18 +115,17 @@ const Regist = () => {
                     <br />
                     사용하고 있는 비밀번호를 입력하지 마세요.
                 </h2>
-                <h1>
-                    임시값 : {formData.Auth} / {Auth ? "true" : "false"}
-                </h1>
                 <form id="login-form" onSubmit={handleSubmit}>
                     <label>
                         <input
+                            id="userId"
                             type="text"
                             name="userId"
                             placeholder="아이디"
                             value={formData.userId}
                             onChange={handleChange}
                         />
+                        <span style={{ color: idCheck.success ? '#4ebf8a' : '#dd3e3e', fontWeight:"bold" }} >{idCheck.message}</span>
                     </label>
                     <label>
                         <input
@@ -113,6 +157,7 @@ const Regist = () => {
                     <button type="button" className={Auth && "success"} onClick={Auth ? dummy : handleAuth}>
                         {Auth ? "인증성공" : "본인인증"}
                     </button>
+                    <span style={{color:"#dd3e3e", fontWeight:"bold"}}>{AuthError}</span>
                     {Auth &&
                         <button className="submit" type="submit">
                             회원가입

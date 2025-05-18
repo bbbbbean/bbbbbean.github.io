@@ -3,8 +3,49 @@
 
 <mapper namespace="com.club.match.Mapper.UserMapper">
 
+    <insert id="insertUser">
+        INSERT INTO user_tbl (
+            userId,
+            password,
+            name,
+            nickName,
+            gender,
+            birthday,
+            phone,
+            address,
+            profile,
+            manner,
+            introduction,
+            points,
+            isPrivate
+        ) VALUES (
+                     #{userId},
+                     #{password},
+                     #{name},
+                     #{nickName},
+                     #{gender},
+                     #{birthday},
+                     #{phone},
+                     #{address},
+                     #{profile},
+                     #{manner},
+                     #{introduction},
+                     #{points},
+                     #{isPrivate}
+                 )
+    </insert>
+
+    <select id="selectUserPhone" resultType="int">
+        SELECT COUNT(*) FROM user_tbl WHERE phone=#{phone};
+    </select>
+
+    <delete id="deleteUser">
+        DELETE FROM user_tbl WHERE userId = #{userId};
+    </delete>
+
+
     <select id="selectAt" resultType="UserDTO">
-        SELECT * FROM user_tbl WHERE userId=#{userId}
+        SELECT * FROM user_tbl WHERE userId=#{userId};
     </select>
 
     <select id="selectUserTag" resultType="String">

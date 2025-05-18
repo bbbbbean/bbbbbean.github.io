@@ -21,10 +21,10 @@ public class UserDTO {
     private String name;
     private String nickName;
     private String gender;
-    private String email;
+    private LocalDate birthday;
     private String phone;
     private String address;
-    private Byte[] profile;
+    private String profile;
     private Integer manner;
     private String introduction;
     private Integer points;

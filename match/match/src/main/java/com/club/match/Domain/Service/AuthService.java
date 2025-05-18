@@ -1,14 +1,11 @@
 package com.club.match.Domain.Service;
 
 import com.club.match.Component.JwtTokenProvider;
-import com.club.match.Config.auth.PrincipalDetailsService;
-import com.club.match.Controller.AuthController;
-import com.club.match.Domain.DTO.JwtTokenDTO;
-import com.club.match.Domain.DTO.KakaoDTO;
-import com.club.match.Domain.DTO.SocialLinkDTO;
-import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.UserMapper;
-import lombok.Data;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -45,9 +42,17 @@ public class AuthService {
     @Autowired
     UserMapper userMapper;
 
+    String PORTONE_KEY = "";
+    String PORTONE_SECRET_KEY ="";
+
     String CLIENT_ID = "";
     String RESPONSE_TYPE = "code";
 
+    @Transactional(rollbackFor = Exception.class)
+    public boolean joinUser(UserDTO userDTO) {
+        boolean isOk = userMapper.insertUser(userDTO) > 0;
+        return isOk;
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public JwtTokenDTO login(String userId, String password) {
@@ -114,8 +119,56 @@ public class AuthService {
         return resp;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<KakaoDTO> oauth(String code, String redirect_url) {
+    public String portOneGetToken() {
+
+
+        String url = "https://api.iamport.kr/users/getToken";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("imp_key", PORTONE_KEY);
+        params.add("imp_secret", PORTONE_SECRET_KEY);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+
+        ResponseEntity<PortOneDTO> response =
+                rt.exchange(url, HttpMethod.POST, entity, PortOneDTO.class);
+
+        PortOneDTO portOneDTO = response.getBody();
+
+        return portOneDTO.getResponse().getAccess_token();
+    }
+
+    public PortOneDTO portOneGetData(String imp_uid, String accessToken) {
+
+
+        String url = "https://api.iamport.kr/certifications/"+imp_uid;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("imp_key", PORTONE_KEY);
+        params.add("imp_secret", PORTONE_SECRET_KEY);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+
+        ResponseEntity<PortOneDTO> response =
+                rt.exchange(url, HttpMethod.GET, entity, PortOneDTO.class);
+
+        PortOneDTO portOneDTO = response.getBody();
+
+        return portOneDTO;
+    }
+
+
+    public ResponseEntity<KakaoDTO> kakaoOauth(String code, String redirect_url) {
 
 
         String url = "https://kauth.kakao.com/oauth/token";
@@ -138,7 +191,7 @@ public class AuthService {
 
         return response;
     }
-    @Transactional(rollbackFor = Exception.class)
+
     public ResponseEntity<KakaoDTO> getUserKakaoId(String access_token) {
 
         String url = "https://kapi.kakao.com/v2/user/me";
@@ -155,5 +208,15 @@ public class AuthService {
 
         return response;
     }
+    @Transactional(rollbackFor = Exception.class)
+    public boolean phoneCkeck(String phone) {
+        boolean isPhone = userMapper.selectUserPhone(phone) != 0;
+        return isPhone;
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    public boolean leaveUser(String userId) {
+        boolean isDelete = userMapper.deleteUser(userId) > 0;
+        return isDelete;
+    }
 }
