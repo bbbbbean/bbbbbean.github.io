@@ -34,9 +34,9 @@ public class AdminService {
 
         if(pageDTO.getField().equals("gender")){
             if(pageDTO.getFilter().contains("남")){
-                pageDTO.setFilter("1");
+                pageDTO.setFilter("male");
             } else if(pageDTO.getFilter().contains("여")){
-                pageDTO.setFilter("2");
+                pageDTO.setFilter("female");
             } else {
                 pageDTO.setFilter("");
             }
@@ -45,7 +45,9 @@ public class AdminService {
         List<UserDTO> list = adminMapper.selectAllUser(pageDTO);
 
         list.forEach(userDTO -> {
-            if(userDTO.getGender().equals("1")){
+            System.out.println(userDTO.getGender());
+            System.out.println(userDTO.getGender().equals("male"));
+            if(userDTO.getGender().equals("male")){
                 userDTO.setGender("남자");
             } else {
                 userDTO.setGender("여자");

@@ -97,10 +97,7 @@ public class UserController {
 
         String userId = (String)req.get("userId");
         String value = (String)req.get("value");
-        String authCode = (String)req.get("authCode");
         String type = (String)req.get("type");
-
-        log.info(type);
 
         if(type.equals("phone")) {
             log.info("폰번호 변경");
@@ -156,3 +153,4 @@ public class UserController {
         return ResponseEntity.ok().body(resp);
     }
 }
+

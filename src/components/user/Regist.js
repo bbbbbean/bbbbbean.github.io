@@ -77,7 +77,7 @@ const Regist = () => {
             function (resp) {
                 const value = resp.imp_uid;
                 setAuth(true);
-                    setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
+                setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
                 if (resp.success) {
                     setAuth(true);
                     setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
@@ -88,17 +88,17 @@ const Regist = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(!idCheck.success){
+        if (!idCheck.success) {
             document.getElementById("userId").focus();
             return;
         }
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/sign`, {"authCheck": Auth,"idCheck": idCheck.success, ...formData })
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/sign`, { "authCheck": Auth, "idCheck": idCheck.success, ...formData })
             .then(() => {
                 navigate("/user/login");
             })
-            .catch((error)=>{
+            .catch((error) => {
                 setAuthError(error.response.data.fail);
-                if(error.response.data.authReset){
+                if (error.response.data.authReset) {
                     setAuth(false);
                 }
             });
@@ -127,7 +127,7 @@ const Regist = () => {
                             value={formData.userId}
                             onChange={handleChange}
                         />
-                        <span style={{ color: idCheck.success ? '#4ebf8a' : '#dd3e3e', fontWeight:"bold" }} >{idCheck.message}</span>
+                        <span style={{ color: idCheck.success ? '#4ebf8a' : '#dd3e3e', fontWeight: "bold" }} >{idCheck.message}</span>
                     </label>
                     <label>
                         <input
@@ -159,7 +159,7 @@ const Regist = () => {
                     <button type="button" className={Auth && "success"} onClick={Auth ? dummy : handleAuth}>
                         {Auth ? "인증성공" : "본인인증"}
                     </button>
-                    <span style={{color:"#dd3e3e", fontWeight:"bold"}}>{AuthError}</span>
+                    <span style={{ color: "#dd3e3e", fontWeight: "bold" }}>{AuthError}</span>
                     {Auth &&
                         <button className="submit" type="submit">
                             회원가입
