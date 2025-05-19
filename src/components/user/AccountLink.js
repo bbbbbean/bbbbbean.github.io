@@ -115,14 +115,11 @@ export default function AccountLink() {
     };
 
     const handleKakaoLink = () => {
-        const REDIRECT_URI = "http://localhost:3000/mypage/account_link?platform=2";
-        const CLIENT_ID = "";
         const RESPONSE_TYPE = "code";
         const url = "https://kauth.kakao.com/oauth/authorize" +
-            "?client_id=" + CLIENT_ID +
-            "&redirect_uri=" + REDIRECT_URI +
+            `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
+            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2"+
             "&response_type=" + RESPONSE_TYPE;
-        console.log(url);
 
         window.location.href = url;
     };
@@ -158,9 +155,9 @@ export default function AccountLink() {
                     <span>{naverEmail}   </span>
                     <span>{naverFail}</span>
                     {naverEmail.indexOf("미연동") ?
-                        <button className="1 btn-link" onClick={handleUnLink}>연결해제</button>
+                        <button className="1 btn-link my-page-btn" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-naver btn-link" onClick={handleNaverLink}>연결하기</button>
+                        <button className="btn-edit-naver btn-link my-page-btn" onClick={handleNaverLink}>연결하기</button>
                     }
 
                 </div>
@@ -170,9 +167,9 @@ export default function AccountLink() {
                     <span>{kakaoEmail}   </span>
                     <span>{kakaoFail}</span>
                     {kakaoEmail.indexOf("미연동") ?
-                        <button className="2 btn-link" onClick={handleUnLink}>연결해제</button>
+                        <button className="2 btn-link  my-page-btn" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-kakao btn-link" onClick={handleKakaoLink}>연결하기</button>
+                        <button className="btn-edit-kakao btn-link  my-page-btn" onClick={handleKakaoLink}>연결하기</button>
                     }
 
                 </div>
@@ -182,9 +179,9 @@ export default function AccountLink() {
                     <span>{googleEmail}   </span>
                     <span>{googleFail}</span>
                     {googleEmail.indexOf("미연동") ?
-                        <button className="3 btn-link" onClick={handleUnLink}>연결해제</button>
+                        <button className="3 btn-link my-page-btn" onClick={handleUnLink}>연결해제</button>
                         :
-                        <button className="btn-edit-google btn-link" onClick={handleGoogleLink}>연결하기</button>
+                        <button className="btn-edit-google btn-link my-page-btn" onClick={handleGoogleLink}>연결하기</button>
                     }
                 </div>
                 <span></span>

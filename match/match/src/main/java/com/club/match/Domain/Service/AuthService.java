@@ -3,11 +3,10 @@ package com.club.match.Domain.Service;
 import com.club.match.Component.JwtTokenProvider;
 import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.UserMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +23,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +42,16 @@ public class AuthService {
     @Autowired
     UserMapper userMapper;
 
-    String PORTONE_KEY = "";
-    String PORTONE_SECRET_KEY ="";
+    @Value("${spring.security.oauth2.client.kakao.logout.redirect.uri}")
+    String LOGOUT_REDIRECT_URI;
 
-    String CLIENT_ID = "";
+    @Value("${portOne.key}")
+    String PORTONE_KEY;
+    @Value("${portOne.secret.key}")
+    String PORTONE_SECRET_KEY;
+
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    String KAKAO_CLIENT_ID;
     String RESPONSE_TYPE = "code";
 
     @Transactional(rollbackFor = Exception.class)
@@ -178,7 +184,7 @@ public class AuthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         params.add("grant_type", "authorization_code");
-        params.add("client_id", CLIENT_ID);
+        params.add("client_id", KAKAO_CLIENT_ID);
         params.add("redirect_uri", redirect_url);
         params.add("code", code);
 

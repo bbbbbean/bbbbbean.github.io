@@ -31,5 +31,6 @@ public class UserDTO {
     private boolean isPrivate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate createAt;
+    private String platform;
     private String role;
 }

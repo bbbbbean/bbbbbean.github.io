@@ -34,7 +34,7 @@ const LoginForm = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        axios.post("/api/auth/login", { userId, password })
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/login`, { userId, password })
             .then((response) => {
                 localStorage.setItem("accessToken", response.data.jwtToken);
                 localStorage.setItem("isAuth", true);

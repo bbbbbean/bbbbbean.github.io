@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class SignDTO {
-    private String imp_uid;
-    private boolean idCheck;
     private boolean authCheck;
+    private boolean idCheck;
     private String userId;
     private String nickName;
     private String password;
     private String repassword;
-
+    private String imp_uid;
 }

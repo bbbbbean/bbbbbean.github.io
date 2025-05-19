@@ -60,11 +60,11 @@ const PasswordCheck = ({ }) => {
                                 />
                                 <br />
                                 {(password.length >= 4) ?
-                                    <button className="btn-submit-password" type="submit">
+                                    <button className="btn-submit-password my-page-btn" type="submit">
                                         확인
                                     </button>
                                     :
-                                    <button className="btn-submit-password" type="button" style={{ backgroundColor: '#666666' }}>
+                                    <button className="btn-submit-password my-page-btn" type="button" style={{ backgroundColor: '#666666' }}>
                                         확인
                                     </button>
                                 }

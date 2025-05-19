@@ -156,11 +156,11 @@ export default function ChangePassword() {
                 }
               /><br />
               {(formData.curpassword.length >= 4 && formData.newpassword.length >= 8 && formData.chkpassword.length >= 8) ?
-                <button className="btn-submit-password" type="submit">
+                <button className="btn-submit-password my-page-btn" type="submit">
                   변경
                 </button>
                 :
-                <button className="btn-submit-password" type="button" style={{ backgroundColor: '#666666' }}>
+                <button className="btn-submit-password my-page-btn" type="button" style={{ backgroundColor: '#666666' }}>
                   변경
                 </button>
               }

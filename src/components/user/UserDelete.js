@@ -44,7 +44,7 @@ export default function DeleteAccount() {
                     <div className="delete-account-remove info-edit">
                         <h2>회원 탈퇴</h2>
                         <p>ID : admin</p><br />
-                        {form ? <p>회원탈퇴를 원하시면 비밀번호를 입력하세요</p> : <p>탈퇴 시 n개월간 같은 명의로 가입이 불가합니다.</p>}<br />
+                        {form ? <p>회원탈퇴를 원하시면 비밀번호를 입력하세요</p> : <p style={{ color: '#dd3e3e', fontWeight: "bold" }}>탈퇴 시 n개월간 같은 명의로 가입이 불가합니다.</p>}<br />
                         <span style={{ color: '#dd3e3e', fontWeight: "bold" }}>{message}</span>
                         {form ? <form onSubmit={handlePwCheck}>
                             <input
@@ -59,17 +59,17 @@ export default function DeleteAccount() {
                                 }}
                             /><br />
                             {(password.length >= 4) ?
-                                <button className="btn-submit-password" type="submit">
+                                <button className="btn-submit-password my-page-btn" type="submit">
                                     확인
                                 </button>
                                 :
-                                <button className="btn-submit-password" type="button" style={{ backgroundColor: '#666666' }}>
+                                <button className="btn-submit-password my-page-btn" type="button" style={{ backgroundColor: '#666666' }}>
                                     확인
                                 </button>
                             }
                         </form>
                             :
-                            <button type="button" style={{ backgroundColor: "#4ebf8a" }} onClick={handleRemove}>
+                            <button className="my-page-btn" type="button" style={{ backgroundColor: "#dd3e3e" }} onClick={handleRemove}>
                                 탈퇴하기
                             </button>
                         }

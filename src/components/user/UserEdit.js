@@ -111,7 +111,7 @@ const UserEdit = () => {
                     <label>소개</label>
                     <span>{userDTO.introduction}</span>
                     {editField !== "introduction" ? (
-                        <button className="btn-edit" onClick={() => showEdit("introduction")}>수정하기</button>
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("introduction")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
                             <label></label>
@@ -126,7 +126,7 @@ const UserEdit = () => {
                                     handleInput(e);
                                 }}
                             />
-                            <button className="introduction" onClick={hideEdit}>완료</button>
+                            <button className="introduction my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
@@ -135,7 +135,7 @@ const UserEdit = () => {
                     <label>닉네임</label>
                     <span>{userDTO.nickName}</span>
                     {editField !== "nickname" ? (
-                        <button className="btn-edit" onClick={() => showEdit("nickname")}>수정하기</button>
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("nickname")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
                             <label></label>
@@ -146,7 +146,7 @@ const UserEdit = () => {
                                 value={formData.nickname}
                                 onChange={handleInput}
                             />
-                            <button className="nickname" onClick={hideEdit}>완료</button>
+                            <button className="nickname my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
@@ -155,12 +155,12 @@ const UserEdit = () => {
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
                     {editField !== "phone" ? (
-                        <button className="btn-edit" onClick={() => showEdit("phone")}>수정하기</button>
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
                             <label></label>
-                            <button className="btn-code-phone">본인인증</button>
-                            <button className="address" onClick={hideEdit}>완료</button>
+                            <button className="btn-code-phone my-page-btn">본인인증</button>
+                            <button className="address my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
@@ -169,7 +169,7 @@ const UserEdit = () => {
                     <label>활동지역</label>
                     <span>{userDTO.address}</span>
                     {editField !== "address" ? (
-                        <button className="btn-edit" onClick={() => showEdit("address")}>수정하기</button>
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("address")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
                             <label></label>
@@ -180,7 +180,7 @@ const UserEdit = () => {
                                 value={formData.address}
                                 onChange={handleInput}
                             />
-                            <button className="address" onClick={hideEdit}>완료</button>
+                            <button className="address my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
@@ -189,7 +189,7 @@ const UserEdit = () => {
                     <label>프로필 공개</label>
                     <span>{userDTO.private ? "공개" : "비공개"}</span>
                     {editField !== "isPrivate" ? (
-                        <button className="btn-edit" onClick={() => showEdit("isPrivate")}>수정하기</button>
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("isPrivate")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
                             <label></label>
@@ -211,7 +211,7 @@ const UserEdit = () => {
                                 value="0"
                                 onChange={handleInput}
                             />
-                            <button className="isPrivate" onClick={hideEdit}>완료</button>
+                            <button className="isPrivate my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>

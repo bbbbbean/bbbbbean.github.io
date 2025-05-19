@@ -2,6 +2,7 @@ package com.club.match.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -14,10 +15,13 @@ import com.club.match.Domain.Service.AuthService;
 import com.club.match.Domain.Service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.Value;
 import org.apache.catalina.User;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -167,6 +171,7 @@ public class AuthController {
         userDTO = authService.selectOne(userId);
         userDTO.setPassword(null);
         userDTO.setRole(null);
+        userDTO.setPlatform("0");
 
         resp.put("userDTO", userDTO);
 
@@ -180,15 +185,16 @@ public class AuthController {
         String userId = (String)req.get("userId");
 
         UserDTO userDTO = authService.selectOne(userId);
+        userDTO.setPassword(null);
+        userDTO.setRole(null);
+
         resp.put("userDTO", userDTO);
 
         return ResponseEntity.ok().body(resp);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> userLogout() {
-        Map<String, Object> resp = new HashMap<>();
-
+    public ResponseEntity<?> userLogout(){
         ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .path("/")

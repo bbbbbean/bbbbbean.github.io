@@ -42,7 +42,7 @@ const Regist = () => {
                 return;
             }
             console.log(formData.userId);
-            axios.post("/api/auth/check-id", { "userId": formData.userId })
+            axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/check-id`, { "userId": formData.userId })
                 .then((response) => {
                     setIdCheck({
                         message: "사용 가능한 아이디입니다.",
@@ -64,18 +64,20 @@ const Regist = () => {
 
     const handleAuth = () => {
         setAuthError("");
-        window.IMP.init("");
+        window.IMP.init(`${process.env.REACT_APP_PORTONE_IMP}`);
 
         window.IMP.certification(
             {
                 // param
-                channelKey: "",
-                merchant_uid: "", // 주문 번호
+                channelKey: `${process.env.REACT_APP_PORTONE_CHANNEL_KEY}`,
+                merchant_uid: `${process.env.REACT_APP_PORTONE_MERCHANT_UID}`, // 주문 번호
                 m_redirect_url: "", // 모바일환경에서 popup:false(기본값) 인 경우 필수, 예: https://www.myservice.com/payments/complete/mobile
                 popup: true, // PC환경에서는 popup 파라미터가 무시되고 항상 true 로 적용됨
             },
             function (resp) {
                 const value = resp.imp_uid;
+                setAuth(true);
+                    setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
                 if (resp.success) {
                     setAuth(true);
                     setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
@@ -90,7 +92,7 @@ const Regist = () => {
             document.getElementById("userId").focus();
             return;
         }
-        axios.post("/api/auth/sign", {"authCheck": Auth,"idCheck": idCheck.success, ...formData })
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/sign`, {"authCheck": Auth,"idCheck": idCheck.success, ...formData })
             .then(() => {
                 navigate("/user/login");
             })

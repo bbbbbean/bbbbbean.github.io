@@ -55,6 +55,7 @@ public class PrincipalDetailsOAuth2Service extends DefaultOAuth2UserService {
         }
 
         UserDTO userDTO = userMapper.selectAt(socialLinkDTO.get(0).getUserId());
+        userDTO.setPlatform(oAuth2UserInfo.getProvider());
         userDTO.setRole("ROLE_"+userDTO.getRole());
 
         return new PrincipalDetails(userDTO);

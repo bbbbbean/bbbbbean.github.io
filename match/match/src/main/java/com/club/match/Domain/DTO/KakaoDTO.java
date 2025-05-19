@@ -17,4 +17,11 @@ public class KakaoDTO {
     public String refresh_token;
     public Integer refresh_token_expires_in;
     public String scope;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class KakaoAccountDTO {
+        private String email;
+    }
 }
