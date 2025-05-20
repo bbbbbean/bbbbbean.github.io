@@ -4,17 +4,21 @@ import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -111,6 +115,39 @@ public class UserController {
 
         resp.put("userDTO",userDTO);
         return ResponseEntity.ok().body(resp);
+    }
+    @PostMapping("updateImg")
+    public ResponseEntity<?> updateImg(@RequestParam("image") MultipartFile file,
+                                       @RequestParam("userId") String userId) {
+
+        if(file==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        List<String> IMAGE_EXTENSION = Arrays.asList("jpg", "jpeg", "png", "gif", "webp");
+        String fileExtension = file.getContentType().split("/")[1];
+
+        boolean isExtension = false;
+        for(String item:IMAGE_EXTENSION){
+            if(fileExtension.equals(item)){
+                isExtension = !isExtension;
+                break;
+            }
+        }
+        if(!isExtension){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        Path userPath = Paths.get("src/main/resources/Users/" + userId + "/profile");
+        File userDir = new File(userPath+"");
+        File userFile = new File(userPath+"/profile."+fileExtension);
+        try {
+            FileUtils.cleanDirectory(userDir);
+            FileUtils.copyInputStreamToFile(file.getInputStream(),userFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("passwordUpdate")

@@ -1,6 +1,5 @@
 import { useEffect} from "react";
 import "../../css/matching_css/matchModalContent.css";
-import profile from "../../image/user/profile.png";
 
 const MatchModal = ({ selectMatch, setMatchList}) => {
     console.log("Select : " + selectMatch);
@@ -105,7 +104,7 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
                         <div className="match-chat-line"></div>
                         <div className="match-chat-content">
                             <div className="user-chat-container">
-                                <img className="prf-image" src={profile} alt="prf-i" />
+                                <img className="prf-image" src="" alt="prf-i" />
                                 <div className="user-chat">
                                     <div className="user-name">닉네임1</div>
                                     <div className="user-content">경기도 시흥시 서울대학교에서 1월 22일 풋살경기합니다.</div>
@@ -113,7 +112,7 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
                                 </div>
                             </div>
                             <div className="user-chat-container">
-                                <img className="prf-image" src={profile} alt="prf-i" />
+                                <img className="prf-image" src="" alt="prf-i" />
                                 <div className="user-chat">
                                     <div className="user-name">닉네임2</div>
                                     <div className="user-content">네</div>

@@ -156,10 +156,21 @@ p {
     font-weight: bold;
     margin-left: 5px;
 }
-.my-page-btn{
+
+.my-page-btn {
     transition: all 0.3s ease;
 }
 
-.my-page-btn:hover{
+.my-page-btn:hover {
     opacity: 0.8;
+}
+
+.profile img {
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 50px;
+    max-height: 50px;
+    position: absolute;
+    border-radius: 50%;
+    object-fit: cover;
 }

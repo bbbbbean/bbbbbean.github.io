@@ -1,15 +1,15 @@
 import axios from "axios";
 
 
-const instance = axios.create({
+const imageAxios = axios.create({
     baseURL: "http://localhost:8100",
     timeout: 2000,
 });
 
-instance.interceptors.request.use(
+imageAxios.interceptors.request.use(
     (config) => {
         const accessToken = window.localStorage.getItem('accessToken');
-        config.headers['Content-Type'] = 'application/json';
+        config.headers['Content-Type'] = 'multipart/form-data';
         config.headers['Authorization'] = `Bearer ${accessToken}`;
 
         return config;
@@ -20,7 +20,7 @@ instance.interceptors.request.use(
     }
 );
 
-instance.interceptors.response.use(
+imageAxios.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -41,15 +41,15 @@ instance.interceptors.response.use(
                 config.headers['Authorization'] = `Bearer ${response.data.jwtToken}`;
                 return axios(config);
             } catch (e) {
-                //window.location.href = '/user/logout';
+                window.location.href = '/user/logout';
                 return;
             }
 
         } else {
-            //window.location.href = '/user/logout';
+            window.location.href = '/user/logout';
             return;
         }
     }
 );
 
-export default instance;
+export default imageAxios;

@@ -16,7 +16,7 @@ const LoginForm = () => {
 
 
     const errorMessage = (errorCode) => {
-        if(errorCode === '2'){
+        if (errorCode === '2') {
             setLoginFail("해당 소셜계정은 연동된 계정이 없습니다.");
         }
     };
@@ -34,7 +34,9 @@ const LoginForm = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/login`, { userId, password })
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/login`, { userId, password }, {
+            "withCredentials": true
+        })
             .then((response) => {
                 localStorage.setItem("accessToken", response.data.jwtToken);
                 localStorage.setItem("isAuth", true);

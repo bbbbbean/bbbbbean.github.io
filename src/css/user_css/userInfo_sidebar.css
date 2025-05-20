@@ -40,7 +40,10 @@
     width: 100%;
     min-width: 300px;
     max-width: 300px;
+    min-height: 300px;
+    max-height: 300px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .info-container>.info-left>.info-user {

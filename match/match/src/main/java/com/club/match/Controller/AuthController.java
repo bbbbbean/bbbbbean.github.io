@@ -62,8 +62,6 @@ public class AuthController {
     public ResponseEntity<?> userSign(@RequestBody @Validated SignDTO signDTO) {
         Map<String, Object> resp = new HashMap<>();
 
-        log.info("signDTO : " + signDTO);
-
         if(!signDTO.isIdCheck()){
             resp.put("fail","아이디 중복을 확인해주세요");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
@@ -157,9 +155,7 @@ public class AuthController {
 
         String userId = userDTO.getUserId();
         String password = userDTO.getPassword();
-        log.info("request username = {}, password = {}", userId, password);
         JwtTokenDTO jwtTokenDTO = authService.login(userId, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtTokenDTO.getAccessToken(), jwtTokenDTO.getRefreshToken());
         resp.put("jwtToken", jwtTokenDTO.getAccessToken());
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
@@ -207,6 +203,7 @@ public class AuthController {
     @PostMapping("/reneToken")
     public ResponseEntity<?> reneToken(@CookieValue("refreshToken") String refreshToken) {
 
+
         Map<String, Object> resp = new HashMap<>();
 
         boolean isOk = jwtTokenProvider.validateToken(refreshToken);
@@ -215,8 +212,6 @@ public class AuthController {
 
         if (isOk) {
             JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(authentication);
-            log.info("재발행 토큰 AccessToken : " + jwtTokenDTO.getAccessToken());
-            log.info("재발행 토큰 RefreshToken : " + jwtTokenDTO.getRefreshToken());
 
             resp.put("jwtToken", jwtTokenDTO.getAccessToken());
 
@@ -250,9 +245,6 @@ public class AuthController {
 
         String code = (String) req.get("code");
         String redirect_url = ((String) req.get("url")).split("&")[0];
-
-        log.info("code : " + code);
-        log.info("redirect_url : " + redirect_url);
 
         ResponseEntity<KakaoDTO> oauthResponse = authService.kakaoOauth(code,redirect_url);
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import instance from "../../axios"
 import { setUserName } from "../../store";
 import { useDispatch } from "react-redux";
+import ChangeImage from "../modal/ChangeImageModal";
 
 const UserEdit = () => {
 
@@ -77,8 +78,15 @@ const UserEdit = () => {
         setEditField(null);
     };
 
+    const [showModal, setShowModal] = useState(false);
+
+    const handleImage = () => {
+        showModal ? setShowModal(false) : setShowModal(true);
+    }
+
     return (
         <div className="info-right">
+            {showModal && <ChangeImage/>}
             <div className="user-info-title">
                 <div className="info-title">
                     <span>내정보</span>
@@ -105,6 +113,12 @@ const UserEdit = () => {
                 <div className="birthday">
                     <label>생일</label>
                     <span>{userDTO.birthday}</span>
+                </div>
+                <span></span>
+                <div className="profile">
+                    <label>이미지</label>
+                    <img src="http://localhost:8100/profile/admin" style={{maxWidth:"50px",maxHeight:"50px", position:"absolute",borderRadius:"50%"}}></img>
+                    <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
                 <span></span>
                 <div className="introduction">

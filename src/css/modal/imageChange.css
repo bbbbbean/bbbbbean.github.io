@@ -1,0 +1,57 @@
+.image-modal {
+    position: fixed;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    width: 400px;
+    z-index: 1;
+}
+
+.image-modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.image-modal-content>.image-drag {
+    width: 100%;
+    min-height: 350px;
+    background-color: white;
+    text-align: center;
+    border: 1px solid #6EC3FF;
+    border-radius: 8px;
+}
+
+.image-modal-content>.image-drag>img {
+    min-width: 300px;
+    min-height: 300px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    transition: all 1s ease;
+    object-fit: cover;
+    margin: 10px;
+}
+
+.image-modal-content>.image-drag>.no{
+    opacity: 0.1;
+}
+
+.image-modal-content button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6EC3FF;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+}
+.image-modal-content>button:hover {
+    opacity: 0.8;
+}
