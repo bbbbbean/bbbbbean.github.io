@@ -1,4 +1,4 @@
-package com.club.match.Component;
+package com.club.match.Config.auth.provider;
 
 import com.club.match.Config.Handler.Exception.TokenException;
 import com.club.match.Domain.DTO.JwtTokenDTO;

@@ -2,26 +2,20 @@ package com.club.match.Controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.club.match.Component.JwtTokenProvider;
+import com.club.match.Config.auth.provider.JwtTokenProvider;
 import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.AuthService;
 import com.club.match.Domain.Service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.Value;
-import org.apache.catalina.User;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -158,7 +152,13 @@ public class AuthController {
         JwtTokenDTO jwtTokenDTO = authService.login(userId, password);
         resp.put("jwtToken", jwtTokenDTO.getAccessToken());
 
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
+                .httpOnly(true)
+                .path("/")
+                .maxAge(Duration.ofDays(1))
+                .build();
+
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
                 .httpOnly(true)
                 .path("/")
                 .maxAge(Duration.ofDays(1))
@@ -171,7 +171,7 @@ public class AuthController {
 
         resp.put("userDTO", userDTO);
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie1.toString(), cookie2.toString()).body(resp);
     }
 
     @PostMapping("/oAuthLogin")
@@ -191,12 +191,18 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> userLogout(){
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+        System.out.println("Logout");
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
                 .path("/")
                 .maxAge(0)
                 .build();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(null);
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie1.toString(), cookie2.toString()).body(null);
     }
 
 

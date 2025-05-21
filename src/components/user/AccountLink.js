@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import instance from "../../axios"
+import api from "../../axios"
 
 export default function AccountLink() {
 
@@ -50,7 +50,7 @@ export default function AccountLink() {
                 break;
         }
 
-        instance.post("/api/user/getAccountLink", { "userId": localStorage.getItem("userId") })
+        api.post("/api/user/getAccountLink", { "userId": localStorage.getItem("userId") })
             .then((response) => {
                 const socialLinkDTO = response.data.socialLinkDTO;
                 socialLinkDTO.forEach((item) => {
@@ -76,7 +76,7 @@ export default function AccountLink() {
 
     const handleUnLink = (e) => {
         const platformType = e.target.className.split(" ")[0];
-        instance.post("/api/auth/unLink", { userId: localStorage.getItem("userId"), platformType })
+        api.post("/api/auth/unLink", { userId: localStorage.getItem("userId"), platformType })
             .then((response) => {
                 if (response.status == 200) {
                     switch (platformType) {
@@ -124,7 +124,7 @@ export default function AccountLink() {
         window.location.href = url;
     };
     const KakaoLinkApi = (code) => {
-        instance.post("/api/auth/kakaoLink", {
+        api.post("/api/auth/kakaoLink", {
             "userId": localStorage.getItem("userId"),
             code,
             "url": window.location.href

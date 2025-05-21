@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import instance from "../../axios"
+import api from "../../axios"
+import UserCalender from "../calendar/UserCalender";
 
 import "../../css/user_css/myPage.css";
 
@@ -8,6 +9,7 @@ const MyPageSection = () => {
 
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState("");
+  const [errorTag, setErrorTag] = useState("");
 
   useEffect(() => {
     const prevMatchScroll = document.querySelector('.prev-match');
@@ -22,40 +24,46 @@ const MyPageSection = () => {
       bookMarkScroll.scrollTop += e.deltaY / 5;
     });
 
-    instance.post("/api/user/getTag", { "userId": localStorage.getItem("userId") })
+    api.post("/api/user/getTag", { "userId": localStorage.getItem("userId") })
       .then((response) => {
         setTags([...response.data.tags]);
       })
-      .catch((error) =>{
+      .catch((error) => {
       });
 
   }, []);
 
   const tagAdd = (e) => {
     e.preventDefault();
-    if(tag.trim() === ""){
+    if (tag.trim() === "") {
       return;
     }
-    instance.post("/api/user/addTag", { "userId": localStorage.getItem("userId"), "tag":tag.trim() })
+    api.post("/api/user/addTag", { "userId": localStorage.getItem("userId"), "tag": tag.trim() })
       .then((response) => {
+        if (response.status !== 200) {
+          setErrorTag(response.data.error);
+          setTag("");
+          return;
+        }
         setTags([...response.data.tags]);
         setTag("");
       })
-      .catch((error) =>{
+      .catch((error) => {
+        console.log(error);
         setTag("");
       });
-      ;
+    ;
   };
 
   const tagDel = (e) => {
     const tag = e.currentTarget.dataset.tag;
-    instance.post("/api/user/delTag", { "userId": localStorage.getItem("userId"), tag })
+    api.post("/api/user/delTag", { "userId": localStorage.getItem("userId"), tag })
       .then((response) => {
         setTags([...response.data.tags]);
       })
-      .catch((error) =>{
+      .catch((error) => {
       });
-      ;
+    ;
   }
 
 
@@ -84,6 +92,7 @@ const MyPageSection = () => {
       <div className="user-info-tag info-title">
         <span>My</span>
         <span>Tag</span>
+        <span style={{paddingLeft:"5px",color: '#dd3e3e', fontWeight:"bold"}}>{errorTag}</span>
         <div className="date-tag">
           {tags.map((tag, idx) => (
             <div key={idx} className="tag-item drag-prevent" data-tag={tag} onClick={tagDel}>
@@ -100,10 +109,11 @@ const MyPageSection = () => {
                   placeholder="태그추가"
                   value={tag}
                   onChange={(e) => {
-                    if(e.target.value.length>10){
-                      e.target.value = e.target.value.substring(0,10);
+                    if (e.target.value.length > 10) {
+                      e.target.value = e.target.value.substring(0, 10);
                     }
                     setTag(e.target.value);
+                    setErrorTag("");
                   }}
                 />
               </form>
@@ -159,7 +169,7 @@ const MyPageSection = () => {
         <span>My</span>
         <span>Calendar</span>
         <div className="calendar-container">
-          {/* 캘린더 컴포넌트 삽입 가능 */}
+          <UserCalender />
         </div>
       </div>
     </div>

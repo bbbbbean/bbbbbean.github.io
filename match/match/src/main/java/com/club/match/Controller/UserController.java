@@ -6,6 +6,8 @@ import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -61,8 +64,15 @@ public class UserController {
 
         String userId = (String)req.get("userId");
         String tag = (String)req.get("tag");
-
-        Map<String,Object> tagsResp = userService.addUserTag(userId, tag);
+        Map<String,Object> tagsResp = new HashMap<>();
+        try{
+            tagsResp = userService.addUserTag(userId, tag);
+        } catch (DataAccessException e){
+            if(e instanceof DuplicateKeyException){
+                tagsResp.put("error","중복된 태그값이 존재합니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(tagsResp);
+            }
+        }
 
         return ResponseEntity.ok().body(tagsResp);
     }

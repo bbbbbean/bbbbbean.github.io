@@ -13,7 +13,9 @@ const Logout = () => {
 
     useEffect(() => {
 
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`);
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,{},{
+            withCredentials: true
+        });
 
         const platform = Number(localStorage.getItem("loginPlatform"));
 
@@ -21,12 +23,12 @@ const Logout = () => {
         dispatch(logout());
 
         switch (platform) {
-            case 1: // ³×ÀÌ¹ö
+            case 1: // ë„¤ì´ë²„
                 return;
-            case 2: // Ä«Ä«¿À
-                window.location.href = "https://kauth.kakao.com/oauth/logout?client_id=107a759f0613ca4e0b89fda38d805341&logout_redirect_uri=http://localhost:3000/user/login";
+            case 2: // ì¹´ì¹´ì˜¤
+                window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&logout_redirect_uri=http://localhost:3000/user/login`;
                 return;
-            case 3: // ±¸±Û
+            case 3: // êµ¬ê¸€
                 return;
         }
         navigate("/user/login");

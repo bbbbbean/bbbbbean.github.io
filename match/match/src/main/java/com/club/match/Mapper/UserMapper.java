@@ -3,7 +3,9 @@ package com.club.match.Mapper;
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.dao.DataAccessException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ public interface UserMapper {
 
     List<SocialLinkDTO> userLinkAt(SocialLinkDTO socialLinkDTO);
 
-    int insertUserTag(String userId, String tag);
+    int insertUserTag(String userId, String tag) throws DataAccessException;
 
     int insertSocialLink(SocialLinkDTO socialLinkDTO);
 

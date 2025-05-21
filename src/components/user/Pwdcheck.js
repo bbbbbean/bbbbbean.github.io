@@ -1,20 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import instance from "../../axios"
+import api from "../../axios"
 
-const PasswordCheck = ({ }) => {
-    const navigate = useNavigate();
-    const [password, setPassword] = useState("");
+const PasswordCheck = ({ password, setPassword, setOk }) => {
     const [message, setMessage] = useState("");
 
     const handleConfirmClick = (e) => {
         e.preventDefault();
-        instance.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
+        api.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
             .then((response) => {
-                console.log("실행됨");
-                console.log(response);
                 if (response.data.success) {
-                    navigate("/mypage/edit");
+                    setOk(true);
                 } else {
                     setPassword("")
                     setMessage(response.data.message);
@@ -41,7 +36,7 @@ const PasswordCheck = ({ }) => {
                         <div className="password-check-form info-edit">
                             <h2>비밀번호를 확인하세요</h2>
                             <p>비밀번호를 입력하여 계속하세요</p>
-                            <span style={{ color: '#dd3e3e' }}>{message}</span>
+                            <span style={{ color: '#dd3e3e', fontWeight:"bold" }}>{message}</span>
                             <br />
                             <form onSubmit={handleConfirmClick}>
                                 <input

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import instance from "../../axios";
+import api from "../../axios";
 
 export default function DeleteAccount() {
     const [password, setPassword] = useState("");
@@ -8,10 +8,8 @@ export default function DeleteAccount() {
 
     const handlePwCheck = (e) => {
         e.preventDefault();
-        instance.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
+        api.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
             .then((response) => {
-                console.log("실행됨");
-                console.log(response);
                 if (response.data.success) {
                     setForm(false);
                 } else {
@@ -24,7 +22,7 @@ export default function DeleteAccount() {
 
     const handleRemove = (e) => {
         e.preventDefault();
-        instance.post("/api/auth/remove", { "userId": localStorage.getItem("userId")})
+        api.post("/api/auth/remove", { "userId": localStorage.getItem("userId")})
             .then((response) => {
                 window.location.href = '/user/logout';
             })
@@ -43,7 +41,7 @@ export default function DeleteAccount() {
                 <div className="delete-account">
                     <div className="delete-account-remove info-edit">
                         <h2>회원 탈퇴</h2>
-                        <p>ID : admin</p><br />
+                        <br></br>
                         {form ? <p>회원탈퇴를 원하시면 비밀번호를 입력하세요</p> : <p style={{ color: '#dd3e3e', fontWeight: "bold" }}>탈퇴 시 n개월간 같은 명의로 가입이 불가합니다.</p>}<br />
                         <span style={{ color: '#dd3e3e', fontWeight: "bold" }}>{message}</span>
                         {form ? <form onSubmit={handlePwCheck}>

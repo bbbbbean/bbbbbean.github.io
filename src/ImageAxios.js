@@ -1,12 +1,12 @@
 import axios from "axios";
 
 
-const imageAxios = axios.create({
+const imageApi = axios.create({
     baseURL: "http://localhost:8100",
     timeout: 2000,
 });
 
-imageAxios.interceptors.request.use(
+imageApi.interceptors.request.use(
     (config) => {
         const accessToken = window.localStorage.getItem('accessToken');
         config.headers['Content-Type'] = 'multipart/form-data';
@@ -20,7 +20,7 @@ imageAxios.interceptors.request.use(
     }
 );
 
-imageAxios.interceptors.response.use(
+imageApi.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -52,4 +52,4 @@ imageAxios.interceptors.response.use(
     }
 );
 
-export default imageAxios;
+export default imageApi;

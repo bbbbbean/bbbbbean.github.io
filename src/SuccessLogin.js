@@ -11,9 +11,7 @@ const SuccessLogin = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = new URL(window.location.href).search.split("=")[1].split("&")[0];
-    const userId = new URL(window.location.href).search.split("=")[2];
-    localStorage.setItem("accessToken", token);
+    const userId = new URL(window.location.href).search.split("=")[1];
     localStorage.setItem("isAuth", true);
     instance.post("/api/auth/oAuthLogin", { userId })
       .then((response) => {

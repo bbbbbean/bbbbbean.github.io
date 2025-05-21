@@ -1,10 +1,9 @@
 package com.club.match.Config;
 
 
-import com.club.match.Component.JwtTokenProvider;
+import com.club.match.Config.auth.provider.JwtTokenProvider;
 import com.club.match.Config.Handler.CustomFailureHandler;
 import com.club.match.Config.Handler.CustomLoginSuccessHandler;
-import com.club.match.Config.Handler.customLogoutHandler;
 import com.club.match.Filter.JwtAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

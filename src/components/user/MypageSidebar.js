@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../../css/user_css/userInfo_sidebar.css";
 import { NavLink } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserName } from "../../store";
 
 
-const MyPageSiderbar = () => {
+const MyPageSiderbar = ({profile}) => {
 
   const dispatch = useDispatch();
   
@@ -19,22 +19,25 @@ const MyPageSiderbar = () => {
   if(url === undefined){
     url = ""
   }
-  console.log(url);
   const [activeMenu, setActiveMenu] = useState(url);
   const userId = localStorage.getItem("userId");
-  const profile = localStorage.getItem("profile");
   const nickName = useSelector((state) => state.user.userName);
   const [manner, setManner] = useState(localStorage.getItem("manner") / 6 +0.5);
 
   const menuItems = [
     { label: "내 정보", url: "" },
-    { label: "내 정보 관리", url: "password_check" },
+    { label: "내 정보 관리", url: "edit_my_info" },
     { label: "비밀번호 변경", url: "edit_my_password" },
     { label: "계정 연동", url: "account_link" },
     { label: "회원 탈퇴", url: "delete_account" },
   ];
 
-  dispatch(setUserName(localStorage.getItem("nickName")));
+  useEffect(() => {
+    const nickname = localStorage.getItem("nickName");
+    if (nickname) {
+      dispatch(setUserName(nickname));
+    }
+  }, [dispatch]);
 
   return (
     <div className="info-left">

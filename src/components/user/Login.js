@@ -38,7 +38,6 @@ const LoginForm = () => {
             "withCredentials": true
         })
             .then((response) => {
-                localStorage.setItem("accessToken", response.data.jwtToken);
                 localStorage.setItem("isAuth", true);
 
                 const {

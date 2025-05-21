@@ -1,7 +1,7 @@
 import { useState } from "react";
-import instance from "../../axios"
+import api from "../../axios"
 
-export default function ChangePassword() {
+const ChangePassword = () => {
   const [formData, setFormData] = useState({
     curpassword: "",
     newpassword: "",
@@ -28,20 +28,20 @@ export default function ChangePassword() {
     let reg4 = /^(?=.{8,15}).+$/
 
     const { curpassword, newpassword, chkpassword } = formData;
-    if (!reg1.test(newpassword)) {
-      setPwError("비밀번호는 영어가 포함되어야합니다.")
-      return;
-    } else if (!reg2.test(newpassword)) {
-      setPwError("비밀번호는 특수문자가 포함되어야합니다.")
-      return;
-    } else if (!reg3.test(newpassword)) {
-      setPwError("비밀번호는 숫자가 포함되어야합니다.")
-      return;
-    } else if (!reg4.test(newpassword)) {
-      setPwError("비밀번호는 8~15글자 사이어야합니다.")
-      return;
-    }
-    instance.post("/api/user/passwordUpdate", { "userId": localStorage.getItem("userId"), curpassword, newpassword, chkpassword })
+    // if (!reg1.test(newpassword)) {
+    //   setPwError("비밀번호는 영어가 포함되어야합니다.")
+    //   return;
+    // } else if (!reg2.test(newpassword)) {
+    //   setPwError("비밀번호는 특수문자가 포함되어야합니다.")
+    //   return;
+    // } else if (!reg3.test(newpassword)) {
+    //   setPwError("비밀번호는 숫자가 포함되어야합니다.")
+    //   return;
+    // } else if (!reg4.test(newpassword)) {
+    //   setPwError("비밀번호는 8~15글자 사이어야합니다.")
+    //   return;
+    // }
+    api.post("/api/user/passwordUpdate", { "userId": localStorage.getItem("userId"), curpassword, newpassword, chkpassword })
       .then((response) => {
         if (response.status == 200) {
           setPwSuccess("비밀번호 변경 성공");
@@ -67,7 +67,6 @@ export default function ChangePassword() {
               formData.chkpassword = "";
               target.value = "";
               target.focus();
-              handleInput(target);
             case "3":
               setPwError("이미 사용중인 비밀번호입니다.");
               target = document.getElementById("chkpassword")
@@ -77,7 +76,6 @@ export default function ChangePassword() {
               formData.newpassword = "";
               target.value = "";
               target.focus();
-              handleInput(target);
               break;
             case "4":
               setPwError("비밀번호 변경에 실패했습니다. 다시 입력해주세요.");
@@ -91,7 +89,6 @@ export default function ChangePassword() {
               formData.curpassword = "";
               target.value = "";
               target.focus();
-              handleInput(target);
               break;
           }
         }
@@ -100,8 +97,8 @@ export default function ChangePassword() {
 
   return (
     <div className="info-right">
-      <div class="user-info-title">
-        <div class="info-title">
+      <div className="user-info-title">
+        <div className="info-title">
           <span>비밀번호</span>
           <span>변경</span>
         </div>
@@ -155,7 +152,7 @@ export default function ChangePassword() {
                 }
                 }
               /><br />
-              {(formData.curpassword.length >= 4 && formData.newpassword.length >= 8 && formData.chkpassword.length >= 8) ?
+              {(formData.curpassword.length >= 4 && formData.newpassword.length >= 4 && formData.chkpassword.length >= 4) ?
                 <button className="btn-submit-password my-page-btn" type="submit">
                   변경
                 </button>
@@ -172,3 +169,5 @@ export default function ChangePassword() {
     </div>
   );
 }
+
+export default ChangePassword

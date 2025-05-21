@@ -1,12 +1,10 @@
 import { useCallback, useState } from "react";
 import "../../css/modal/imageChange.css"
-import imageAxios from "../../ImageAxios";
+import imageApi from "../../ImageAxios";
 import { useDropzone } from 'react-dropzone'
 import addImg from "../../image/add_img.svg"
 
-const ChangeImage = () => {
-
-
+const ChangeImage = ({setProfile}) => {
 
     const [selImage, setSelImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
@@ -25,11 +23,12 @@ const ChangeImage = () => {
 
     const handleImageChange = (e) => {
         e.preventDefault();
-        imageAxios.post("/api/user/updateImg", { "userId": localStorage.getItem("userId"), "image": selImage })
+        imageApi.post("/api/user/updateImg", { "userId": localStorage.getItem("userId"), "image": selImage })
             .then((response) => {
                 console.log(response.status);
                 if (response.status == 200) {
-                    window.location.reload();
+                    setProfile("");
+                    setTimeout(() => {setProfile(localStorage.getItem("profile"));},0);
                 } else {
                     setErrorMessage("이미지파일이 아니거나 파일이 등록되지 않았습니다.");
                 }

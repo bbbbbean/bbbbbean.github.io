@@ -1,12 +1,13 @@
 package com.club.match.Filter;
 
-import ch.qos.logback.core.util.StringUtil;
-import com.club.match.Component.JwtTokenProvider;
+import com.club.match.Config.auth.provider.JwtTokenProvider;
 import com.club.match.Config.Handler.Exception.TokenException;
+import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Locale;
 
 @Component
 @Slf4j
@@ -29,7 +32,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String token = resolveToken((HttpServletRequest) servletRequest);
@@ -56,9 +58,19 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private String resolveToken(HttpServletRequest req){
-        String bearerToken = req.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
-            return bearerToken.substring(7);
+        Cookie[] cookies = req.getCookies();
+
+        String bearerToken = "";
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    bearerToken = cookie.getValue();
+                }
+            }
+        }
+        if(StringUtils.hasText(bearerToken)){
+            return bearerToken;
         }
         return null;
     }

@@ -1,17 +1,16 @@
 import axios from "axios";
 
 
-const instance = axios.create({
+const api = axios.create({
     baseURL: "http://localhost:8100",
     timeout: 2000,
 });
 
-instance.interceptors.request.use(
+api.interceptors.request.use(
     (config) => {
         const accessToken = window.localStorage.getItem('accessToken');
         config.headers['Content-Type'] = 'application/json';
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
-
+        config.withCredentials = true;
         return config;
     },
     (error) => {
@@ -20,7 +19,7 @@ instance.interceptors.request.use(
     }
 );
 
-instance.interceptors.response.use(
+api.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -36,9 +35,6 @@ instance.interceptors.response.use(
                     {},
                     { withCredentials: true }
                 );
-                console.log(response);
-                localStorage.setItem("accessToken", response.data.jwtToken);
-                config.headers['Authorization'] = `Bearer ${response.data.jwtToken}`;
                 return axios(config);
             } catch (e) {
                 //window.location.href = '/user/logout';
@@ -52,4 +48,4 @@ instance.interceptors.response.use(
     }
 );
 
-export default instance;
+export default api;

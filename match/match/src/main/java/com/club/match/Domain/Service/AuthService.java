@@ -1,9 +1,8 @@
 package com.club.match.Domain.Service;
 
-import com.club.match.Component.JwtTokenProvider;
+import com.club.match.Config.auth.provider.JwtTokenProvider;
 import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.UserMapper;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +22,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional(readOnly = true)
 @Slf4j
 public class AuthService {
 

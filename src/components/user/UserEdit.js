@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import instance from "../../axios"
+import { use, useEffect, useState } from "react";
+import api from "../../axios"
 import { setUserName } from "../../store";
 import { useDispatch } from "react-redux";
 import ChangeImage from "../modal/ChangeImageModal";
-
-const UserEdit = () => {
+import PasswordCheck from "./Pwdcheck";
+    
+const UserEditForm = ({profile,setProfile}) => {
 
     const dispatch = useDispatch();
 
@@ -46,7 +47,7 @@ const UserEdit = () => {
     const hideEdit = (e) => {
         const btnClass = e.target.className.split(" ");
         console.log(btnClass[0]);
-        instance.post("/api/user/infoUpdate", { "userId": userDTO.userId, "value": formData[btnClass[0]], "authCode": formData[btnClass[1]], "type": btnClass[0] })
+        api.post("/api/user/infoUpdate", { "userId": userDTO.userId, "value": formData[btnClass[0]], "authCode": formData[btnClass[1]], "type": btnClass[0] })
             .then((response) => {
                 if (btnClass[0] === "nickname") {
                     dispatch(setUserName(response.data.userDTO.nickName));
@@ -84,9 +85,13 @@ const UserEdit = () => {
         showModal ? setShowModal(false) : setShowModal(true);
     }
 
+    useEffect(() => {
+        setShowModal(false);
+    }, [profile]);
+
     return (
         <div className="info-right">
-            {showModal && <ChangeImage/>}
+            {showModal && <ChangeImage setProfile={setProfile} />}
             <div className="user-info-title">
                 <div className="info-title">
                     <span>내정보</span>
@@ -117,7 +122,7 @@ const UserEdit = () => {
                 <span></span>
                 <div className="profile">
                     <label>이미지</label>
-                    <img src="http://localhost:8100/profile/admin" style={{maxWidth:"50px",maxHeight:"50px", position:"absolute",borderRadius:"50%"}}></img>
+                    <img src={profile} style={{ maxWidth: "50px", maxHeight: "50px", position: "absolute", borderRadius: "50%" }}></img>
                     <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
                 <span></span>
@@ -232,6 +237,17 @@ const UserEdit = () => {
                 <span></span>
             </div>
         </div>
+    );
+
+}
+
+const UserEdit = ({profile,setProfile}) => {
+
+    const [password, setPassword] = useState("");
+    const [ok, setOk] = useState(false);
+
+    return (
+        ok ? <UserEditForm profile={profile} setProfile={setProfile} /> : <PasswordCheck password={password} setPassword={setPassword} setOk={setOk} />
     );
 }
 

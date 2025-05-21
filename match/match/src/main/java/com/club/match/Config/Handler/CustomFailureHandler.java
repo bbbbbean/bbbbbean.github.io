@@ -1,6 +1,5 @@
 package com.club.match.Config.Handler;
 
-import com.club.match.Component.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
