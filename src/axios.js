@@ -8,7 +8,6 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-        const accessToken = window.localStorage.getItem('accessToken');
         config.headers['Content-Type'] = 'application/json';
         config.withCredentials = true;
         return config;

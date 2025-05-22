@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import UserCalendar from "./calendar/UserCalendar";
 
 import "../css/common_css/main_main.css";
 
@@ -15,6 +16,7 @@ import chatIcon from "../image/image_main/chat-icon.svg";
 import calendarIcon from "../image/image_main/calendar-icon.svg";
 import callIcon from "../image/image_main/call-icon.svg";
 import MatchModal from "./match/matchModal";
+import Calendar from "react-calendar";
 
 const Main = () => {
 
@@ -192,7 +194,7 @@ const Main = () => {
             </ul>
           </div>
 
-          <div id="Accordion_wrap">
+          <div id="Accordion_wrap" className={activeAccordion === 1 && 'caldendar'}>
             {/* Accordion */}
             {['채팅', '달력', '1:1 문의'].map((item, index) => (
               <div key={index}>
@@ -201,9 +203,18 @@ const Main = () => {
                     src={index === 0 ? chatIcon : index === 1 ? calendarIcon : callIcon} alt="아이콘" />
                   <span>{item}</span>
                 </div>
-                <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px', padding: activeAccordion === index ? '10px 20px' : '0px' }}>
-                  <div>{item} 연결</div>
-                </div>
+                {item === "채팅" &&
+                  <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px'}}>
+                    <div>채팅 연결</div>
+                  </div>}
+                {item === "달력" &&
+                  <div className="anw" style={{ width:'500px',height: activeAccordion === index ? '530px' : '0px'}}>
+                    <UserCalendar />
+                  </div>}
+                {item === "1:1 문의" &&
+                  <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px'}}>
+                    <div>챗봇 연결</div>
+                  </div>}
               </div>
             ))}
           </div>

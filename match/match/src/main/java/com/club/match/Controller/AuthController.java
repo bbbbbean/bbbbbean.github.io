@@ -209,9 +209,6 @@ public class AuthController {
     @PostMapping("/reneToken")
     public ResponseEntity<?> reneToken(@CookieValue("refreshToken") String refreshToken) {
 
-
-        Map<String, Object> resp = new HashMap<>();
-
         boolean isOk = jwtTokenProvider.validateToken(refreshToken);
 
         Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
@@ -219,15 +216,19 @@ public class AuthController {
         if (isOk) {
             JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(authentication);
 
-            resp.put("jwtToken", jwtTokenDTO.getAccessToken());
-
-            ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
+            ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
                     .httpOnly(true)
                     .path("/")
                     .maxAge(Duration.ofDays(1))
                     .build();
 
-            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
+            ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
+                    .httpOnly(true)
+                    .path("/")
+                    .maxAge(Duration.ofDays(1))
+                    .build();
+
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie1.toString(), cookie2.toString()).body(null);
         }
         return ResponseEntity.badRequest().body(null);
     }

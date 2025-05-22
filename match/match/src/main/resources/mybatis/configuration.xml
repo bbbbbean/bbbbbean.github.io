@@ -12,5 +12,6 @@
         <typeAlias type="com.club.match.Domain.DTO.PageDTO" alias="PageDTO" />
         <typeAlias type="com.club.match.Domain.DTO.LineChartDTO" alias="LineChartDTO" />
         <typeAlias type="com.club.match.Domain.DTO.SocialLinkDTO" alias="SocialLinkDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.CalendarMemoDTO" alias="CalendarMemoDTO" />
     </typeAliases>
 </configuration>

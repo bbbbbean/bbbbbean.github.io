@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.CalendarMapper">
+    <insert id="insertMemo">
+        INSERT INTO calendarnote_tbl(content,date,userId) VALUES(#{content}, #{date}, #{userId});
+    </insert>
+
+    <delete id="deleteUserMemo">
+        DELETE FROM calendarnote_tbl where calendarId = #{calendarId};
+    </delete>
+
+    <select id="selectAllUserMemo" resultType="CalendarMemoDTO">
+        SELECT * FROM calendarnote_tbl where year(date) = #{year} and month(date) = #{month} and userId = #{userId};
+    </select>
+</mapper>

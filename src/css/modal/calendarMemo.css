@@ -1,0 +1,19 @@
+.memo-modal {
+    position: absolute;
+    top: calc(50% - 200px);
+    left: calc(50% - 12.5vw);
+    width: 25vw;
+    height: 400px;
+    z-index: 1;
+    background-color: white;
+    text-align: right;
+}
+.memo-modal button{
+    padding-right: 5px;
+}
+.memo-modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

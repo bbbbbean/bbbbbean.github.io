@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -32,12 +34,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String token = resolveToken((HttpServletRequest) servletRequest);
 
+        if(token == null || request.getRequestURI().startsWith("/profile")){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
         try {
-            if(token != null && jwtTokenProvider.validateToken(token)){
+            if(jwtTokenProvider.validateToken(token)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -46,21 +54,28 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             log.warn("JWT 인증 실패: {}", e.getMessage());
             setErrorResponse(response, e.getMessage());
         }
-
     }
 
     private void setErrorResponse(HttpServletResponse response, String message) throws IOException {
+
+        Cookie cookie = new Cookie("accessToken","");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
 
         String body = String.format("{\"type\":\"JWT\", \"message\":\"%s\"}", message);
+
         response.getWriter().write(body);
     }
 
     private String resolveToken(HttpServletRequest req){
         Cookie[] cookies = req.getCookies();
 
-        String bearerToken = "";
+        String bearerToken = null;
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -69,6 +84,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 }
             }
         }
+
         if(StringUtils.hasText(bearerToken)){
             return bearerToken;
         }

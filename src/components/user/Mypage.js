@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import api from "../../axios"
-import UserCalender from "../calendar/UserCalender";
+import UserCalendar from "../calendar/UserCalendar";
 
 import "../../css/user_css/myPage.css";
 
@@ -169,7 +169,7 @@ const MyPageSection = () => {
         <span>My</span>
         <span>Calendar</span>
         <div className="calendar-container">
-          <UserCalender />
+          <UserCalendar />
         </div>
       </div>
     </div>
