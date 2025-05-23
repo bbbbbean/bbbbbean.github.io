@@ -29,7 +29,12 @@ const FriendItem = ({ name, intro }) => {
         <img src={moreIcon} alt="친구메뉴" />
       </button>
       <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
-        <span>신고하기</span>
+        <ul>
+          <li>즐겨찾기 설정</li>
+          <li>친구 삭제</li>
+          <li>친구 차단</li>
+          <li>신고하기</li>
+        </ul>
       </div>
     </div>
   );
@@ -71,6 +76,22 @@ const Friend = () => {
           <div className="myfriend">친구</div>
           <div className="im-in">내가 참여한 매칭</div>
         </div>
+        <div className='chatroom'>
+            <div className="chatimage"></div>
+            <div className="word1">
+              <div className="chatname">wow</div>
+              <div className="onelin">1111</div>
+            </div>
+            <button>
+              <img src={moreIcon} alt="채팅메뉴" />
+            </button>
+            <div className={`chatdmenu`}>
+              <ul>
+                <li>채팅방 나가기</li>
+                <li>신고하기</li>
+              </ul>
+            </div>
+          </div>
       </section>
     </div>
   );
