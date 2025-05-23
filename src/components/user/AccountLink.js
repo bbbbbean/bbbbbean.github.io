@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../axios"
+import { useLocation } from "react-router-dom";
 
 export default function AccountLink() {
 
@@ -10,23 +11,14 @@ export default function AccountLink() {
     const [naverFail, setNaverFail] = useState("");
     const [kakaoFail, setKakaoFail] = useState("");
     const [googleFail, setGoogleFail] = useState("");
+    const location = useLocation();
 
     useEffect(() => {
 
-        let platform = "";
-        let code = "";
-        let failCode = "";
-        new URL(window.location.href).search
-            .substring(1).replace("?", "").split("&")
-            .forEach((item) => {
-                if (!item.indexOf("platform")) {
-                    platform = item.split("=")[1];
-                } else if (!item.indexOf("code")) {
-                    code = item.split("=")[1];
-                } else if (!item.indexOf("FailCode")) {
-                    failCode = item.split("=")[1];
-                }
-            });
+        const params = new URLSearchParams(location.search);
+        const platform = params.get("platform");
+        const code = params.get("code");
+        const failCode = params.get("FailCode");
 
         switch (platform) {
             case "1": // 네이버
@@ -118,7 +110,7 @@ export default function AccountLink() {
         const RESPONSE_TYPE = "code";
         const url = "https://kauth.kakao.com/oauth/authorize" +
             `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
-            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2"+
+            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
             "&response_type=" + RESPONSE_TYPE;
 
         window.location.href = url;

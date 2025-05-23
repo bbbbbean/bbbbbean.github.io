@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import "../../css/user_css/userInfo_sidebar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserName } from "../../store";
 
@@ -10,15 +10,8 @@ const MyPageSiderbar = ({profile}) => {
 
   const dispatch = useDispatch();
   
-  
+  const url = useLocation().pathname.split("/")[2];
 
-  let url = new URL(window.location.href).href.split("/")[5];
-  if(url === "edit"){
-    url = "password_check";
-  }
-  if(url === undefined){
-    url = ""
-  }
   const [activeMenu, setActiveMenu] = useState(url);
   const userId = localStorage.getItem("userId");
   const nickName = useSelector((state) => state.user.userName);

@@ -10,7 +10,15 @@
         DELETE FROM calendarnote_tbl where calendarId = #{calendarId};
     </delete>
 
+    <select id="selectOneMemo" resultType="CalendarMemoDTO">
+        SELECT * FROM calendarnote_tbl where calendarId = #{calendarId};
+    </select>
+
     <select id="selectAllUserMemo" resultType="CalendarMemoDTO">
         SELECT * FROM calendarnote_tbl where year(date) = #{year} and month(date) = #{month} and userId = #{userId};
     </select>
+
+    <update id="updateUserMemo">
+        UPDATE calendarnote_tbl SET content = #{content} where calendarId = #{calendarId};
+    </update>
 </mapper>

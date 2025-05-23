@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "../css/common_css/main_header.css";
 import "../css/common_css/custom.css";
 import logo from "../image/로고_color.png";
@@ -25,9 +25,9 @@ const MainHeader = () => {
     <header>
       <ul className="logo">
         <li>
-          <NavLink to="/">
+          <Link to="/">
             <img src={logo} alt="로고고" />
-          </NavLink>
+          </Link>
         </li>
       </ul>
 
@@ -72,27 +72,27 @@ const MainHeader = () => {
         {isAuth ?
           <ul>
             <li>
-              <NavLink to="/user/logout">
+              <Link to="/user/logout">
                 <img src={loginIcon} alt="" />
                 <span>로그아웃</span>
-              </NavLink>
+              </Link>
             </li>
             <li>
               <a href="#"><img src={noticeIcon} alt="" /><span>알림</span></a>
             </li>
             <li>
-              <NavLink to="/mypage/">
+              <Link to="/mypage/">
                 <img src={menuIcon} alt="" />
-              </NavLink>
+              </Link>
             </li>
           </ul>
           :
           <ul>
             <li>
-              <NavLink to="/user/login">
+              <Link to="/user/login">
                 <img src={loginIcon} alt="" />
                 <span>로그인</span>
-              </NavLink>
+              </Link>
             </li>
           </ul>
         }

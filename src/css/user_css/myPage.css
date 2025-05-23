@@ -17,14 +17,15 @@
     background-color: #cceaff;
     transition: 0.5s;
     cursor: pointer;
+    position: relative;
 }
 .info-container>.info-right>.user-info-tag>.date-tag>.tag-item>span{
     display: none;
     width: 100%;
     height: 100%;
     border-radius: 30px;
-    position: relative;
-    right: -15px;
+    position: absolute;
+    left: 15px;
 }
 .info-container>.info-right>.user-info-tag>.date-tag>.tag-item:hover span {
     display: inline;

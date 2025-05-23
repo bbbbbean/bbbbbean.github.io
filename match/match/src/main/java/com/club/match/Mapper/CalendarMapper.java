@@ -9,5 +9,7 @@ import java.util.List;
 public interface CalendarMapper {
     int insertMemo(CalendarMemoDTO calendarNoteDTO);
     int deleteUserMemo(CalendarMemoDTO calendarMemoDTO);
+    CalendarMemoDTO selectOneMemo(String calendarId);
     List<CalendarMemoDTO> selectAllUserMemo(String userId, int year, int month);
+    int updateUserMemo(CalendarMemoDTO calendarMemoDTO);
 }

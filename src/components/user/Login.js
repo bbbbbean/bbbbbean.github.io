@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, replace } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../css/user_css/login.css";
 import axios from "axios";
@@ -13,23 +13,19 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
     const [loginfail, setLoginFail] = useState("");
-
-
+    
     const errorMessage = (errorCode) => {
         if (errorCode === '2') {
             setLoginFail("해당 소셜계정은 연동된 계정이 없습니다.");
         }
     };
 
+    const location = useLocation();
+
     useEffect(() => {
-        new URL(window.location.href).search
-            .substring(1).replace("?", "").split("&")
-            .forEach((item) => {
-                if (!item.indexOf("errorCode")) {
-                    const errorCode = item.split("=")[1]
-                    errorMessage(errorCode);
-                }
-            });
+        const params = new URLSearchParams(location.search);
+        console.log(params.get("errorCode"));
+        errorMessage(params.get("errorCode"));
     }, []);
 
     const handleLogin = (e) => {
@@ -132,9 +128,9 @@ const LoginForm = () => {
                     }
                 </div>
                 <div className="login-menu">
-                    <NavLink to="/user/signup">
+                    <Link to="/user/signup">
                         <span>회원가입</span>
-                    </NavLink>
+                    </Link>
                     <span>|</span>
                     <a href="#">
                         <span>아이디찾기</span>
@@ -151,7 +147,7 @@ const LoginForm = () => {
                             <a href="#"></a>
                         </li>
                         <li>
-                            <NavLink to="http://localhost:8100/oauth2/authorization/kakao" />
+                            <Link to="http://localhost:8100/oauth2/authorization/kakao" />
                         </li>
                         <li>
                             <a href="#"></a>

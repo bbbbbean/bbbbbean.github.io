@@ -46,13 +46,38 @@ public class CalendarController {
     public ResponseEntity<?> getMemo(@RequestBody Map<String,Object> req) {
 
         String userId = (String)req.get("userId");
-        int year = (int)req.get("year");
-        int month = (int)req.get("month");
+        Integer year = (Integer)req.get("year");
+        Integer month = (Integer)req.get("month");
+        String calendarId = (String)req.get("calendarId");
+        Map<String,Object> resp = null;
+        if(calendarId != null){
+            log.info("calendarId : " + calendarId);
 
-        log.info(userId + "/" + year + "/" + month);
+            resp = calendarService.getOneMemo(calendarId);
 
-        Map<String,Object> resp = calendarService.getMemo(userId,year,month);
+            return ResponseEntity.ok().body(resp);
+        } else {
 
-        return ResponseEntity.ok().body(resp);
+            log.info(userId + "/" + year + "/" + month);
+
+            resp = calendarService.getMemo(userId,year,month);
+
+            return ResponseEntity.ok().body(resp);
+        }
+    }
+    @PostMapping("/editMemo")
+    public ResponseEntity<?> editMemo(@RequestBody @Validated CalendarMemoDTO calendarMemoDTO) {
+
+        if(calendarMemoDTO.getContent() == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        }
+
+        boolean isOk = calendarService.editMemo(calendarMemoDTO);
+
+        if(!isOk) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(null);
     }
 }

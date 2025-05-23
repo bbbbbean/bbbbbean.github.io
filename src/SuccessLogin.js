@@ -45,6 +45,9 @@ const SuccessLogin = () => {
         dispatch(login());
 
         navigate("/");
+      })
+      .catch((error) => {
+        navigate("/user/logout");
       });
   })
 

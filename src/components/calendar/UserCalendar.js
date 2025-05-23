@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import "../../css/calender_css/custom_calender.css";
-import CalendarMemoModal from '../modal/CalendarMemoModal';
+import CalendarModal from '../modal/CalendarMemoModal';
 import api from '../../axios';
 
 
@@ -11,32 +11,56 @@ function UserCalendar() {
   const [value, onChange] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [date, setDate] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [addMemo, setAddMemo] = useState(0);
-  const [note , setNote] = useState([]);
-  
-  const handleDataClick = (e) => {
+  const [addModal, setAddModal] = useState(false);
+  const [viewModal, setviewModal] = useState(false);
+  const [hasUpdated, setHasUpdated] = useState(false);
+  const [note, setNote] = useState([]);
+  const [keyEvent, setKeyEvent] = useState(false);
+  const [calendarId, setCalendarId] = useState(0);
+
+  const handleRightClick = (e) => {
     e.preventDefault();
     console.log(e.target.dataset.id);
-    api.post("api/calendar/deleteMemo", { calendarId: e.target.dataset.id })
-      .then((response) => {
-        setAddMemo(addMemo + 1);
-      });
+      setCalendarId(e.target.dataset.id);
+    if (keyEvent) {
+      api.post("api/calendar/deleteMemo", { "calendarId":e.target.dataset.id })
+        .then((response) => {
+          setHasUpdated(!hasUpdated);
+        });
+    } else {
+      setviewModal(true);
+      setAddModal(false);
+    }
   }
+
   const dummy = (e) => {
     e.preventDefault();
   }
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Shift") {
+        setKeyEvent(true);
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "Shift") {
+        setKeyEvent(false);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     api.post("api/calendar/getMemo", { userId: localStorage.getItem("userId"), "year": selectedDate.getFullYear(), "month": selectedDate.getMonth() + 1 })
       .then((response) => {
         setNote(response.data.noteData);
       });
-  }, [selectedDate,addMemo]);
+  }, [selectedDate, hasUpdated]);
 
   return (
     <div onContextMenu={dummy} style={{ position: "relative" }}>
-      {showModal && <CalendarMemoModal date={date} setShowModal={setShowModal} setAddMemo={setAddMemo} />}
+      {viewModal && <CalendarModal.CalendarMemoViewModal calendarId={calendarId} setviewModal={setviewModal} setHasUpdated={setHasUpdated} />}
+      {addModal && <CalendarModal.CalendarMemoAddModal date={date} setAddModal={setAddModal} setHasUpdated={setHasUpdated} />}
       <Calendar
         onChange={onChange}
         value={value}
@@ -64,7 +88,7 @@ function UserCalendar() {
         onActiveStartDateChange={({ action, activeStartDate, value, view }) => {
           if (view === 'month') {
             setSelectedDate(activeStartDate);
-            setShowModal(false);
+            setAddModal(false);
           }
 
         }}
@@ -75,7 +99,7 @@ function UserCalendar() {
               {note.map((item) => {
                 const itemDate = new Date(item.date);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
-                  return <p key={item.calendarId} data-id={item.calendarId} style={{ color: 'orange' }} onContextMenu={handleDataClick}>{item.content}</p>;
+                  return <p key={item.calendarId} data-id={item.calendarId} style={{ color: 'orange' }} onContextMenu={handleRightClick}>{item.content}</p>;
                 }
                 return null;
               })}
@@ -83,7 +107,8 @@ function UserCalendar() {
           ) : null
         }
         onClickDay={(value) => {
-          setShowModal(true);
+          setAddModal(true);
+          setviewModal(false);
           const year = value.getFullYear();
           const month = String(value.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1
           const day = String(value.getDate()).padStart(2, '0');

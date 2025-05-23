@@ -194,7 +194,7 @@ const Main = () => {
             </ul>
           </div>
 
-          <div id="Accordion_wrap" className={activeAccordion === 1 && 'caldendar'}>
+          <div id="Accordion_wrap" className={activeAccordion === 1 ? 'caldendar' : ""}>
             {/* Accordion */}
             {['채팅', '달력', '1:1 문의'].map((item, index) => (
               <div key={index}>
