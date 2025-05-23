@@ -1,0 +1,5 @@
+/* CustomEditor.css */
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: attr(data-value);
+}
