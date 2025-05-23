@@ -20,6 +20,8 @@ import Calendar from "react-calendar";
 
 const Main = () => {
 
+  const [isAuth] = useState(localStorage.getItem("isAuth"));
+
   useEffect(() => {
     const mainMatchlistEls = document.querySelectorAll(".main-matchlist-els");
 
@@ -209,7 +211,7 @@ const Main = () => {
                   </div>}
                 {item === "달력" &&
                   <div className="anw" style={{ width:'500px',height: activeAccordion === index ? '530px' : '0px'}}>
-                    <UserCalendar />
+                    {isAuth && <UserCalendar />}
                   </div>}
                 {item === "1:1 문의" &&
                   <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px'}}>
