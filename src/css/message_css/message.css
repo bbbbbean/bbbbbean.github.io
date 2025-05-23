@@ -124,13 +124,14 @@
     margin-top: 35px;
     left: 555px;
     font-size: 17px;
-    width: 90px;
-    height: 40px;
+    width: 100px;
+    height: 100px;
     text-align: center;
     color: #6B6B6B;
     padding: 10px 0;
     border-radius: 0px 10px 10px 10px;
     background-color: white;
+    z-index: 3;
 }
 
 .friend-container>.left>.all>.person>.friendmenu.show {
@@ -146,7 +147,7 @@
 .friend-container>.right {
     width: 612px;
     height: 1223px;
-    border: #6EC3FF solid;
+    /* border: #6EC3FF solid; */
     margin-left: 11px;
     border-radius: 20px 20px 20px 20px;
     position: relative;
@@ -209,12 +210,18 @@
 
 .friend-container>.right>.chatroom{
     display: flex;
+    border: 1px solid #6EC3FF;
+    border-radius: 20px 20px 20px 20px;
+    width: 612px;
+    height: 150px;
+    align-items: center;
+    /* margin-left: 14px; */
 
 }
 .friend-container>.right>.chatroom>.chatimage{
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
+    width: 66px;
+    height: 66px;
     background-color: #FBB00E;
     margin-left: 24px;
 }
@@ -240,24 +247,35 @@
     border: none;
     background-color: white;
     height: 35px;
-    left: 550px;
-    margin-top: 10px;
+    left: 570px;
+    margin-top: -100px;
 }
 
 .friend-container>.right>.chatroom>.chatmenu {
     display: none;
     position: absolute;
     border: 1px solid #6B6B6B;
-    margin-top: 35px;
-    left: 555px;
+    margin-top: -10px;
+    left: 570px;
     font-size: 17px;
-    width: 90px;
-    height: 40px;
+    width: 100px;
+    height: 70px;
     text-align: center;
     color: #6B6B6B;
     padding: 10px 0;
     border-radius: 0px 10px 10px 10px;
     background-color: white;
+    z-index: 3;
+}
+.friend-container>.right>.chatroom>.chatnum{
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    background-color: #6EC3FF;
+    position: absolute;
+    top: 175px;
+    right: 15px;
+    
 }
 .friend-container>.right>.chatroom>.chatmenu.show {
     display: block;

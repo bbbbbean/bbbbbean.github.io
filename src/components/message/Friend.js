@@ -94,6 +94,7 @@ const Friend = () => {
               <li>신고하기</li>
             </ul>
           </div>
+          <div className='chatnum'>12</div>
         </div>
       </section>
     </div>
