@@ -40,7 +40,9 @@ const FriendItem = ({ name, intro }) => {
   );
 };
 
+
 const Friend = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className='friend-container'>
       <section className="left">
@@ -76,22 +78,23 @@ const Friend = () => {
           <div className="myfriend">친구</div>
           <div className="im-in">내가 참여한 매칭</div>
         </div>
+        {/* ------------------------------ */}
         <div className='chatroom'>
-            <div className="chatimage"></div>
-            <div className="word1">
-              <div className="chatname">wow</div>
-              <div className="onelin">1111</div>
-            </div>
-            <button>
-              <img src={moreIcon} alt="채팅메뉴" />
-            </button>
-            <div className={`chatdmenu`}>
-              <ul>
-                <li>채팅방 나가기</li>
-                <li>신고하기</li>
-              </ul>
-            </div>
+          <div className="chatimage"></div>
+          <div className="word1">
+            <div className="chatname">채팅방 이름</div>
+            <div className="oneline"> 최근 채팅 내용</div>
           </div>
+          <button onClick={() => setMenuOpen(!menuOpen)}>
+            <img src={moreIcon} alt="채팅메뉴" />
+          </button>
+          <div className={`chatmenu ${menuOpen ? 'show' : ''}`}>
+            <ul>
+              <li>채팅방 나가기</li>
+              <li>신고하기</li>
+            </ul>
+          </div>
+        </div>
       </section>
     </div>
   );
