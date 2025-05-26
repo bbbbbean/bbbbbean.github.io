@@ -9,21 +9,18 @@ import "quill/dist/quill.snow.css"; // For Snow theme
 
 function Community_page_write() {
   const SizeStyle = Quill.import("attributors/style/size");
-  const fontSize = ["8px", "10px", "14px", "18px", "32px"];
+  const fontSize = ["small", "normal", "large"]; // 사이즈 조절
   SizeStyle.whitelist = fontSize;
   Quill.register(SizeStyle, true);
-  const editorRef = useRef(null); // Ref for the editor div
-  const quillInstance = useRef(null); // Ref to store the Quill instance
-
-  // State to hold the content, if you want to control it from React
+  const editorRef = useRef(null);
+  const quillInstance = useRef(null);
   const [editorContent, setEditorContent] = useState("");
 
   useEffect(() => {
-    // Initialize Quill only once after the component mounts
     if (editorRef.current && !quillInstance.current) {
       quillInstance.current = new Quill(editorRef.current, {
         theme: "snow",
-        placeholder: "Compose an epic story...",
+        placeholder: "내용을 입력하세요",
         modules: {
           toolbar: [
             ["bold", "italic", "underline", "strike"],
@@ -36,25 +33,21 @@ function Community_page_write() {
             [{ font: [] }],
             [{ align: [] }],
             ["link"],
-            ["clean"],
             ["image", "code-block"],
             ["file"],
             ["video"],
             ["formula"],
+            ["clean"],
           ],
         },
       });
 
-      // Optional: Set initial content
       quillInstance.current.root.innerHTML = editorContent;
-
-      // Optional: Listen for text changes to update React state
       quillInstance.current.on("text-change", () => {
         setEditorContent(quillInstance.current.root.innerHTML);
       });
     }
 
-    // Cleanup function: Destroy Quill instance when the component unmounts
     return () => {
       if (quillInstance.current) {
         quillInstance.current = null;
@@ -70,13 +63,13 @@ function Community_page_write() {
 
   return (
     <div>
-      <h2>My Rich Text Editor</h2>
-      {/* The div where Quill will be initialized */}
+      <h3>여기에 운동, 게임, 자유게시판 등 어느게시판에 올릴지 표시</h3>
+
       <div
         ref={editorRef}
         style={{ height: "300px", border: "1px solid #ccc" }}
       ></div>
-      <p>Current Content (HTML):</p>
+      <p>↓↓↓↓HTML 표시형식(나중에 삭제 또는 invisible)</p>
       <div style={{ border: "1px solid #eee", padding: "10px" }}>
         {editorContent}
       </div>

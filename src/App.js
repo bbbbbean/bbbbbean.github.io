@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
@@ -7,15 +7,14 @@ import Footer from "./components/Footer";
 import MatchList from "./components/match/matchList";
 import EventList from "./components/event/Event";
 import MyPageLayout from "./components/layout/MypageLayout";
-import AdminPage from './AdminPage';
-import Friend from './components/message/Friend'
-import UserLayout from './components/layout/UserLayout'
-import SuccessLogin from './SuccessLogin'
-import AccordionModal from './components/modal/AccordionModal';
-
+import AdminPage from "./AdminPage";
+import Friend from "./components/message/Friend";
+import UserLayout from "./components/layout/UserLayout";
+import SuccessLogin from "./SuccessLogin";
+import AccordionModal from "./components/modal/AccordionModal";
+import Community from "./components/community/Community";
 
 function AppComponent() {
-
   //로그인 여부 확인
   const isAuth = localStorage.getItem("isAuth");
 
@@ -23,7 +22,7 @@ function AppComponent() {
   const location = useLocation().pathname;
   return (
     <>
-      {!location.includes('admin') ? (
+      {!location.includes("admin") ? (
         <>
           <div className="wrapper">
             <MainHeader />
@@ -31,28 +30,26 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<Friend />} />              
+              <Route path="/friend" element={<Friend />} />
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
+              <Route path="/community/*" element={<Community />} />
             </Routes>
           </div>
           <Footer />
           {isAuth && <AccordionModal />}
         </>
-      )
-        :
+      ) : (
         <Routes>
           <Route path="/admin/*" element={<AdminPage />} />
         </Routes>
-      }
-
+      )}
     </>
   );
 }
 
 function App() {
-
   return (
     <Router>
       <AppComponent />

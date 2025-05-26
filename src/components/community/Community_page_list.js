@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../css/CSS_community-page/community_page_list.css";
 import { Link } from "react-router-dom";
 
-const Community_list = () => {
+const Community_page_list = () => {
   const [selectedMenu, setSelectedMenu] = useState("자유게시판");
   const handlerSelectMenu = (e) => {
     console.log(e.target.innerText);
@@ -118,4 +118,4 @@ const Community_list = () => {
   );
 };
 
-export default Community_list;
+export default Community_page_list;
