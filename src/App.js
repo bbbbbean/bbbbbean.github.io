@@ -12,6 +12,7 @@ import Friend from './components/message/Friend'
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
+import NewMatch from './components/match/newMatch';
 
 
 function AppComponent() {
@@ -30,6 +31,7 @@ function AppComponent() {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
+              <Route path="/match/list/newMatch" element={<NewMatch />} />
               <Route path="/event/list" element={<EventList />} />
               <Route path="/friend" element={<Friend />} />              
               <Route path="/mypage/*" element={<MyPageLayout />} />

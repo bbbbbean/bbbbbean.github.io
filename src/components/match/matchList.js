@@ -4,6 +4,7 @@ import "../../css/matching_css/matchingList.css";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useNavigate } from 'react-router-dom';
 import MatchModal from "./matchModal";
 import newMatch from "./newMatch";
 
@@ -21,6 +22,8 @@ const MatchList = () => {
         setMatchList(e.target.classList[1]);
     }
 
+    const navigate = useNavigate();
+    
     selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
     return (
@@ -238,7 +241,7 @@ const MatchList = () => {
 
             <div className="match-list">
                 {/* 로그인 여부에 따라 이동 변경 */}
-                <button className="match-reg-btn" onClick={<newMatch/>}>매칭 등록</button>
+                <button className="match-reg-btn" onClick={()=>navigate('./newMatch')}>매칭 등록</button> 
                 {[24, 25, 26].map((day, i) => (
                     <div className="match-continer" key={day}>
                         <div className="match-day">
