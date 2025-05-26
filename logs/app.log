@@ -103,3 +103,45 @@ Action:
 Check your application's dependencies for a supported servlet web server.
 Check the configured web application type.
 
+2025-05-26T14:50:52.555+09:00  INFO 10276 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 10276 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T14:50:52.571+09:00  INFO 10276 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T14:50:53.490+09:00  WARN 10276 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T14:50:53.490+09:00  INFO 10276 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T14:50:53.521+09:00 ERROR 10276 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
+2025-05-26T14:54:06.933+09:00  INFO 12680 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 12680 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T14:54:06.933+09:00  INFO 12680 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T14:54:07.874+09:00  WARN 12680 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T14:54:07.874+09:00  INFO 12680 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T14:54:07.890+09:00 ERROR 12680 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
