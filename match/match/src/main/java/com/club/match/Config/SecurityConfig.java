@@ -46,8 +46,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                            "/api/auth/logout","/api/auth/sign"
-                            ,"/api/auth/check-id","/profile/**").permitAll();
+                            "/api/auth/logout","/api/auth/sign",
+                            "/api/auth/check-id","/profile/**",
+                            "ws","ws-stomp","ws/stomp/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();
@@ -70,7 +71,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(String url) {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(url));
+        configuration.setAllowedOrigins(List.of(url,"chrome-extension://fgponpodhbmadfljofbimhhlengambbn"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

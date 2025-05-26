@@ -12,6 +12,7 @@ import FriendLayout from './components/layout/FriendLayout';
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
+import Test from './components/message/TestCode';
 
 
 function AppComponent() {
@@ -35,6 +36,7 @@ function AppComponent() {
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
+              <Route path="/test" element={<Test />} />
             </Routes>
           </div>
           <Footer />
