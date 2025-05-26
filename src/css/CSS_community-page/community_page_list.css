@@ -1,0 +1,186 @@
+* {
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.forum-wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+
+  border-top: 1px solid #6ec3ff;
+}
+
+/* 게시판 */
+.forum {
+  margin-top: 60px;
+}
+.forum > ul {
+  padding-left: 0;
+}
+
+/* 메뉴 */
+.forum-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* 토글 메뉴 */
+.forum-menu-el {
+  height: 45px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 5px;
+}
+.forum-menu-el > a {
+  width: auto;
+  height: 100%;
+
+  padding: 0 20px;
+
+  /* border-radius: 10%; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.on {
+  /* background-color: #6ec3ff; */
+  /* color: #fff !important; */
+  border-bottom: #6ec3ff 2px solid;
+}
+/* 서치 */
+.forum-menu-serch {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+
+  height: 35px;
+  width: 260px;
+  border: 1px solid #6ec3ff;
+  border-radius: 50px;
+}
+.forum-menu-serch > input {
+  width: 200px;
+  outline: none;
+  border: 0;
+}
+.forum-menu-serch > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+
+/* 글목록 */
+.forum-main {
+  margin-top: 10px;
+  border-top: 2px solid #6ec3ff;
+  border-bottom: 2px solid #6ec3ff;
+}
+.forum-main-grid {
+  display: grid;
+  grid-template-columns: 80px auto 80px 80px 80px 80px;
+  text-align: center;
+}
+
+.forum-main-el {
+  border-top: 1px solid #aaaaaa;
+  padding: 6px 0;
+}
+.forum-main-el > a {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: black;
+}
+.forum-main-el > a > p:nth-child(2) {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.forum-main-el:hover {
+  background-color: #f4f4f2;
+}
+
+/* 페이지 */
+.forum-listnum {
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 30px;
+  padding-right: 20px;
+}
+.page {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.page > div {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.page > div > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+}
+.page-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.dirction-button {
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+}
+
+.dirction-button > svg {
+  width: 20px;
+  height: 20px;
+}
+.list-on {
+  color: #f9af0e !important;
+  text-decoration: underline;
+}
+
+/* 글쓰기 버튼 */
+.forum-write {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.forum-write > a {
+  width: 45px;
+  height: 25px;
+  right: 10px;
+
+  display: flex;
+  position: absolute;
+
+  color: #fff;
+  background-color: #6ec3ff;
+  border-radius: 50px;
+  padding: 10px 20px;
+}
