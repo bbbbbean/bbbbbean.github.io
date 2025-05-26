@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +25,12 @@ public class CalendarController {
     CalendarService calendarService;
 
     @PostMapping("/addMemo")
-    public ResponseEntity<?> addMemo(@RequestBody @Validated CalendarMemoDTO calendarNoteDTO) {
-        boolean isOk = calendarService.addMemo(calendarNoteDTO);
+    public ResponseEntity<?> addMemo(@RequestBody @Validated CalendarMemoDTO calendarMemoDTO) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        calendarMemoDTO.setUserId(authentication.getName());
+        boolean isOk = calendarService.addMemo(calendarMemoDTO);
         if(!isOk){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -34,6 +40,9 @@ public class CalendarController {
     @PostMapping("/deleteMemo")
     public ResponseEntity<?> deleteMemo(@RequestBody @Validated CalendarMemoDTO calendarMemoDTO) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        calendarMemoDTO.setUserId(authentication.getName());
         boolean isOk = calendarService.removeMemo(calendarMemoDTO);
         if(!isOk){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -45,7 +54,9 @@ public class CalendarController {
     @PostMapping("/getMemo")
     public ResponseEntity<?> getMemo(@RequestBody Map<String,Object> req) {
 
-        String userId = (String)req.get("userId");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = authentication.getName();
         Integer year = (Integer)req.get("year");
         Integer month = (Integer)req.get("month");
         String calendarId = (String)req.get("calendarId");
@@ -68,6 +79,9 @@ public class CalendarController {
     @PostMapping("/editMemo")
     public ResponseEntity<?> editMemo(@RequestBody @Validated CalendarMemoDTO calendarMemoDTO) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        calendarMemoDTO.setUserId(authentication.getName());
         if(calendarMemoDTO.getContent() == null) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST);
         }

@@ -23,7 +23,7 @@ const ChangeImage = ({setProfile}) => {
 
     const handleImageChange = (e) => {
         e.preventDefault();
-        imageApi.post("/api/user/updateImg", { "userId": localStorage.getItem("userId"), "image": selImage })
+        imageApi.post("/api/user/updateImg", { "image": selImage })
             .then((response) => {
                 console.log(response.status);
                 if (response.status == 200) {

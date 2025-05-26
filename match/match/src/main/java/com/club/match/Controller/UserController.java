@@ -11,6 +11,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +41,9 @@ public class UserController {
 
     @PostMapping("/myInfoPwdCheck")
     public ResponseEntity<?> pwdCheck(@RequestBody Map<String, Object> req) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Map<String, Object> resp = new HashMap<>();
-        String userId = (String) req.get("userId");
+        String userId = (String)authentication.getName();
         String password = (String) req.get("password");
         UserDTO userDTO = userService.serchUserOne(userId);
         boolean isOk = passwordEncoder.matches(password, userDTO.getPassword());
@@ -50,9 +55,10 @@ public class UserController {
     }
 
     @PostMapping("/getTag")
-    public ResponseEntity<?> getTag(@RequestBody Map<String, Object> req){
+    public ResponseEntity<?> getTag(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
 
         Map<String,Object> tagsResp = userService.serchUserTag(userId);
 
@@ -61,8 +67,9 @@ public class UserController {
 
     @PostMapping("/addTag")
     public ResponseEntity<?> addTag(@RequestBody Map<String, Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
         String tag = (String)req.get("tag");
         Map<String,Object> tagsResp = new HashMap<>();
         try{
@@ -79,8 +86,9 @@ public class UserController {
 
     @PostMapping("/delTag")
     public ResponseEntity<?> delTag(@RequestBody Map<String, Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
         String tag = (String)req.get("tag");
 
         Map<String,Object> tagsResp = userService.delUserTag(userId, tag);
@@ -89,9 +97,10 @@ public class UserController {
     }
 
     @PostMapping("/getAccountLink")
-    public ResponseEntity<?> getAccountLink(@RequestBody Map<String, Object> req){
+    public ResponseEntity<?> getAccountLink(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
 
         Map<String, Object> resp = userService.searchUserAccountLink(SocialLinkDTO
                 .builder()
@@ -104,12 +113,13 @@ public class UserController {
     }
     @PostMapping("infoUpdate")
     public ResponseEntity<?> infoUpdate(@RequestBody Map<String, Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Map<String, Object> resp = new HashMap<>();
 
         UserDTO userDTO = null;
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
         String value = (String)req.get("value");
         String type = (String)req.get("type");
 
@@ -127,8 +137,10 @@ public class UserController {
         return ResponseEntity.ok().body(resp);
     }
     @PostMapping("updateImg")
-    public ResponseEntity<?> updateImg(@RequestParam("image") MultipartFile file,
-                                       @RequestParam("userId") String userId) {
+    public ResponseEntity<?> updateImg(@RequestParam("image") MultipartFile file) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = authentication.getName();
 
         if(file==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -163,6 +175,8 @@ public class UserController {
     @PostMapping("passwordUpdate")
     public ResponseEntity<?> passwordUpdate(@RequestBody Map<String, Object> req){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 
         String curpassword = (String)req.get("curpassword");
         String newpassword = (String)req.get("newpassword");
@@ -170,7 +184,7 @@ public class UserController {
 
         Map<String, Object> resp = new HashMap<>();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
 
         UserDTO userDTO = userService.serchUserOne(userId);
 
@@ -192,7 +206,7 @@ public class UserController {
         String password = passwordEncoder.encode(newpassword);
 
         boolean isChange = userService.changeUserPassword(userId,password);
-        if(isChange){
+        if(!isChange){
             resp.put("code","4");//비밀번호 변경에 실패했습니다. 다시 입력해주세요.
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }

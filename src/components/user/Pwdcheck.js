@@ -6,7 +6,7 @@ const PasswordCheck = ({ password, setPassword, setOk }) => {
 
     const handleConfirmClick = (e) => {
         e.preventDefault();
-        api.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
+        api.post("/api/user/myInfoPwdCheck", { password })
             .then((response) => {
                 if (response.data.success) {
                     setOk(true);

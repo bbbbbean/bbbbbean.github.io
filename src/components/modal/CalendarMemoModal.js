@@ -72,7 +72,6 @@ const CalendarMemoAddModal = ({ date, setAddModal, setHasUpdated }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         api.post("api/calendar/addMemo", {
-            "userId": localStorage.getItem("userId"),
             "date": date,
             "content": content
         }).then((response) => {

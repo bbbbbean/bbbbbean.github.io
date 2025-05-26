@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -119,20 +120,12 @@ public class AuthController {
     @PostMapping("/remove")
     public ResponseEntity<?> userRemove(@RequestBody Map<String,String> req, @RequestHeader String Authorization) throws IOException {
 
-        String userId = (String) req.get("userId");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = authentication.getName();
         String accessToken = (String)(Authorization.substring(7));
 
         String userPath = "src/main/resources/Users/" + userId;
-
-        // 토큰 ID값과 USERID값 비교
-        Claims claims = jwtTokenProvider.parseClaims(accessToken);
-
-        boolean isOk = userId.equals(claims.get("sub"));
-        System.out.println(isOk);
-
-        if(!isOk) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
 
         File userDir = new File(userPath);
 
@@ -175,10 +168,13 @@ public class AuthController {
     }
 
     @PostMapping("/oAuthLogin")
-    public ResponseEntity<?> oAuthLogin(@RequestBody Map<String,String> req) {
+    public ResponseEntity<?> oAuthLogin() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Map<String, Object> resp = new HashMap<>();
 
-        String userId = (String)req.get("userId");
+        String userId = authentication.getName();
 
         UserDTO userDTO = authService.selectOne(userId);
         userDTO.setPassword(null);
@@ -236,6 +232,9 @@ public class AuthController {
     @PostMapping("/unLink")
     public ResponseEntity<?> UnLink(@RequestBody @Validated SocialLinkDTO socialLinkDTO) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        socialLinkDTO.setUserId(authentication.getName());
         boolean isOk = authService.unSocialLink(socialLinkDTO);
 
         if(!isOk){
@@ -248,6 +247,8 @@ public class AuthController {
     @PostMapping("/kakaoLink")
     public ResponseEntity<?> kakaoLink(@RequestBody Map<String, Object> req) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Map<String,Object> resp = new HashMap<>();
 
         String code = (String) req.get("code");
@@ -257,7 +258,7 @@ public class AuthController {
 
         ResponseEntity<KakaoDTO> kakaoUserInfoResponse = authService.getUserKakaoId(oauthResponse.getBody().access_token);
 
-        String userId = (String) req.get("userId");
+        String userId = authentication.getName();
         String linkedID = kakaoUserInfoResponse.getBody().getId();
         String email = kakaoUserInfoResponse.getBody().getKakao_account().getEmail();
 

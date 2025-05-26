@@ -13,7 +13,7 @@ const SuccessLogin = () => {
   useEffect(() => {
     const userId = new URL(window.location.href).search.split("=")[1];
     localStorage.setItem("isAuth", true);
-    instance.post("/api/auth/oAuthLogin", { userId })
+    instance.post("/api/auth/oAuthLogin")
       .then((response) => {
         const {
           userId,

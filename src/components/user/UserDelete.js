@@ -8,7 +8,7 @@ export default function DeleteAccount() {
 
     const handlePwCheck = (e) => {
         e.preventDefault();
-        api.post("/api/user/myInfoPwdCheck", { "userId": localStorage.getItem("userId"), password })
+        api.post("/api/user/myInfoPwdCheck", { password })
             .then((response) => {
                 if (response.data.success) {
                     setForm(false);
@@ -22,7 +22,7 @@ export default function DeleteAccount() {
 
     const handleRemove = (e) => {
         e.preventDefault();
-        api.post("/api/auth/remove", { "userId": localStorage.getItem("userId")})
+        api.post("/api/auth/remove")
             .then((response) => {
                 window.location.href = '/user/logout';
             })

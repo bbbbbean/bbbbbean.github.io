@@ -11,13 +11,13 @@ import AdminPage from './AdminPage';
 import Friend from './components/message/Friend'
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
+import AccordionModal from './components/modal/AccordionModal';
 
 
 function AppComponent() {
 
   //로그인 여부 확인
-  if (localStorage.getItem("isAuth")) {
-  }
+  const isAuth = localStorage.getItem("isAuth");
 
   //어드민 페이지 여부 확인용
   const location = useLocation().pathname;
@@ -38,6 +38,7 @@ function AppComponent() {
             </Routes>
           </div>
           <Footer />
+          {isAuth && <AccordionModal />}
         </>
       )
         :

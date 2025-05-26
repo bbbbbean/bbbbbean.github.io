@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import UserCalendar from "./calendar/UserCalendar";
 
 import "../css/common_css/main_main.css";
 
@@ -12,11 +11,8 @@ import 'swiper/css/navigation';
 // import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import searchIcon from "../image/image_main/serch-icon.svg";
-import chatIcon from "../image/image_main/chat-icon.svg";
-import calendarIcon from "../image/image_main/calendar-icon.svg";
-import callIcon from "../image/image_main/call-icon.svg";
 import MatchModal from "./match/matchModal";
-import Calendar from "react-calendar";
+import AccordionModal from "./modal/AccordionModal";
 
 const Main = () => {
 
@@ -39,13 +35,6 @@ const Main = () => {
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
-
-  // 상태 관리: accordion 열기/닫기
-  const [activeAccordion, setActiveAccordion] = useState(null);
-
-  const handleAccordionClick = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index); // 클릭 시 열고 닫기
-  };
   return (
     <>
       <main>
@@ -195,31 +184,7 @@ const Main = () => {
               ))}
             </ul>
           </div>
-
-          <div id="Accordion_wrap" className={activeAccordion === 1 ? 'caldendar' : ""}>
-            {/* Accordion */}
-            {['채팅', '달력', '1:1 문의'].map((item, index) => (
-              <div key={index}>
-                <div className={`que ${activeAccordion === index ? 'on' : ''}`} onClick={() => handleAccordionClick(index)}>
-                  <img
-                    src={index === 0 ? chatIcon : index === 1 ? calendarIcon : callIcon} alt="아이콘" />
-                  <span>{item}</span>
-                </div>
-                {item === "채팅" &&
-                  <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px'}}>
-                    <div>채팅 연결</div>
-                  </div>}
-                {item === "달력" &&
-                  <div className="anw" style={{ width:'500px',height: activeAccordion === index ? '530px' : '0px'}}>
-                    {isAuth && <UserCalendar />}
-                  </div>}
-                {item === "1:1 문의" &&
-                  <div className="anw" style={{ height: activeAccordion === index ? '40px' : '0px'}}>
-                    <div>챗봇 연결</div>
-                  </div>}
-              </div>
-            ))}
-          </div>
+          {/* {isAuth && <AccordionModal />} */}
         </section>
       </main>
       {selectMatch != null && <MatchModal selectMatch={selectMatch} setMatchList={setMatchList} />}

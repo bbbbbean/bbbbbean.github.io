@@ -24,7 +24,7 @@ const MyPageSection = () => {
       bookMarkScroll.scrollTop += e.deltaY / 5;
     });
 
-    api.post("/api/user/getTag", { "userId": localStorage.getItem("userId") })
+    api.post("/api/user/getTag")
       .then((response) => {
         setTags([...response.data.tags]);
       })
@@ -38,7 +38,7 @@ const MyPageSection = () => {
     if (tag.trim() === "") {
       return;
     }
-    api.post("/api/user/addTag", { "userId": localStorage.getItem("userId"), "tag": tag.trim() })
+    api.post("/api/user/addTag", { "tag": tag.trim() })
       .then((response) => {
         if (response.status !== 200) {
           setErrorTag(response.data.error);
@@ -57,7 +57,7 @@ const MyPageSection = () => {
 
   const tagDel = (e) => {
     const tag = e.currentTarget.dataset.tag;
-    api.post("/api/user/delTag", { "userId": localStorage.getItem("userId"), tag })
+    api.post("/api/user/delTag", { tag })
       .then((response) => {
         setTags([...response.data.tags]);
       })

@@ -51,7 +51,7 @@ function UserCalendar() {
   }, []);
 
   useEffect(() => {
-    api.post("api/calendar/getMemo", { userId: localStorage.getItem("userId"), "year": selectedDate.getFullYear(), "month": selectedDate.getMonth() + 1 })
+    api.post("api/calendar/getMemo", { "year": selectedDate.getFullYear(), "month": selectedDate.getMonth() + 1 })
       .then((response) => {
         setNote(response.data.noteData);
       });

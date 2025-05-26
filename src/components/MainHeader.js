@@ -72,27 +72,27 @@ const MainHeader = () => {
         {isAuth ?
           <ul>
             <li>
-              <Link to="/user/logout">
+              <NavLink to="/user/logout">
                 <img src={loginIcon} alt="" />
                 <span>로그아웃</span>
-              </Link>
+              </NavLink>
             </li>
             <li>
               <a href="#"><img src={noticeIcon} alt="" /><span>알림</span></a>
             </li>
             <li>
-              <Link to="/mypage/">
+              <NavLink to="/mypage/">
                 <img src={menuIcon} alt="" />
-              </Link>
+              </NavLink>
             </li>
           </ul>
           :
           <ul>
             <li>
-              <Link to="/user/login">
+              <NavLink to="/user/login">
                 <img src={loginIcon} alt="" />
                 <span>로그인</span>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         }

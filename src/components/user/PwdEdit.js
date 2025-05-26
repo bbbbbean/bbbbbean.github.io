@@ -41,7 +41,7 @@ const ChangePassword = () => {
     //   setPwError("비밀번호는 8~15글자 사이어야합니다.")
     //   return;
     // }
-    api.post("/api/user/passwordUpdate", { "userId": localStorage.getItem("userId"), curpassword, newpassword, chkpassword })
+    api.post("/api/user/passwordUpdate", { curpassword, newpassword, chkpassword })
       .then((response) => {
         if (response.status == 200) {
           setPwSuccess("비밀번호 변경 성공");

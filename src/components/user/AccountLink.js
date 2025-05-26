@@ -42,7 +42,7 @@ export default function AccountLink() {
                 break;
         }
 
-        api.post("/api/user/getAccountLink", { "userId": localStorage.getItem("userId") })
+        api.post("/api/user/getAccountLink")
             .then((response) => {
                 const socialLinkDTO = response.data.socialLinkDTO;
                 socialLinkDTO.forEach((item) => {
@@ -68,7 +68,7 @@ export default function AccountLink() {
 
     const handleUnLink = (e) => {
         const platformType = e.target.className.split(" ")[0];
-        api.post("/api/auth/unLink", { userId: localStorage.getItem("userId"), platformType })
+        api.post("/api/auth/unLink", { platformType })
             .then((response) => {
                 if (response.status == 200) {
                     switch (platformType) {
@@ -117,7 +117,6 @@ export default function AccountLink() {
     };
     const KakaoLinkApi = (code) => {
         api.post("/api/auth/kakaoLink", {
-            "userId": localStorage.getItem("userId"),
             code,
             "url": window.location.href
         })
