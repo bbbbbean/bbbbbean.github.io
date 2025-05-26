@@ -1,0 +1,105 @@
+2025-05-26T12:21:19.785+09:00  INFO 13932 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 13932 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T12:21:19.785+09:00  INFO 13932 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:21:21.100+09:00  WARN 13932 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T12:21:21.100+09:00  INFO 13932 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T12:21:21.133+09:00 ERROR 13932 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
+2025-05-26T12:24:31.581+09:00  INFO 14556 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 14556 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T12:24:31.581+09:00  INFO 14556 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:24:32.602+09:00  WARN 14556 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T12:24:32.618+09:00  INFO 14556 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T12:24:32.634+09:00 ERROR 14556 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
+2025-05-26T12:25:27.819+09:00  INFO 15056 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 15056 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T12:25:27.822+09:00  INFO 15056 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:25:28.780+09:00  WARN 15056 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T12:25:28.780+09:00  INFO 15056 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T12:25:28.810+09:00 ERROR 15056 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
+2025-05-26T12:28:34.772+09:00  INFO 6788 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 6788 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T12:28:34.775+09:00  INFO 6788 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:28:35.684+09:00  WARN 6788 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T12:28:35.684+09:00  INFO 6788 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T12:28:35.715+09:00 ERROR 6788 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
+2025-05-26T12:29:05.410+09:00  INFO 9156 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 9156 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-26T12:29:05.410+09:00  INFO 9156 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:29:06.308+09:00  WARN 9156 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-26T12:29:06.324+09:00  INFO 9156 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-26T12:29:06.339+09:00 ERROR 9156 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
