@@ -8,7 +8,7 @@ import MatchList from "./components/match/matchList";
 import EventList from "./components/event/Event";
 import MyPageLayout from "./components/layout/MypageLayout";
 import AdminPage from './AdminPage';
-import Friend from './components/message/Friend'
+import FriendLayout from './components/layout/FriendLayout';
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
@@ -31,7 +31,7 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<Friend />} />              
+              <Route path="/friend" element={<FriendLayout />} />              
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
