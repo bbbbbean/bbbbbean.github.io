@@ -142,10 +142,11 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
                         </div>
                         <div className="match-chat-input">
                             <input type="text" />
-                        </div>
-                        <button>
+                            <button>
                             <span className="material-symbols-outlined">Send</span>
                         </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

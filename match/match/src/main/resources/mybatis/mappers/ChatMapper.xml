@@ -6,9 +6,37 @@
     <select id="selectAllChat">
         SELECT a.chatCode
         FROM chatparticipant_tbl a
-        JOIN bb.chat_tbl b
+        JOIN chat_tbl b
         ON a.chatCode = b.chatCode
         WHERE userId=#{userId} and type=#{type};
+    </select>
+
+    <select id="selectChatFriendRoom" resultType="ChatRoomDTO">
+        SELECT
+        #{chatCode} as chatCode,
+        u.userId,
+        u.nickName,
+        (
+        SELECT content
+        FROM chatmessage_tbl
+        WHERE chatCode = #{chatCode}
+        ORDER BY createAt DESC
+        LIMIT 1
+        ) AS lastMessage,
+        (
+        SELECT COUNT(*)
+        FROM chatmessage_tbl
+        WHERE chatCode = #{chatCode}
+        AND userId != #{userId}
+        AND isRead = 0
+        ) AS unreadCount
+        FROM user_tbl u
+        WHERE u.userId = (
+        SELECT userId
+        FROM chatparticipant_tbl
+        WHERE chatCode = #{chatCode}
+        AND userId != #{userId}
+        );
     </select>
 
 </mapper>

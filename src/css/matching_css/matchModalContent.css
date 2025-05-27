@@ -207,6 +207,7 @@
 }
 
 .match-chat-container {
+    position: relative;
     border: 1px solid rgb(246, 246, 246);
     border-radius: 25px;
     height: 100%;
@@ -310,6 +311,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 0;
 }
 
 .match-chat-input input {
@@ -322,8 +325,8 @@
 }
 
 .match-chat-container button {
-    position: relative;
-    top: -33px;
-    left: 335px;
+    position: absolute;
+    top: 8px;
+    right: 25px;
     color: #6ec2fe;
 }

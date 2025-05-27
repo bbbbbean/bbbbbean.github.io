@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect, use } from 'react';
 import moreIcon from "../../image/image_message/more-icon.svg"
 import api from '../../axios';
+import Chat from '../chat/Chat';
 // import { WebSocketContext } from '../../WebSoket';
 
 const FriendRight = () => {
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('friend');
 
   //const client = useContext(WebSocketContext);
@@ -29,39 +29,26 @@ const FriendRight = () => {
 
   // }, [client]);
 
-  const [friendChatRoom, setFriendChatRoom] = useState(
-    [
-      {
-        id: 1,
-        nickName: '친구1',
-        lastMessage: '안녕하세요!',
-        unreadCount: 2,
-        imageUrl: 'a'
-      },
-      {
-        id: 2,
-        nickName: '친구2',
-        lastMessage: '오랜만이에요!',
-        unreadCount: 11,
-        imageUrl: 'b'
-      },
-    ]
-  );
+  const [friendChatRoom, setFriendChatRoom] = useState([]);
   const [groupChatRoom, setGroupChatRoom] = useState([]);
+  const [chatOpenRoom, setChatOpenRoom] = useState(null);
 
-  // api.post('/api/chat/getChatRoom')
-  //   .then(response => {
-  //     setFriendChatRoom(response.data.friendChatRoom);
-  //     setGroupChatRoom(response.data.groupChatRoom);
-  //   });
+  const handleOpenChat = (e) => {
+    setChatOpenRoom(e.currentTarget.dataset.roomId)
+  }
 
   useEffect(() => {
-
+    api.post('/api/chat/getChatRoom')
+      .then(response => {
+        console.log(response.data);
+        setFriendChatRoom(response.data.friendChat);
+      });
   }, []);
 
   return (
     <section className="right">
-      <div className="friendlist">
+      {chatOpenRoom && <Chat pos="friend" chatOpenRoom={chatOpenRoom} />}
+      <div className="friendlist" style={{ display: chatOpenRoom ? 'none' : 'flex' }}>
         <div className={`myfriend ${activeTab === 'friend' ? 'active' : ''}`}
           onClick={() => setActiveTab('friend')}>친구</div>
         <div className={`im-in ${activeTab === 'match' ? 'active' : ''}`}
@@ -69,42 +56,24 @@ const FriendRight = () => {
       </div>
       {activeTab === 'friend' ? (
         friendChatRoom.map((room, index) => (
-          <div className="chatroom show" key={index}>
-          <div className="chatimage">
-            <img src={room.imageUrl} alt={room.nickName} />
+          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }}> className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+            <div className="chatimage">
+              <img src={room.imageUrl} alt={room.nickName} />
+            </div>
+            <div className="word1">
+              <div className="chatname">{room.nickName}</div>
+              <div className="oneline">{room.lastMessage}</div>
+            </div>
+            {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
           </div>
-          <div className="word1">
-            <div className="chatname">{room.nickName}</div>
-            <div className="oneline">{room.lastMessage}</div>
-          </div>
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            <img src={moreIcon} alt="채팅메뉴" />
-          </button>
-          <div className={`chatmenu ${menuOpen ? 'show' : ''}`}>
-            <ul>
-              <li>채팅방 나가기</li>
-              <li>신고하기</li>
-            </ul>
-          </div>
-          <div className='chatnum'>{room.unreadCount}</div>
-        </div>
         ))
-        
+
       ) : (
         <div className="chatroom show">
           <div className="morechatimage"></div>
           <div className="word1">
             <div className="chatname">단체 채팅방</div>
             <div className="oneline"> 최근 채팅 내용</div>
-          </div>
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            <img src={moreIcon} alt="채팅메뉴" />
-          </button>
-          <div className={`chatmenu ${menuOpen ? 'show' : ''}`}>
-            <ul>
-              <li>채팅방 나가기</li>
-              <li>신고하기</li>
-            </ul>
           </div>
           <div className='chatnum'>12</div>
         </div>
