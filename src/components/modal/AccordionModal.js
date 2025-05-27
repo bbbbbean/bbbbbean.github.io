@@ -5,6 +5,8 @@ import callIcon from "../../image/image_main/call-icon.svg";
 import UserCalendar from "../calendar/UserCalendar";
 import "../../css/modal/accordionModal.css";
 import { useLocation } from "react-router-dom";
+import FriendRight from "../message/FriendRight";
+import '../../css/message_css/message.css';
 
 
 const AccordionModal = () => {
@@ -47,7 +49,8 @@ const AccordionModal = () => {
     })
     return (
         <div className="Accordion-modal">
-            <div id="Accordion_wrap" className={activeAccordion === 2 ? 'caldendar' : ""}
+            <div id="Accordion_wrap" className={
+                activeAccordion === 1 ? "accChat" : activeAccordion === 2 ? 'accCalendar' : activeAccordion === 3 && ''}
                 style={{ width: isOpen ? '140px' : '0px' }}>
                 <button className="accordion-button" onClick={() => {
                     setIsOpen(!isOpen)
@@ -65,8 +68,10 @@ const AccordionModal = () => {
                             <span>{item.title}</span>
                         </div>
                         {item.title === "채팅" &&
-                            <div className="anw" style={{ height: activeAccordion === item.index ? '40px' : '0px' }}>
-                                <div>채팅 연결</div>
+                            <div className="anw" style={{ height: activeAccordion === item.index ? '600px' : '0px' }}>
+                                <div className="friend-container">
+                                <FriendRight />
+                                </div>
                             </div>}
                         {item.title === "달력" &&
                             <div className="anw" style={{ width: '500px', height: activeAccordion === item.index ? '530px' : '0px' }}>

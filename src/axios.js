@@ -23,6 +23,8 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
+        console.log("토큰 재발행 실행");
+        console.log(error.response.status);
         if (error.response.status != 401) {
             return error.response;
         }
@@ -32,8 +34,9 @@ api.interceptors.response.use(
                 const response = await axios.post(
                     "http://localhost:8100/api/auth/reneToken",
                     {},
-                    { withCredentials: true }
+                    { withCredentials: true, headers: { 'refresh': 'refresh' } }
                 );
+                console.log("토큰 재발행 성공");
                 return axios(config);
             } catch (e) {
                 //window.location.href = '/user/logout';

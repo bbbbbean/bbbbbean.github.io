@@ -1,4 +1,4 @@
-/* ÇÏ´Ü °íÁ¤ ¾ÆÄÚµð¾ð ¸Å´º */
+/* ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Úµï¿½ï¿½ ï¿½Å´ï¿½ */
 
 .Accordion-modal{
   position: fixed;
@@ -30,7 +30,11 @@
   z-index: 10;
   transition: all 0.8s ease;
 }
-.caldendar{
+.accChat{
+  width: 400px !important;
+}
+
+.accCalendar{
   width: 500px !important;
 }
 .que{

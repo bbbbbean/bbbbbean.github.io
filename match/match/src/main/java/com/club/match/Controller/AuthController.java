@@ -204,11 +204,14 @@ public class AuthController {
     @PostMapping("/reneToken")
     public ResponseEntity<?> reneToken(@CookieValue("refreshToken") String refreshToken) {
 
+        log.info("토큰 재발행");
+
         boolean isOk = jwtTokenProvider.validateToken(refreshToken);
 
         Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
 
         if (isOk) {
+            log.info("재발행성공");
             JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(authentication);
 
             ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())

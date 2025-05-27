@@ -39,5 +39,43 @@
         );
     </select>
 
+    <select id="selectChatType">
+        SELECT type FROM chat_tbl where chatCode = #{chatCode};
+    </select>
+
+    <select id="selectOneUser" resultType="userDTO">
+        SELECT userid,nickName FROM chatmessage_tbl where userId!=#{userId} limit 1;
+    </select>
+    
+    <select id="selectAllMessage" resultType="MessageDTO">
+        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and createAt>=(SELECT createAt from chatparticipant_tbl where chatCode=#{chatCode} and userId =#{userId}) order by createAt;
+    </select>
+
+    <select id="selectOneRespMessage" resultType="MessageDTO">
+        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and userId=#{userId} and nickName=#{nickName} and content=#{content} ORDER BY createAt DESC LIMIT 1;;
+    </select>
+
+    <update id="markFriendMessagesAsRead">
+        UPDATE chatmessage_tbl SET isRead=1 where userId = #{userId} and isRead = 0 and chatCode = #{chatCode};
+    </update>
+
+    <update id="markFriendMessagesAsReadOne">
+        UPDATE chatmessage_tbl SET isRead=1 where messageId=#{messageId} and userId != #{userId};
+    </update>
+
+    <insert id="insertChatMessage">
+        INSERT INTO chatmessage_tbl(chatCode, userId, nickName, content, createAt, isRead, isFile) VALUES(#{chatCode}, #{userId}, #{nickName}, #{content}, #{createAt}, #{isRead}, #{isFile});
+    </insert>
+
+    <select id="selectGetNickName">
+        SELECT nickName from user_tbl where userId = #{userId};
+    </select>
+
+    <select id="countRoomMember">
+        SELECT count(*) from bb.chatparticipant_tbl where chatCode = #{chatCode};
+    </select>
+
+
+
 </mapper>
 

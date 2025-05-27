@@ -1,4 +1,4 @@
-/* ¸ð´Þ */
+/* ï¿½ï¿½ï¿½ */
 .match-modal-container {
     width: 100vw;
     height: 100%;
@@ -166,7 +166,7 @@
     font-weight: bold;
 }
 
-/* ¸ð´ÞÃ¤ÆÃ */
+/* ï¿½ï¿½ï¿½Ã¤ï¿½ï¿½ */
 .match-right {
     width: 400px;
     height: 100%;
@@ -253,6 +253,7 @@
 
 .match-chat-content {
     height: 75%;
+    max-height: 630px;
     padding: 15px;
     overflow-y: hidden;
 }
@@ -272,12 +273,20 @@
     margin-left: 5px;
 }
 
-.user-content {
+.user-content span:nth-child(1) {
+    display: inline-block;
     background-color: white;
-    max-width: 100%;
+    max-width: 80%;
     padding: 10px;
     margin: 5px;
     border-radius: 0 12px 12px 12px;
+    word-break: break-all;
+    white-space: normal;
+}
+.user-content span:nth-child(2) {
+    color: #FFC300;
+    position: relative;
+    top: 10px;
 }
 
 .your-chat-container {
@@ -286,12 +295,28 @@
     margin: 20px 0;
 }
 
-.your-content {
+.your-content{
+    display: flex;
+    justify-content: end;
+}
+
+.your-content span:nth-child(1) {
+    color: #FFC300;
+    position: relative;
+    bottom: 5px;
+    align-self: flex-end;
+    display: inline-block;
+}
+
+.your-content span:nth-child(2) {
+    display: inline-block;
     background-color: #6ec2fe;
-    max-width: 100%;
+    max-width: 80%;
     padding: 10px;
     margin: 5px;
     border-radius: 12px 12px 0px 12px;
+    word-break: break-all;
+    white-space: normal;
 }
 
 .user-chat-time {
@@ -314,12 +339,18 @@
     position: relative;
     top: 0;
 }
+.match-chat-input>form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
-.match-chat-input input {
+.match-chat-input>form input {
     width: 95%;
     height: 40px;
     border: none;
     border-radius: 40px;
+    text-align: left;
     outline: none;
     padding: 10px;
 }

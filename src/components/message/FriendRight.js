@@ -1,33 +1,11 @@
-import { useState, useContext, useEffect, use } from 'react';
-import moreIcon from "../../image/image_message/more-icon.svg"
+import { useState, useEffect } from 'react';
 import api from '../../axios';
 import Chat from '../chat/Chat';
-// import { WebSocketContext } from '../../WebSoket';
+
 
 const FriendRight = () => {
 
   const [activeTab, setActiveTab] = useState('friend');
-
-  //const client = useContext(WebSocketContext);
-
-  // useEffect(() => {
-  //   let subscription = null;
-  //   if (client && client.connected) {
-  //     subscription = client.subscribe('/sub/room/1', (message) => {
-  //       const data = JSON.parse(message.body);
-  //       console.log('Received message:', data);
-  //     });
-  //     client.publish({
-  //       destination: '/pub/api/chat/message',
-  //       body: JSON.stringify({ content: 'Hello, World!', sender: 'test', roomId: 1 }),
-  //     });
-  //   };
-
-  //   return () => {
-  //     subscription.unsubscribe();
-  //   };
-
-  // }, [client]);
 
   const [friendChatRoom, setFriendChatRoom] = useState([]);
   const [groupChatRoom, setGroupChatRoom] = useState([]);
@@ -47,16 +25,16 @@ const FriendRight = () => {
 
   return (
     <section className="right">
-      {chatOpenRoom && <Chat pos="friend" chatOpenRoom={chatOpenRoom} />}
+      {chatOpenRoom && <Chat pos={activeTab} chatOpenRoom={chatOpenRoom} setChatOpenRoom={setChatOpenRoom} />}
       <div className="friendlist" style={{ display: chatOpenRoom ? 'none' : 'flex' }}>
         <div className={`myfriend ${activeTab === 'friend' ? 'active' : ''}`}
           onClick={() => setActiveTab('friend')}>친구</div>
-        <div className={`im-in ${activeTab === 'match' ? 'active' : ''}`}
-          onClick={() => setActiveTab('match')}>내가 참여한 매칭</div>
+        <div className={`im-in ${activeTab === 'group' ? 'active' : ''}`}
+          onClick={() => setActiveTab('group')}>내가 참여한 매칭</div>
       </div>
       {activeTab === 'friend' ? (
         friendChatRoom.map((room, index) => (
-          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }}> className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
             <div className="chatimage">
               <img src={room.imageUrl} alt={room.nickName} />
             </div>

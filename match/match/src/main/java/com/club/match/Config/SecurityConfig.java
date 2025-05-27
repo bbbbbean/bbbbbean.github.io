@@ -47,7 +47,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
                             "/api/auth/logout","/api/auth/sign",
-                            "/api/auth/check-id","/profile/**").permitAll();
+                            "/api/auth/check-id","/profile/**",
+                            "/ws-stomp/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();
@@ -67,7 +68,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(String url) {
+    public CorsConfigurationSource corsConfigurationSource(@Value("${react.url}") String url) {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(url));

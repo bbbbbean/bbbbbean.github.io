@@ -3,8 +3,12 @@
     display: flex;
 }
 
-.friend-container>section {
+.friend-container>section:nth-child(1) {
     width: 50%;
+    margin-top: 20px;
+}
+.friend-container>section:nth-child(2) {
+    width: 40%;
     margin-top: 20px;
 }
 

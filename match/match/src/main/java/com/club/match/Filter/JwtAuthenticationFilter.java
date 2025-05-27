@@ -40,7 +40,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         String token = resolveToken((HttpServletRequest) servletRequest);
 
-        if(token == null || request.getRequestURI().startsWith("/profile")){
+        String refreshHeader = request.getHeader("refresh");
+
+        if(token == null || request.getRequestURI().startsWith("/profile")
+                || refreshHeader != null || request.getRequestURI().startsWith("/ws-stomp")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }
@@ -58,12 +61,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private void setErrorResponse(HttpServletResponse response, String message) throws IOException {
-
-        Cookie cookie = new Cookie("accessToken","");
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");

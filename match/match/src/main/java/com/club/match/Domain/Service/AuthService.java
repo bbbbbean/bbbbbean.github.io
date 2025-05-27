@@ -131,6 +131,9 @@ public class AuthService {
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
+        log.info("PortOneKey"+PORTONE_KEY);
+        log.info("PortOneKey"+PORTONE_SECRET_KEY);
+
         params.add("imp_key", PORTONE_KEY);
         params.add("imp_secret", PORTONE_SECRET_KEY);
 
