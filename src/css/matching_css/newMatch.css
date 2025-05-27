@@ -31,10 +31,11 @@
     margin-top: 10px;
     border-bottom: 1px solid #6ec3ff;
     height: 65px;
+    position: relative;
 }
 .new-match-form>div label{
     height: 40px;
-    width: 100px;
+    width: 110px;
     font-size: 17px;
     display: flex;
     align-items: center;
@@ -42,7 +43,7 @@
     margin-right: 10px;
     border-bottom: 2px solid #6ec3ff;
     padding-left: 10px;
-    padding-bottom: 12px;
+    padding-bottom: 20px;
     margin-bottom: 0;
 }
 .new-match-form>div input:not(.new-match-radio input){
@@ -51,8 +52,70 @@
     padding: 10px;
 }
 
-.new-match-radio span,
+.new-match-radio span:not(.new-match-help),
 .new-match-radio input{
     margin-bottom: 20px;
     margin-left: 10px;
+}
+
+/* 설명 */
+.new-match-help{
+    background-color: #fbb00e;
+    width: 17px;
+    height: 17px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    margin-left: 8px;
+    cursor: pointer;
+    color: #fff;
+}
+.new-match-help-el{
+    position: absolute;
+    top:-4px;
+    background-color: #fbb00e;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 50px 50px 50px 0;
+    left: 100px;
+}
+
+
+/* 위치 : className="new-match-on", className="new-match-on-el" 토글 */
+/* 기본 : 온라인*/
+.new-match-form>.new-match-on>div>div>input{
+    display: none;
+}
+.new-match-form>.new-match-on>div>div{
+    display: flex;
+}
+.new-match-form>.new-match-on>div>div>span
+{
+    display: block;
+    height: 30px;
+    border: 2px solid #6ec3ff;
+    border-radius: 500px;
+    margin-bottom: 22px;
+    text-align: center;
+    line-height: 25px;
+    padding: 0 20px;
+    margin-left: 10px;
+}
+.new-match-check{
+    background-color: rgba(110, 195, 255, 0.3);
+}
+/* 토글 오프라인 */
+.new-match-form>.new-match-off{
+    height: 80px;
+}
+.new-match-form>.new-match-off>div>div>span,
+.new-match-form>.new-match-off>div>div>input
+{
+    margin-bottom: 0;
+}
+.new-match-on-el{
+    display: none;
 }
