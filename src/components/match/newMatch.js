@@ -4,6 +4,8 @@ import "../../css/matching_css/newMatch.css";
 
 const NewMatch = ()=>{
     
+    const [title, setTitle] = useState("");
+    const [isOnline, setIsOnline] = useState(true);
 
     return(
         
@@ -13,22 +15,23 @@ const NewMatch = ()=>{
             <form className="new-match-form">
                 <div>
                     <label>제목</label>
-                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다."/>
-                    {/* {title.length > 30 && <span>30자까지 입력 가능합니다</span>} */}
+                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다." value={title} onChange={(e) => {if (e.target.value.length <= 30) {setTitle(e.target.value);}}}/>
+                    {title.length >= 30 && (<span className="new-match-warning">30자까지 입력 가능합니다.</span>)}
                 </div>
                 <div>
                     <label>날짜</label>
                     <input type="datetime-local" name="startTime"/>
                 </div>
-                <div className="new-match-on">
+                <div className={isOnline ? "new-match-on new-match-defalt" : "new-match-off new-match-defalt"}>
                     <label>위치</label>
-                    {/* 토글, 오프일 때 위치칸 아래로 늘어나면서 주소 입력 칸 생성 */}
                     <div>
                         <div>
-                            <input type="radio" name="match-off" value="Y" checked/><span className="new-match-check">온라인</span>
-                            <input type="radio" name="match-off" value="N" /><span>오프라인</span>
+                            <span className={isOnline ? "new-match-check" : ""}
+                                onClick={() => setIsOnline(true)}>온라인</span>
+                            <span className={!isOnline ? "new-match-check" : ""}
+                                onClick={() => setIsOnline(false)}>오프라인</span>
                         </div>
-                        <input type="text" name="location" className="new-match-on-el"/>
+                        <input type="text" name="location" className={isOnline ? "new-match-on-el" : ""} placeholder="주소를 입력하세요"/>
                     </div>
                 </div>
                 <div className="new-match-radio">

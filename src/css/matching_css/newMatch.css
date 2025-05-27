@@ -47,7 +47,8 @@
     margin-bottom: 0;
 }
 .new-match-form>div input:not(.new-match-radio input){
-    border: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
     margin: 10px;
     padding: 10px;
 }
@@ -56,6 +57,10 @@
 .new-match-radio input{
     margin-bottom: 20px;
     margin-left: 10px;
+}
+/* 경고 안내 */
+.new-match-warning{
+    color: red;
 }
 
 /* 설명 */
@@ -84,15 +89,13 @@
 }
 
 
+
 /* 위치 : className="new-match-on", className="new-match-on-el" 토글 */
 /* 기본 : 온라인*/
-.new-match-form>.new-match-on>div>div>input{
-    display: none;
-}
-.new-match-form>.new-match-on>div>div{
+.new-match-form>.new-match-defalt>div>div{
     display: flex;
 }
-.new-match-form>.new-match-on>div>div>span
+.new-match-form>.new-match-defalt>div>div>span
 {
     display: block;
     height: 30px;
@@ -103,13 +106,14 @@
     line-height: 25px;
     padding: 0 20px;
     margin-left: 10px;
+    cursor: pointer;
 }
 .new-match-check{
     background-color: rgba(110, 195, 255, 0.3);
 }
 /* 토글 오프라인 */
 .new-match-form>.new-match-off{
-    height: 80px;
+    height: 90px;
 }
 .new-match-form>.new-match-off>div>div>span,
 .new-match-form>.new-match-off>div>div>input
