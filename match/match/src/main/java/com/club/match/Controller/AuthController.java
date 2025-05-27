@@ -118,12 +118,11 @@ public class AuthController {
     }
 
     @PostMapping("/remove")
-    public ResponseEntity<?> userRemove(@RequestBody Map<String,String> req, @RequestHeader String Authorization) throws IOException {
+    public ResponseEntity<?> userRemove() throws IOException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String userId = authentication.getName();
-        String accessToken = (String)(Authorization.substring(7));
 
         String userPath = "src/main/resources/Users/" + userId;
 

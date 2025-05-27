@@ -47,7 +47,7 @@ const UserEditForm = ({profile,setProfile}) => {
     const hideEdit = (e) => {
         const btnClass = e.target.className.split(" ");
         console.log(btnClass[0]);
-        api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "authCode": formData[btnClass[1]], "type": btnClass[0] })
+        api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "type": btnClass[0] })
             .then((response) => {
                 if (btnClass[0] === "nickname") {
                     dispatch(setUserName(response.data.userDTO.nickName));
