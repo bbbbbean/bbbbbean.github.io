@@ -10,9 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/chat")
 public class ChatController {
 
     @Autowired
@@ -25,17 +27,18 @@ public class ChatController {
         this.template = template;
     }
 
-    @PostMapping("/subscribe")
-    public ResponseEntity<?> subscribe(){
+    @PostMapping("/getChatRoom")
+    public ResponseEntity<?> searchChatRoom(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        Map<String,Object> resp = chatService.subscribeSearch(userId);
+        Map<String,Object> resp = chatService.chatRoomSearch(userId);
 
         return ResponseEntity.ok().body(resp);
     }
-    @MessageMapping("/messages")
-    public ChatDTO send(@RequestBody ChatDTO chatDTO) {
-        template.convertAndSend("/sub/room/1/message", chatDTO.getContent());       // 구독중인 모든 사용자에게 메시지를 전달합니다.
-        return chatDTO;
+
+    @MessageMapping("/message")
+    public void send(ChatDTO chatDTO, Principal principal) {
+        System.out.println(principal);
+        template.convertAndSend("/sub/room/1", chatDTO);       // 구독중인 모든 사용자에게 메시지를 전달합니다.
     }
 }

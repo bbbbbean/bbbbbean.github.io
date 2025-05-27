@@ -16,10 +16,12 @@ public class ChatService {
     @Autowired
     ChatMapper chatMapper;
 
-    public Map<String, Object> subscribeSearch(String userId) {
+    public Map<String, Object> chatRoomSearch(String userId) {
         Map<String,Object> resp = new HashMap<>();
-        List<String> list = chatMapper.selectAllChat(userId);
-        resp.put("subscribeList", list);
+        List<String> friendChat = chatMapper.selectAllChat(userId, 0);
+        List<String> groupChat = chatMapper.selectAllChat(userId, 1);
+        resp.put("friendChat", friendChat);
+        resp.put("groupChat", groupChat);
 
         return resp;
     }

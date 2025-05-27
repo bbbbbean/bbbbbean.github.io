@@ -10,14 +10,18 @@ export const WebSocketProvider = ({ children }) => {
     const clientRef = useRef(null);
     const [client, setClient] = useState(null);
 
+    const hasConnectedRef = useRef(false);
+
     const isAuth = useSelector(state => state.auth.isAuth);
 
     useEffect(() => {
         
         const isAuth = localStorage.getItem("isAuth");
-        if (!isAuth) {
+        if (!isAuth || hasConnectedRef.current) {
             return;
         }
+
+        hasConnectedRef.current = true;
 
         clientRef.current = new Client({
             webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`),
@@ -37,6 +41,7 @@ export const WebSocketProvider = ({ children }) => {
         return () => {
             if (clientRef.current && clientRef.current.connected) {
                 clientRef.current.deactivate();
+                hasConnectedRef.current = false;
             }
         };
     }, [isAuth]);

@@ -6,5 +6,5 @@ import java.util.List;
 
 @Mapper
 public interface ChatMapper {
-    List<String> selectAllChat(String userId);
+    List<String> selectAllChat(String userId, long type);
 }

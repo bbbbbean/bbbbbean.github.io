@@ -4,7 +4,11 @@
 <mapper namespace="com.club.match.Mapper.ChatMapper">
 
     <select id="selectAllChat">
-        SELECT chatCode from chatparticipant_tbl where userId = #{userId};
+        SELECT a.chatCode
+        FROM chatparticipant_tbl a
+        JOIN bb.chat_tbl b
+        ON a.chatCode = b.chatCode
+        WHERE userId=#{userId} and type=#{type};
     </select>
 
 </mapper>
