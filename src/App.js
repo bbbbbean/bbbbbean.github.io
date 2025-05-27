@@ -12,7 +12,7 @@ import FriendLayout from './components/layout/FriendLayout';
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
-import Test from './components/message/TestCode';
+import { WebSocketProvider } from './WebSoket';
 
 
 function AppComponent() {
@@ -23,7 +23,7 @@ function AppComponent() {
   //어드민 페이지 여부 확인용
   const location = useLocation().pathname;
   return (
-    <>
+    <WebSocketProvider>
       {!location.includes('admin') ? (
         <>
           <div className="wrapper">
@@ -36,7 +36,6 @@ function AppComponent() {
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
-              <Route path="/test" element={<Test />} />
             </Routes>
           </div>
           <Footer />
@@ -48,8 +47,7 @@ function AppComponent() {
           <Route path="/admin/*" element={<AdminPage />} />
         </Routes>
       }
-
-    </>
+    </WebSocketProvider>
   );
 }
 

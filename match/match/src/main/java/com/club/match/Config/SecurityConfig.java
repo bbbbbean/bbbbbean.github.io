@@ -48,7 +48,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
                             "/api/auth/logout","/api/auth/sign",
                             "/api/auth/check-id","/profile/**",
-                            "ws","ws-stomp","ws/stomp/**").permitAll();
+                            "ws","ws-stomp","ws/stomp/**","/info").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();

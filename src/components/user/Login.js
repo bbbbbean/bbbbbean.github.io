@@ -24,7 +24,6 @@ const LoginForm = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        console.log(params.get("errorCode"));
         errorMessage(params.get("errorCode"));
     }, []);
 
