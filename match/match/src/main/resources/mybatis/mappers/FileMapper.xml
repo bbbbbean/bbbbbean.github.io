@@ -7,8 +7,9 @@
         SELECT * FROM postattachment_tbl WHERE postAttachmentId=#{postAttachmentId};
     </select>
 
-    <insert id="uploadFile" useGeneratedKeys="true" keyProperty="postAttachmentId" >
-        INSERT INTO postattachment_tbl (postId, attachmentUrl) VALUES (#{postId}, #{attachmentUrl});
+    <insert id="uploadFile" useGeneratedKeys="true" keyProperty="postAttachmentId">
+        INSERT INTO postattachment_tbl (postId, attachmentUrl)
+        VALUES (#{postId}, #{attachmentUrl});
     </insert>
 
     <delete id="deleteFile">
