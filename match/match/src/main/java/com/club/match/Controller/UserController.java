@@ -111,6 +111,7 @@ public class UserController {
 
         return ResponseEntity.ok().body(resp);
     }
+    
     @PostMapping("infoUpdate")
     public ResponseEntity<?> infoUpdate(@RequestBody Map<String, Object> req){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -136,6 +137,7 @@ public class UserController {
         resp.put("userDTO",userDTO);
         return ResponseEntity.ok().body(resp);
     }
+
     @PostMapping("updateImg")
     public ResponseEntity<?> updateImg(@RequestParam("image") MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
