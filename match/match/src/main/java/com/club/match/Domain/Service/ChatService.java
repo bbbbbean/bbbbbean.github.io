@@ -48,7 +48,7 @@ public class ChatService {
         int type = chatMapper.selectChatType(chatCode);
         if(type == 0){ // 1대1 채팅
             // 상대 유저 정보 추출
-            UserDTO userDTO = chatMapper.selectOneUser(userId);
+            UserDTO userDTO = chatMapper.selectOneUser(chatCode,userId);
             // 이전 채팅 가져오기
             List<MessageDTO> messageDTOs = chatMapper.selectAllMessage(chatCode, userId);
             for(MessageDTO messageDTO : messageDTOs){
