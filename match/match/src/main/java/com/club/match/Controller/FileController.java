@@ -4,12 +4,15 @@ import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Domain.Service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,18 +34,23 @@ public class FileController {
     @Autowired
     FileService fileService;
 
+    @Value("${server.url}")
+    private String BASE_URL;
+
 
     // 커뮤니티 페이지 이미지 업로드
-    @PostMapping("/upload/image/{userId}/{postId}")
+    @PostMapping("/upload/image/{postId}")
     public ResponseEntity<?> uploadCommunityImage(
-            @PathVariable String userId,
             @PathVariable Long postId,
             @RequestParam("image") MultipartFile file) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
 
         // 파일 저장 경로
         Path communityImgUploadDir = Paths.get(BASE_UPLOAD_DIR, userId, "community", String.valueOf(postId), "images");
 
-        if (file == null) {
+        if (file == null || file.isEmpty()) {
             return new ResponseEntity<>("업로드할 이미지가 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
@@ -50,7 +58,7 @@ public class FileController {
             // 1. 파일 저장 경로 생성 (없으면 생성)
             if (!Files.exists(communityImgUploadDir)) {
                 Files.createDirectories(communityImgUploadDir);
-                log.info("Created upload directory: {}", communityImgUploadDir);
+                log.info("폴더 생성 : {}", communityImgUploadDir.toAbsolutePath());
             }
 
             // 2. 고유한 파일 이름 생성 (중복 방지)
@@ -68,7 +76,7 @@ public class FileController {
             log.info("이미지 파일 저장 : {}", filePath);
 
             // 4. 데이터베이스에 링크 저장
-            String fileUrl = "/user_data/" + userId + "/community/images/" + savedFileName;
+            String fileUrl = BASE_URL + userId + "/community/" + postId + "/images/" + savedFileName;
 
             AttachmentFileDTO attachmentFileDTO = new AttachmentFileDTO();
             attachmentFileDTO.setPostId(postId);
@@ -78,7 +86,7 @@ public class FileController {
 
             if (!(boolean) serviceResponse.get("success")) {
                 Files.deleteIfExists(filePath); // DB 저장 실패 시 파일 시스템에 저장된 파일 롤백
-                log.error("파일저장실패 userId: {}, postId: {}", userId, postId);
+                log.error("DB에 파일 정보 저장 실패: {}, 저장된 파일 삭제: {}", serviceResponse.get("message"), filePath.toAbsolutePath());
                 return new ResponseEntity<>(serviceResponse.get("message"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
             log.info("이미지가 DB에 저장됨: {}", attachmentFileDTO.getAttachmentUrl());
@@ -100,11 +108,14 @@ public class FileController {
     }
 
     // 커뮤니티 페이지 파일 업로드
-    @PostMapping("/upload/file/{userId}/{postId}")
+    @PostMapping("/upload/file/{postId}")
     public ResponseEntity<?> uploadCommunityFile(
-            @PathVariable String userId,
             @PathVariable Long postId,
             @RequestParam("file") MultipartFile file) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = authentication.getName();
 
         Path communityFileUploadDir = Paths.get(BASE_UPLOAD_DIR, userId, "community", String.valueOf(postId), "uploadedfiles");
 
@@ -115,7 +126,7 @@ public class FileController {
         try {
             // 1. 파일 저장 경로 생성 (없으면 생성)
             Files.createDirectories(communityFileUploadDir);
-            log.info("Created community file upload directory: {}", communityFileUploadDir);
+            log.info("Created community file upload directory: {}", communityFileUploadDir.toAbsolutePath());
 
             // 2. 고유한 파일 이름 생성 (중복 방지)
             String originalFileName = file.getOriginalFilename();
@@ -129,10 +140,10 @@ public class FileController {
 
             // 3. 파일 저장
             Files.copy(file.getInputStream(), filePath);
-            log.info("커뮤니티 파일 저장 : {}", filePath);
+            log.info("커뮤니티 파일 저장 성공 : {}", filePath.toAbsolutePath()); // 절대 경로 로깅
 
             // 4. 데이터베이스에 링크 저장 (attachmentUrl)
-            String fileUrl = "/user_data/" + userId + "/community/" + postId + "/uploadedfiles/" + savedFileName;
+            String fileUrl =BASE_URL+ userId + "/community/" + postId + "/uploadedfiles/" + savedFileName;
 
             AttachmentFileDTO attachmentFileDTO = new AttachmentFileDTO();
             attachmentFileDTO.setPostId(postId);
@@ -142,7 +153,7 @@ public class FileController {
 
             if (!(boolean) serviceResponse.get("success")) {
                 Files.deleteIfExists(filePath); // DB 저장 실패 시 파일 시스템에 저장된 파일 롤백
-                log.error("파일저장실패 userId: {},postId: {}", userId, postId);
+                log.error("DB에 파일 정보 저장 실패 (userId: {}, postId: {}): {}, 저장된 파일 삭제: {}", userId, postId, serviceResponse.get("message"), filePath.toAbsolutePath());
                 return new ResponseEntity<>(serviceResponse.get("message"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
             log.info("파일이 DB에 저장됨: {}", attachmentFileDTO.getAttachmentUrl());
