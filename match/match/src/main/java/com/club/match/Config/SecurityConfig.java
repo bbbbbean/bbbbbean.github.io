@@ -22,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import java.util.List;
 
@@ -46,15 +48,15 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                            "/api/auth/logout","/api/auth/sign",
-                            "/api/auth/check-id","/profile/**",
-                            "/ws-stomp/**").permitAll();
+                            "/api/auth/logout","/api/auth/sign"
+                            ,"/api/auth/check-id","/profile/**",
+                            "/upload/image/**","/upload/file/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class).exceptionHandling(Exception -> Exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource(url)));
 
@@ -68,7 +70,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(@Value("${react.url}") String url) {
+    public CorsConfigurationSource corsConfigurationSource(String url) {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(url));
