@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
@@ -7,16 +7,19 @@ import Footer from "./components/Footer";
 import MatchList from "./components/match/matchList";
 import EventList from "./components/event/Event";
 import MyPageLayout from "./components/layout/MypageLayout";
-import AdminPage from './AdminPage';
-import FriendLayout from './components/layout/FriendLayout';
-import UserLayout from './components/layout/UserLayout'
-import SuccessLogin from './SuccessLogin'
-import AccordionModal from './components/modal/AccordionModal';
-import { WebSocketProvider } from './WebSoket';
+import AdminPage from "./AdminPage";
+import FriendLayout from "./components/layout/FriendLayout";
+import UserLayout from "./components/layout/UserLayout";
+import SuccessLogin from "./SuccessLogin";
+import AccordionModal from "./components/modal/AccordionModal";
+import { WebSocketProvider } from "./WebSoket";
 
+import AdminPage from "./AdminPage";
+import UserLayout from "./components/layout/UserLayout";
+import SuccessLogin from "./SuccessLogin";
+import CommunityLayout from "./components/layout/CommunityLayout";
 
 function AppComponent() {
-
   //로그인 여부 확인
   const isAuth = localStorage.getItem("isAuth");
 
@@ -24,7 +27,7 @@ function AppComponent() {
   const location = useLocation().pathname;
   return (
     <WebSocketProvider>
-      {!location.includes('admin') ? (
+      {!location.includes("admin") ? (
         <>
           <div className="wrapper">
             <MainHeader />
@@ -32,27 +35,27 @@ function AppComponent() {
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<FriendLayout />} />              
+              <Route path="/friend" element={<FriendLayout />} />
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
+              <Route path="/community/*" element={<CommunityLayout />} />
             </Routes>
           </div>
           <Footer />
           {isAuth && <AccordionModal />}
         </>
-      )
-        :
+      ) : (
         <Routes>
           <Route path="/admin/*" element={<AdminPage />} />
         </Routes>
-      }
+      )}
+      ;
     </WebSocketProvider>
   );
 }
 
 function App() {
-
   return (
     <Router>
       <AppComponent />
