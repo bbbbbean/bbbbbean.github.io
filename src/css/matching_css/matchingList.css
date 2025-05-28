@@ -99,25 +99,30 @@ button {
 
 .match-list {
   position: relative;
+  margin-top: 50px;
 }
-
-.match-list>.match-reg-btn {
+.match-btn-box{
+  display: flex;
+  justify-content: right;
+}
+.match-reg-btn{
   width: 160px;
+  height: 50px;
   border-radius: 5px;
   background-color: #ffbb28;
-  padding: 10px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 20px;
-  top: -5px;
-  border: none;
+  right: 30px;
+  top: -20px;
+  z-index: 100;
 }
 
 .match-continer {
   position: relative;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .match-continer>.match-day {
