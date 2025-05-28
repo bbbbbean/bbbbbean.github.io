@@ -36,6 +36,8 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
                     })
                 }));
 
+                console.log(formattedMessages);
+
                 setMessage(formattedMessages);
 
                 setTimeout(() => {
@@ -48,24 +50,32 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
             .catch((err) => {
                 console.error("getChatMessage 오류:", err);
             });
+
     }
 
     useEffect(() => {
         let subscription = null;
         if (client && client.connected && chatOpenRoom) {
             subscription = client.subscribe(`/sub/room/${chatOpenRoom}`, (message) => {
-                console.log(message.body);
-                if (message.body === "ok") {
-                    getChatMessage();
-                    return;
-                }
+
                 const data = JSON.parse(message.body);
                 console.log(data);
+
+                if (data.ok === "ok") {
+                    if (pos === 'friend') {
+                        getChatMessage();
+                    } else if (pos === 'group') {
+
+                    }
+                    return;
+                }
 
                 // 바로바로 읽음 처리
                 api.post("/api/chat/readChat", { "messageId": data.messageId, "chatCode": chatOpenRoom })
                     .then((response) => {
                         console.log(response);
+                    }).catch((error) => {
+
                     });
 
                 const formattedData = {
@@ -96,12 +106,6 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
             });
         };
 
-        if (pos === 'friend') {
-            getChatMessage();
-        } else if (pos === 'group') {
-
-        }
-
         return () => {
             subscription.unsubscribe();
         };
@@ -121,6 +125,9 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
 
     const sendMessage = (e) => {
         e.preventDefault();
+        if(inputMessage.trim() === ""){
+            return;
+        }
         setInputMessage("");
         client.publish({
             destination: '/pub/message',

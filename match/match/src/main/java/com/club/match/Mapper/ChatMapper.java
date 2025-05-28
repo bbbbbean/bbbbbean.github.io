@@ -10,8 +10,12 @@ import java.util.List;
 @Mapper
 public interface ChatMapper {
     List<String> selectAllChat(String userId, long type);
+
     ChatRoomDTO selectChatFriendRoom(String userId, String chatCode);
+    ChatRoomDTO selectChatGroupRoom(String userId, String chatCode);
+
     int selectChatType(String chatCode);
+
     UserDTO selectOneUser(String chatCode, String userId);
 
     List<MessageDTO> selectAllMessage(String chatCode, String userId);
@@ -27,4 +31,8 @@ public interface ChatMapper {
     int markFriendMessagesAsReadOne(Long messageId, String userId);
 
     int countRoomMember(String chatCode);
+
+    List<String> getUnreadGroupMessages(String userId, String chatCode);
+
+    void insertReceivChatMessage(String userId, String messageId);
 }

@@ -39,12 +39,35 @@
         );
     </select>
 
+    <select id="selectChatGroupRoom" resultType="ChatRoomDTO">
+        SELECT
+        (SELECT count(*)
+        FROM chatmessage_tbl
+        WHERE chatCode = #{chatCode}
+        AND messageId NOT IN (
+        SELECT messageId
+        FROM chatreceiver_tbl
+        WHERE userId = #{userId}
+        )
+        ) AS unreadCount,
+        a.chatCode As chatCode,
+        a.hostId AS userId,
+        a.chatTitle AS nickName,
+        b.content AS lastMessage,
+        b.createAt AS lastMessageAt
+        FROM
+        (SELECT hostId, chatTitle, chatCode FROM chat_tbl WHERE chatCode = #{chatCode}) a
+        LEFT OUTER JOIN
+        (SELECT content, createAt, chatCode FROM chatmessage_tbl WHERE chatCode = #{chatCode} ORDER BY createAt DESC LIMIT 1) b
+        ON a.chatCode = b.chatCode;
+    </select>
+
     <select id="selectChatType">
         SELECT type FROM chat_tbl where chatCode = #{chatCode};
     </select>
 
     <select id="selectOneUser" resultType="userDTO">
-        SELECT userId,nickName FROM user_tbl where userId = (SELECT userId FROM chatparticipant_tbl where chatCode = #{chatCode} and userId != #{userId});
+        SELECT userid,nickName FROM chatmessage_tbl where userId!=#{userId} limit 1;
     </select>
     
     <select id="selectAllMessage" resultType="MessageDTO">
@@ -72,8 +95,24 @@
     </select>
 
     <select id="countRoomMember">
-        SELECT count(*) from bb.chatparticipant_tbl where chatCode = #{chatCode};
+        SELECT count(*) from chatparticipant_tbl where chatCode = #{chatCode};
     </select>
+
+    <select id="getUnreadGroupMessages">
+        SELECT messageId
+        FROM chatmessage_tbl
+        WHERE chatCode = #{chatCode}
+        AND messageId NOT IN (
+        SELECT messageId
+        FROM chatreceiver_tbl
+        WHERE userId = #{userId}
+        ) and createAt >
+        (SELECT createAt FROM chatparticipant_tbl where userId =#{userId} and chatCode = #{chatCode});
+    </select>
+
+    <insert id="insertReceivChatMessage">
+        INSERT INTO chatreceiver_tbl VALUES(#{userID},#{messageId});
+    </insert>
 
 
 

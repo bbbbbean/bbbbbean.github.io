@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -49,14 +50,17 @@ public class ChatController {
     }
 
     @PostMapping("/getChatMessage")
-    public ResponseEntity<?> getChattingMessage(@RequestBody Map<String,Object> req){
+    public ResponseEntity<?> getChattingMessage(@RequestBody Map<String,Object> req) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String chatCode = (String)req.get("chatCode");
 
+        String chatCode = (String)req.get("chatCode");
         String userId = authentication.getName();
+
         log.info("chatCode : " + chatCode);
         log.info("userId : " + userId);
+
+        // 메시지 가져오기
         Map<String,Object> resp = chatService.chatMessage(chatCode, userId);
 
         return ResponseEntity.ok().body(resp);
@@ -76,10 +80,17 @@ public class ChatController {
     }
 
     @MessageMapping("/enter")
-    public void chatRoomEnter(ChatDTO chatDTO) {
+    public void chatRoomEnter(ChatDTO chatDTO, Principal principal) throws InterruptedException {
+        Map<String,Object> resp = new HashMap<>();
         String destination = "/sub/room/" + chatDTO.getRoomId();
+
+        //채팅 읽음 처리
+        boolean isOk = chatService.readAllMessage(String.valueOf(chatDTO.getRoomId()),principal.getName());
+
         // 읽음 알림 전송
-        template.convertAndSend(destination, "ok");
+        resp.put("ok","ok");
+
+        template.convertAndSend(destination, resp);
     }
 
     @MessageMapping("/message")

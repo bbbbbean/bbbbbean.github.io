@@ -3,6 +3,7 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { useSelector } from 'react-redux';
 import LodingPage from "./Loding";
+import api from "./axios"
 
 export const WebSocketContext = createContext(null);
 
@@ -18,7 +19,12 @@ export const WebSocketProvider = ({ children }) => {
         const isAuth = localStorage.getItem("isAuth");
         if (!isAuth || hasConnectedRef.current) return;
 
+        api.post("/api").catch((error)=>{
+            //토큰만료 방지용
+        });
+
         hasConnectedRef.current = true;
+        
         setTimeout(() => {
             const stompClient = new Client({
                 webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),

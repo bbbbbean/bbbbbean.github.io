@@ -20,6 +20,7 @@ const FriendRight = () => {
       .then(response => {
         console.log(response.data);
         setFriendChatRoom(response.data.friendChat);
+        setGroupChatRoom(response.data.groupChat)
       });
   }, [chatOpenRoom]);
 
@@ -45,16 +46,19 @@ const FriendRight = () => {
             {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
           </div>
         ))
-
       ) : (
-        <div className="chatroom show">
-          <div className="morechatimage"></div>
-          <div className="word1">
-            <div className="chatname">단체 채팅방</div>
-            <div className="oneline"> 최근 채팅 내용</div>
+       groupChatRoom.map((room, index) => (
+          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+            <div className="chatimage">
+              <img src={room.imageUrl} alt={room.nickName} />
+            </div>
+            <div className="word1">
+              <div className="chatname">{room.nickName}</div>
+              <div className="oneline">{room.lastMessage}</div>
+            </div>
+            {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
           </div>
-          <div className='chatnum'>12</div>
-        </div>
+        ))
       )}
     </section>
   );

@@ -42,6 +42,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         String refreshHeader = request.getHeader("refresh");
 
+        log.info("JwtFilter URL : " + request.getRequestURI());
+
         if(token == null || request.getRequestURI().startsWith("/profile")
                 || refreshHeader != null){
             filterChain.doFilter(servletRequest,servletResponse);
