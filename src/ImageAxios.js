@@ -8,10 +8,8 @@ const imageApi = axios.create({
 
 imageApi.interceptors.request.use(
     (config) => {
-        const accessToken = window.localStorage.getItem('accessToken');
         config.headers['Content-Type'] = 'multipart/form-data';
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
-
+        config.withCredentials = true;
         return config;
     },
     (error) => {
@@ -25,6 +23,8 @@ imageApi.interceptors.response.use(
         return response;
     },
     async (error) => {
+        console.log("토큰 재발행 실행");
+        console.log(error.response.status);
         if (error.response.status != 401) {
             return error.response;
         }
@@ -34,11 +34,9 @@ imageApi.interceptors.response.use(
                 const response = await axios.post(
                     "http://localhost:8100/api/auth/reneToken",
                     {},
-                    { withCredentials: true }
+                    { withCredentials: true, headers: { 'refresh': 'refresh' } }
                 );
-                console.log(response);
-                localStorage.setItem("accessToken", response.data.jwtToken);
-                config.headers['Authorization'] = `Bearer ${response.data.jwtToken}`;
+                console.log("토큰 재발행 성공");
                 return axios(config);
             } catch (e) {
                 window.location.href = '/user/logout';

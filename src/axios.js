@@ -39,12 +39,12 @@ api.interceptors.response.use(
                 console.log("토큰 재발행 성공");
                 return axios(config);
             } catch (e) {
-                //window.location.href = '/user/logout';
+                window.location.href = '/user/logout';
                 return;
             }
 
         } else {
-            //window.location.href = '/user/logout';
+            window.location.href = '/user/logout';
             return;
         }
     }

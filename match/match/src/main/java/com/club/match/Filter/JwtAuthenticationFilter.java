@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String refreshHeader = request.getHeader("refresh");
 
         if(token == null || request.getRequestURI().startsWith("/profile")
-                || refreshHeader != null || request.getRequestURI().startsWith("/ws-stomp")){
+                || refreshHeader != null){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

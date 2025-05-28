@@ -21,7 +21,7 @@ const FriendRight = () => {
         console.log(response.data);
         setFriendChatRoom(response.data.friendChat);
       });
-  }, []);
+  }, [chatOpenRoom]);
 
   return (
     <section className="right">

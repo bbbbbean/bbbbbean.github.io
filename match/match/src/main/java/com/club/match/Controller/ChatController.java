@@ -3,7 +3,6 @@ package com.club.match.Controller;
 import com.club.match.Config.auth.PrincipalDetails;
 import com.club.match.Domain.DTO.ChatDTO;
 import com.club.match.Domain.DTO.MessageDTO;
-import com.club.match.Domain.DTO.RespMessageDTO;
 import com.club.match.Domain.Service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +13,12 @@ import org.springframework.messaging.simp.user.SimpSession;
 import org.springframework.messaging.simp.user.SimpSubscription;
 import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -79,8 +74,7 @@ public class ChatController {
     }
 
     @MessageMapping("/enter")
-    public void chatRoomEnter(ChatDTO chatDTO, Principal principal) {
-        String userId = principal.getName();
+    public void chatRoomEnter(ChatDTO chatDTO) {
         String destination = "/sub/room/" + chatDTO.getRoomId();
         // 읽음 알림 전송
         template.convertAndSend(destination, "ok");
@@ -88,6 +82,8 @@ public class ChatController {
 
     @MessageMapping("/message")
     public void send(ChatDTO chatDTO, Principal principal) {
+
+        log.info("test : " + principal);
 
         String destination = "/sub/room/" + chatDTO.getRoomId();
 
