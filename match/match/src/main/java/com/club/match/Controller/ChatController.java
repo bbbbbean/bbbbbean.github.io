@@ -55,6 +55,8 @@ public class ChatController {
         String chatCode = (String)req.get("chatCode");
 
         String userId = authentication.getName();
+        log.info("chatCode : " + chatCode);
+        log.info("userId : " + userId);
         Map<String,Object> resp = chatService.chatMessage(chatCode, userId);
 
         return ResponseEntity.ok().body(resp);

@@ -12,7 +12,7 @@ public interface ChatMapper {
     List<String> selectAllChat(String userId, long type);
     ChatRoomDTO selectChatFriendRoom(String userId, String chatCode);
     int selectChatType(String chatCode);
-    UserDTO selectOneUser(String userId);
+    UserDTO selectOneUser(String chatCode, String userId);
 
     List<MessageDTO> selectAllMessage(String chatCode, String userId);
 
