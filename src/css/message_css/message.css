@@ -215,6 +215,8 @@ background-color: rgb(110, 195, 255, 0.55);
     border-radius: 50%;
     width: 66px;
     min-width: 66px;
+    height: 66px;
+    object-fit: cover;
 }
 .friend-container>.right>.chatroom>.morechatimage{
     border-radius: 10%;

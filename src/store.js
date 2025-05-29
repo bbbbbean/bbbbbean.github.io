@@ -26,13 +26,25 @@ const userSlice = createSlice({
   }
 });
 
+const refreshSlice = createSlice({
+  name: 'refresh',
+  initialState: { refreshCount: 0 },
+  reducers: {
+    triggerRefresh(state) {
+      state.refreshCount += 1;
+    }
+  }
+});
+
 const store = configureStore({
   reducer: {
     auth: loginSlice.reducer,
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    refresh: refreshSlice.reducer
   }
 })
 
+export const { triggerRefresh } = refreshSlice.actions;
 export const { login, logout, setIsAuth } = loginSlice.actions;
 export const { setUserName } = userSlice.actions;
 

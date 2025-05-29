@@ -28,17 +28,19 @@ public interface ChatMapper {
 
     String selectGetNickName(String userId);
 
-    int markFriendMessagesAsReadOne(Long messageId, String userId);
+    int markFriendMessagesAsReadOne(String messageId, String userId);
 
     int countRoomMember(String chatCode);
 
     List<String> getUnreadGroupMessages(String userId, String chatCode);
 
-    int insertReceivChatMessage(String userId, Long messageId);
+    int insertReceivChatMessage(String userId, String messageId);
 
-    int countReceivChatMessage(Long messageId);
+    int countReceivChatMessage(String messageId);
 
-    int countReadableParticipants(String chatCode, long messageId);
+    int countReadableParticipants(String chatCode, String messageId);
 
-    int removeReceive(long messageId);
+    int removeReceive(String messageId);
+
+    List<String> participantUsers(String chatCode);
 }

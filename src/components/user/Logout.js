@@ -3,11 +3,13 @@ import { useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../../store"
-import { WebSocketContext } from '../../WebSoket';
+import { WebSocketContext } from '../../WebSocket';
 
 const Logout = () => {
 
-    const client = useContext(WebSocketContext);
+    console.log("Logout Component Rendered");
+
+    const {client} = useContext(WebSocketContext);
 
     const navigate = useNavigate();
 
@@ -18,6 +20,7 @@ const Logout = () => {
 
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,{},{
             withCredentials: true
+        }).catch((error) => {
         });
 
         const platform = Number(localStorage.getItem("loginPlatform"));
@@ -34,7 +37,9 @@ const Logout = () => {
             case 3: // 구글
                 return;
         }
-        client.deactivate();
+        if (client){
+            client.deactivate();
+        }
         navigate("/user/login");
     }, []);
 };

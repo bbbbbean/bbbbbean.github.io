@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -71,7 +72,7 @@ public class ChatController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String chatCode = (String)req.get("chatCode");
-        Long messageId = ((Integer) req.get("messageId")).longValue();
+        String messageId = (String) req.get("messageId");
         String userId = authentication.getName();
 
         chatService.readMessage(chatCode,messageId,userId);
@@ -82,13 +83,12 @@ public class ChatController {
     @MessageMapping("/enter")
     public void chatRoomEnter(ChatDTO chatDTO, Principal principal) throws InterruptedException {
         Map<String,Object> resp = new HashMap<>();
-        String destination = "/sub/room/" + chatDTO.getRoomId();
-
+        String destination = "/sub/count/" + chatDTO.getRoomId();
         //채팅 읽음 처리
-        boolean isOk = chatService.readAllMessage(String.valueOf(chatDTO.getRoomId()),principal.getName());
 
-        // 읽음 알림 전송
-        resp.put("ok","ok");
+        boolean isOk = chatService.readAllMessage(chatDTO.getRoomId(),principal.getName());
+
+        resp.put("isOk","ok");
 
         template.convertAndSend(destination, resp);
     }
@@ -96,14 +96,12 @@ public class ChatController {
     @MessageMapping("/message")
     public void send(ChatDTO chatDTO, Principal principal) {
 
-        log.info("test : " + principal);
-
-        String destination = "/sub/room/" + chatDTO.getRoomId();
+        List<String> Users = chatService.getParticipantUsers(chatDTO.getRoomId());
 
         String userId = principal.getName();
         String nickName = chatService.getNickName(userId);
         MessageDTO messageDTO = MessageDTO.builder()
-                .chatCode(chatDTO.getRoomId())
+                .chatCode(String.valueOf(chatDTO.getRoomId()))
                 .userId(userId)
                 .nickName(nickName)
                 .content(chatDTO.getContent())
@@ -121,6 +119,8 @@ public class ChatController {
             int roomMemberCount = chatService.getRoomMemberCount(String.valueOf(chatDTO.getRoomId()));
             respMessageDTO.setIsRead(roomMemberCount);
 
+            String subCount = "/sub/count/"+chatDTO.getRoomId();
+
             //현재 구독 인원수 체크
             // 구독 인원 수
             int count = 0;
@@ -131,7 +131,7 @@ public class ChatController {
                     if(isDuplicate){
                         for (SimpSubscription subscription : session.getSubscriptions()) {
                             log.info("subscription : " + subscription);
-                            if (destination.equals(subscription.getDestination())) {
+                            if (subCount.equals(subscription.getDestination())) {
                                 count++;
                                 isDuplicate = false;
                                 break;
@@ -140,17 +140,13 @@ public class ChatController {
                     }
                 }
             }
-            log.info("count : "+ count);
             respMessageDTO.setSubscriberCount(count);
 
-            template.convertAndSend(destination, respMessageDTO);
+            for(String user : Users){
+                template.convertAndSend("/sub/user/"+user, respMessageDTO);
+            }
+
         }
         // 구독중인 모든 사용자에게 메시지를 전달합니다.
-//        모든유저가 하나의 채널 A에 구독(접속) : 로그인시
-//
-//        메시지 발생시 해당 메시지 발생지점에 참여자를 뽑아
-//
-//        A에 트리거 발동 -> 해당 참여들에게만 트리거 전송 후 받은유저는 -> 0.5초동안 메시지가 더이상
-//        오지 않을경우 리렌더링(새로고침)
     }
 }

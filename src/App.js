@@ -13,7 +13,7 @@ import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
 import NewMatch from './components/match/newMatch';
-import { WebSocketProvider } from './WebSoket';
+import { WebSocketProvider } from './WebSocket';
 
 
 function AppComponent() {

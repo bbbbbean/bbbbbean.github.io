@@ -13,30 +13,30 @@
 
     <select id="selectChatFriendRoom" resultType="ChatRoomDTO">
         SELECT
-        #{chatCode} as chatCode,
-        u.userId,
-        u.nickName,
-        (
-        SELECT content
-        FROM chatmessage_tbl
-        WHERE chatCode = #{chatCode}
-        ORDER BY createAt DESC
-        LIMIT 1
-        ) AS lastMessage,
-        (
-        SELECT COUNT(*)
-        FROM chatmessage_tbl
-        WHERE chatCode = #{chatCode}
-        AND userId != #{userId}
-        AND isRead = 0
-        ) AS unreadCount
-        FROM user_tbl u
-        WHERE u.userId = (
-        SELECT userId
-        FROM chatparticipant_tbl
-        WHERE chatCode = #{chatCode}
-        AND userId != #{userId}
-        );
+            #{chatCode} AS chatCode,
+            cm.unreadCount,
+            u.userId,
+            u.nickName,
+            lm.content AS lastMessage,
+            lm.createAt AS lastMessageAt
+        FROM
+            (SELECT COUNT(*) AS unreadCount
+             FROM chatmessage_tbl
+             WHERE chatCode = #{chatCode} AND userId != #{userId} AND isRead = 0) cm
+                JOIN
+                (SELECT userId, nickName
+                 FROM user_tbl
+                 WHERE userId = (SELECT userId
+                                 FROM chatparticipant_tbl
+                                 WHERE chatCode = #{chatCode} AND userId != #{userId})) u
+        LEFT OUTER JOIN
+            (SELECT content, createAt
+            FROM chatmessage_tbl
+            WHERE chatCode = #{chatCode}
+            ORDER BY createAt DESC
+            LIMIT 1) lm
+            ON 1 = 1;
+
     </select>
 
     <select id="selectChatGroupRoom" resultType="ChatRoomDTO">
@@ -70,7 +70,7 @@
     </select>
 
     <select id="selectOneUser" resultType="userDTO">
-        SELECT userid,nickName FROM chatmessage_tbl where userId!=#{userId} limit 1;
+        SELECT userId,nickName FROM user_tbl where userId = (SELECT userId FROM chatparticipant_tbl where userId!=#{userId} and chatCode= #{chatCode});
     </select>
     
     <select id="selectAllMessage" resultType="MessageDTO">
@@ -128,6 +128,10 @@
     <delete id="removeReceive">
         DELETE FROM chatreceiver_tbl WHERE messageId=#{messageId};
     </delete>
+    
+    <select id="participantUsers">
+        SELECT userId FROM chatparticipant_tbl where chatCode = #{chatCode};
+    </select>
 
 
 </mapper>

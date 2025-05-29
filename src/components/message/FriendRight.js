@@ -1,43 +1,73 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import api from '../../axios';
 import Chat from '../chat/Chat';
+import { WebSocketContext } from '../../WebSocket';
 
 
 const FriendRight = () => {
 
   const [activeTab, setActiveTab] = useState('friend');
-
-  const [friendChatRoom, setFriendChatRoom] = useState([]);
-  const [groupChatRoom, setGroupChatRoom] = useState([]);
-  const [chatOpenRoom, setChatOpenRoom] = useState(null);
+  const { openChat, setOpenChat, rooms, setRooms } = useContext(WebSocketContext);
 
   const handleOpenChat = (e) => {
-    setChatOpenRoom(e.currentTarget.dataset.roomId)
+    const roomId = e.currentTarget.dataset.roomId;
+    setOpenChat(roomId)
+    // 읽음 처리
+    setRooms(prevRooms => {
+      return prevRooms.map(room => {
+        if (room.chatCode === roomId) {
+          return { ...room, unreadCount: 0 };
+        }
+        return room;
+      });
+    });
   }
 
   useEffect(() => {
+    if(rooms.length > 0) return;
     api.post('/api/chat/getChatRoom')
       .then(response => {
-        console.log(response.data);
-        setFriendChatRoom(response.data.friendChat);
-        setGroupChatRoom(response.data.groupChat)
-      }).catch((error)=>{
+        const respRooms = [];
+        response.data.friendChat.forEach(room => {
+          respRooms.push({
+            chatCode: room.chatCode,
+            type: 'friend',
+            imageUrl: room.imageUrl,
+            nickName: room.nickName,
+            unreadCount: room.unreadCount,
+            lastMessage: room.lastMessage,
+            lastMessageAt: room.lastMessageAt
+          });
+        });
+        response.data.groupChat.forEach(room => {
+          respRooms.push({
+            chatCode: room.chatCode,
+            type: 'group',
+            imageUrl: room.imageUrl,
+            nickName: room.nickName,
+            unreadCount: room.unreadCount,
+            lastMessage: room.lastMessage,
+            lastMessageAt: room.lastMessageAt
+          });
+        });
+        setRooms(respRooms);
+      }).catch(() => {
 
       });
-  }, [chatOpenRoom]);
+  }, []);
 
   return (
     <section className="right">
-      {chatOpenRoom && <Chat pos={activeTab} chatOpenRoom={chatOpenRoom} setChatOpenRoom={setChatOpenRoom} />}
-      <div className="friendlist" style={{ display: chatOpenRoom ? 'none' : 'flex' }}>
+      {openChat && <Chat pos={activeTab} openChat={openChat} setOpenChat={setOpenChat} />}
+      <div className="friendlist" style={{ display: openChat ? 'none' : 'flex' }}>
         <div className={`myfriend ${activeTab === 'friend' ? 'active' : ''}`}
           onClick={() => setActiveTab('friend')}>친구</div>
         <div className={`im-in ${activeTab === 'group' ? 'active' : ''}`}
           onClick={() => setActiveTab('group')}>내가 참여한 매칭</div>
       </div>
       {activeTab === 'friend' ? (
-        friendChatRoom.map((room, index) => (
-          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+        rooms.filter(room => room.type === 'friend').map((room, index) => (
+          <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
             <div className="chatimage">
               <img src={room.imageUrl} alt={room.nickName} />
             </div>
@@ -49,8 +79,8 @@ const FriendRight = () => {
           </div>
         ))
       ) : (
-       groupChatRoom.map((room, index) => (
-          <div style={{ display: chatOpenRoom ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+        rooms.filter(room => room.type === 'group').map((room, index) => (
+          <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
             <div className="chatimage">
               <img src={room.imageUrl} alt={room.nickName} />
             </div>

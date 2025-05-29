@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class ChatRoomDTO {
-    private long chatCode;
+    private String chatCode;
     private String nickName;
     private String lastMessage;
     private LocalDateTime lastMessageAt;

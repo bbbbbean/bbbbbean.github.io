@@ -1,24 +1,22 @@
-import { useEffect, useContext, useState, useRef } from "react";
-import { WebSocketContext } from '../../WebSoket';
+import { useEffect, useContext, useState } from "react";
+import { WebSocketContext } from '../../WebSocket';
 import api from '../../axios'
-
-const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
+const Chat = ({ pos, openChat, setOpenChat }) => {
 
     const [mainImage, setMainImage] = useState("");
     const [title, setTitle] = useState("");
     const [userCount, setUserCount] = useState(0);
-    const [Message, setMessage] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
-    const joinFristRef = useRef(true);
+    const [entered, setEntered] = useState(true);
 
-    const client = useContext(WebSocketContext);
+    const { client, messages, setMessages } = useContext(WebSocketContext);
 
     const handleClose = () => {
-        setChatOpenRoom(null);
+        setOpenChat(null);
     }
 
     const getChatMessage = () => {
-        api.post("api/chat/getChatMessage", { "chatCode": chatOpenRoom })
+        api.post("api/chat/getChatMessage", { "chatCode": openChat })
             .then((response) => {
                 const resData = response.data?.data;
                 console.log(resData);
@@ -40,77 +38,50 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
 
                 console.log(formattedMessages);
 
-                setMessage(formattedMessages);
-                if (joinFristRef.current) {
-                    joinFristRef.current = false;
-                    setTimeout(() => {
-                        const chatContent = document.querySelector(".match-chat-content");
-                        if (chatContent) {
-                            chatContent.scrollTop = chatContent.scrollHeight;
-                        }
-                    }, 0);
-                }
-            })
-            .catch((err) => {
-                console.error("getChatMessage 오류:", err);
+                setMessages(formattedMessages);
             });
-
     }
 
     useEffect(() => {
-        let subscription = null;
-        if (client && client.connected && chatOpenRoom) {
-            subscription = client.subscribe(`/sub/room/${chatOpenRoom}`, (message) => {
+        if (entered) {
+            setEntered(false);
+            return;
+        }
+        setTimeout(() => {
+            const chatContent = document.querySelector(".match-chat-content");
+            if (chatContent) {
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+        }, 0);
+    }, [messages]);
 
-                const data = JSON.parse(message.body);
-                console.log(data);
+    useEffect(() => {
+        const subscription = client.subscribe(`/sub/count/${openChat}`, (message) => {
+            const data = JSON.parse(message.body);
+            console.log(data);
+            if(data.isOk){
+                console.log("채팅방 입장 성공");
+                setEntered(true);
+            }
+            getChatMessage();
+        });
+        client.publish({
+            destination: "/pub/enter",
+            body: JSON.stringify({ "roomId": openChat })
+        });
 
-                if (data.ok === "ok") {
-                    getChatMessage("");
-                    return;
-                }
-
-                // 바로바로 읽음 처리
-                api.post("/api/chat/readChat", { "messageId": data.messageId, "chatCode": chatOpenRoom })
-                    .then((response) => {
-                        console.log(response);
-                    }).catch((error) => {
-
-                    });
-
-                const formattedData = {
-                    ...data,
-                    createAt: new Date(data.createAt).toLocaleString("ko-KR", {
-                        hour12: false,
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }),
-                    isRead: data.isRead - data.subscriberCount
-                };
-
-                setMessage(prev => [...prev, formattedData]);
-                // 메시지 도착 시 스크롤을 맨 아래로 이동
-                setTimeout(() => {
-                    const chatContent = document.querySelector(".match-chat-content");
-                    if (chatContent) {
-                        chatContent.scrollTop = chatContent.scrollHeight;
-                    }
-                }, 0);
-            });
-
-            client.publish({
-                destination: "/pub/enter",
-                body: JSON.stringify({ "roomId": chatOpenRoom })
-            });
-        };
-
+         setTimeout(() => {
+            const chatContent = document.querySelector(".match-chat-content");
+            if (chatContent) {
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+        }, 0);
         return () => {
-            subscription.unsubscribe();
-        };
-
-    }, [chatOpenRoom]);
+            if(subscription){
+                subscription.unsubscribe();
+            }
+        }
+    }, [openChat]);
 
 
     useEffect(() => {
@@ -131,7 +102,7 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
         setInputMessage("");
         client.publish({
             destination: '/pub/message',
-            body: JSON.stringify({ "content": inputMessage, "roomId": chatOpenRoom }),
+            body: JSON.stringify({ "content": inputMessage, "roomId": openChat }),
         });
         setTimeout(() => {
             document.querySelector(".match-chat-input input").focus();
@@ -163,7 +134,7 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
             </div>
             <div className="match-chat-line"></div>
             <div className="match-chat-content" style={pos === "friend" || pos === "group" ? { height: "82%" } : { height: "75%" }}>
-                {Message.map((msg, index) => (
+                {messages.map((msg, index) => (
                     msg.userId === localStorage.getItem("userId") ? (
                         <div key={index} className="your-chat-container">
                             <div className="user-chat">

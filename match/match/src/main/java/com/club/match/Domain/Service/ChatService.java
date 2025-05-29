@@ -46,12 +46,10 @@ public class ChatService {
         // 그룹 챗 가져오기
         List<String> groupChat = chatMapper.selectAllChat(userId, 1);
 
-        log.info("groupChat : " + groupChat);
 
         List<ChatRoomDTO> chatGroupRoomDTOs = new ArrayList<>();
         for(String chatCode : groupChat){
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatGroupRoom(userId,chatCode);
-            log.info("chatRoomDTO : " + chatRoomDTO);
             chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
             if(chatRoomDTO.getLastMessage() == null || chatRoomDTO.getLastMessageAt().isBefore(chatRoomDTO.getUserCreateAt())){
                 chatRoomDTO.setLastMessage("");
@@ -92,7 +90,7 @@ public class ChatService {
             // chatreceiver_tbl에 메시지 읽음 처리
             int count=0;
             for(String messageId : list){
-                count += chatMapper.insertReceivChatMessage(userId, Long.valueOf(messageId));
+                count += chatMapper.insertReceivChatMessage(userId, messageId);
             }
             boolean isOk = (list.size() == count);
             return isOk;
@@ -112,7 +110,6 @@ public class ChatService {
             // 이전 채팅 가져오기
             List<MessageDTO> messageDTOs = chatMapper.selectAllMessage(chatCode, userId);
             for(MessageDTO messageDTO : messageDTOs){
-                log.info("test : " + messageDTO.getUserId().equals(userId) + (messageDTO.getIsRead() == 0));
                 if(!(messageDTO.getUserId().equals(userId) && messageDTO.getIsRead() == 0)){
                     messageDTO.setIsRead(0);
                 } else {
@@ -184,7 +181,7 @@ public class ChatService {
         return chatMapper.selectGetNickName(userId);
     }
     @Transactional
-    public void readMessage(String chatCode, Long messageId, String userId) {
+    public void readMessage(String chatCode, String messageId, String userId) {
         // 그룹 채팅인지 1대1 채팅인지 확인
         int type = chatMapper.selectChatType(chatCode);
         if(type == 0){ // 1대1 채팅
@@ -196,4 +193,5 @@ public class ChatService {
     public int getRoomMemberCount(String chatCode) {
         return chatMapper.countRoomMember(chatCode);
     }
+    public List<String> getParticipantUsers(String chatCode) {return chatMapper.participantUsers(chatCode);}
 }

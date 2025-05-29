@@ -54,7 +54,9 @@ function UserCalendar() {
     api.post("api/calendar/getMemo", { "year": selectedDate.getFullYear(), "month": selectedDate.getMonth() + 1 })
       .then((response) => {
         setNote(response.data.noteData);
-      });
+      })
+      .catch(() => {});
+      
   }, [selectedDate, hasUpdated]);
 
   return (

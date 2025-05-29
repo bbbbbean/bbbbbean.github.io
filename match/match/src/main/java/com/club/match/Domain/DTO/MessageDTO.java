@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class MessageDTO {
-    private long messageId;
-    private long chatCode;
+    private String messageId;
+    private String chatCode;
     private int subscriberCount;
     private String userId;
     private String nickName;

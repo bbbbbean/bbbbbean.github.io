@@ -69,23 +69,43 @@ code {
 
 .loding-page{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: beige;
   width: 100%;
   height: 100vh;
-}
-.loding-page>div {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  width: 300px;
-  height: 200px;
   position: relative;
-  left: 5px;
+}
+.loding-page img{
+  width: 150px;
+  height: 150px;
 }
 
-.loding-page span{
+.loding-page p{
   font-weight: bold;
   font-size: 24px;
+  -webkit-user-select:all;
+  -moz-user-select:all;
+  -ms-user-select:all;
+  user-select:all;
+}
+
+.loding-page button {
+    position: absolute;
+    min-width: 150px;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6EC3FF;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 8px;
+    opacity: 0.01;
+    top: 50%;
+}
+
+.loding-page button:hover {
+    opacity: 0.1;
 }
