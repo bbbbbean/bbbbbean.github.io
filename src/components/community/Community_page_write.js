@@ -24,6 +24,11 @@ Icons[
 
 // 이미지 업로드 핸들러
 function Community_page_write() {
+  const editorRef = useRef(null);
+  const quillInstance = useRef(null);
+  const [editorContent, setEditorContent] = useState(""); // 게시글 제목 상태
+  const [selectedPostCodeId, setSelectedPostCodeId] = useState("");
+  const currentPostId = 1;
   const handleImageUpload = useCallback((quill, postId) => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -106,10 +111,6 @@ function Community_page_write() {
     };
   }, []);
 
-  const editorRef = useRef(null);
-  const quillInstance = useRef(null);
-  const [editorContent, setEditorContent] = useState("");
-  const currentPostId = 1; // "1L"은 JavaScript에서 문자열이므로 숫자로 변경
   useEffect(() => {
     if (editorRef.current && !quillInstance.current) {
       quillInstance.current = new Quill(editorRef.current, {
