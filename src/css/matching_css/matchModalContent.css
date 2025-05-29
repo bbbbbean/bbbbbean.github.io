@@ -250,13 +250,32 @@
     font-weight: 300;
     top: -5px;
 }
-
 .match-chat-content {
     height: 75%;
     max-height: 630px;
     padding: 15px;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
+
+/* WebKit (Chrome, Safari, Edge 등) */
+.match-chat-content::-webkit-scrollbar {
+    width: 15px;
+}
+
+.match-chat-content::-webkit-scrollbar-track {
+    background: none;
+}
+
+.match-chat-content::-webkit-scrollbar-thumb {
+    background-color: #89CFF0;
+    height: 30px;
+    border: 2px solid white; /* thumb padding처럼 보이게 */
+}
+
+.match-chat-content::-webkit-scrollbar-thumb:hover {
+    background-color: #65a2be;
+}
+
 
 .user-chat-container {
     display: flex;

@@ -21,6 +21,8 @@ const FriendRight = () => {
         console.log(response.data);
         setFriendChatRoom(response.data.friendChat);
         setGroupChatRoom(response.data.groupChat)
+      }).catch((error)=>{
+
       });
   }, [chatOpenRoom]);
 

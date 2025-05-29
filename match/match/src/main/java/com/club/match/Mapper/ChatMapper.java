@@ -34,5 +34,11 @@ public interface ChatMapper {
 
     List<String> getUnreadGroupMessages(String userId, String chatCode);
 
-    void insertReceivChatMessage(String userId, String messageId);
+    int insertReceivChatMessage(String userId, Long messageId);
+
+    int countReceivChatMessage(Long messageId);
+
+    int countReadableParticipants(String chatCode, long messageId);
+
+    int removeReceive(long messageId);
 }

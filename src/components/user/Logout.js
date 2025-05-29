@@ -1,10 +1,13 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../../store"
+import { WebSocketContext } from '../../WebSoket';
 
 const Logout = () => {
+
+    const client = useContext(WebSocketContext);
 
     const navigate = useNavigate();
 
@@ -31,6 +34,7 @@ const Logout = () => {
             case 3: // 구글
                 return;
         }
+        client.deactivate();
         navigate("/user/login");
     }, []);
 };

@@ -53,7 +53,7 @@ public class ChatService {
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatGroupRoom(userId,chatCode);
             log.info("chatRoomDTO : " + chatRoomDTO);
             chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
-            if(chatRoomDTO.getLastMessage() == null){
+            if(chatRoomDTO.getLastMessage() == null || chatRoomDTO.getLastMessageAt().isBefore(chatRoomDTO.getUserCreateAt())){
                 chatRoomDTO.setLastMessage("");
             }
             if(chatRoomDTO.getLastMessage().length() >=8){
@@ -85,38 +85,18 @@ public class ChatService {
             boolean isOk = chatMapper.markFriendMessagesAsRead(userDTO.getUserId(), chatCode) > 0;
 
             return isOk;
-        } else {
+        } else { // 그룹채팅
+            // 안 읽은 메시지 추출
             List<String> list = chatMapper.getUnreadGroupMessages(userId,chatCode);
 
-            // chatreceiver_tbl에 등록
+            // chatreceiver_tbl에 메시지 읽음 처리
+            int count=0;
             for(String messageId : list){
-                chatMapper.insertReceivChatMessage(userId,messageId);
-
+                count += chatMapper.insertReceivChatMessage(userId, Long.valueOf(messageId));
             }
-
-            return false;
-        } // 그룹채팅
-
-//        그룹 채팅창 오픈 -> 구독 sub/enter ->
-//                안읽었던 메시지 모두 읽음처리(chatreceiver_tbl 에 읽은 모든 메시지 저장)
-//        if(읽은 후 messageId 별 읽은사람 수 확인 => 그룹 참여자 수와 비교 후 같으면 해당 메시지 isRead 1 로 변경)
-//         => 채팅참가 시간과 메시지 수신시간 고려  => 채팅참가 시간 이후 메시지만 비교
-//
-//        메시지가 프론트로 넘어갈때 -> 그룹 총 참여자 수 - 읽은 사람 수 = 안읽은 사람 수 전달(isRead)
-//
-//        프론트에 필요한 값
-//
-//        public class MessageDTO {
-//            private long messageId;  => 이전 대화를 불러올때는 불필요 / 실시간에는 필요
-//            private long chatCode;   => 0  채팅 코드
-//            private int subscriberCount;  => 0 그룹 총인원
-//            private String userId;      => ??
-//            private String nickName; => 채팅친 유저 닉네임
-//            private String content; => 내용
-//            private LocalDateTime createAt; => 보낸시간
-//            private int isRead; => 안읽은 수
-//            private int isFile; = ?? 파일처리
-//        }
+            boolean isOk = (list.size() == count);
+            return isOk;
+        }
     }
 
 
@@ -150,7 +130,41 @@ public class ChatService {
             resp.put("data", reactMessageDTO);
 
         } else { // 그룹채팅
+            // 채팅 정보 추출
+            ChatRoomDTO chatRoomDTO = chatMapper.selectChatGroupRoom(userId,chatCode);
+            // 그룹 총 참여자수 추출
+            int userCount = chatMapper.countRoomMember(chatCode);
+            // 이전 채팅 가져오기
+            List<MessageDTO> messageDTOs = chatMapper.selectAllMessage(chatCode, userId);
+            for(MessageDTO messageDTO : messageDTOs){
+                // isRead가 0 -> 안읽은 사람이 있다
+                if(messageDTO.getIsRead() == 0) {
+                    // 총읽은수체크
+                    int readCount = chatMapper.countReceivChatMessage(messageDTO.getMessageId());
+                    // 참여자 수 X 읽은수 있는 참여자 수
+                    // 해당 메시지를 읽을 수 있는 참여자 수 체크
+                    int readableCount = chatMapper.countReadableParticipants(chatCode,messageDTO.getMessageId());
+                    // 다 읽었을 경우 해당 메시지 읽음 처리
+                    if(readableCount == readCount){
+                        chatMapper.markFriendMessagesAsReadOne(messageDTO.getMessageId(), userId);
+                        // 다 읽은 메시지 receive 삭제
+                        chatMapper.removeReceive(messageDTO.getMessageId());
+                    }
 
+                    messageDTO.setIsRead(readableCount-readCount);
+                } else { // 다읽었다
+                    messageDTO.setIsRead(0);
+                }
+            }
+
+            RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
+                    .title(chatRoomDTO.getNickName())                                    //###################### 임시 챗 타이틀 vs 매칭 제목
+                    .mainImage("http://localhost:8100/profile/"+chatRoomDTO.getUserId()) //###################### 매칭 생성 유저 프로필 vs 매칭에서 프로필 등록
+                    .messages(messageDTOs)
+                    .userCount(userCount)
+                    .build();
+
+            resp.put("data", reactMessageDTO);
         }
 
         return resp;
@@ -176,10 +190,9 @@ public class ChatService {
         if(type == 0){ // 1대1 채팅
             chatMapper.markFriendMessagesAsReadOne(messageId, userId);
         } else { // 그룹채팅
-
+            chatMapper.insertReceivChatMessage(userId,messageId);
         }
     }
-
     public int getRoomMemberCount(String chatCode) {
         return chatMapper.countRoomMember(chatCode);
     }

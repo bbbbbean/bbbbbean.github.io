@@ -49,6 +49,7 @@
   align-items: center;
   overflow: hidden;
   max-height: 45px;
+  box-shadow : -2px -2px 4px 1px #337aac inset;
 }
 .que>img{
   overflow: hidden;
@@ -61,6 +62,7 @@
 
 .que.on{
   background-color: #F9AF0E;
+  box-shadow : -2px -2px 4px 1px #b17d0b inset;
 }
 .que.on>span{
   font-weight: 700;

@@ -19,20 +19,20 @@ export const WebSocketProvider = ({ children }) => {
         const isAuth = localStorage.getItem("isAuth");
         if (!isAuth || hasConnectedRef.current) return;
 
-        api.post("/api").catch((error)=>{
+        api.post("/api").catch((error) => {
             //토큰만료 방지용
         });
-
+        setConnected(false);
         hasConnectedRef.current = true;
-        
+
         setTimeout(() => {
             const stompClient = new Client({
                 webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),
-                reconnectDelay:5000,
+                reconnectDelay: 5000,
                 onConnect: () => {
                     console.log('Connected');
                     setClient(stompClient);
-                    setConnected(true); // 🔹 연결 완료 표시
+                    setConnected(true);
                 },
                 onStompError: (frame) => {
                     console.error('STOMP error', frame);
@@ -45,6 +45,7 @@ export const WebSocketProvider = ({ children }) => {
             });
 
             stompClient.activate();
+
             clientRef.current = stompClient;
 
         }, 1000);

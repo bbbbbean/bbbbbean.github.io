@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import { WebSocketContext } from '../../WebSoket';
 import api from '../../axios'
 
@@ -9,9 +9,9 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
     const [userCount, setUserCount] = useState(0);
     const [Message, setMessage] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
+    const joinFristRef = useRef(true);
 
     const client = useContext(WebSocketContext);
-    console.log(chatOpenRoom);
 
     const handleClose = () => {
         setChatOpenRoom(null);
@@ -21,9 +21,11 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
         api.post("api/chat/getChatMessage", { "chatCode": chatOpenRoom })
             .then((response) => {
                 const resData = response.data?.data;
+                console.log(resData);
 
                 setMainImage(resData.mainImage || "");
                 setTitle(resData.title || "");
+                setUserCount(resData.userCount);
 
                 const formattedMessages = (resData.messages ?? []).map(msg => ({
                     ...msg,
@@ -39,13 +41,15 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
                 console.log(formattedMessages);
 
                 setMessage(formattedMessages);
-
-                setTimeout(() => {
-                    const chatContent = document.querySelector(".match-chat-content");
-                    if (chatContent) {
-                        chatContent.scrollTop = chatContent.scrollHeight;
-                    }
-                }, 0);
+                if (joinFristRef.current) {
+                    joinFristRef.current = false;
+                    setTimeout(() => {
+                        const chatContent = document.querySelector(".match-chat-content");
+                        if (chatContent) {
+                            chatContent.scrollTop = chatContent.scrollHeight;
+                        }
+                    }, 0);
+                }
             })
             .catch((err) => {
                 console.error("getChatMessage 오류:", err);
@@ -62,11 +66,7 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
                 console.log(data);
 
                 if (data.ok === "ok") {
-                    if (pos === 'friend') {
-                        getChatMessage();
-                    } else if (pos === 'group') {
-
-                    }
+                    getChatMessage("");
                     return;
                 }
 
@@ -125,7 +125,7 @@ const Chat = ({ pos, chatOpenRoom, setChatOpenRoom }) => {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if(inputMessage.trim() === ""){
+        if (inputMessage.trim() === "") {
             return;
         }
         setInputMessage("");

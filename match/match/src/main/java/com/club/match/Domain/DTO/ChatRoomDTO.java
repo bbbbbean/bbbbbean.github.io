@@ -17,6 +17,7 @@ public class ChatRoomDTO {
     private String nickName;
     private String lastMessage;
     private LocalDateTime lastMessageAt;
+    private LocalDateTime userCreateAt;
     private int unreadCount;
     private String imageUrl;
     private String userId;

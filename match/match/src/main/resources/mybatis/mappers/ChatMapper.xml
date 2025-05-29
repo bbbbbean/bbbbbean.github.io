@@ -48,13 +48,16 @@
         SELECT messageId
         FROM chatreceiver_tbl
         WHERE userId = #{userId}
-        )
+        ) AND
+        createAt &gt;= (SELECT createAt FROM chatparticipant_tbl WHERE userId = #{userId} AND chatCode=#{chatCode})
+        AND isRead = 0
         ) AS unreadCount,
         a.chatCode As chatCode,
         a.hostId AS userId,
         a.chatTitle AS nickName,
         b.content AS lastMessage,
-        b.createAt AS lastMessageAt
+        b.createAt AS lastMessageAt,
+        (SELECT createAt FROM chatparticipant_tbl WHERE userId = #{userId} AND chatCode=#{chatCode}) as userCreateAt
         FROM
         (SELECT hostId, chatTitle, chatCode FROM chat_tbl WHERE chatCode = #{chatCode}) a
         LEFT OUTER JOIN
@@ -71,7 +74,7 @@
     </select>
     
     <select id="selectAllMessage" resultType="MessageDTO">
-        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and createAt>=(SELECT createAt from chatparticipant_tbl where chatCode=#{chatCode} and userId =#{userId}) order by createAt;
+        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and createAt&gt;=(SELECT createAt from chatparticipant_tbl where chatCode=#{chatCode} and userId =#{userId}) order by createAt;
     </select>
 
     <select id="selectOneRespMessage" resultType="MessageDTO">
@@ -106,14 +109,25 @@
         SELECT messageId
         FROM chatreceiver_tbl
         WHERE userId = #{userId}
-        ) and createAt >
-        (SELECT createAt FROM chatparticipant_tbl where userId =#{userId} and chatCode = #{chatCode});
+        ) and createAt &gt;=
+        (SELECT createAt FROM chatparticipant_tbl where userId =#{userId} and chatCode = #{chatCode}) AND isRead = 0;
     </select>
 
     <insert id="insertReceivChatMessage">
-        INSERT INTO chatreceiver_tbl VALUES(#{userID},#{messageId});
+        INSERT INTO chatreceiver_tbl VALUES(#{userId},#{messageId});
     </insert>
 
+    <select id="countReceivChatMessage">
+        SELECT COUNT(*) FROM chatreceiver_tbl WHERE messageId=#{messageId};
+    </select>
+
+    <select id="countReadableParticipants">
+        SELECT COUNT(*) from chatparticipant_tbl WHERE chatCode=#{chatCode} AND createAt &lt;= (SELECT createAt FROM chatmessage_tbl WHERE messageId=#{messageId});
+    </select>
+
+    <delete id="removeReceive">
+        DELETE FROM chatreceiver_tbl WHERE messageId=#{messageId};
+    </delete>
 
 
 </mapper>

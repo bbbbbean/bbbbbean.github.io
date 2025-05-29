@@ -122,22 +122,35 @@ public class ChatController {
             respMessageDTO.setIsRead(roomMemberCount);
 
             //현재 구독 인원수 체크
-            log.info("sub : " + simpUserRegistry.getUsers());
+            // 구독 인원 수
             int count = 0;
             for (SimpUser user : simpUserRegistry.getUsers()) {
+                // 중복 방지용 변수
+                boolean isDuplicate = true;
                 for (SimpSession session : user.getSessions()) {
-                    for (SimpSubscription subscription : session.getSubscriptions()) {
-                        if (destination.equals(subscription.getDestination())) {
-                            count++;
-                            break;
+                    if(isDuplicate){
+                        for (SimpSubscription subscription : session.getSubscriptions()) {
+                            log.info("subscription : " + subscription);
+                            if (destination.equals(subscription.getDestination())) {
+                                count++;
+                                isDuplicate = false;
+                                break;
+                            }
                         }
                     }
                 }
             }
+            log.info("count : "+ count);
             respMessageDTO.setSubscriberCount(count);
 
             template.convertAndSend(destination, respMessageDTO);
         }
         // 구독중인 모든 사용자에게 메시지를 전달합니다.
+//        모든유저가 하나의 채널 A에 구독(접속) : 로그인시
+//
+//        메시지 발생시 해당 메시지 발생지점에 참여자를 뽑아
+//
+//        A에 트리거 발동 -> 해당 참여들에게만 트리거 전송 후 받은유저는 -> 0.5초동안 메시지가 더이상
+//        오지 않을경우 리렌더링(새로고침)
     }
 }
