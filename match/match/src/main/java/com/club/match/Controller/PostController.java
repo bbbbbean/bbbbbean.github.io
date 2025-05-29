@@ -1,6 +1,7 @@
 package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
+import com.club.match.Domain.DTO.PostDTO;
 import com.club.match.Domain.Service.FileService;
 import com.club.match.Domain.Service.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,42 @@ public class PostController {
 
     @Value("${server.url}")
     private String BASE_URL;
+
+    @PostMapping("/post/save")
+    public ResponseEntity<?> savePost(@RequestBody PostDTO postDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+        if (userId == null || "anonymousUser".equals(userId)) {
+            log.warn("인증되지 않은 사용자가 글쓰기 시도. 유효하지 않은 아이디");
+            return new ResponseEntity<>("로그인정보가 없습니다.",HttpStatus.UNAUTHORIZED);
+        }
+
+        postDTO.setUserId(userId);
+        postDTO.setCreateAt(LocalDateTime.now());
+
+        if (postDTO.getPostCodeId() == null){
+            log.warn("Bad request: postCodeId is missing for userId: {}", userId);
+            return new ResponseEntity<>("게시판 종류(postCodeId)를 지정해야 합니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // postService를 통해 게시글 저장 및 postId 반환
+        log.info("게시글 저장 요청 수신: userId={}, title={}", postDTO.getUserId(), postDTO.getTitle());
+        try {
+            Map<String,Object> serviceResponse = postService.savePost(postDTO);
+
+            if (serviceResponse.get("success").equals(true)) {
+                log.info("게시글이 성공적으로 저장되었습니다. postId: {}", serviceResponse.get("postId"));
+                return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+            } else {
+                log.error("게시글 저장 실패: {}", serviceResponse.get("message"));
+                return new ResponseEntity<>(serviceResponse.get("message"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e){
+            log.error("게시글 저장 중 예외 발생: {}", e.getMessage(), e);
+            return new ResponseEntity<>("게시글 저장 중 알 수 없는 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     // 커뮤니티 페이지 이미지 업로드
@@ -113,7 +150,6 @@ public class PostController {
             @RequestParam("file") MultipartFile file) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String userId = authentication.getName();
 
         Path communityFileUploadDir = Paths.get(BASE_UPLOAD_DIR, userId, "community", String.valueOf(postId), "uploadedfiles");
@@ -172,7 +208,4 @@ public class PostController {
             return new ResponseEntity<>("파일 업로드 중 알 수 없는 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 }

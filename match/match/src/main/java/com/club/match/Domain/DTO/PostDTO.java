@@ -13,6 +13,7 @@ public class PostDTO {
     private Long postId;
     private String userId;
     private String title;
+    private String content;
     private LocalDateTime createAt;
     private Integer viewCount;
     private Integer postCodeId;
