@@ -2,14 +2,11 @@ package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Domain.Service.FileService;
+import com.club.match.Domain.Service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +29,9 @@ public class PostController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    PostService postService;
 
     @Value("${server.url}")
     private String BASE_URL;

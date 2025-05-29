@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.PostMapper">
+
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO post_tbl (userId, title, content, postCodeId, createAt)
+        VALUES (#{userId}, #{title}, #{content}, #{postCodeId}, NOW());
+    </insert>
+
+    <select id="selectPostById" resultType="PostDTO">
+        SELECT postId, userId, title, content, createAt, viewCount, postCodeId
+        FROM post_tbl
+        WHERE postId = #{postId};
+    </select>
+
+</mapper>
