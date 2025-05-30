@@ -4,11 +4,17 @@ import "../../css/CSS_community-page/community_page_write.css";
 import imageApi from "../../ImageAxios";
 
 import "quill/dist/quill.snow.css"; // For Snow theme
+import { ImageResize } from "quill-image-resize-module-ts";
+
+if (typeof window !== "undefined" && window.Quill) {
+  window.Quill = Quill;
+}
+
+Quill.register("modules/ImageResize", ImageResize);
 
 const SizeStyle = Quill.import("attributors/style/size");
 const fontSize = ["small", "normal", "large"]; // 사이즈 조절
 SizeStyle.whitelist = fontSize;
-Quill.register(SizeStyle, true);
 
 // 파일 아이콘을 위한 SVG 직접 등록
 const Icons = Quill.import("ui/icons");
@@ -136,6 +142,9 @@ function Community_page_write() {
                 handleFileAttachment(quillInstance.current, currentPostId),
             },
           },
+          ImageResize: {
+            modules: ["Resize", "DisplaySize"],
+          },
         },
       });
 
@@ -164,6 +173,9 @@ function Community_page_write() {
         ref={editorRef}
         style={{ height: "300px", border: "1px solid #ccc" }}
       ></div>
+
+      <button>저장하기</button>
+
       <p>↓↓↓↓HTML 표시형식(나중에 삭제 또는 invisible)</p>
       <div style={{ border: "1px solid #eee", padding: "10px" }}>
         {editorContent}
