@@ -16,6 +16,6 @@
         <typeAlias type="com.club.match.Domain.DTO.ChatRoomDTO" alias="ChatRoomDTO" />
         <typeAlias type="com.club.match.Domain.DTO.MessageDTO" alias="MessageDTO" />
         <typeAlias type="com.club.match.Domain.DTO.AttachmentFileDTO" alias="AttachmentFileDTO" />
-        <typeAlias type="com.club.match.Domain.DTO.ChatFileDTO" alias="ChatFileDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.PostDTO" alias="PostDTO" />
     </typeAliases>
 </configuration>
