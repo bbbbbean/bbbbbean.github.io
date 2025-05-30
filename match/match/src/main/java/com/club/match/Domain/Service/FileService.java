@@ -4,17 +4,28 @@ import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Mapper.FileMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
 public class FileService {
     @Autowired
     FileMapper fileMapper;
+
+    // 임시 파일 디렉토리
+    @Value("${server.url}")
+    private String BASE_URL;
+
+    // 최종 저장 디렉토리
+    private final String BASE_UPLOAD_DIR = "src/main/resources/Users/";
+
 
     @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> uploadFile(AttachmentFileDTO attachmentFileDTO) {

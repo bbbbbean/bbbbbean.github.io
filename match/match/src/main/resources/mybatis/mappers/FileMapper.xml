@@ -8,8 +8,8 @@
     </select>
 
     <insert id="uploadFile" useGeneratedKeys="true" keyProperty="postAttachmentId">
-        INSERT INTO postattachment_tbl (postId, attachmentUrl)
-        VALUES (#{postId}, #{attachmentUrl});
+        INSERT INTO postattachment_tbl (postId, attachmentUrl, originalFileName, contentType)
+        VALUES (#{postId}, #{attachmentUrl}, #{originalFileName}, #{contentType});
     </insert>
 
     <delete id="deleteFile">
@@ -18,5 +18,15 @@
     <select id="chatFileDownload">
         SELECT originalFileName FROM chatattachment_tbl where attachmentUrl like #{fileName};
     </select>
+
+    <select id="selectTempFilesByPostId" resultType="AttachmentFileDTO">
+        SELECT * FROM postattachment_tbl WHERE postId = #{postId};
+    </select>
+
+    <update id="updatePostIdAndUrl">
+        UPDATE postattachment_tbl
+        SET postId = #{postId}, attachmentUrl = #{attachmentUrl}
+        WHERE postAttachmentId = #{postAttachmentId};
+    </update>
 
 </mapper>

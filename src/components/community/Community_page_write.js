@@ -166,14 +166,15 @@ function Community_page_write() {
   };
 
   const uploadpost = async () => {
-    // console.log("글 저장합니다");
-    // const postData = {
-    //   title: title,
-    //   content: editorContent,
-    // };
-    // try {
-    //   const response = await imageApi.post("/api/posts", postData);
-    // } catch {}
+    console.log("글 저장합니다");
+    const postData = {
+      title: title,
+      content: editorContent,
+      postCodeId: selectedPostCodeId,
+    };
+    try {
+      const response = await imageApi.post("/api/posts", postData);
+    } catch {}
   };
 
   return (
