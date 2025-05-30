@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import Quill from "quill";
 import "../../css/CSS_community-page/community_page_write.css";
 import imageApi from "../../ImageAxios";
+import file_icons from "./images/file_icon.svg";
 
 import "quill/dist/quill.snow.css"; // For Snow theme
 import { ImageResize } from "quill-image-resize-module-ts";
@@ -18,9 +19,7 @@ SizeStyle.whitelist = fontSize;
 
 // 파일 아이콘을 위한 SVG 직접 등록
 const Icons = Quill.import("ui/icons");
-Icons[
-  "file"
-] = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z"/></svg>`;
+Icons["file"] = `<img src=${file_icons}/>`;
 
 // 이미지 업로드 핸들러
 function Community_page_write() {
@@ -167,14 +166,14 @@ function Community_page_write() {
   };
 
   const uploadpost = async () => {
-    console.log("글 저장합니다");
-    const postData = {
-      title: title,
-      content: editorContent,
-    };
-    try {
-      const response = await imageApi.post("/api/posts", postData);
-    } catch {}
+    // console.log("글 저장합니다");
+    // const postData = {
+    //   title: title,
+    //   content: editorContent,
+    // };
+    // try {
+    //   const response = await imageApi.post("/api/posts", postData);
+    // } catch {}
   };
 
   return (
