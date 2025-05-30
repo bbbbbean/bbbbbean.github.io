@@ -52,5 +52,9 @@ public class FileService {
             return false;
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
+    public String getOriginalFileName(String fileName) {
+        fileName = "%"+fileName+"%";
+        return fileMapper.chatFileDownload(fileName);
+    }
 }

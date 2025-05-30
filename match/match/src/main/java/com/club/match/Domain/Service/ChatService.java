@@ -150,10 +150,16 @@ public class ChatService {
                         // 다 읽은 메시지 receive 삭제
                         chatMapper.removeReceive(messageDTO.getMessageId());
                     }
-
                     messageDTO.setIsRead(readableCount-readCount);
                 } else { // 다읽었다
                     messageDTO.setIsRead(0);
+                }
+                //파일이면 해당 파일 url주소와 파일명 전송
+                if(messageDTO.getIsFile() == 1){
+                    ChatFileDTO chatFileDTO = chatMapper.getChatFile(messageDTO.getMessageId());
+                    messageDTO.setContent(chatFileDTO.getAttachmentUrl());
+                    messageDTO.setFileName(chatFileDTO.getOriginalFileName());
+                    messageDTO.setFileType(chatFileDTO.getContentType());
                 }
             }
 

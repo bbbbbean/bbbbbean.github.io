@@ -15,5 +15,8 @@
     <delete id="deleteFile">
         DELETE FROM postattachment_tbl WHERE postAttachmentId = #{postAttachmentId};
     </delete>
+    <select id="chatFileDownload">
+        SELECT originalFileName FROM chatattachment_tbl where attachmentUrl like #{fileName};
+    </select>
 
 </mapper>

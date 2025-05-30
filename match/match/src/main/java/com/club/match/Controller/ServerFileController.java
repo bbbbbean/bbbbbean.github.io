@@ -1,6 +1,8 @@
 package com.club.match.Controller;
 
+import com.club.match.Domain.Service.FileService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +24,9 @@ import java.util.*;
 @Controller
 @Slf4j
 public class ServerFileController {
+
+    @Autowired
+    FileService fileService;
 
     private static final List<String> IMAGE_EXTENSION = Arrays.asList("jpg", "jpeg", "png", "gif", "webp");
     private final String BASE_UPLOAD_DIR = "src/main/resources/Users/";
@@ -85,9 +92,15 @@ public class ServerFileController {
                 contentType = "application/octet-stream"; // 기본값
             }
 
+            log.info("a : " + filePath.getFileName());
+
+            String originalFileName = fileService.getOriginalFileName(fileName);
+            String encodedFileName = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8)
+                    .replaceAll("\\+", "%20");
+
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePath.getFileName() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName)
                     .body(fileResource);
         }
     }

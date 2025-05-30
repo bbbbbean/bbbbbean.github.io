@@ -70,17 +70,19 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                     behavior: "smooth"
                 });
             }
-        }, 10);
+        }, 100);
     }, [messages]);
 
     useEffect(() => {
         const subscription = client.subscribe(`/sub/count/${openChat}`, (message) => {
             const data = JSON.parse(message.body);
+            console.log(data);
             if (data.isOk) {
                 setEntered(true);
             }
             getChatMessage();
         });
+
         client.publish({
             destination: "/pub/enter",
             body: JSON.stringify({ "roomId": openChat })
@@ -124,7 +126,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         } else { // File
             imageApi.post("/api/chat/fileUpload", { "roomId": openChat, "file": file })
                 .then((response) => {
-
                 });
         }
 
@@ -169,10 +170,14 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                                     <div className="your-content">
                                         <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
                                         {msg.fileType === "image" ?
-                                            <img src={msg.content} style={{maxWidth:"400px"}} /> :
+                                            <img src={msg.content} /> :
                                             msg.fileType === "video" ?
-                                                <video src={msg.content} style={{maxWidth:"400px"}} controls autoPlay loop /> :
-                                                <span>{msg.fileName}</span>}
+                                                <video src={msg.content} controls autoPlay loop />
+                                                :
+                                                <a href={msg.content} download>
+                                                    {msg.fileName}
+                                                </a>
+                                        }
                                     </div>
                                 ) : (
                                     <div className="your-content">
@@ -180,7 +185,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                                         <span>{msg.content}</span>
                                     </div>
                                 )}
-
                                 <div className="your-chat-time">{msg.createAt}</div>
                             </div>
                         </div>
@@ -189,10 +193,25 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                             <img className="prf-image" src={`${process.env.REACT_APP_SERVER_URL}/profile/${msg.userId}`} alt="prf-i" />
                             <div className="user-chat">
                                 <div className="user-name">{msg.nickName}</div>
-                                <div className="user-content">
-                                    <span>{msg.content}</span>
-                                    <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
-                                </div>
+                                {msg.isFile ? (
+                                    <div className="user-content">
+                                        {msg.fileType === "image" ?
+                                            <img src={msg.content} style={{ maxWidth: "400px" }} /> :
+                                            msg.fileType === "video" ?
+                                                <video src={msg.content} style={{ maxWidth: "400px" }} controls autoPlay loop />
+                                                :
+                                                <a href={msg.content} download>
+                                                    {msg.fileName}
+                                                </a>
+                                        }
+                                        <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
+                                    </div>
+                                ) : (
+                                    <div className="user-content">
+                                        <span>{msg.content}</span>
+                                        <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
+                                    </div>
+                                )}
                                 <div className="user-chat-time">{msg.createAt}</div>
                             </div>
                         </div>

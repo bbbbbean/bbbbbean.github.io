@@ -11,4 +11,6 @@ public interface FileMapper {
     int deleteFile(Long postAttachmentId);
 
     AttachmentFileDTO selectAt(Long postAttachmentId);
+
+    String chatFileDownload(String fileName);
 }

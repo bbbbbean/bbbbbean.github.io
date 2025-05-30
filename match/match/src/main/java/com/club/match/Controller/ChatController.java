@@ -140,7 +140,11 @@ public class ChatController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Map<String,Object> resp = new HashMap<>();
+        String destination = "/sub/count/" + chatCode;
+        resp.put("isFile","ok");
 
+        template.convertAndSend(destination, resp);
 
         return ResponseEntity.ok().body(null);
     }
