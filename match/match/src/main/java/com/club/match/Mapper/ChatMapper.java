@@ -1,6 +1,7 @@
 package com.club.match.Mapper;
 
 import com.club.match.Domain.DTO.ChatRoomDTO;
+import com.club.match.Domain.DTO.ChatFileDTO;
 import com.club.match.Domain.DTO.MessageDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -43,4 +44,10 @@ public interface ChatMapper {
     int removeReceive(String messageId);
 
     List<String> participantUsers(String chatCode);
+
+    int insertFileChatMessage(MessageDTO messageDTO);
+
+    int insertChatFile(ChatFileDTO fileDTO);
+
+    ChatFileDTO getChatFile(String messageId);
 }

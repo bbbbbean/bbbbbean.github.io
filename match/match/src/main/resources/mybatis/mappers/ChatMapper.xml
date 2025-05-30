@@ -78,7 +78,7 @@
     </select>
 
     <select id="selectOneRespMessage" resultType="MessageDTO">
-        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and userId=#{userId} and nickName=#{nickName} and content=#{content} ORDER BY createAt DESC LIMIT 1;;
+        SELECT * FROM chatmessage_tbl where chatCode=#{chatCode} and userId=#{userId} and nickName=#{nickName} and content=#{content} ORDER BY createAt DESC LIMIT 1;
     </select>
 
     <update id="markFriendMessagesAsRead">
@@ -131,6 +131,18 @@
     
     <select id="participantUsers">
         SELECT userId FROM chatparticipant_tbl where chatCode = #{chatCode};
+    </select>
+
+    <insert id="insertFileChatMessage">
+        INSERT INTO chatmessage_tbl(chatCode, userId, nickName, content, createAt, isRead, isFile) VALUES(#{chatCode}, #{userId}, #{nickName}, #{content}, #{createAt}, #{isRead}, #{isFile});
+    </insert>
+
+    <insert id="insertChatFile">
+        INSERT INTO chatattachment_tbl(messageId, attachmentUrl, originalFileName, contentType) VALUES(#{messageId}, #{attachmentUrl}, #{originalFileName}, #{contentType});
+    </insert>
+
+    <select id="getChatFile" resultType="ChatFileDTO">
+        SELECT attachmentUrl, originalFileName, contentType FROM chatattachment_tbl where messageId = #{messageId};
     </select>
 
 

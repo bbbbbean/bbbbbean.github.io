@@ -1,16 +1,12 @@
 package com.club.match.Domain.Service;
 
-import com.club.match.Domain.DTO.ChatRoomDTO;
-import com.club.match.Domain.DTO.MessageDTO;
-import com.club.match.Domain.DTO.RespMessageDTO;
-import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.ChatMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -115,6 +111,13 @@ public class ChatService {
                 } else {
                     messageDTO.setIsRead(1);
                 }
+                //파일이면 해당 파일 url주소와 파일명 전송
+                if(messageDTO.getIsFile() == 1){
+                    ChatFileDTO chatFileDTO = chatMapper.getChatFile(messageDTO.getMessageId());
+                    messageDTO.setContent(chatFileDTO.getAttachmentUrl());
+                    messageDTO.setFileName(chatFileDTO.getOriginalFileName());
+                    messageDTO.setFileType(chatFileDTO.getContentType());
+                }
             }
 
             RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
@@ -180,7 +183,7 @@ public class ChatService {
     public String getNickName(String userId) {
         return chatMapper.selectGetNickName(userId);
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void readMessage(String chatCode, String messageId, String userId) {
         // 그룹 채팅인지 1대1 채팅인지 확인
         int type = chatMapper.selectChatType(chatCode);
@@ -190,8 +193,22 @@ public class ChatService {
             chatMapper.insertReceivChatMessage(userId,messageId);
         }
     }
+    @Transactional(rollbackFor = Exception.class)
     public int getRoomMemberCount(String chatCode) {
         return chatMapper.countRoomMember(chatCode);
     }
+
+    @Transactional(rollbackFor = Exception.class)
     public List<String> getParticipantUsers(String chatCode) {return chatMapper.participantUsers(chatCode);}
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addFileChat(MessageDTO messageDTO) {
+        return chatMapper.insertFileChatMessage(messageDTO) > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveFile(ChatFileDTO fileDTO) {
+        return chatMapper.insertChatFile(fileDTO) > 0;
+    }
 }

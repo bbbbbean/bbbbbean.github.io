@@ -267,13 +267,13 @@
 }
 
 .match-chat-content::-webkit-scrollbar-thumb {
-    background-color: #89CFF0;
+    background-color: none;
     height: 30px;
-    border: 2px solid white; /* thumb padding처럼 보이게 */
+    border: 1px solid lightgray;
 }
 
 .match-chat-content::-webkit-scrollbar-thumb:hover {
-    background-color: #65a2be;
+    background-color: #89CFF0;
 }
 
 
@@ -365,18 +365,31 @@
 }
 
 .match-chat-input>form input {
-    width: 95%;
+    width: 97%;
     height: 40px;
     border: none;
     border-radius: 40px;
     text-align: left;
     outline: none;
     padding: 10px;
+    padding-right: 60px;
 }
 
 .match-chat-container button {
     position: absolute;
     top: 8px;
-    right: 25px;
+    right: 12px;
     color: #6ec2fe;
+}
+
+.match-chat-input>.file-input{
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 40px;
+    color: #6ec2fe;
+}
+.match-chat-input p{
+    position: absolute;
+    left: 15px;
 }

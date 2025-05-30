@@ -7,8 +7,6 @@ import { WebSocketContext } from '../../WebSocket';
 
 const Logout = () => {
 
-    console.log("Logout Component Rendered");
-
     const {client} = useContext(WebSocketContext);
 
     const navigate = useNavigate();

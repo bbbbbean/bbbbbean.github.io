@@ -1,11 +1,13 @@
 package com.club.match.Controller;
 
-import com.club.match.Config.auth.PrincipalDetails;
 import com.club.match.Domain.DTO.ChatDTO;
+import com.club.match.Domain.DTO.ChatFileDTO;
 import com.club.match.Domain.DTO.MessageDTO;
 import com.club.match.Domain.Service.ChatService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -16,12 +18,15 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -80,6 +85,66 @@ public class ChatController {
         return ResponseEntity.ok().body(null);
     }
 
+    @PostMapping("fileUpload")
+    public ResponseEntity<?> fileUpload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("roomId") String chatCode) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = authentication.getName();
+        String nickName = chatService.getNickName(userId);
+        String contentType = file.getContentType().split("/")[0];
+        String originalFileName = file.getOriginalFilename();
+
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+        String fileName = UUID.randomUUID()+fileExtension;
+
+        log.info("fileName : " + fileName);
+
+        if(file==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        Path userPath = Paths.get("src/main/resources/Users/" + userId + "/chat");
+        File userFile = new File(userPath+"/"+fileName);
+        try {
+            FileUtils.copyInputStreamToFile(file.getInputStream(),userFile);
+
+            MessageDTO messageDTO = MessageDTO.builder()
+                .chatCode(chatCode)
+                .userId(userId)
+                .nickName(nickName)
+                .content("FILE")
+                .createAt(LocalDateTime.now())
+                .isRead(0)
+                .isFile(1)
+                .build();
+
+            boolean isOk = chatService.addFileChat(messageDTO);
+            if(isOk){
+
+                MessageDTO respMessageDTO = chatService.getNewChatMessage(messageDTO);
+
+                ChatFileDTO fileDTO = ChatFileDTO.builder()
+                        .messageId(respMessageDTO.getMessageId())
+                        .attachmentUrl("http://localhost:8100/chat/"+userId+"/"+ fileName+"/"+contentType)
+                        .originalFileName(originalFileName)
+                        .contentType(contentType)
+                        .build();
+
+                boolean isSave = chatService.saveFile(fileDTO);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return ResponseEntity.ok().body(null);
+    }
+
     @MessageMapping("/enter")
     public void chatRoomEnter(ChatDTO chatDTO, Principal principal) throws InterruptedException {
         Map<String,Object> resp = new HashMap<>();
@@ -95,6 +160,9 @@ public class ChatController {
 
     @MessageMapping("/message")
     public void send(ChatDTO chatDTO, Principal principal) {
+        log.info("test : "+chatDTO);
+        log.info("test : "+chatDTO.getContent());
+        log.info("test : "+chatDTO.getFile());
 
         List<String> Users = chatService.getParticipantUsers(chatDTO.getRoomId());
 

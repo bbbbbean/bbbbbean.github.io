@@ -8,6 +8,7 @@ import api from "./axios"
 export const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
+    
     const clientRef = useRef(null);
     const [client, setClient] = useState(null);
     const [connected, setConnected] = useState(false);
@@ -21,7 +22,7 @@ export const WebSocketProvider = ({ children }) => {
 
     // 현재 구독정보 //
     const openChatRef = useRef(openChat);
-    
+
     useEffect(() => {
         openChatRef.current = openChat;
     }, [openChat]);
@@ -70,14 +71,11 @@ export const WebSocketProvider = ({ children }) => {
         const isAuth = localStorage.getItem("isAuth");
         if (!isAuth || hasConnectedRef.current) return;
 
-        api.post("/api").catch((error) => {
-            //토큰만료 방지용
-        });
         setConnected(false);
         hasConnectedRef.current = true;
 
         setTimeout(() => {
-            let sub; // Declare sub in the outer scope
+            let sub;
             const stompClient = new Client({
                 webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),
                 reconnectDelay: 5000,
@@ -95,7 +93,7 @@ export const WebSocketProvider = ({ children }) => {
                             incrementUnreadCount(roomId, data);
                         }
                     });
-                    
+
                     setClient(stompClient);
                     setConnected(true);
                 },
@@ -117,15 +115,16 @@ export const WebSocketProvider = ({ children }) => {
                     setConnected(false);
                 },
                 onWebSocketClose: () => {
+                    api.post("/api").catch((error) => {
+                        //토큰만료 방지용
+                    });
                     console.log('WebSocket closed');
                     if (sub) sub.unsubscribe();
-                    clientRef.current = null;
                     setClient(null);
                     setConnected(false);
                     setOpenChat(null);
                     setMessages([]);
                     setRooms([]);
-                    hasConnectedRef.current = false;
                     openChatRef.current = null;
                 }
             });

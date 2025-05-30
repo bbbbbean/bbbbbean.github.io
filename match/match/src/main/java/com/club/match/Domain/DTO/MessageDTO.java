@@ -18,6 +18,8 @@ public class MessageDTO {
     private int subscriberCount;
     private String userId;
     private String nickName;
+    private String fileName;
+    private String fileType;
     private String content;
     private LocalDateTime createAt;
     private int isRead;

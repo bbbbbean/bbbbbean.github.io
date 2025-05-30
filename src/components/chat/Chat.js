@@ -1,6 +1,10 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useCallback, useContext, useState } from "react";
 import { WebSocketContext } from '../../WebSocket';
 import api from '../../axios'
+import imageApi from '../../ImageAxios'
+import { useDropzone } from 'react-dropzone'
+import FileIcon from "../../image/file.svg"
+import UploadIcon from "../../image/upload.svg"
 const Chat = ({ pos, openChat, setOpenChat }) => {
 
     const [mainImage, setMainImage] = useState("");
@@ -8,6 +12,20 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
     const [userCount, setUserCount] = useState(0);
     const [inputMessage, setInputMessage] = useState("");
     const [entered, setEntered] = useState(true);
+    const [file, setFile] = useState(null);
+    const [inputFileName, setInputFileName] = useState("");
+
+    const onDrop = useCallback(acceptedFiles => {
+        setInputMessage("");
+        setInputFileName(acceptedFiles[0].name);
+        setFile(acceptedFiles[0]);
+        console.log("test : " + acceptedFiles[0].name);
+    }, [])
+    const onCancel = () => {
+        setInputFileName("")
+    };
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
     const { client, messages, setMessages } = useContext(WebSocketContext);
 
@@ -19,7 +37,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         api.post("api/chat/getChatMessage", { "chatCode": openChat })
             .then((response) => {
                 const resData = response.data?.data;
-                console.log(resData);
 
                 setMainImage(resData.mainImage || "");
                 setTitle(resData.title || "");
@@ -33,11 +50,9 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                         day: "2-digit",
                         hour: "2-digit",
                         minute: "2-digit"
-                    })
+                    }),
                 }));
-
                 console.log(formattedMessages);
-
                 setMessages(formattedMessages);
             });
     }
@@ -50,17 +65,18 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         setTimeout(() => {
             const chatContent = document.querySelector(".match-chat-content");
             if (chatContent) {
-                chatContent.scrollTop = chatContent.scrollHeight;
+                chatContent.scrollTo({
+                    top: chatContent.scrollHeight,
+                    behavior: "smooth"
+                });
             }
-        }, 0);
+        }, 10);
     }, [messages]);
 
     useEffect(() => {
         const subscription = client.subscribe(`/sub/count/${openChat}`, (message) => {
             const data = JSON.parse(message.body);
-            console.log(data);
-            if(data.isOk){
-                console.log("채팅방 입장 성공");
+            if (data.isOk) {
                 setEntered(true);
             }
             getChatMessage();
@@ -70,14 +86,15 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
             body: JSON.stringify({ "roomId": openChat })
         });
 
-         setTimeout(() => {
+        setTimeout(() => {
             const chatContent = document.querySelector(".match-chat-content");
-            if (chatContent) {
-                chatContent.scrollTop = chatContent.scrollHeight;
-            }
-        }, 0);
+            chatContent.scrollTo({
+                top: chatContent.scrollHeight,
+                behavior: "auto"
+            });
+        }, 200);
         return () => {
-            if(subscription){
+            if (subscription) {
                 subscription.unsubscribe();
             }
         }
@@ -96,15 +113,25 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (inputMessage.trim() === "") {
+        if (inputMessage.trim() === "" && file == null) {
             return;
         }
-        setInputMessage("");
-        client.publish({
-            destination: '/pub/message',
-            body: JSON.stringify({ "content": inputMessage, "roomId": openChat }),
-        });
+        if (!(inputMessage.trim() === "")) { // Message
+            client.publish({
+                destination: '/pub/message',
+                body: JSON.stringify({ "content": inputMessage, "roomId": openChat }),
+            });
+        } else { // File
+            imageApi.post("/api/chat/fileUpload", { "roomId": openChat, "file": file })
+                .then((response) => {
+
+                });
+        }
+
         setTimeout(() => {
+            setInputMessage("");
+            setInputFileName("");
+            setFile(null);
             document.querySelector(".match-chat-input input").focus();
         }, 0);
     }
@@ -138,10 +165,22 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                     msg.userId === localStorage.getItem("userId") ? (
                         <div key={index} className="your-chat-container">
                             <div className="user-chat">
-                                <div className="your-content">
-                                    <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
-                                    <span>{msg.content}</span>
-                                </div>
+                                {msg.isFile ? (
+                                    <div className="your-content">
+                                        <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
+                                        {msg.fileType === "image" ?
+                                            <img src={msg.content} style={{maxWidth:"400px"}} /> :
+                                            msg.fileType === "video" ?
+                                                <video src={msg.content} style={{maxWidth:"400px"}} controls autoPlay loop /> :
+                                                <span>{msg.fileName}</span>}
+                                    </div>
+                                ) : (
+                                    <div className="your-content">
+                                        <span>{msg.isRead === 0 ? "" : msg.isRead}</span>
+                                        <span>{msg.content}</span>
+                                    </div>
+                                )}
+
                                 <div className="your-chat-time">{msg.createAt}</div>
                             </div>
                         </div>
@@ -159,20 +198,29 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                         </div>
                     )
                 ))}
-            </div>
+            </div >
             <div className="match-chat-input">
+                <p style={{ cursor: "pointer" }} onClick={onCancel}>{inputFileName}</p>
                 <form onSubmit={sendMessage}>
-                    <input
+                    <input readOnly={inputFileName && true}
                         type="text"
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                     />
+                    <input style={{ display: "none" }} {...getInputProps()} />
                     <button>
                         <span className="material-symbols-outlined">Send</span>
                     </button>
                 </form>
+                <div className="file-input" {...getRootProps()}>
+                    {
+                        isDragActive ?
+                            <img src={UploadIcon} alt="업로드아이콘" /> :
+                            <img src={FileIcon} alt="파일아이콘" />
+                    }
+                </div>
             </div>
-        </div>
+        </div >
     )
 }
 
