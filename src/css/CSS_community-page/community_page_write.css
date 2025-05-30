@@ -3,3 +3,35 @@
 .ql-snow .ql-picker.ql-size .ql-picker-item::before {
   content: attr(data-value);
 }
+
+.button_area {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+
+  margin: 2px 0;
+}
+.uploadpost {
+  background-color: #6ec3ff;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+  border-bottom: 1px solid #ffffff;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  max-height: 45px;
+
+  transition: all 0.1s ease;
+}
+.uploadpost:hover {
+  opacity: 0.8;
+}
+u {
+  text-decoration: underline;
+}
+s {
+  text-decoration: line-through;
+}

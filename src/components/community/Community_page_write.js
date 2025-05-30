@@ -165,6 +165,17 @@ function Community_page_write() {
     console.log("Editor Content:", editorContent);
   };
 
+  const uploadpost = async () => {
+    console.log("글 저장합니다");
+    const postData = {
+      title: title,
+      content: editorContent,
+    };
+    try {
+      const response = await imageApi.post("/api/posts", postData);
+    } catch {}
+  };
+
   return (
     <div>
       <h3>여기에 운동, 게임, 자유게시판 등 어느게시판에 올릴지 표시</h3>
@@ -174,8 +185,11 @@ function Community_page_write() {
         style={{ height: "300px", border: "1px solid #ccc" }}
       ></div>
 
-      <button>저장하기</button>
-
+      <div className="button_area">
+        <button className="uploadpost" onClick={uploadpost}>
+          저장하기
+        </button>
+      </div>
       <p>↓↓↓↓HTML 표시형식(나중에 삭제 또는 invisible)</p>
       <div style={{ border: "1px solid #eee", padding: "10px" }}>
         {editorContent}
