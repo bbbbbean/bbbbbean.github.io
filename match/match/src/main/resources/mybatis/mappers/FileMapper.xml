@@ -29,4 +29,14 @@
         WHERE postAttachmentId = #{postAttachmentId};
     </update>
 
+    <select id="selectTempFilesByPostId" resultType="AttachmentFileDTO">
+        SELECT * FROM postattachment_tbl WHERE postId = #{postId};
+    </select>
+
+    <update id="updatePostIdAndUrl">
+        UPDATE postattachment_tbl
+        SET postId = #{postId}, attachmentUrl = #{attachmentUrl}
+        WHERE postAttachmentId = #{postAttachmentId};
+    </update>
+
 </mapper>
