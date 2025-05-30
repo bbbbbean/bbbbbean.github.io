@@ -12,6 +12,7 @@ import FriendLoyout from './components/layout/FriendLayout'
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
+import CommunityLayout from './components/layout/CommunityLayout';
 import NewMatch from './components/match/newMatch';
 import { WebSocketProvider } from './WebSocket';
 
@@ -36,6 +37,7 @@ function AppComponent() {
               <Route path="/event/list" element={<EventList />} />
               <Route path="/friend" element={<FriendLoyout />} />              
               <Route path="/mypage/*" element={<MyPageLayout />} />
+              <Route path="/community/*" element={<CommunityLayout/>} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
             </Routes>

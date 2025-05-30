@@ -51,6 +51,48 @@ public class ServerFileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + userImagePath.getFileName() + "\"")
                 .body(imageResource);
     }
+
+    @GetMapping("/chat/{userId}/{fileName}/{fileType}")
+    public ResponseEntity<?> chatImage(
+            @PathVariable String userId,
+            @PathVariable String fileName,
+            @PathVariable String fileType) throws IOException {
+        //src/main/resources/Users/
+        log.info("1");
+        Path userProFileDir = Paths.get(BASE_UPLOAD_DIR + userId +"/chat/");
+        log.info(userProFileDir.toString());
+        if (!Files.exists(userProFileDir) || !Files.isDirectory(userProFileDir)) {
+            return ResponseEntity.notFound().build();
+        }
+        log.info("3");
+
+        if(fileType.equals("image") || fileType.equals("video")){
+            Path userImagePath = userProFileDir.resolve(fileName);
+
+            Resource imageResource = new UrlResource(userImagePath.toUri());
+            String contentType = Files.probeContentType(userImagePath);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + userImagePath.getFileName() + "\"")
+                    .body(imageResource);
+        } else {
+            Path filePath = userProFileDir.resolve(fileName);
+
+            Resource fileResource = new UrlResource(filePath.toUri());
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) {
+                contentType = "application/octet-stream"; // 기본값
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePath.getFileName() + "\"")
+                    .body(fileResource);
+        }
+    }
+
+
 //    http://localhost:8100/user2/community/1/images/ffc67281_20250528120928.png
     // 커뮤니티 페이지 업로드된 파일(이미지 포함) 제공 엔드포인트
     @GetMapping("/{userId}/community/{postId}/{type}/{filename:.+}")

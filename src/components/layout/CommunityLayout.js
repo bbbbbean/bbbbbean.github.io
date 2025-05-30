@@ -3,7 +3,7 @@ import Community_page_list from "../community/Community_page_list";
 import Community_page_select from "../community/Community_page_select";
 import Community_page_write from "../community/Community_page_write";
 
-const communityLayout = () => {
+const CommunityLayout = () => {
   return (
     <Routes>
       <Route path="/list" element={<Community_page_list />} />
@@ -12,4 +12,4 @@ const communityLayout = () => {
     </Routes>
   );
 };
-export default communityLayout;
+export default CommunityLayout;
