@@ -8,13 +8,11 @@ import MatchList from "./components/match/matchList";
 import EventList from "./components/event/Event";
 import MyPageLayout from "./components/layout/MypageLayout";
 import AdminPage from './AdminPage';
-import FriendLoyout from './components/layout/FriendLayout'
+// import Friend from './components/message/Friend'
 import UserLayout from './components/layout/UserLayout'
 import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
-import CommunityLayout from './components/layout/CommunityLayout';
 import NewMatch from './components/match/newMatch';
-import { WebSocketProvider } from './WebSocket';
 
 
 function AppComponent() {
@@ -25,7 +23,7 @@ function AppComponent() {
   //어드민 페이지 여부 확인용
   const location = useLocation().pathname;
   return (
-    <WebSocketProvider>
+    <>
       {!location.includes('admin') ? (
         <>
           <div className="wrapper">
@@ -35,9 +33,8 @@ function AppComponent() {
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/match/list/newMatch" element={<NewMatch />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<FriendLoyout />} />              
+              {/* <Route path="/friend" element={<Friend />} />               */}
               <Route path="/mypage/*" element={<MyPageLayout />} />
-              <Route path="/community/*" element={<CommunityLayout/>} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
             </Routes>
@@ -52,7 +49,7 @@ function AppComponent() {
         </Routes>
       }
 
-    </WebSocketProvider>
+    </>
   );
 }
 

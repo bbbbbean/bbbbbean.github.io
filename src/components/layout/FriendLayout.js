@@ -2,7 +2,7 @@ import '../../css/message_css/message.css';
 import FriendLeft from '../message/FriendLeft';
 import FriendRight from '../message/FriendRight';
 
-const MyPageLayout = () => {
+const FriendLayout = () => {
 
 
     return (
@@ -12,4 +12,4 @@ const MyPageLayout = () => {
         </div>
     );
 };
-export default MyPageLayout;
+export default FriendLayout;
