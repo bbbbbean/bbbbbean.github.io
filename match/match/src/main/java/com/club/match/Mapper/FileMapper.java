@@ -15,7 +15,7 @@ public interface FileMapper {
 
     AttachmentFileDTO selectAt(Long postAttachmentId);
 
-    List<AttachmentFileDTO> selectTempFilesByPostId(@Param("postId") Long postId);
+    List<AttachmentFileDTO> selectFilesByPostId(@Param("postId") Long postId);
 
     int updatePostIdAndUrl(AttachmentFileDTO attachmentFileDTO);
 
