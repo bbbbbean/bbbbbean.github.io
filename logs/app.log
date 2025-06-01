@@ -124,3 +124,24 @@ Action:
 Check your application's dependencies for a supported servlet web server.
 Check the configured web application type.
 
+2025-05-28T12:43:25.717+09:00  INFO 14860 --- [demo] [main] com.club.match.MatchApplication          : Starting MatchApplication using Java 21.0.2 with PID 14860 (C:\bbbbbeen\2조프로젝트\match\match\out\production\classes started by Administrator in C:\bbbbbeen\2조프로젝트)
+2025-05-28T12:43:25.717+09:00  INFO 14860 --- [demo] [main] com.club.match.MatchApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-28T12:43:27.085+09:00  WARN 14860 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-28T12:43:27.085+09:00  INFO 14860 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-28T12:43:27.116+09:00 ERROR 14860 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
+Action:
+
+Check your application's dependencies for a supported servlet web server.
+Check the configured web application type.
+
