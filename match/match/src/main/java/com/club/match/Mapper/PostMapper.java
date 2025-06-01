@@ -8,4 +8,6 @@ public interface PostMapper {
     int insertPost(PostDTO postDTO);
 
     PostDTO selectPostById(Long postId);
+
+    int deletePost(Long postId);
 }

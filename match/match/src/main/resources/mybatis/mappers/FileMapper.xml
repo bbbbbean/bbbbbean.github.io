@@ -19,7 +19,7 @@
         SELECT originalFileName FROM chatattachment_tbl where attachmentUrl like #{fileName};
     </select>
 
-    <select id="selectTempFilesByPostId" resultType="AttachmentFileDTO">
+    <select id="selectFilesByPostId" resultType="AttachmentFileDTO">
         SELECT * FROM postattachment_tbl WHERE postId = #{postId};
     </select>
 

@@ -1,5 +1,6 @@
 package com.club.match.Controller;
 
+import com.club.match.Config.auth.PrincipalDetails;
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Domain.Service.UserService;
@@ -214,6 +215,36 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(resp);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())){
+            return new ResponseEntity<>("로그인된 사용자 정보가 없습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
+        String userId = null;
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof PrincipalDetails) {
+            PrincipalDetails principalDetails = (PrincipalDetails) principal;
+            userId = principalDetails.getUsername(); // PrincipalDetails의 getUsername()은 userId를 반환하도록 설정되어 있음
+        } else if (principal instanceof String) {
+            userId = (String) principal;
+        } else {
+            log.warn("Unknown principal type: {}", principal.getClass().getName());
+            return new ResponseEntity<>("알 수 없는 사용자 유형입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (userId != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("userId", userId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("사용자 ID를 가져올 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
     }
 }
 

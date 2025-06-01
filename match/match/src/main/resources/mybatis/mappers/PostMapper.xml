@@ -14,4 +14,8 @@
         WHERE postId = #{postId};
     </select>
 
+    <delete id="deletePost">
+        DELETE FROM post_tbl WHERE postId = #{postId};
+    </delete>
+
 </mapper>
