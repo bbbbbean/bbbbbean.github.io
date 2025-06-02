@@ -22,7 +22,7 @@ api.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
+    async (error) => {
         if (!error.response) {
             return Promise.resolve({ data: null, status: 500, message: error.message });
         }
@@ -32,7 +32,7 @@ api.interceptors.response.use(
         const { config } = error;
         if (error.response.data.message && error.response.data.message.includes("refresh")) {
             try {
-                axios.post(
+                await axios.post(
                     "http://localhost:8100/api/auth/reneToken",
                     {},
                     { withCredentials: true, headers: { 'refresh': 'refresh' } }

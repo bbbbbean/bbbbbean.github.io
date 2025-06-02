@@ -19,7 +19,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         setInputMessage("");
         setInputFileName(acceptedFiles[0].name);
         setFile(acceptedFiles[0]);
-        console.log("test : " + acceptedFiles[0].name);
     }, [])
     const onCancel = () => {
         setInputFileName("")
@@ -36,7 +35,8 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
     const getChatMessage = () => {
         api.post("api/chat/getChatMessage", { "chatCode": openChat })
             .then((response) => {
-                const resData = response.data?.data;
+
+                const resData = response.data.data;
 
                 setMainImage(resData.mainImage || "");
                 setTitle(resData.title || "");
@@ -52,7 +52,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                         minute: "2-digit"
                     }),
                 }));
-                console.log(formattedMessages);
                 setMessages(formattedMessages);
             });
     }
@@ -76,7 +75,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
     useEffect(() => {
         const subscription = client.subscribe(`/sub/count/${openChat}`, (message) => {
             const data = JSON.parse(message.body);
-            console.log(data);
             if (data.isOk) {
                 setEntered(true);
             }

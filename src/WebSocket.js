@@ -8,7 +8,7 @@ import api from "./axios"
 export const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
-    
+
     const clientRef = useRef(null);
     const [client, setClient] = useState(null);
     const [connected, setConnected] = useState(false);
@@ -34,7 +34,6 @@ export const WebSocketProvider = ({ children }) => {
         // 바로바로 읽음 처리
         api.post("/api/chat/readChat", { "messageId": data.messageId, "chatCode": openChatRef.current })
             .then((response) => {
-                console.log(response);
             }).catch(() => {
 
             });
@@ -54,7 +53,6 @@ export const WebSocketProvider = ({ children }) => {
     };
 
     const incrementUnreadCount = (roomId, data) => {
-        console.log(data);
         setRooms(prevRooms => {
             return prevRooms.map(room => {
                 if (room.chatCode === roomId) {
@@ -78,14 +76,12 @@ export const WebSocketProvider = ({ children }) => {
             let sub;
             const stompClient = new Client({
                 webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),
-                reconnectDelay: 5000,
                 onConnect: () => {
                     console.log('Connected');
                     const userId = localStorage.getItem("userId");
                     console.log('User ID:', userId);
                     sub = stompClient.subscribe(`/sub/user/${userId}`, (message) => {
                         const data = JSON.parse(message.body);
-                        console.log('Received message:', data);
                         const roomId = data.chatCode;
                         if (roomId === openChatRef.current) {
                             showMessageInChat(data);
@@ -96,6 +92,9 @@ export const WebSocketProvider = ({ children }) => {
 
                     setClient(stompClient);
                     setConnected(true);
+                },
+                onWebSocketError: (error) => {
+                    console.error('웹소켓 연결 실패:', error);
                 },
                 onStompError: (frame) => {
                     console.error('STOMP error', frame);
@@ -111,21 +110,16 @@ export const WebSocketProvider = ({ children }) => {
                     setRooms([]);
                     hasConnectedRef.current = false;
                     openChatRef.current = null;
-                    hasConnectedRef.current = false;
                     setConnected(false);
+                    stompClient.deactivate();
                 },
                 onWebSocketClose: () => {
-                    api.post("/api").catch((error) => {
-                        //토큰만료 방지용
+                    api.post("/api").then((response) =>{
+                    }).catch((error) => {
+                        if(isAuth){
+                            window.location.reload();
+                        }
                     });
-                    console.log('WebSocket closed');
-                    if (sub) sub.unsubscribe();
-                    setClient(null);
-                    setConnected(false);
-                    setOpenChat(null);
-                    setMessages([]);
-                    setRooms([]);
-                    openChatRef.current = null;
                 }
             });
 
