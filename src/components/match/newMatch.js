@@ -7,6 +7,39 @@ const NewMatch = ()=>{
     
     const [title, setTitle] = useState("");
     const [isOnline, setIsOnline] = useState(true);
+    const [tags, setTags] = useState([]);
+    const [inputValue, setInputValue] = useState("");
+
+    const MAX_TAGS = 5;
+
+    const handleKeyDown = (e) => {
+        const trimmed = inputValue.trim();
+
+        if ((e.key === " " || e.key === "Enter") && trimmed !== "") {
+            e.preventDefault();
+
+            // 최대 태그 수 제한
+            if (tags.length >= MAX_TAGS) {
+                alert(`최대 ${MAX_TAGS}개의 태그만 입력할 수 있습니다.`);
+                return;
+            }
+
+            // 중복 방지
+            if (!tags.includes(trimmed)) {
+                setTags([...tags, trimmed]);
+            }
+
+            setInputValue("");
+        }
+
+        // 백스페이스로 마지막 태그 삭제
+        if (e.key === "Backspace" && inputValue === "") {
+            setTags(tags.slice(0, -1));
+        }
+    };
+    const removeTag = (indexToRemove) => {
+        setTags(tags.filter((_, i) => i !== indexToRemove));
+    };
 
     const openHelp = (e)=>{
         const helpEl=document.querySelectorAll(".new-match-help-el")
@@ -55,8 +88,7 @@ const NewMatch = ()=>{
                             <span className={!isOnline ? "new-match-check" : ""}
                                 onClick={() => setIsOnline(false)}>오프라인</span>
                         </div>
-                        <div>
-                            <input type="text" name="location" className={isOnline ? "new-match-on-el" : ""} placeholder="주소를 입력하세요"/>
+                        <div style={isOnline ? {display:"none"} : {display:"block"}}>
                             <KakaoPostcodeMap/>
                         </div>
                     </div>
@@ -81,8 +113,19 @@ const NewMatch = ()=>{
                 </div>
                 <div>
                     <label>태그</label>
-                    <input type="text" name="tag" placeholder="최대 5개까지 입력 가능합니다."/>
-                    <p>공백으로 태그 구분 가능</p>
+                    
+                    {tags.length < MAX_TAGS && (
+                        <input
+                            type="text"
+                            className=""
+                            name="tag"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="최대 5개까지 입력 가능합니다."
+                        />
+                    )}
+                    <p className="match-tag-help">공백으로 태그 구분 가능</p>
                 </div>
                 <div>
                     <button>매칭 등록</button>
