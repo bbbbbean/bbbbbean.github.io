@@ -4,13 +4,16 @@ import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Domain.DTO.PostDTO;
 import com.club.match.Mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 @Service
 @Slf4j
@@ -30,12 +33,30 @@ public class PostService {
             // 게시글 DB에 저장
             int rowsAffected = postMapper.insertPost(postDTO);
 
-            if (rowsAffected > 0) {
-                Long actualPostId = postDTO.getPostId();
-                String userId = postDTO.getUserId();
-                Long tempPostId = postDTO.getTempPostId();
+            // 1. HTML 문자열로부터 Document 객체 파싱
+            Document doc = Jsoup.parse(postDTO.getContent());
 
-                Map<String, Object> fileMoveResult = fileService.confirmAndMoveFiles(userId, actualPostId, tempPostId, postDTO.getContent());
+            // 2. 모든 <img> 태그 선택
+            Elements images = doc.select("img");
+
+            List<String> srcList = new ArrayList<>();
+
+            // 3. 각 <img> 태그에서 속성 추출
+            for (Element image : images) {
+                String src = image.attr("src");
+                System.out.println("--------------------");
+                System.out.println("src: " + src);
+                srcList.add(src);
+            }
+
+
+            if (rowsAffected > 0) {
+                String userId = postDTO.getUserId();
+                Long postId = postMapper.getPostId(postDTO);
+
+                postDTO.getContent().
+
+                Map<String, Object> fileMoveResult = fileService.confirmAndMoveFiles(userId, postDTO.getContent());
                 if ((boolean) fileMoveResult.get("success")) {
                     resp.put("success", true);
                     resp.put("message", "게시글이 성공적으로 저장되었습니다.");

@@ -108,13 +108,15 @@ public class ServerFileController {
 
 //    http://localhost:8100/user2/community/1/images/ffc67281_20250528120928.png
     // 커뮤니티 페이지 업로드된 파일(이미지 포함) 제공 엔드포인트
-    @GetMapping("/{userId}/community/{postId}/{type}/{filename:.+}")
+    @GetMapping("/community/{filename:.+}")
     public ResponseEntity<Resource> serveCommunityUserFile(
             @PathVariable String userId,
             @PathVariable String postId,
             @PathVariable String type,
             @PathVariable String filename) {
         Path filePath = Paths.get(BASE_UPLOAD_DIR, userId, "community", String.valueOf(postId), type, filename);
+        //Path filePath = Paths.get(BASE_UPLOAD_DIR, userId, "community", temp);
+
 
         try {
             Resource resource = new UrlResource(filePath.toUri());
