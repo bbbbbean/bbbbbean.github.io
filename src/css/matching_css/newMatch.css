@@ -8,7 +8,7 @@
 }
 .new-match-form{
     margin: 10px auto 0 20%;
-
+    width: 65%;
 }
 .new-match-title{
     width: 75%;
@@ -28,13 +28,12 @@
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    margin-top: 10px;
+    margin: 10px 0;
     border-bottom: 1px solid #6ec3ff;
     height: 65px;
     position: relative;
 }
 .new-match-form>div label{
-    height: 40px;
     width: 110px;
     font-size: 17px;
     display: flex;
@@ -51,6 +50,7 @@
     border-radius: 5px;
     margin: 10px;
     padding: 10px;
+    width: 50%;
 }
 
 .new-match-radio span:not(.new-match-help),
@@ -89,6 +89,12 @@
     display: none;
 }
 
+.match-tag-help{
+    align-self: center;
+    font-size: 14px;
+    color: #6d6d6d;
+}
+
 
 /* 위치 : className="new-match-on", className="new-match-on-el" 토글 */
 /* 기본 : 온라인*/
@@ -98,7 +104,6 @@
 .new-match-form>.new-match-defalt>div>div>span
 {
     display: block;
-    height: 30px;
     border: 2px solid #6ec3ff;
     border-radius: 500px;
     margin-bottom: 22px;
