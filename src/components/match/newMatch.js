@@ -1,4 +1,5 @@
 import { useState } from "react";
+import KakaoPostcodeMap from "../map/map"
 import "../../css/matching_css/newMatch.css";
 
 
@@ -6,6 +7,29 @@ const NewMatch = ()=>{
     
     const [title, setTitle] = useState("");
     const [isOnline, setIsOnline] = useState(true);
+
+    const openHelp = (e)=>{
+        const helpEl=document.querySelectorAll(".new-match-help-el")
+        console.log(e.target.dataset.condi);
+        if(e.target.dataset.condi==='1'){
+            helpEl[0].style.display="block";
+        }else if(e.target.dataset.condi==='2'){
+            helpEl[1].style.display="block";
+        }else if(e.target.dataset.condi==='3'){
+            helpEl[2].style.display="block";
+        }
+    }
+    const closeHelp = (e)=>{
+        const helpEl=document.querySelectorAll(".new-match-help-el")
+        console.log(e.target.dataset.condi);
+        if(e.target.dataset.condi==='1'){
+            helpEl[0].style.display="none";
+        }else if(e.target.dataset.condi==='2'){
+            helpEl[1].style.display="none";
+        }else if(e.target.dataset.condi==='3'){
+            helpEl[2].style.display="none";
+        }
+    }
 
     return(
         
@@ -31,24 +55,26 @@ const NewMatch = ()=>{
                             <span className={!isOnline ? "new-match-check" : ""}
                                 onClick={() => setIsOnline(false)}>오프라인</span>
                         </div>
-                        <input type="text" name="location" className={isOnline ? "new-match-on-el" : ""} placeholder="주소를 입력하세요"/>
+                        <div>
+                            <input type="text" name="location" className={isOnline ? "new-match-on-el" : ""} placeholder="주소를 입력하세요"/>
+                            <KakaoPostcodeMap/>
+                        </div>
                     </div>
                 </div>
                 <div className="new-match-radio">
-                    <label>익명 여부 <span className="new-match-help">?</span> </label>
+                    <label>익명 여부 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
                     <input type="radio" name="anonymous_condi" value="Y"/> <span>O</span>
                     <input type="radio" name="anonymous_condi" value="N" checked/> <span>X</span>
-
                     <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
                     
-                </div>
+                </div>  
                 <div>
-                    <label>매너 제한 <span className="new-match-help">?</span></label>
+                    <label>매너 제한 <span className="new-match-help" data-condi="2" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
                     <input type="text" name="manner_condi"/>
                     <p className="new-match-help-el">기본 설정 안내</p>
                 </div>
                 <div className="new-match-radio">
-                    <label>동성 여부 <span className="new-match-help">?</span></label>
+                    <label>동성 여부 <span className="new-match-help" data-condi="3" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
                     <input type="radio" name="gender_condi" value="Y"/> <span>O</span>
                     <input type="radio" name="gender_condi" value="N" checked/> <span>X</span>
                     <p className="new-match-help-el">O 입력시 호스트와 동일한 성별만 참가 가능합니다</p>

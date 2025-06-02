@@ -86,8 +86,8 @@
     padding: 5px 8px;
     border-radius: 50px 50px 50px 0;
     left: 100px;
+    display: none;
 }
-
 
 
 /* 위치 : className="new-match-on", className="new-match-on-el" 토글 */
