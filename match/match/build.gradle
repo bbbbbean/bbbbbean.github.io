@@ -59,6 +59,9 @@ dependencies {
 
 	//파일복사용
 	implementation("commons-io:commons-io:2.19.0")
+
+	// Jsoup
+	implementation 'org.jsoup:jsoup:1.17.2'
 }
 
 tasks.named('test') {
