@@ -4,11 +4,32 @@ import "../../css/matching_css/newMatch.css";
 
 
 const NewMatch = ()=>{
-    
-    const [title, setTitle] = useState("");
+ 
+    const [form, setForm] = useState({
+        title: '',
+        startTime: '',
+        // 온라인 오프라인 isOnline으로 1차 판별 -> 오프일 경우 주소 들고와야함함
+        location: '',
+        // 0 : 익명 , 1 : 실명
+        anonymousCondi: '1',
+        mannerCondi: '',
+        // 0 : 동성 , 1 : 전체
+        genderCondi: '1'
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "title" && value.length > 30) return;
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
     const [isOnline, setIsOnline] = useState(true);
     const [tags, setTags] = useState([]);
     const [inputValue, setInputValue] = useState("");
+
+    const handleLocationSelect = (selectedAddress) => {
+        setForm((prev) => ({ ...prev, location: selectedAddress }));
+    };
 
     const MAX_TAGS = 5;
 
@@ -17,24 +38,17 @@ const NewMatch = ()=>{
 
         if ((e.key === " " || e.key === "Enter") && trimmed !== "") {
             e.preventDefault();
-
-            // 최대 태그 수 제한
             if (tags.length >= MAX_TAGS) {
                 alert(`최대 ${MAX_TAGS}개의 태그만 입력할 수 있습니다.`);
                 return;
             }
-
-            // 중복 방지
             if (!tags.includes(trimmed)) {
                 setTags([...tags, trimmed]);
             }
-
             setInputValue("");
         }
-
-        // 백스페이스로 마지막 태그 삭제
-        if (e.key === "Backspace" && inputValue === "") {
-            setTags(tags.slice(0, -1));
+        if (tags.length >= MAX_TAGS) {
+            return;
         }
     };
     const removeTag = (indexToRemove) => {
@@ -63,21 +77,33 @@ const NewMatch = ()=>{
             helpEl[2].style.display="none";
         }
     }
+    // 확인...
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("제목:", form.title);
+        console.log("시작 시간:", form.startTime);
+        console.log("온라인 여부:", isOnline ? "온라인" : "오프라인");
+        console.log("위치:", form.location);
+        console.log("익명 조건:", form.anonymousCondi);
+        console.log("매너 조건:", form.mannerCondi);
+        console.log("성별 조건:", form.genderCondi);
+        console.log("태그:", tags);
+    };
 
     return(
         
         <>
         <div className="new-match-wrap">
             <div className="new-match-title"><span>매칭</span><span> 등록</span></div>
-            <form className="new-match-form">
+            <form className="new-match-form" onSubmit={handleSubmit}>
                 <div>
                     <label>제목</label>
-                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다." value={title} onChange={(e) => {if (e.target.value.length <= 30) {setTitle(e.target.value);}}}/>
-                    {title.length >= 30 && (<span className="new-match-warning">30자까지 입력 가능합니다.</span>)}
+                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다." value={form.title} onChange={handleChange} />
+                    {form.title.length >= 30 && (<span className="new-match-warning">30자까지 입력 가능합니다.</span>)}
                 </div>
                 <div>
                     <label>날짜</label>
-                    <input type="datetime-local" name="startTime"/>
+                    <input type="datetime-local" name="startTime" value={form.startTime} onChange={handleChange}/>
                 </div>
                 <div className={isOnline ? "new-match-on new-match-defalt" : "new-match-off new-match-defalt"}>
                     <label>위치</label>
@@ -89,14 +115,14 @@ const NewMatch = ()=>{
                                 onClick={() => setIsOnline(false)}>오프라인</span>
                         </div>
                         <div style={isOnline ? {display:"none"} : {display:"block"}}>
-                            <KakaoPostcodeMap/>
+                            <KakaoPostcodeMap onSelectLocation={handleLocationSelect}/>
                         </div>
                     </div>
                 </div>
                 <div className="new-match-radio">
                     <label>익명 여부 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
-                    <input type="radio" name="anonymous_condi" value="Y"/> <span>O</span>
-                    <input type="radio" name="anonymous_condi" value="N" checked/> <span>X</span>
+                    <input type="radio" name="anonymousCondi" value="0" checked={form.anonymousCondi === "0"} onChange={handleChange}/> <span>O</span>
+                    <input type="radio" name="anonymousCondi" value="1" checked={form.anonymousCondi === "1"} onChange={handleChange}/> <span>X</span>
                     <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
                     
                 </div>  
@@ -106,15 +132,14 @@ const NewMatch = ()=>{
                     <p className="new-match-help-el">기본 설정 안내</p>
                 </div>
                 <div className="new-match-radio">
-                    <label>동성 여부 <span className="new-match-help" data-condi="3" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
-                    <input type="radio" name="gender_condi" value="Y"/> <span>O</span>
-                    <input type="radio" name="gender_condi" value="N" checked/> <span>X</span>
-                    <p className="new-match-help-el">O 입력시 호스트와 동일한 성별만 참가 가능합니다</p>
+                    <label>익명 여부 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
+                    <input type="radio" name="genderCondi" value="0" checked={form.genderCondi === "0"} onChange={handleChange}/> <span>O</span>
+                    <input type="radio" name="genderCondi" value="1" checked={form.genderCondi === "1"} onChange={handleChange}/> <span>X</span>
+                    <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
+                    
                 </div>
                 <div>
                     <label>태그</label>
-                    
-                    {tags.length < MAX_TAGS && (
                         <input
                             type="text"
                             className=""
@@ -124,12 +149,18 @@ const NewMatch = ()=>{
                             onKeyDown={handleKeyDown}
                             placeholder="최대 5개까지 입력 가능합니다."
                         />
-                    )}
-                    <p className="match-tag-help">공백으로 태그 구분 가능</p>
+                        <p className="match-tag-help">공백으로 태그 구분 가능</p>
                 </div>
                 <div>
-                    <button>매칭 등록</button>
+                    {tags.map((tag, index) => (
+                        <span key={index}>
+                            {tag}
+                            <button onClick={() => removeTag(index)} type="button">×</button>
+                        </span>
+                    ))}
                 </div>
+                <button type="submit">매칭 등록</button>
+
             </form>
         </div>
         </>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const KakaoAddressMap = () => {
+const KakaoAddressMap = ({onSelectLocation}) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -67,6 +67,10 @@ const KakaoAddressMap = () => {
       oncomplete: function (data) {
         const addr = data.address;
         setAddress(addr);
+
+        if (onSelectLocation) {
+          onSelectLocation(addr);
+        }
 
         if (geocoder && map && marker) {
           geocoder.addressSearch(addr, function (results, status) {
