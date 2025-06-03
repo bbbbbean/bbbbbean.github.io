@@ -110,9 +110,6 @@ public class ServerFileController {
     // 커뮤니티 페이지 업로드된 파일(이미지 포함) 제공 엔드포인트
     @GetMapping("/community/{filename:.+}")
     public ResponseEntity<Resource> serveCommunityUserFile(
-            @PathVariable String userId,
-            @PathVariable String postId,
-            @PathVariable String type,
             @PathVariable String filename) {
         Path filePath = Paths.get(BASE_UPLOAD_DIR, userId, "community", String.valueOf(postId), type, filename);
         //Path filePath = Paths.get(BASE_UPLOAD_DIR, userId, "community", temp);
