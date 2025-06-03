@@ -145,7 +145,7 @@ public class PostController {
 //        }
 //    }
 
-    // 커뮤니티 페이지 파일 업로드
+    // 커뮤니티 페이지 파일 업로드(temp로)
     @PostMapping("/upload/file")
     public ResponseEntity<?> uploadCommunityFile(
             @RequestParam("file") MultipartFile file) {
@@ -179,7 +179,7 @@ public class PostController {
             log.info("커뮤니티 파일 저장 성공 : {}", filePath.toAbsolutePath()); // 절대 경로 로깅
 
             // 4. 데이터베이스에 링크 저장 (attachmentUrl)
-            String fileUrl =BASE_URL +"/"+ userId + "/community/" + "temp/" + savedFileName;
+            String fileUrl =BASE_URL +"/"+ userId + "/community/temp/" + savedFileName;
 
             TempFileDTO tempFileDTO = new TempFileDTO();
             tempFileDTO.setAttachmentUrl(fileUrl);

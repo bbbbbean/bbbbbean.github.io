@@ -57,7 +57,7 @@ public class FileService {
 
             // DB에 파일 정보 저장
             TempFileDTO tempFileDTO = new TempFileDTO();
-            tempFileDTO.setAttachmentUrl(BASE_URL + "/" + userId + "/community/" + "temp/" + newFileName);
+            tempFileDTO.setAttachmentUrl(BASE_URL + "/" + userId + "/community/temp/" + newFileName);
             tempFileDTO.setOriginalFileName(originalFileName);
             tempFileDTO.setContentType(contentType);
 

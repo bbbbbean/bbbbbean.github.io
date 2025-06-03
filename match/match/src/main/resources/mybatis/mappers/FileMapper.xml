@@ -36,10 +36,6 @@
 <!--        WHERE postAttachmentId = #{postAttachmentId};-->
 <!--    </update>-->
 
-    <select id="selectTempFilesByPostId" resultType="AttachmentFileDTO">
-        SELECT * FROM postattachment_tbl WHERE postId = #{postId};
-    </select>
-
     <select id="selectTempFile" resultMap="AttachmentFileDTO">
         SELECT * FROM postattachment_tbl WHERE postId = temp;
     </select>
