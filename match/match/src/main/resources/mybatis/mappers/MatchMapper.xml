@@ -12,9 +12,9 @@
         insert into chatparticipant_tbl values(#{chatCode}, #{userId}, #{createAt});
     </insert>
     <insert id="insertTag">
-        insert into matchtag_tbl
-        <foreach collection="tag" item="tagEl">
-            values(#{matchId}, #{tagEl});
+        insert into matchtag_tbl values
+        <foreach collection="tags" item="tag" separator=",">
+            (#{matchId}, #{tag})
         </foreach>
     </insert>
 </mapper>

@@ -13,5 +13,5 @@ import java.util.List;
 @Builder
 public class MatchTagDto {
     private long matchId;
-    private List<String> tag;
+    private List<String> tags;
 }
