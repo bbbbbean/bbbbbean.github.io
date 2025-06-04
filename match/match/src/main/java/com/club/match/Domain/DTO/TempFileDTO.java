@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TempFileDTO {
-    private Long postId = 0L;
     private String attachmentUrl;
     private String originalFileName;
     private String contentType;

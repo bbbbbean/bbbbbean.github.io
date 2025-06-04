@@ -28,6 +28,7 @@ function Community_page_write() {
   const [editorContent, setEditorContent] = useState("");
   const [title, setTitle] = useState(""); // 게시글 제목
   const [selectedPostCodeId, setSelectedPostCodeId] = useState(5); // 게시판 코드 ID, 5는 자유게시판(디폴트)
+  const [uploadFiles, setUploadFile] = useState("");
 
   // 이미지 업로드 핸들러
   const handleFileUpload = useCallback(() => {
@@ -125,16 +126,19 @@ function Community_page_write() {
     };
   }, []);
 
+  // 밑에 단순 보여주기용. 나중에 삭제하거나 해야함
   const handleSaveContent = useCallback(() => {
     console.log("Editor Content:", editorContent);
   }, [editorContent]);
 
+  // 저장 버튼 누르면 실행
   const uploadpost = () => {
     console.log("글 저장합니다");
     const postData = {
       title: title,
       content: editorContent,
       postCodeId: selectedPostCodeId,
+      uploadFiles: uploadFiles,
     };
     // Postservice.savePost 호출
     api
@@ -165,6 +169,10 @@ function Community_page_write() {
         value={selectedPostCodeId}
         onChange={(e) => setSelectedPostCodeId(parseInt(e.target.value))}
       >
+        <option value="1">운동</option>
+        <option value="2">게임</option>
+        <option value="3">취미</option>
+        <option value="4">여행</option>
         <option value="5">자유게시판</option>
       </select>
       <input
@@ -185,6 +193,7 @@ function Community_page_write() {
           저장하기
         </button>
       </div>
+
       <p>↓↓↓↓HTML 표시형식(나중에 삭제 또는 invisible)</p>
       <div style={{ border: "1px solid #eee", padding: "10px" }}>
         {editorContent}

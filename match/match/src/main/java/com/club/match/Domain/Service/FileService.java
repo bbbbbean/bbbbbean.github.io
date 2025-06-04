@@ -6,26 +6,30 @@ import com.club.match.Mapper.FileMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 @Slf4j
 public class FileService {
+    // 최종 저장 디렉토리
+    private final String BASE_UPLOAD_ROOT_DIR = "src/main/resources/Users/";
+
     @Autowired
     FileMapper fileMapper;
 
@@ -33,44 +37,46 @@ public class FileService {
     @Value("${server.url}")
     private String BASE_URL; //localhost:8100
 
-    // 최종 저장 디렉토리
-    private final String BASE_UPLOAD_ROOT_DIR = "src/main/resources/Users/";
-
     // 글쓰기 시 임시 업로드용
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> uploadFile(MultipartFile file, String userId) {
         Map<String, Object> resp = new HashMap<>();
-        String originalFileName = file.getOriginalFilename();
-        String fileExtension = Objects.requireNonNull(originalFileName).substring(originalFileName.lastIndexOf("."));
-        String newFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")) + fileExtension;
-        String contentType = file.getContentType();
 
         // 임시 파일 경로
         Path tempUploadPath = Paths.get(BASE_UPLOAD_ROOT_DIR, userId, "community", "temp");
-        Path filePath = tempUploadPath.resolve(newFileName);
 
         try {
-            // 디렉토리 생성
-            Files.createDirectories(tempUploadPath);
-            // 파일 저장
-            file.transferTo(filePath);
+            // 고유한 파일 이름 생성 (중복 방지)
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = Objects.requireNonNull(originalFileName).substring(originalFileName.lastIndexOf("."));
+            String dateTimeString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            String savedFileName = UUID.randomUUID().toString().substring(0, 8) + "_" + dateTimeString + fileExtension;
+            String contentType = file.getContentType();
 
-            // DB에 파일 정보 저장
-            TempFileDTO tempFileDTO = new TempFileDTO();
-            tempFileDTO.setAttachmentUrl(BASE_URL + "/" + userId + "/community/temp/" + newFileName);
-            tempFileDTO.setOriginalFileName(originalFileName);
-            tempFileDTO.setContentType(contentType);
+            Path filePath = tempUploadPath.resolve(savedFileName);
 
-            int tempFileInfo = fileMapper.uploadTempFile(tempFileDTO);
+            // temp에 파일 저장
+            Files.copy(file.getInputStream(), filePath);
+            log.info("커뮤니티 파일 저장 성공 : {}", filePath.toAbsolutePath()); // 절대 경로 로깅
+
+            // 데이터베이스에 링크 저장 (attachmentUrl)
+            String fileUrl = BASE_URL + "/" + userId + "/community/" + savedFileName;
+            AttachmentFileDTO attachmentFileDTO = new AttachmentFileDTO();
+            attachmentFileDTO.setAttachmentUrl(fileUrl);
+            attachmentFileDTO.setOriginalFileName(originalFileName);
+            attachmentFileDTO.setContentType(contentType); // 콘텐츠 타입이랑 fileExtension 둘 중 뭘 넣어야하지?
+            int tempFileInfo = fileMapper.uploadFile(attachmentFileDTO);
+
             if (tempFileInfo > 0) {
                 resp.put("success", true);
                 resp.put("message", "파일 정보가 성공적으로 저장되었습니다.");
-                resp.put("fileName", tempFileDTO.getOriginalFileName());
-                resp.put("fileUrl", tempFileDTO.getAttachmentUrl());
+                resp.put("fileName", attachmentFileDTO.getOriginalFileName());
+                resp.put("fileUrl", attachmentFileDTO.getAttachmentUrl());
             } else {
                 Files.deleteIfExists(filePath); // DB 저장 실패 시 파일 시스템에 저장된 파일 롤백
                 resp.put("success", false);
                 resp.put("message", "파일 정보 저장에 실패했습니다.");
+                resp.put("fileName", attachmentFileDTO.getOriginalFileName());
             }
         } catch (IOException e) {
             log.error("파일 업로드 실패 (userId: {}, message: {})", userId, e.getMessage());
@@ -88,25 +94,20 @@ public class FileService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> confirmAndMoveFiles(String userId, String editorContent) {
         Map<String, Object> resp = new HashMap<>();
+
         try {
             // 1. 임시 postId로 DB에 저장된 모든 파일 목록을 조회
-            List<AttachmentFileDTO> tempFiles = fileMapper.selectTempFile();
+            List<AttachmentFileDTO> tempFiles = fileMapper.selectTempFile(userId);
             if (tempFiles.isEmpty()) {
                 // 임시 디렉토리가 아예 비어있었다면 삭제 시도
                 Path tempPostIdDir = Paths.get(BASE_UPLOAD_ROOT_DIR, userId, "community", "temp");
                 deleteDirectoryIfEmpty(tempPostIdDir);
                 resp.put("success", true);
                 resp.put("message", "이동할 임시 파일이 없습니다.");
-                resp.put("ac")
                 return resp;
             }
 
-            // 에디터 내용에서 사용된 URL 추출 (정규식 사용)
-            // http://localhost:3000/community/temp/
-            String regex = Pattern.quote(BASE_URL + "/community" +  "/temp/") + "([^/]+)";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(editorContent);
-
+            // 파일명만 남게 됨
             List<String> usedFileNames = matcher.results()
                     .map(match -> match.group(1))
                     .toList();
@@ -118,7 +119,7 @@ public class FileService {
                 if (usedFileNames.contains(fileName)) {
                     // 에디터 내용에 포함된 파일만 이동
                     Path sourcePath = Paths.get(BASE_UPLOAD_ROOT_DIR, userId, "community", "temp", fileName);
-                    Path targetDirectory = Paths.get(BASE_UPLOAD_ROOT_DIR, userId, "community","temp");
+                    Path targetDirectory = Paths.get(BASE_UPLOAD_ROOT_DIR, userId, "community", "temp");
                     Path targetPath = targetDirectory.resolve(fileName);
 
                     Files.createDirectories(targetDirectory); // 대상 디렉토리 생성

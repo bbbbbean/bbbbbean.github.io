@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class AttachmentFileDTO {
     private Long postAttachmentId;
     private Long postId;
+    private String userId;
     private String attachmentUrl;
     private String originalFileName;
     private String contentType;
