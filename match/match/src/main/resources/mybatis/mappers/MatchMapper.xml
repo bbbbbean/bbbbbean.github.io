@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.MatchMapper">
+    <insert id="insertMatch" useGeneratedKeys="true" keyProperty="matchId" keyColumn="matchId">
+        insert into match_tbl(creatorId, title, createAt, startTime, status, location, url, anonymousCondi, mannerCondi, genderCondi, chatCode) values(#{creatorId},#{title},#{createAt},#{startTime},#{status},#{location},#{url},#{anonymousCondi},#{mannerCondi},#{genderCondi},#{chatCode});
+    </insert>
+    <insert id="insertChatting" useGeneratedKeys="true" keyProperty="chatCode" keyColumn="chatCode">
+        insert into chat_tbl(type, hostId, chatTitle) values(#{type},#{hostId},#{chatTitle});
+    </insert>
+    <insert id="insertChatparticipant">
+        insert into chatparticipant_tbl values(#{chatCode}, #{userId}, #{createAt});
+    </insert>
+    <insert id="insertTag">
+        insert into matchtag_tbl
+        <foreach collection="tag" item="tagEl">
+            values(#{matchId}, #{tagEl});
+        </foreach>
+    </insert>
+</mapper>
