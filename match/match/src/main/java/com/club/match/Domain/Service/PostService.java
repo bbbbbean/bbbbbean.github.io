@@ -2,6 +2,7 @@ package com.club.match.Domain.Service;
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Domain.DTO.PostDTO;
+import com.club.match.Mapper.FileMapper;
 import com.club.match.Mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -9,9 +10,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Console;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -19,44 +26,66 @@ import java.util.*;
 @Slf4j
 public class PostService {
 
+    // 최종 저장 디렉토리
+    private final String BASE_UPLOAD_ROOT_DIR = "src/main/resources/Users/";
+
     @Autowired
     private PostMapper postMapper;
 
     @Autowired
+    private FileMapper fileMapper;
+
+    @Autowired
     private FileService fileService;
+
+    // 임시 파일 디렉토리
+    @Value("${server.url}")
+    private String BASE_URL; //localhost:8100
 
     // 게시글 저장 메서드
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> savePost(PostDTO postDTO) {
         Map<String, Object> resp = new HashMap<>();
+        String userId = postDTO.getUserId();
+
         try {
             // 게시글 DB에 저장
             int rowsAffected = postMapper.insertPost(postDTO);
 
-            // 1. HTML 문자열로부터 Document 객체 파싱
+            // postId 가져오기
+            Long postId = postMapper.getPostId(postDTO);
+
+            // HTML 문자열로부터 Document 객체 파싱
             Document doc = Jsoup.parse(postDTO.getContent());
 
-            // 2. 모든 <img> 태그 선택
+            // 모든 <img> 태그 선택
             Elements images = doc.select("img");
+//            List<String> srcList = new ArrayList<>();
 
-            List<String> srcList = new ArrayList<>();
-
-            // 3. 각 <img> 태그에서 속성 추출
+            // 각 <img> 태그에서 속성 추출
             for (Element image : images) {
                 String src = image.attr("src");
-                System.out.println("--------------------");
                 System.out.println("src: " + src);
-                srcList.add(src);
+//                srcList.add(src);
+                fileMapper.updatePostAttachment(postId, src); // 글 본문에 존재하면 postId를 입력
             }
+
+            // DB에서 postId가 null인지 상관없이 AttachmentUrl 가져오기
+            List<AttachmentFileDTO> DBUrlList = fileMapper.selectFileList(userId);
+
+            // postId 없으면 url 삭제
+            fileMapper.deleteTempFile(userId);
+
+            // 1. 임시 postId로 DB에 저장된 모든 파일 목록을 조회
+            List<AttachmentFileDTO> tempFiles = fileMapper.selectTempFile();
 
 
             if (rowsAffected > 0) {
-                String userId = postDTO.getUserId();
-                Long postId = postMapper.getPostId(postDTO);
+
 
                 postDTO.getContent().
 
-                Map<String, Object> fileMoveResult = fileService.confirmAndMoveFiles(userId, postDTO.getContent());
+                        Map < String, Object > fileMoveResult = fileService.confirmAndMoveFiles(userId, postDTO.getContent());
                 if ((boolean) fileMoveResult.get("success")) {
                     resp.put("success", true);
                     resp.put("message", "게시글이 성공적으로 저장되었습니다.");
@@ -86,6 +115,7 @@ public class PostService {
         return postMapper.selectPostById(postId);
     }
 
+    // 게시글 삭제
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> deletePost(Long postId) {
         Map<String, Object> resp = new HashMap<>();

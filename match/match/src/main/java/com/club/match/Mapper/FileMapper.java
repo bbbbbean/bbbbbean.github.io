@@ -2,24 +2,27 @@ package com.club.match.Mapper;
 
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
-import com.club.match.Domain.DTO.TempFileDTO;
-import lombok.Builder;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface FileMapper {
     int uploadFile(AttachmentFileDTO attachmentFileDTO);
-    int uploadTempFile(TempFileDTO tempFileDTO);
 
     int deleteFile(Long postAttachmentId);
+
+    int deleteTempFile(String userId);
 
     AttachmentFileDTO selectAt(Long postAttachmentId);
 
     List<AttachmentFileDTO> selectFilesByPostId(Long postId);
-    List<AttachmentFileDTO> selectTempFile();
+
+    List<AttachmentFileDTO> selectFileList(String userId);
+
+    List<AttachmentFileDTO> selectTempFile(String userId);
+
+    int updatePostAttachment(Long postId, String attachmentUrl);
 
     int updatePostIdAndUrl(AttachmentFileDTO attachmentFileDTO);
 
