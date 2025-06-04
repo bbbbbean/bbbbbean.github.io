@@ -1,0 +1,121 @@
+.comment-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.comment-form > form,
+.child-comment-form > form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.comment-form > form button,
+.child-comment-form > form button {
+    min-width: 50px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6EC3FF;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+    align-self: flex-end;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    flex-grow: 1;
+    box-sizing: border-box;
+}
+
+.parent-comment {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.child-comment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+    padding-left: 55px;
+    box-sizing: border-box;
+}
+
+.child-comment-item {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.comment-img {
+    margin-right: 10px;
+}
+
+.comment-img img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.comment-nickName {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.comment-content-value {
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.comment-createAt {
+    font-size: 12px;
+    margin-top: 3px;
+    align-self: flex-end;
+}
+
+.comment-button-div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.comment-button-div button {
+    min-width: 50px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6EC3FF;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}

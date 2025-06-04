@@ -145,6 +145,25 @@
         SELECT attachmentUrl, originalFileName, contentType FROM chatattachment_tbl where messageId = #{messageId};
     </select>
 
+    <!--댓글용-->
+    <insert id="insertComment">
+        INSERT INTO comment_tbl (postId, userId, content, createAt
+        <if test="parentId != null">
+            , parentId
+        </if>
+        ) VALUES (#{postId}, #{userId}, #{content}, #{createAt}
+        <if test="parentId != null">
+            , #{parentId}
+        </if>
+        )
+    </insert>
+    <select id="getParentComment">
+        SELECT * FROM comment_tbl where postId = #{postId} and parentId IS NULL order by createAt;
+    </select>
+
+    <select id="getChildComment">
+        SELECT * FROM comment_tbl where parentId = #{commentId} order by createAt;
+    </select>
 
 </mapper>
 

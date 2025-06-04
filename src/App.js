@@ -14,6 +14,7 @@ import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
 import CommunityLayout from './components/layout/CommunityLayout';
 import NewMatch from './components/match/newMatch';
+import Comment from './components/community/Comment';
 import { WebSocketProvider } from './WebSocket';
 
 
@@ -40,6 +41,7 @@ function AppComponent() {
               <Route path="/community/*" element={<CommunityLayout/>} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
+              <Route path='/test' element={<Comment />} />
             </Routes>
           </div>
           <Footer />
