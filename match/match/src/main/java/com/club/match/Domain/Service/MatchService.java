@@ -53,10 +53,10 @@ public class MatchService {
     }
 
     // 태그 등록
-    public void addMatchTag(long matchId, List<String> tag){
+    public void addMatchTag(long matchId, List<String> tags){
         MatchTagDto matchTagDto = MatchTagDto.builder()
                 .matchId(matchId)
-                .tag(tag)
+                .tags(tags)
                 .build();
         matchMapper.insertTag(matchTagDto);
         log.info("tag : " + matchTagDto);

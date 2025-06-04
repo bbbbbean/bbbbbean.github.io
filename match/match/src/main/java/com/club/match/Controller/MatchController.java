@@ -26,12 +26,7 @@ public class MatchController {
     private MatchService matchService;
 
     @PostMapping("/list/newMatch")
-    public ResponseEntity<?> matchNew(@RequestBody @Validated MatchDto matchDto, @RequestParam("tags") List<String> tags){
-
-        //List<String> tag = (List<String>) resp.get("tags");
-
-        log.info("a : " + tags);
-
+    public ResponseEntity<?> matchNew(@RequestBody @Validated MatchDto matchDto){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String)authentication.getName();
@@ -55,10 +50,11 @@ public class MatchController {
         boolean isOk = matchService.addNewMatch(matchDto);
 
         // 태그 등록
-
-        //matchService.addMatchTag(matchDto.getMatchId(),tag);
+        List<String> tags = matchDto.getTags();
+        matchService.addMatchTag(matchDto.getMatchId(),tags);
 
         log.info("a : " + matchDto);
+        log.info("b : " + tags);
 
         return ResponseEntity.ok().body(null);
     }
