@@ -40,10 +40,9 @@ public class PostController {
 
     // 저장 버튼 눌렀을 때 작동
     @PostMapping("/post/save")
-    public ResponseEntity<?> savePost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<?> saveCommunityPost(@RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-
 
         if (userId == null) {
             log.warn("인증되지 않은 사용자가 글쓰기 시도. 유효하지 않은 아이디");
@@ -147,7 +146,7 @@ public class PostController {
 
     // 커뮤니티 페이지 파일 업로드(temp로)
     @PostMapping("/upload/file")
-    public ResponseEntity<?> uploadCommunityFile(
+    public ResponseEntity<?> uploadTempCommunityFile(
             @RequestParam("file") MultipartFile file) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
