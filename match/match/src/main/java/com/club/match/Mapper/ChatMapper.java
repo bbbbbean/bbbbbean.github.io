@@ -53,4 +53,8 @@ public interface ChatMapper {
     List<CommentDTO> getParentComment(String postId);
 
     List<CommentDTO> getChildComment(String commentId);
+
+    int updateComment(CommentDTO commentDTO);
+
+    int deleteComment(CommentDTO commentDTO);
 }

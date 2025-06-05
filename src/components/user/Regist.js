@@ -51,7 +51,7 @@ const Regist = () => {
                 })
                 .catch((error) => {
                     setIdCheck({
-                        message: "이미 사용중인 아이디입니다.",
+                        message: "사용할 수 없는 아이디입니다.",
                         success: false
                     });
                 });
@@ -76,8 +76,6 @@ const Regist = () => {
             },
             function (resp) {
                 const value = resp.imp_uid;
-                setAuth(true);
-                setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
                 if (resp.success) {
                     setAuth(true);
                     setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
@@ -112,11 +110,6 @@ const Regist = () => {
         <div>
             <section className="login-section">
                 <img src={logo} alt="logo" />
-                <h2>
-                    임시 회원가입 페이지입니다.
-                    <br />
-                    사용하고 있는 비밀번호를 입력하지 마세요.
-                </h2>
                 <form id="login-form" onSubmit={handleSubmit}>
                     <label>
                         <input
@@ -160,7 +153,7 @@ const Regist = () => {
                         {Auth ? "인증성공" : "본인인증"}
                     </button>
                     <span style={{ color: "#dd3e3e", fontWeight: "bold" }}>{AuthError}</span>
-                    {Auth &&
+                    {Auth && formData.password && formData.repassword && formData.nickName &&
                         <button className="submit" type="submit">
                             회원가입
                         </button>

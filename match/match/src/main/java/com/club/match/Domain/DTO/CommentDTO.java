@@ -19,7 +19,9 @@ public class CommentDTO {
     private String nickName;
     private String content;
     private LocalDateTime createAt;
-    private String depth;
+    private String time;
+    private String commentTo;
     private String parentId;
+    private int ChildCount;
     public List<CommentDTO> commentDTOs;
 }

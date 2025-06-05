@@ -147,11 +147,11 @@
 
     <!--댓글용-->
     <insert id="insertComment">
-        INSERT INTO comment_tbl (postId, userId, content, createAt
+        INSERT INTO comment_tbl (postId, userId, nickName, content, createAt, commentTo
         <if test="parentId != null">
             , parentId
         </if>
-        ) VALUES (#{postId}, #{userId}, #{content}, #{createAt}
+        ) VALUES (#{postId}, #{userId}, #{nickName}, #{content}, #{createAt}, #{commentTo}
         <if test="parentId != null">
             , #{parentId}
         </if>
@@ -164,6 +164,14 @@
     <select id="getChildComment">
         SELECT * FROM comment_tbl where parentId = #{commentId} order by createAt;
     </select>
+
+    <update id="updateComment">
+        UPDATE comment_tbl SET content = #{content} where userId = #{userId} and commentId = #{commentId}
+    </update>
+
+    <delete id="deleteComment">
+        DELETE FROM comment_tbl where commentId = #{commentId} AND userId = #{userId}
+    </delete>
 
 </mapper>
 
