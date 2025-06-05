@@ -14,26 +14,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
 @Slf4j
 public class PostController {
 
-    private final String BASE_UPLOAD_ROOT_DIR = "src/main/resources/Users/";
-
     @Autowired
     FileService fileService;
-
     @Autowired
     PostService postService;
-
+    @Value("${file.upload.root-dir}")
+    private String BASE_UPLOAD_ROOT_DIR;
     @Value("${server.url}")
     private String BASE_URL;
 
@@ -42,6 +35,7 @@ public class PostController {
     public ResponseEntity<?> uploadTempCommunityFile(
             @RequestParam("file") MultipartFile file) {
 
+        log.info("파일", file);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
@@ -63,7 +57,9 @@ public class PostController {
 
     // 저장 버튼 눌렀을 때 작동
     @PostMapping("/post/save")
-    public ResponseEntity<?> saveCommunityPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<?> saveCommunityPost(
+            @RequestBody PostDTO postDTO,
+            @RequestParam(value = "files", required = false) MultipartFile[] files) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
@@ -83,18 +79,27 @@ public class PostController {
         // postService를 통해 게시글 저장 및 postId 반환
         log.info("게시글 저장 요청 수신: userId={}, title={}", postDTO.getUserId(), postDTO.getTitle());
         try {
+            // 게시글 저장 및 postId 획득
             Map<String, Object> serviceResponse = postService.savePost(postDTO);
 
             if (serviceResponse.get("success").equals(true)) {
-                log.info("게시글이 성공적으로 저장되었습니다. postId: {}", serviceResponse.get("postId"));
+                Long postId = (Long) serviceResponse.get("postId");
+                log.info("게시글이 성공적으로 저장되었습니다. postId: {}", postId);
+
+                // 파일이 존재하면 FileService를 통해 저장
+                if (files != null && files.length > 0) {
+//                    fileService.saveAttachmentFiles(postId, files); // 새 메서드 호출 (아래 설명)
+                    log.info("게시글 ID {}에 {}개의 파일이 첨부되었습니다.", postId, files.length);
+                }
+
                 return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
             } else {
                 log.error("게시글 저장 실패: {}", serviceResponse.get("message"));
                 return new ResponseEntity<>(serviceResponse.get("message"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (Exception e) {
-            log.error("게시글 저장 중 예외 발생: {}", e.getMessage(), e);
-            return new ResponseEntity<>("게시글 저장 중 알 수 없는 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("게시글 저장 중 예외 발생: ", e);
+            return new ResponseEntity<>("서버 오류: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

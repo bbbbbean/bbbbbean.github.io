@@ -12,7 +12,7 @@ public interface FileMapper {
 
     int deleteFile(Long postAttachmentId);
 
-    int deleteTempFile(String userId);
+    int deleteTempFileList(String userId);
 
     AttachmentFileDTO selectAt(Long postAttachmentId);
 
@@ -20,9 +20,11 @@ public interface FileMapper {
 
     List<AttachmentFileDTO> selectFileList(String userId);
 
-    List<AttachmentFileDTO> selectTempFile(String userId);
+    List<String> selectTempFile(Long postId);
 
     int updatePostAttachment(Long postId, String attachmentUrl);
+
+    int updatePostAttachmentUrl(String newAttachmentUrl,Long postId, String oldAttachmentUrl);
 
     int updatePostIdAndUrl(AttachmentFileDTO attachmentFileDTO);
 
