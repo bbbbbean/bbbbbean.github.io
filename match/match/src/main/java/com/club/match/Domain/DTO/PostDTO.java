@@ -18,5 +18,4 @@ public class PostDTO {
     private LocalDateTime createAt;
     private Integer viewCount;
     private Integer postCodeId;
-    private Files uploadFiles;
 }

@@ -10,7 +10,9 @@ import java.util.List;
 public interface PostMapper {
     int insertPost(PostDTO postDTO);
 
-    PostDTO selectPostById(Long postId);
+    PostDTO selectPostByPostId(Long postId);
+
+    String selectContentByPostId(Long postId);
 
     Long getPostId(PostDTO postDTO);
 

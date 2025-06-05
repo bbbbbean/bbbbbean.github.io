@@ -8,14 +8,18 @@
         VALUES (#{userId}, #{title}, #{content}, #{postCodeId}, NOW());
     </insert>
 
-    <select id="selectPostById" resultType="PostDTO">
+    <select id="selectPostByPostId" resultType="PostDTO">
         SELECT postId, userId, title, content, createAt, viewCount, postCodeId
         FROM post_tbl
         WHERE postId = #{postId};
     </select>
 
+    <select id="selectContentByPostId">
+        SELECT content FROM post_tbl WHERE postId = #{postId};
+    </select>
+
     <select id="getPostId">
-        SELECT postId form post_tbl where userId = #{userId} And title = #{title} order by createAt DESC limit 1;
+        SELECT postId FROM post_tbl where userId = #{userId} And title = #{title} order by createAt DESC limit 1;
     </select>
 
     <delete id="deletePost">

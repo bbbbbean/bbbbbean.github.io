@@ -28,7 +28,7 @@ function Community_page_write() {
   const [editorContent, setEditorContent] = useState("");
   const [title, setTitle] = useState(""); // 게시글 제목
   const [selectedPostCodeId, setSelectedPostCodeId] = useState(5); // 게시판 코드 ID, 5는 자유게시판(디폴트)
-  const [uploadFiles, setUploadFile] = useState("");
+  const [uploadFiles, setUploadFile] = useState([]);
 
   // 이미지 업로드 핸들러
   const handleFileUpload = useCallback(() => {
@@ -134,19 +134,35 @@ function Community_page_write() {
   // 저장 버튼 누르면 실행
   const uploadpost = () => {
     console.log("글 저장합니다");
-    const postData = {
-      title: title,
-      content: editorContent,
-      postCodeId: selectedPostCodeId,
-      uploadFiles: uploadFiles,
-    };
+    if (!quillInstance.current) {
+      console.error("Quill 인스턴스가 초기화되지 않았습니다.");
+      return;
+    }
+
+    const content = quillInstance.current.root.innerHTML;
+    setEditorContent(content); // 최신 에디터 내용으로 업데이트 (필요하다면)
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("postCodeId", selectedPostCodeId);
+
+    uploadFiles.forEach((file) => {
+      formData.append("files", file); // 백엔드에서 MultipartFile[] files 로 받을 예정
+    });
+
     // Postservice.savePost 호출
     api
-      .post("/post/save", postData)
+      .post("/post/save", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // 파일 업로드를 위해 content-type 변경
+        },
+      })
       .then((response) => {
         console.log("게시글 저장 : ", response.data);
         if (response.data.success) {
           alert("게시글 저장 성공!");
+          // 저장 성공 후 리다이렉트 또는 상태 초기화 로직 추가
         } else {
           alert("오류발생! 게시글을 저장하지 못했습니다.");
         }
@@ -188,6 +204,12 @@ function Community_page_write() {
         style={{ height: "300px", border: "1px solid #ccc" }}
       ></div>
 
+      <input
+        type="file"
+        multiple // 여러 파일 선택 가능하도록
+        onChange={(e) => setUploadFile(Array.from(e.target.files))} // 파일 목록을 배열로 저장
+        style={{ marginTop: "10px" }}
+      />
       <div className="button_area">
         <button className="uploadpost" onClick={uploadpost}>
           저장하기
