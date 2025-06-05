@@ -62,6 +62,11 @@
 .new-match-warning{
     color: red;
 }
+.new-match-warn{
+    align-self: center;
+    font-size: 14px;
+    color: red;
+}
 
 /* 설명 */
 .new-match-help{

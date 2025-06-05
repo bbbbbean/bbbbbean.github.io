@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +28,12 @@ public class MatchController {
 
     @PostMapping("/list/newMatch")
     public ResponseEntity<?> matchNew(@RequestBody @Validated MatchDto matchDto){
+
+        Map<Object,String> warnning = new HashMap<>();
+        if(matchDto.getTitle()==null||matchDto.getStartTime()==null||matchDto.getTags().isEmpty()){
+            warnning.put("warnning","필수 입력 값이 누락되었습니다.");
+            return ResponseEntity.badRequest().body(warnning);
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String)authentication.getName();
@@ -53,8 +60,11 @@ public class MatchController {
         List<String> tags = matchDto.getTags();
         matchService.addMatchTag(matchDto.getMatchId(),tags);
 
+        // 호스트 생성된 매칭에 참여
+        matchService.joinMatch(matchDto.getMatchId(),userId);
+
         log.info("a : " + matchDto);
-        log.info("b : " + tags);
+
 
         return ResponseEntity.ok().body(null);
     }

@@ -1,9 +1,6 @@
 package com.club.match.Mapper;
 
-import com.club.match.Domain.DTO.ChatParticipantDto;
-import com.club.match.Domain.DTO.ChattingDto;
-import com.club.match.Domain.DTO.MatchDto;
-import com.club.match.Domain.DTO.MatchTagDto;
+import com.club.match.Domain.DTO.*;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -13,4 +10,5 @@ public interface MatchMapper {
     int insertChatting(ChattingDto chattingDto);
     int insertChatparticipant(ChatParticipantDto chatParticipantDto);
     int insertTag(MatchTagDto matchTagDto);
+    int joinMatch(MatchParticipantDto matchParticipantDto);
 }
