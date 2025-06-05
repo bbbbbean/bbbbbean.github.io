@@ -3,6 +3,8 @@ package com.club.match.Mapper;
 import com.club.match.Domain.DTO.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface MatchMapper {
 
@@ -11,4 +13,5 @@ public interface MatchMapper {
     int insertChatparticipant(ChatParticipantDto chatParticipantDto);
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
+    List<MatchDto> matchAllList();
 }

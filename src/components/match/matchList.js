@@ -2,10 +2,12 @@
 import "../../css/matching_css/matchingList.css";
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import MatchModal from "./matchModal";
+import api from "../../axios"
 import newMatch from "./newMatch";
 
 // Import Swiper styles
@@ -17,12 +19,24 @@ import 'swiper/css/navigation';
 const MatchList = () => {
 
     const [selectMatch, setMatchList] = useState(null);
+    const [matches, setMatches] = useState([]);
 
     const handleModal = (e) => {
         setMatchList(e.target.classList[1]);
     }
     const navigate = useNavigate();
-    
+
+    // 전체 조회해서 데이터 들고오기
+    useEffect(() => {
+        api.get("/match/list")
+            .then(res => {
+                setMatches(res.data);
+                console.log(res.data);
+                console.log(res.data.status);
+            })
+            .catch(err => { });
+    }, []);
+
     selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
     return (
@@ -240,41 +254,45 @@ const MatchList = () => {
 
             <div className="match-list">
                 {/* 로그인 여부에 따라 이동 변경 */}
-                <button className="match-reg-btn" onClick={()=>navigate('./newMatch')}>매칭 등록</button>
-                <div className="match-continer" key="day">
-                    <div className="match-day">
-                        <p>월/</p>
-                        <span>일</span>
-                        <p>요일</p>
+                <button className="match-reg-btn" onClick={() => navigate('./newMatch')}>매칭 등록</button>
+                    <div className="match-continer" key="day">
+                        <div className="match-day">
+                            <p>월/</p>
+                            <span>일</span>
+                            <p>요일</p>
+                        </div>
+                        <div className="match-blue-line"></div>
+                        {matches.map((match, idx) => (
+                        <>
+                        <div className="match-data">
+                            <ul>
+                                <li>
+                                    <div className="match-time">시간</div>
+                                    <div className="match-content">
+                                        {match.title}
+                                    </div>
+                                    <div className="match-sub-info">
+                                        {match.tags.map((tag, i) => (
+                                            <p key={i}>#{tag} </p>
+                                        ))}
+                                    </div>
+                                    <div className="match-info-btn">
+                                        <button
+                                            className="no "
+                                            onClick={handleModal}
+                                        >
+                                            {/* 0:신청 가능 1: 모집완료 */}
+                                            {match.ststus===0?"신청 가능":"모집 완료"}
+                                        </button>
+                                    </div>
+                                    <div className="match-line"></div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        </>
+                        ))}
                     </div>
-                    <div className="match-blue-line"></div>
-                    <div className="match-data">
-                        <ul>
-                            <li>
-                                <div className="match-time">시간</div>
-                                <div className="match-content">
-                                    제목
-                                </div>
-                                <div className="match-sub-info">
-                                    <p>태그</p>
-                                    <p>태그</p>
-                                    <p>태그</p>
-                                    <p>태그</p>
-                                </div>
-                                <div className="match-info-btn">
-                                    <button
-                                        className="no "
-                                        onClick={handleModal}
-                                    >
-                                        상태
-                                    </button>
-                                </div>
-                                <div className="match-line"></div>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </div>
                 
 
                 {[24, 25, 26].map((day, i) => (
@@ -301,7 +319,7 @@ const MatchList = () => {
                                         </div>
                                         <div className="match-info-btn">
                                             <button
-                                                className={["no "+((j+1)+4*i), "ok "+((j+1)+4*i), "end "+((j+1)+4*i)][(j % 3)]}
+                                                className={["no " + ((j + 1) + 4 * i), "ok " + ((j + 1) + 4 * i), "end " + ((j + 1) + 4 * i)][(j % 3)]}
                                                 onClick={handleModal}
                                             >
                                                 {i % 3 === 1

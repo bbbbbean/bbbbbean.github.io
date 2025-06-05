@@ -1,14 +1,13 @@
 package com.club.match.Controller;
 
-import com.club.match.Domain.DTO.ChattingDto;
 import com.club.match.Domain.DTO.MatchDto;
+import com.club.match.Domain.DTO.MatchListDto;
 import com.club.match.Domain.Service.MatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +37,7 @@ public class MatchController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String)authentication.getName();
         LocalDateTime createAt = LocalDateTime.now();
-        String status = "0";
+        int status = 0;
         String url = "서버주소:포트/"+ UUID.randomUUID().toString().substring(0,8);
 
         matchDto.setCreatorId(userId);
@@ -67,6 +66,13 @@ public class MatchController {
 
 
         return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> matchAllList(){
+        List<MatchListDto> resp = matchService.MatchAllList();
+        log.info("resp"+resp);
+        return ResponseEntity.ok().body(resp);
     }
 
 }

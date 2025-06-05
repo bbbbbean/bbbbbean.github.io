@@ -25,4 +25,9 @@
     <insert id="joinMatch">
         insert into matchparticipant_tbl values(#{matchId}, #{participantId})
     </insert>
+
+    <!-- 매칭 전체 리스트 조회 + 태그 -->
+    <select id="matchAllList">
+        select * from match_tbl m left join matchtag_tbl t on m.matchId = t.matchId;
+    </select>
 </mapper>
