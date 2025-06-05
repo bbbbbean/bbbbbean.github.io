@@ -21,7 +21,6 @@ const MatchList = () => {
     const handleModal = (e) => {
         setMatchList(e.target.classList[1]);
     }
-
     const navigate = useNavigate();
     
     selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
@@ -241,7 +240,43 @@ const MatchList = () => {
 
             <div className="match-list">
                 {/* 로그인 여부에 따라 이동 변경 */}
-                <button className="match-reg-btn" onClick={()=>navigate('./newMatch')}>매칭 등록</button> 
+                <button className="match-reg-btn" onClick={()=>navigate('./newMatch')}>매칭 등록</button>
+                <div className="match-continer" key="day">
+                    <div className="match-day">
+                        <p>월/</p>
+                        <span>일</span>
+                        <p>요일</p>
+                    </div>
+                    <div className="match-blue-line"></div>
+                    <div className="match-data">
+                        <ul>
+                            <li>
+                                <div className="match-time">시간</div>
+                                <div className="match-content">
+                                    제목
+                                </div>
+                                <div className="match-sub-info">
+                                    <p>태그</p>
+                                    <p>태그</p>
+                                    <p>태그</p>
+                                    <p>태그</p>
+                                </div>
+                                <div className="match-info-btn">
+                                    <button
+                                        className="no "
+                                        onClick={handleModal}
+                                    >
+                                        상태
+                                    </button>
+                                </div>
+                                <div className="match-line"></div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+
                 {[24, 25, 26].map((day, i) => (
                     <div className="match-continer" key={day}>
                         <div className="match-day">
