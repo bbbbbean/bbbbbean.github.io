@@ -103,10 +103,13 @@
 
 /* 위치 : className="new-match-on", className="new-match-on-el" 토글 */
 /* 기본 : 온라인*/
-.new-match-form>.new-match-defalt>div>div{
+.new-match-form>.new-match-defalt>div>div,
+.new-match-form>.new-match-kategorie>div>div
+{
     display: flex;
 }
-.new-match-form>.new-match-defalt>div>div>span
+.new-match-form>.new-match-defalt>div>div>span,
+.new-match-form>.new-match-kategorie>div>div>span
 {
     display: block;
     border: 2px solid #6ec3ff;

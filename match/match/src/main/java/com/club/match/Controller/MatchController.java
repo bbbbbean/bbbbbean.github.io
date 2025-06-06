@@ -61,6 +61,8 @@ public class MatchController {
 
         // 호스트 생성된 매칭에 참여
         matchService.joinMatch(matchDto.getMatchId(),userId);
+        
+        // 캘린더 추가
 
         log.info("a : " + matchDto);
 
