@@ -36,9 +36,9 @@ function AppComponent() {
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/match/list/newMatch" element={<NewMatch />} />
               <Route path="/event/list" element={<EventList />} />
-              <Route path="/friend" element={<FriendLoyout />} />              
+              <Route path="/friend" element={<FriendLoyout />} />
               <Route path="/mypage/*" element={<MyPageLayout />} />
-              <Route path="/community/*" element={<CommunityLayout/>} />
+              <Route path="/community/*" element={<CommunityLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
               <Route path='/test' element={<Comment />} />

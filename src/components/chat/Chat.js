@@ -5,7 +5,8 @@ import imageApi from '../../ImageAxios'
 import { useDropzone } from 'react-dropzone'
 import FileIcon from "../../image/file.svg"
 import UploadIcon from "../../image/upload.svg"
-const Chat = ({ pos, openChat, setOpenChat }) => {
+
+const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
 
     const [mainImage, setMainImage] = useState("");
     const [title, setTitle] = useState("");
@@ -135,8 +136,14 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         }, 0);
     }
 
+    // mergedStyle에 height가 없으면 기본값으로 "75%"를 지정
+    const chatContentStyle = {
+        ...style2,
+        height: style2 && style2.height ? style2.height : "82%"
+    };
+
     return (
-        <div className="match-chat-container">
+        <div className="match-chat-container" style={{marginRight:"10px", marginLeft:"0", height: "770px"}}>
             <div className="match-chat-title">
                 <div className="match-chat-img">
                     <img
@@ -159,7 +166,7 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                 </div>
             </div>
             <div className="match-chat-line"></div>
-            <div className="match-chat-content" style={pos === "friend" || pos === "group" ? { height: "82%" } : { height: "75%" }}>
+            <div className="match-chat-content" style={chatContentStyle}>
                 {messages.map((msg, index) => (
                     msg.userId === localStorage.getItem("userId") ? (
                         <div key={index} className="your-chat-container">

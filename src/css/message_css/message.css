@@ -192,56 +192,64 @@
 background-color: rgb(110, 195, 255, 0.55);
 }
 /* //------------------------------------- */
+.friend-container>.right>.chatroom-wrapper{
+    width: 100%;
+    height: 650px;
+    margin-top: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
-.friend-container>.right>.chatroom{
+.friend-container>.right>.chatroom-wrapper>.chatroom{
     display: flex;
     border: 1px solid #6EC3FF;
     border-radius: 20px 20px 20px 20px;
     width: 100%;
-    height: 150px;
+    height: 100px;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 10px;
     /* margin-left: 14px; */
 
 }
-.friend-container>.right>.chatroom>.chatimage{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.chatimage{
     border-radius: 50%;
     width: 66px;
     height: 66px;
     background-color: #FBB00E;
     margin-left: 24px;
 }
-.friend-container>.right>.chatroom>.chatimage img{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.chatimage img{
     border-radius: 50%;
     width: 66px;
     min-width: 66px;
     height: 66px;
     object-fit: cover;
 }
-.friend-container>.right>.chatroom>.morechatimage{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.morechatimage{
     border-radius: 10%;
     width: 66px;
     height: 66px;
     background-color: #FBB00E;
     margin-left: 24px;
 }
-.friend-container>.right>.chatroom>.word1{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.word1{
     width: 74%;
     height: 30px;
     margin-left: 10px;
     
 }
-.friend-container>.right>.chatroom>.word1>.chatname{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.word1>.chatname{
     font-size: 20px;
     font-weight: 600;
 }
-.friend-container>.right>.chatroom>.word1>.oneline{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.word1>.oneline{
     /* border: 1px solid; */
     font-size: 16px;
     /* width: 100px; */
     color: #6B6B6B;
 }
-.friend-container>.right>.chatroom>button{
+.friend-container>.right>.chatroom-wrapper>.chatroom>button{
     cursor: pointer;
     position: relative;
     border: none;
@@ -251,7 +259,7 @@ background-color: rgb(110, 195, 255, 0.55);
     right: -20px;
 }
 
-.friend-container>.right>.chatroom>.chatmenu {
+.friend-container>.right>.chatroom-wrapper>.chatroom>.chatmenu {
     display: none;
     position: absolute;
     border: 1px solid #6B6B6B;
@@ -267,7 +275,7 @@ background-color: rgb(110, 195, 255, 0.55);
     background-color: white;
     z-index: 3;
 }
-.friend-container>.right>.chatroom>.chatnum{
+.friend-container>.right>.chatroom-wrapper>.chatroom>.chatnum{
     min-width: 37px;
     width: 37px;
     height: 37px;
@@ -278,7 +286,7 @@ background-color: rgb(110, 195, 255, 0.55);
     right: 50px;
     padding-top: 10px;
 }
-.friend-container>.right>.chatroom>.chatmenu.show {
+.friend-container>.right>.chatroom-wrapper>.chatroom>.chatmenu.show {
     display: block;
 }
 

@@ -1,7 +1,7 @@
 /* �ϴ� ���� ���ڵ�� �Ŵ� */
 
 .Accordion-modal{
-  position: fixed;
+  position: absolute;
   right: 1rem;
   bottom: 1rem;
   z-index: 10;

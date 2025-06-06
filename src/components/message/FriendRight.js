@@ -4,7 +4,15 @@ import Chat from '../chat/Chat';
 import { WebSocketContext } from '../../WebSocket';
 
 
-const FriendRight = () => {
+const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
+  // 기본 style에 style prop이 있으면 덮어쓰기
+  const mergedStyle = {
+    ...style1,
+  };
+  const mergedStyle2 = {
+    ...style3,
+  };
+  
 
   const [activeTab, setActiveTab] = useState('friend');
   const { openChat, setOpenChat, rooms, setRooms } = useContext(WebSocketContext);
@@ -24,7 +32,7 @@ const FriendRight = () => {
   }
 
   useEffect(() => {
-    if(rooms.length > 0) return;
+    if (rooms.length > 0) return;
     api.post('/api/chat/getChatRoom')
       .then(response => {
         const respRooms = [];
@@ -57,41 +65,43 @@ const FriendRight = () => {
   }, []);
 
   return (
-    <section className="right">
-      {openChat && <Chat pos={activeTab} openChat={openChat} setOpenChat={setOpenChat} />}
+    <section className="right" style={mergedStyle} {...props}>
+      {openChat && <Chat pos={activeTab} openChat={openChat} setOpenChat={setOpenChat} style2={style2} />}
       <div className="friendlist" style={{ display: openChat ? 'none' : 'flex' }}>
         <div className={`myfriend ${activeTab === 'friend' ? 'active' : ''}`}
           onClick={() => setActiveTab('friend')}>친구</div>
         <div className={`im-in ${activeTab === 'group' ? 'active' : ''}`}
           onClick={() => setActiveTab('group')}>내가 참여한 매칭</div>
       </div>
-      {activeTab === 'friend' ? (
-        rooms.filter(room => room.type === 'friend').map((room, index) => (
-          <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
-            <div className="chatimage">
-              <img src={room.imageUrl} alt={room.nickName} />
+      <div className='chatroom-wrapper' style={mergedStyle2}>
+        {activeTab === 'friend' ? (
+          rooms.filter(room => room.type === 'friend').map((room, index) => (
+            <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+              <div className="chatimage">
+                <img src={room.imageUrl} alt={room.nickName} />
+              </div>
+              <div className="word1">
+                <div className="chatname">{room.nickName}</div>
+                <div className="oneline">{room.lastMessage}</div>
+              </div>
+              {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
             </div>
-            <div className="word1">
-              <div className="chatname">{room.nickName}</div>
-              <div className="oneline">{room.lastMessage}</div>
+          ))
+        ) : (
+          rooms.filter(room => room.type === 'group').map((room, index) => (
+            <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
+              <div className="chatimage">
+                <img src={room.imageUrl} alt={room.nickName} />
+              </div>
+              <div className="word1">
+                <div className="chatname">{room.nickName}</div>
+                <div className="oneline">{room.lastMessage}</div>
+              </div>
+              {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
             </div>
-            {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
-          </div>
-        ))
-      ) : (
-        rooms.filter(room => room.type === 'group').map((room, index) => (
-          <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
-            <div className="chatimage">
-              <img src={room.imageUrl} alt={room.nickName} />
-            </div>
-            <div className="word1">
-              <div className="chatname">{room.nickName}</div>
-              <div className="oneline">{room.lastMessage}</div>
-            </div>
-            {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </section>
   );
 };

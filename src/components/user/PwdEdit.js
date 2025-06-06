@@ -22,25 +22,9 @@ const ChangePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let reg1 = /^(?=.*[a-zA-Z]).+$/
-    let reg2 = /^(?=.*[!@#$%^*+=-]).+$/
-    let reg3 = /^(?=.*[0-9]).+$/
-    let reg4 = /^(?=.{8,15}).+$/
 
     const { curpassword, newpassword, chkpassword } = formData;
-    // if (!reg1.test(newpassword)) {
-    //   setPwError("비밀번호는 영어가 포함되어야합니다.")
-    //   return;
-    // } else if (!reg2.test(newpassword)) {
-    //   setPwError("비밀번호는 특수문자가 포함되어야합니다.")
-    //   return;
-    // } else if (!reg3.test(newpassword)) {
-    //   setPwError("비밀번호는 숫자가 포함되어야합니다.")
-    //   return;
-    // } else if (!reg4.test(newpassword)) {
-    //   setPwError("비밀번호는 8~15글자 사이어야합니다.")
-    //   return;
-    // }
+
     api.post("/api/user/passwordUpdate", { curpassword, newpassword, chkpassword })
       .then((response) => {
         if (response.status == 200) {
@@ -52,43 +36,32 @@ const ChangePassword = () => {
             item.value = "";
           });
         } else {
-          let target = "";
+
+          setPwError(response.data.error);
+          let target = null;
           switch (response.data.code) {
             case "1":
-              setPwError("사용중인 비밀번호가 일치하지 않습니다.");
               target = document.getElementById("curpassword");
               formData.curpassword = "";
-              target.value = "";
-              target.focus();
+              if (target && "value" in target) (target).value = "";
+              if (target && "focus" in target) (target).focus();
               break;
             case "2":
-              setPwError("새로운 비밀번호와 확인이 일치하지 않습니다.");
               target = document.getElementById("chkpassword");
               formData.chkpassword = "";
-              target.value = "";
-              target.focus();
-            case "3":
-              setPwError("이미 사용중인 비밀번호입니다.");
-              target = document.getElementById("chkpassword")
-              formData.chkpassword = "";
-              target.value = "";
-              target = document.getElementById("newpassword");
-              formData.newpassword = "";
-              target.value = "";
-              target.focus();
+              if (target && "value" in target) (target).value = "";
+              if (target && "focus" in target) (target).focus();
               break;
-            case "4":
-              setPwError("비밀번호 변경에 실패했습니다. 다시 입력해주세요.");
-              target = document.getElementById("chkpassword")
+            case "3":
+              target = document.getElementById("chkpassword");
               formData.chkpassword = "";
-              target.value = "";
+              if (target && "value" in target) (target).value = "";
               target = document.getElementById("newpassword");
               formData.newpassword = "";
-              target.value = "";
-              target = document.getElementById("curpassword");
-              formData.curpassword = "";
-              target.value = "";
-              target.focus();
+              if (target && "value" in target) (target).value = "";
+              if (target && "focus" in target) (target).focus();
+              break;
+            default:
               break;
           }
         }
