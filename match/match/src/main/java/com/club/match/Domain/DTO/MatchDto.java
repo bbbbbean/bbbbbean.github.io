@@ -29,6 +29,8 @@ public class MatchDto {
     private String genderCondi;
     private int chatCode;
 
+    private int countPeople;
+
     private String tag;
     private List<String> tags;
 }

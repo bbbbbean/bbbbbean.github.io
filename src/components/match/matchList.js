@@ -31,8 +31,8 @@ const MatchList = () => {
         api.get("/match/list")
             .then(res => {
                 setMatches(res.data);
-                console.log(res.data);
-                console.log(res.data.startTime);
+                console.log(res.data)
+                
             })
             .catch(err => { });
     }, []);
@@ -322,11 +322,11 @@ const MatchList = () => {
                                                 </div>
                                                 <div className="match-info-btn">
                                                     <button
-                                                        className={match.status === 0 ? "ok" : "no"}
+                                                        className={match.status === 0 && match.countPeople < match.people ? "ok" : "no"}
                                                         onClick={handleModal}
                                                     >
                                                         {/* 0:신청 가능 1: 모집완료 */}
-                                                        {match.status === 0 ? "신청 가능" : "모집 완료"}
+                                                        {match.status === 0 && match.countPeople < match.people? "신청 가능" : "모집 완료"}
                                                     </button>
                                                 </div>
                                                 <div className="match-line"></div>
