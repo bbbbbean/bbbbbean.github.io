@@ -2,9 +2,9 @@
 
 .Accordion-modal{
   position: absolute;
-  right: 1rem;
+  right: 2rem;
   bottom: 1rem;
-  z-index: 10;
+  z-index: 2000;
 }
 .accordion-button{
   position: absolute;
@@ -12,7 +12,7 @@
   border: none;
   background-color: #F9AF0E;
   cursor: pointer;
-  width: 16px;
+  width: 40px;
   height: 20px;
   border-bottom: 1px solid #ffffff;
   transition: all 1s ease;
@@ -20,7 +20,7 @@
   font-weight: bold;
   color: white;
   top: 0;
-  right: 0px;
+  right: -40px;
 }
 
 #Accordion_wrap{
