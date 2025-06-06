@@ -57,6 +57,13 @@
         AND friendId = #{friendId}
     </update>
 
+    <update id="updateStatus">
+        UPDATE friend_tbl
+        SET status = #{status}
+        WHERE userId = #{userId}
+        AND friendId = #{friendId}
+    </update>
+
     <!-- 친구 목록 조회 (status = 0: 일반 친구) -->
     <select id="getFriendList" resultType="com.club.match.Domain.DTO.FriendDTO">
         SELECT *

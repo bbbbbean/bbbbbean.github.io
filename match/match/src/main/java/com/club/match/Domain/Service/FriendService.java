@@ -46,6 +46,7 @@ public class FriendService {
         for(FriendDTO friendDTO : friendDTOList){
             UserDTO userDTO = userMapper.selectAt(friendDTO.getUserId());
             userDTOList.add(UserDTO.builder()
+                            .userId(userDTO.getUserId())
                             .introduction(userDTO.getIntroduction())
                             .nickName(userDTO.getNickName())
                             .profile(userDTO.getProfile())
@@ -79,18 +80,26 @@ public class FriendService {
         return update;
     }
 
+    //친구 목록 조회
     public List<UserDTO> getFriendList(String userId, int status) {
         List<FriendDTO> friendDTOList = friendMapper.getFriendList(userId, status);
         List<UserDTO> userDTOList = new ArrayList<>();
         for(FriendDTO friendDTO : friendDTOList){
             UserDTO userDTO = userMapper.selectAt(friendDTO.getFriendId());
             userDTOList.add(UserDTO.builder()
+                            .userId(userDTO.getUserId())
                             .profile(userDTO.getProfile())
                             .nickName(userDTO.getNickName())
                             .introduction(userDTO.getIntroduction())
                     .build());
+
         }
         return userDTOList;
+    }
+
+    public boolean updateFriendStatus(FriendDTO dto) {
+        int result = friendMapper.updateStatus(dto.getUserId(), dto.getFriendId(), dto.getStatus());
+        return result > 0;
     }
 
     @Transactional
@@ -98,13 +107,14 @@ public class FriendService {
         // 요청 거절: DB에서 해당 요청 삭제
         return friendMapper.deleteFriendRequest(dto.getUserId(), dto.getFriendId()) > 0;
     }
-
+    //유저 찾기
     public List<UserDTO> findFriendByNickName(String nickName) {
         List<UserDTO> userDTOList = friendMapper.findUserByNickName(nickName);
         log.info("userDTOList : " + userDTOList);
         List<UserDTO> userDTOList1 = new ArrayList<>();
         for(UserDTO userDTO : userDTOList){
             userDTOList1.add(UserDTO.builder()
+                            .userId(userDTO.getUserId())
                             .profile(userDTO.getProfile())
                             .nickName(userDTO.getNickName())
                             .introduction(userDTO.getIntroduction())
