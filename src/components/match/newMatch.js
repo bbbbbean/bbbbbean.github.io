@@ -8,6 +8,7 @@ import "../../css/matching_css/newMatch.css";
 const NewMatch = ()=>{
  
     const [form, setForm] = useState({
+        kategorie:'1',
         title: '',
         startTime: '',
         location: '온라인',

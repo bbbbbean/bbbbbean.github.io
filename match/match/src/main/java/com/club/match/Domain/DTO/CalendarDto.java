@@ -6,18 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-public class MatchListDto {
+@Builder
+public class CalendarDto {
     private long matchId;
-    private LocalDateTime startTime;
+    private String userId;
+
+    // 내용 추가를 위한 제목, 날짜
     private String title;
-    private List<String> tags;
-    private int people;
-    private int countPeople;
-    private int status;
+    private LocalDateTime startTime;
 }

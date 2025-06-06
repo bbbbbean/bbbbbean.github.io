@@ -63,9 +63,9 @@ public class MatchController {
         matchService.joinMatch(matchDto.getMatchId(),userId);
         
         // 캘린더 추가
+        matchService.CalendarUpdate(matchDto);
 
         log.info("a : " + matchDto);
-
 
         return ResponseEntity.ok().body(null);
     }

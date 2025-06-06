@@ -70,6 +70,7 @@ public class MatchService {
         matchMapper.joinMatch(matchParticipantDto);
     }
 
+    // 태그 모아 출력
     @Transactional
     public List<MatchListDto> MatchAllList() {
         // 태그마다 한줄씩 생성 - 여기 태그는 string tag에 저장
@@ -84,20 +85,36 @@ public class MatchService {
             MatchListDto matchList = new MatchListDto();
             List<String> tags = new ArrayList<>();
             for (MatchDto item : list) {
-                if(el == item.getMatchId()) {
+                if (el == item.getMatchId()) {
                     matchList.setMatchId(item.getMatchId());
                     matchList.setTitle(item.getTitle());
                     matchList.setStatus(item.getStatus());
                     matchList.setStartTime(item.getStartTime());
+                    matchList.setPeople(item.getPeople());
+                    matchList.setCountPeople(item.getCountPeople());
                     tags.add(item.getTag());
                 }
                 matchList.setTags(tags);
             }
             listAll.add(matchList);
         }
-
         return listAll;
+    }
 
-}
+    // 호스트 캘린더 업데이트
+    @Transactional
+    public void CalendarUpdate(MatchDto matchDto){
+        // 캘린더 DB에 userId, matchId 추가
+        String userId = matchDto.getCreatorId();
+        long matchId = matchDto.getMatchId();
+        matchMapper.addMatchSchedule(userId,matchId);
+        // 캘린더 DTO
+        CalendarDto calendarDto = CalendarDto.builder()
+                .userId(userId)
+                .matchId(matchId)
+                .startTime(matchDto.getStartTime())
+                .title(matchDto.getTitle())
+                .build();
+    }
 
 }
