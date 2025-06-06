@@ -1,70 +1,137 @@
 import searchIcon from "../../image/image_message/search-icon.svg"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moreIcon from "../../image/image_message/more-icon.svg"
-
-const FriendItem = ({ name, intro, onClick }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  return (
-    <div className="person">
-      <div className="profile"></div>
-      <div className="word1" onClick={onClick}>
-        <div className="name">{name}</div>
-        <div className="oneline">{intro}</div>
-      </div>
-      <button onClick={() => setMenuOpen(!menuOpen)}>
-        <img src={moreIcon} alt="친구메뉴" />
-      </button>
-      <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
-        <ul>
-          <li>즐겨찾기 설정</li>
-          <li>친구 삭제</li>
-          <li>친구 차단</li>
-          <li>신고하기</li>
-        </ul>
-      </div>
-    </div>
-  );
-};
+import api from "../../axios";
 
 const FriendLeft = () => {
-    
-    const friendsData = [
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-      { name: '친구 이름', intro: '한줄 소개입니당' },
-    ];
+  const [friendRequest, setFriendRequest] = useState([]);
+  const [bastFriends, setBastFriends] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [friendSearch, setFriendSearch] = useState([]);
+  const [friendfindValue, setFriendfindValue] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const friendsData = [
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+    { name: '친구 이름', intro: '한줄 소개입니당' },
+  ];
 
-    return (
-        <section className="left">
-            <div className="all">
-                <div className="friend">
-                    <h1>친구</h1>
+  useEffect(() => {
+    api.post("/api/friend/list").then((response) => {
+      console.log(response.data.commonFriend);
+      setFriends(response.data.commonFriend);
+      setBastFriends(response.data.bestFriend);
+      setFriendRequest(response.data.friendRequest);
+    });
+  }, [])
+  const friendfind = (()=>{
+    console.log(friendfindValue);
+    api.post("/api/friend/findFriend",{"nickName":friendfindValue}).then((response)=>{
+      console.log(response.data.friendFind);
+      setFriendSearch(response.data.friendFind);
+    })
+
+  })
+
+  return (
+    <section className="left">
+      <div className="all">
+        <div className="friend">
+          <h1>친구</h1>
+        </div>
+        <div className="find">
+          <input type="text" placeholder="친구 검색하기" value={friendfindValue} onChange={(e) =>{
+            setFriendfindValue(e.target.value);
+          }}/>
+          <button onClick={friendfind}>
+            <img src={searchIcon} alt="친구찾기" />
+          </button>
+          <div style={{ display: friendSearch.length !== 0 ? "block" : "none" }} className="searchResult">
+            {friendSearch.map((friend, idx) => (
+              <div className="person">
+                <img src={friend.profile} className="profile"></img>
+                <div className="word1">
+                  <div className="name">{friend.nickName}</div>
+                  <div className="oneline">{friend.introduction}</div>
                 </div>
-                <div className="find">
-                    <input type="text" placeholder="친구 검색하기" />
-                    <button>
-                        <img src={searchIcon} alt="친구찾기" />
-                    </button>
+                <div className="requestbuttons">
+                  <button className="accept">신청</button>
                 </div>
-                <div className="usually">
-                    <h1>즐겨찾는 친구</h1>
-                </div>
-                {friendsData.slice(0, 2).map((friend, idx) => (
-                    <FriendItem key={idx} {...friend} />
-                ))}
-                <hr />
-                {friendsData.slice(2).map((friend, idx) => (
-                    <FriendItem key={idx + 2} {...friend}/>
-                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="friendalart">
+          <h1>친구 요청</h1>
+          {friendRequest.map((friend, idx) => (
+            <div className="person">
+              <img src={friend.profile} className="profile"></img>
+              <div className="word1">
+                <div className="name">{friend.nickName}</div>
+                <div className="oneline">{friend.introduction}</div>
+              </div>
+              <div className="requestbuttons">
+                <button className="accept">수락</button>
+                <button className="reject">거절</button>
+              </div>
             </div>
-        </section>
-    )
+          ))}
+        </div>
+        <div className="usually">
+          <h1>즐겨찾는 친구</h1>
+        </div>
+        {bastFriends.map((friend, idx) => (
+          <div className="person">
+            <img src={friend.profile} className="profile"></img>
+            <div className="word1">
+              <div className="name">{friend.nickName}</div>
+              <div className="oneline">{friend.introduction}</div>
+            </div>
+            <button onClick={() => setMenuOpen(!menuOpen)}>
+              <img src={moreIcon} alt="친구메뉴" />
+            </button>
+            <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
+              <ul>
+                <li>즐겨찾기 설정</li>
+                <li>친구 삭제</li>
+                <li>친구 차단</li>
+                <li>신고하기</li>
+              </ul>
+            </div>
+          </div>
+        ))}
+        <hr />
+        {friends.map((friend, idx) => (
+          <div className="person">
+            <img src={friend.profile} className="profile"></img>
+            <div className="word1">
+              <div className="name">{friend.nickName}</div>
+              <div className="oneline">{friend.introduction}</div>
+            </div>
+            <button onClick={() => setMenuOpen(!menuOpen)}>
+              <img src={moreIcon} alt="친구메뉴" />
+            </button>
+            <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
+              <ul>
+                <li>즐겨찾기 설정</li>
+                <li>친구 삭제</li>
+                <li>친구 차단</li>
+                <li>신고하기</li>
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
 }
 
 export default FriendLeft;
