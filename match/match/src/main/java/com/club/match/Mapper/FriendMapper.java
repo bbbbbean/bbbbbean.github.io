@@ -21,6 +21,13 @@ public interface FriendMapper {
     int updateFriendStatus(@Param("userId") String userId,
                            @Param("friendId") String friendId,
                            @Param("status") int status);
+
+    int updateStatus(@Param("userId") String userId,
+                           @Param("friendId") String friendId,
+                           @Param("status") int status);
+
+
+
     int deleteFriendRequest(@Param("userId") String userId, @Param("friendId") String friendId);
 
     List<FriendDTO> getFriendList(@Param("userId") String userId, int status);

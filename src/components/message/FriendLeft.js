@@ -5,11 +5,16 @@ import api from "../../axios";
 
 const FriendLeft = () => {
   const [friendRequest, setFriendRequest] = useState([]);
-  const [bastFriends, setBastFriends] = useState([]);
+  const [bestFriends, setBestFriends] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendSearch, setFriendSearch] = useState([]);
   const [friendfindValue, setFriendfindValue] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState({});
+  const [openMenuKey, setOpenMenuKey] = useState(null);
+  const handleMenuToggle = (key) => {
+    setOpenMenuKey(prev => (prev === key ? null : key));
+  };
+
   const friendsData = [
     { name: '친구 이름', intro: '한줄 소개입니당' },
     { name: '친구 이름', intro: '한줄 소개입니당' },
@@ -28,7 +33,7 @@ const FriendLeft = () => {
     api.post("/api/friend/list").then((response) => {
       console.log(response.data.commonFriend);
       setFriends(response.data.commonFriend);
-      setBastFriends(response.data.bestFriend);
+      setBestFriends(response.data.bestFriend);
       setFriendRequest(response.data.friendRequest);
     });
   }, [])
@@ -37,10 +42,23 @@ const FriendLeft = () => {
     api.post("/api/friend/findFriend",{"nickName":friendfindValue}).then((response)=>{
       console.log(response.data.friendFind);
       setFriendSearch(response.data.friendFind);
-    })
-
+    });
   })
+  const friendStatus = ((userId, newStatus)=>{
+  console.log("변경할 친구 ID:", userId);
+  console.log("새로운 상태 값:", newStatus);
 
+  api.post("/api/friend/friendStatus", {
+    friendId: userId,
+    status: newStatus
+  })
+  .then((response) => {
+    console.log("상태 변경 완료:", response.data);
+  })
+  .catch((error) => {
+    console.error("상태 변경 실패:", error);
+  });
+})
   return (
     <section className="left">
       <div className="all">
@@ -87,22 +105,22 @@ const FriendLeft = () => {
         </div>
         <div className="usually">
           <h1>즐겨찾는 친구</h1>
-        </div>
-        {bastFriends.map((friend, idx) => (
-          <div className="person">
+        </div> 
+        {bestFriends.map((friend, idx) => (
+          <div className="person" key={`best-${idx}`}>
             <img src={friend.profile} className="profile"></img>
             <div className="word1">
               <div className="name">{friend.nickName}</div>
               <div className="oneline">{friend.introduction}</div>
             </div>
-            <button onClick={() => setMenuOpen(!menuOpen)}>
+            <button onClick={() => handleMenuToggle(`best-${idx}`)}>
               <img src={moreIcon} alt="친구메뉴" />
             </button>
-            <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
+            <div className={`friendmenu ${openMenuKey === `best-${idx}` ? 'show' : ''}`}>
               <ul>
-                <li>즐겨찾기 설정</li>
+                <li onClick={() => friendStatus(friend.userId, 0)}>즐겨찾기 해제</li>
                 <li>친구 삭제</li>
-                <li>친구 차단</li>
+                <li onClick={() => friendStatus(friend.userId, 2)}>친구 차단</li>
                 <li>신고하기</li>
               </ul>
             </div>
@@ -110,20 +128,20 @@ const FriendLeft = () => {
         ))}
         <hr />
         {friends.map((friend, idx) => (
-          <div className="person">
+          <div className="person" key={`common-${idx}`}>
             <img src={friend.profile} className="profile"></img>
             <div className="word1">
               <div className="name">{friend.nickName}</div>
               <div className="oneline">{friend.introduction}</div>
             </div>
-            <button onClick={() => setMenuOpen(!menuOpen)}>
+            <button onClick={() => handleMenuToggle(`common-${idx}`)}>
               <img src={moreIcon} alt="친구메뉴" />
             </button>
-            <div className={`friendmenu ${menuOpen ? 'show' : ''}`}>
+            <div className={`friendmenu ${openMenuKey === `common-${idx}` ? 'show' : ''}`}>
               <ul>
-                <li>즐겨찾기 설정</li>
+                <li onClick={() => friendStatus(friend.userId, 1)}>즐겨찾기 설정</li>
                 <li>친구 삭제</li>
-                <li>친구 차단</li>
+                <li onClick={() => friendStatus(friend.userId, 2)}>친구 차단</li>
                 <li>신고하기</li>
               </ul>
             </div>
