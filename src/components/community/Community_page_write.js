@@ -74,6 +74,9 @@ function Community_page_write() {
             alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
           });
       }
+      return () => {
+        isMounted = false;
+      };
     };
   }, []);
 
@@ -134,35 +137,50 @@ function Community_page_write() {
   // 저장 버튼 누르면 실행
   const uploadpost = () => {
     console.log("글 저장합니다");
+    const currentEditorContent = quillInstance.current
+      ? quillInstance.current.root.innerHTML
+      : "";
+    setEditorContent(currentEditorContent);
+
+    const formData = new FormData();
+    formData.append(
+      "postDTO",
+      new Blob(
+        [
+          JSON.stringify({
+            title: title,
+            content: currentEditorContent,
+            postCodeId: selectedPostCodeId,
+          }),
+        ],
+        { type: "application/json" }
+      )
+    );
+
     if (!quillInstance.current) {
       console.error("Quill 인스턴스가 초기화되지 않았습니다.");
       return;
     }
 
-    const content = quillInstance.current.root.innerHTML;
-    setEditorContent(content); // 최신 에디터 내용으로 업데이트 (필요하다면)
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("postCodeId", selectedPostCodeId);
-
-    uploadFiles.forEach((file) => {
-      formData.append("files", file); // 백엔드에서 MultipartFile[] files 로 받을 예정
-    });
+    // 일반 첨부 파일들을 FormData에 추가
+    if (uploadFiles && uploadFiles.length > 0) {
+      uploadFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+    }
 
     // Postservice.savePost 호출
     api
       .post("/post/save", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // 파일 업로드를 위해 content-type 변경
-        },
+        // headers: {
+        // "Content-Type": "multipart/form-data", // 파일 업로드를 위해 content-type 변경. 그런데 브라우저가 자동으로 설정하므로 제거하라함
+        // },
       })
       .then((response) => {
         console.log("게시글 저장 : ", response.data);
         if (response.data.success) {
           alert("게시글 저장 성공!");
-          // 저장 성공 후 리다이렉트 또는 상태 초기화 로직 추가
+          window.location.href = "/community"; // 성공 시 이동. 나중에 방금 쓴 글로 이동하게 하기
         } else {
           alert("오류발생! 게시글을 저장하지 못했습니다.");
         }
@@ -172,8 +190,14 @@ function Community_page_write() {
         if (error.response) {
           console.error("게시글 오류 응답 데이터 : ", error.response.data);
           console.error("게시글 오류 응답 상태 : ", error.response.status);
+          alert(
+            "오류발생! 게시글을 저장하지 못했습니다. (응답 상태: " +
+              error.response.status +
+              ")"
+          );
         } else {
           console.log("게시글 저장 중 알 수 없는 오류 발생...");
+          alert("오류발생! 게시글 저장 중 알 수 없는 오류 발생...");
         }
       });
   };
@@ -198,18 +222,17 @@ function Community_page_write() {
         onChange={(e) => setTitle(e.target.value)}
         style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
       />
-
+      <input
+        type="file"
+        multiple // 여러 파일 선택 가능하도록
+        onChange={(e) => setUploadFile(Array.from(e.target.files))} // 파일 목록을 배열로 저장
+        style={{ marginTop: "1px" }}
+      />
       <div
         ref={editorRef}
         style={{ height: "300px", border: "1px solid #ccc" }}
       ></div>
 
-      <input
-        type="file"
-        multiple // 여러 파일 선택 가능하도록
-        onChange={(e) => setUploadFile(Array.from(e.target.files))} // 파일 목록을 배열로 저장
-        style={{ marginTop: "10px" }}
-      />
       <div className="button_area">
         <button className="uploadpost" onClick={uploadpost}>
           저장하기
