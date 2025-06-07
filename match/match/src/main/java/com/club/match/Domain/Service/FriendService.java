@@ -28,16 +28,25 @@ public class FriendService {
 
     @Transactional
     public boolean addFriend(FriendDTO dto) {
-        // 이미 친구 요청이나 친구 관계가 존재하는지 체크
-        int count1 = friendMapper.existsFriendRequest(dto.getUserId(), dto.getFriendId());
-        int count2 = friendMapper.existsFriendRequest(dto.getFriendId(), dto.getUserId());
-
-        if (count1 + count2 > 0)
+        if (friendMapper.existsFriendRequest(dto.getUserId(), dto.getFriendId()) > 0 ||
+                friendMapper.existsFriendRequest(dto.getFriendId(), dto.getUserId()) > 0) {
             return false;
+        }
 
-        // 친구 요청 추가
-        return friendMapper.insertFriendRequest(dto) > 0;
+        dto.setStatus(3);
+        // 양방향으로 insert
+        int inserted1 = friendMapper.insertFriendRequest(dto);
+
+        // 순서 바꾸기
+        String temp = dto.getUserId();
+        dto.setUserId(dto.getFriendId());
+        dto.setFriendId(temp);
+
+        int inserted2 = friendMapper.insertFriendRequest(dto);
+
+        return inserted1 > 0 && inserted2 > 0;
     }
+
 
     // 받은 사람 입장에서 수락 대기 중인 친구 요청 조회
     public List<UserDTO> getFriendRequests(String friendId) {
@@ -63,18 +72,15 @@ public class FriendService {
 
     @Transactional
     public boolean acceptFriend(FriendDTO dto) {
-
-        // 상태를 0으로 변경 (친구 상태로)
         boolean update = friendMapper.updateFriendStatus(dto.getUserId(), dto.getFriendId(), 0) > 0;
 
-        // 상대방 → 나 방향의 관계가 없다면 insert (친구 요청 기록이 없으면 추가)
         int existsReverse = friendMapper.existsFriendRequest(dto.getFriendId(), dto.getUserId());
         if (existsReverse == 0) {
             FriendDTO reverseDto = new FriendDTO();
             reverseDto.setUserId(dto.getFriendId());
             reverseDto.setFriendId(dto.getUserId());
-            reverseDto.setStatus(0);
-            friendMapper.insertFriendRequest(reverseDto);
+            reverseDto.setStatus(0); // 친구 상태로 저장
+            friendMapper.insertFriendRequest(reverseDto); // 여기가 문제였음
         }
 
         return update;
