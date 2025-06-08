@@ -107,7 +107,6 @@ public class MatchService {
         // 캘린더 DB에 userId, matchId 추가
         String userId = matchDto.getCreatorId();
         long matchId = matchDto.getMatchId();
-        matchMapper.addMatchSchedule(userId,matchId);
         // 캘린더 DTO
         CalendarDto calendarDto = CalendarDto.builder()
                 .userId(userId)

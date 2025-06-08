@@ -36,8 +36,4 @@
         GROUP BY m.matchId, startTime, title, people, status, tag;
     </select>
 
-    <!-- 캘린더 match 추가 -->
-    <insert id="addMatchSchedule">
-        insert into calendar_tbl values (#{userId}, #{matchId})
-    </insert>
 </mapper>
