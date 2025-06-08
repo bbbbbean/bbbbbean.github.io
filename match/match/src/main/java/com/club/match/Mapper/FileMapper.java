@@ -1,32 +1,39 @@
 package com.club.match.Mapper;
 
-
 import com.club.match.Domain.DTO.AttachmentFileDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface FileMapper {
+    // INSERT
     int uploadFile(AttachmentFileDTO attachmentFileDTO);
 
-    int deleteFile(Long postAttachmentId);
-
-    int deleteTempFileList(String userId);
-
+    // SELECT
     AttachmentFileDTO selectAt(Long postAttachmentId);
 
     List<AttachmentFileDTO> selectFilesByPostId(Long postId);
 
     List<AttachmentFileDTO> selectFileList(String userId);
 
-    List<String> selectTempFile(Long postId);
+    List<AttachmentFileDTO> selectTempFileByUserId(String userId);
 
-    int updatePostAttachment(Long postId, String attachmentUrl);
+    // UPDATE
+    int updatePostAttachmentUrl(
+            @Param("newAttachmentUrl") String newAttachmentUrl,
+            @Param("postId") Long postId,
+            @Param("oldAttachmentUrl") String oldAttachmentUrl);
 
-    int updatePostAttachmentUrl(String newAttachmentUrl,Long postId, String oldAttachmentUrl);
+    int updatePostId(Long postId, String attachmentUrl);
 
-    int updatePostIdAndUrl(AttachmentFileDTO attachmentFileDTO);
+    // DELETE
+    int deleteFile(Long postAttachmentId);
+
+    int deleteTempFileList(String userId);
+
+
 
     String chatFileDownload(String fileName);
 }

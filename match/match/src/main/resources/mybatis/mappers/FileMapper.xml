@@ -3,19 +3,13 @@
 
 <mapper namespace="com.club.match.Mapper.FileMapper">
 
+    <!--  INSERT  -->
     <insert id="uploadFile" useGeneratedKeys="true" keyProperty="postAttachmentId">
-        INSERT INTO postattachment_tbl (userId, attachmentUrl, originalFileName, contentType)
-        VALUES (#{userId}, #{attachmentUrl}, #{originalFileName}, #{contentType});
+        INSERT INTO postattachment_tbl (userId, attachmentUrl, originalFileName, contentType, postId)
+        VALUES (#{userId}, #{attachmentUrl}, #{originalFileName}, #{contentType}, #{postId});
     </insert>
 
-    <delete id="deleteFile">
-        DELETE FROM postattachment_tbl WHERE postAttachmentId = #{postAttachmentId};
-    </delete>
-
-    <delete id="deleteTempFileList">
-        DELETE FROM postattachment_tbl WHERE postId IS NULL AND userId = #{userId};
-    </delete>
-
+    <!--  SELECT  -->
     <select id="selectAt" resultType="AttachmentFileDTO">
         SELECT * FROM postattachment_tbl WHERE postAttachmentId=#{postAttachmentId};
     </select>
@@ -28,25 +22,32 @@
         SELECT postId, attachmentUrl FROM postattachment_tbl WHERE userId = #{userId};
     </select>
 
-    <select id="selectTempFile">
-        SELECT attachmentUrl FROM postattachment_tbl WHERE postId =#{postId};
+    <select id="selectTempFileByUserId">
+        SELECT * FROM postattachment_tbl WHERE userId = #{userId} AND postId IS NULL;
     </select>
 
-    <update id="updatePostAttachment">
-        UPDATE postattachment_tbl SET postId = #{postId} WHERE attachmentUrl = #{attachmentUrl};
-    </update>
-
+    <!--  UPDATE  -->
     <update id="updatePostAttachmentUrl">
-        UPDATE postattachment_tbl
-        SET attachmentUrl = #{newAttachmentUrl}
-        WHERE postId = #{postId} AND attachmentUrl = #{oldAttachmentUrl};
+        SET attachmentUrl = #{newAttachmentUrl}, postId = #{postId}
+        WHERE attachmentUrl = #{oldAttachmentUrl};
     </update>
 
-    <update id="updatePostIdAndUrl">
+    <update id="updatePostId">
         UPDATE postattachment_tbl
-        SET postId = #{postId}, attachmentUrl = #{attachmentUrl}
-        WHERE postAttachmentId = #{postAttachmentId};
+        SET postId = #{postId}
+        WHERE attachmentUrl = #{attachmentUrl};
     </update>
+
+    <!--  DELETE  -->
+    <delete id="deleteFile">
+        DELETE FROM postattachment_tbl WHERE postAttachmentId = #{postAttachmentId};
+    </delete>
+
+    <delete id="deleteTempFileList">
+        DELETE FROM postattachment_tbl WHERE postId IS NULL AND userId = #{userId};
+    </delete>
+
+
 
     <!--  채팅  -->
     <select id="chatFileDownload">

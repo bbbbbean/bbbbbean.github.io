@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -22,7 +24,8 @@ import java.util.*;
 public class PostService {
 
     // 최종 저장 디렉토리
-    private final String BASE_UPLOAD_ROOT_DIR = "src/main/resources/Users/";
+    @Value("${file.upload.root-dir}")
+    private String BASE_UPLOAD_ROOT_DIR;
 
     @Autowired
     private PostMapper postMapper;
@@ -39,75 +42,81 @@ public class PostService {
 
     // 게시글 저장 메서드
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> savePost(PostDTO postDTO) {
+    public Map<String, Object> savePost(PostDTO postDTO, MultipartFile[] files) throws IOException {
         Map<String, Object> resp = new HashMap<>();
         String userId = postDTO.getUserId();
 
         try {
             // 게시글 DB에 저장
             int rowsAffected = postMapper.insertPost(postDTO);
-            if (rowsAffected <= 0) {
-                resp.put("success", false);
-                resp.put("message", "게시글 저장에 실패했습니다.");
-                // DB 저장 실패 시 바로 롤백 및 종료
-                throw new RuntimeException("게시글 DB 저장 실패");
-            }
-            log.info("게시글 저장 성공. Post ID를 가져옵니다.");
+            Long postId = postDTO.getPostId();
 
-            // postId 가져오기
-            Long postId = postMapper.getPostId(postDTO);
-            if (postId == null) {
+            if (rowsAffected == 0 || postId == null) {
                 resp.put("success", false);
                 resp.put("message", "저장된 게시글의 ID를 가져올 수 없습니다.");
                 throw new RuntimeException("postId 획득 실패");
             }
-            log.info("postId 가져오기 성공! {}", postId);
-
-            postDTO.setPostId(postId);
-
-            // HTML 문자열로부터 Document 객체 파싱
-            Document doc = Jsoup.parse(postDTO.getContent());
-
-            // 모든 <img> 태그 선택
-            Elements images = doc.select("img");
-            List<String> srcList = new ArrayList<>(); // 문자열에 담겨져있는 img태그 목록들
-
-            // 각 <img> 태그에서 속성 추출
-            for (Element image : images) {
-                String src = image.attr("src");
-                System.out.println("src: " + src);
-                fileMapper.updatePostAttachment(postId, src); // 글 본문에 존재하면 postId를 입력
-                srcList.add(src);
-            }
-
-            // postId 없으면 url 삭제
-            fileMapper.deleteTempFileList(userId);
-
-            // temp 폴더의 파일을 실제 {postID} 폴더로 옮기기. 실패하면 롤백
-            Map<String, Object> fileMoveResult = fileService.confirmAndMoveFiles(userId, postId, srcList);
-            if (!(boolean) fileMoveResult.get("status").equals("success")) { // FileService의 응답 키는 "status"임
-                // 파일 이동/정리 실패 시 게시글 저장도 롤백되도록 예외 발생
-                log.error("게시글 파일 처리 중 오류 발생: {}", fileMoveResult.get("message"));
-                resp.put("success", false);
-                resp.put("message", "게시글은 저장되었으나 파일 처리 중 문제가 발생했습니다: " + fileMoveResult.get("message"));
-                throw new RuntimeException("파일 처리 실패: " + fileMoveResult.get("message")); // 롤백을 위해 예외 발생
-            }
-
-            // temp 폴더 삭제
-            fileService.deleteTempFolder(userId);
-
+            log.info("게시글 저장 성공! postId: {}", postId);
             resp.put("success", true);
-            resp.put("message", "게시글과 관련 파일이 성공적으로 저장되었습니다.");
+            resp.put("message", "게시글이 성공적으로 저장되었습니다.");
             resp.put("postId", postId);
 
+            // 에디터 내부 이미지 처리
+            List<String> editorImageUrls = new ArrayList<>();
+            if (postDTO.getContent() != null && !postDTO.getContent().isEmpty()) {
+                Document doc = Jsoup.parse(postDTO.getContent());
+                Elements imgTags = doc.select("img[src]");
+                for (Element img : imgTags) {
+                    String src = img.attr("src");
+                    if (src.startsWith(BASE_URL + postDTO.getUserId() + "/community/")) {
+                        editorImageUrls.add(src);
+                    }
+                }
+            }
+
+            if (!editorImageUrls.isEmpty()) {
+                // 임시 폴더의 파일을 실제 postId 폴더로 이동 및 DB 업데이트
+                Map<String, Object> fileMoveResult = fileService.moveImagesTempToPostIdFolder(userId, postId, editorImageUrls);
+                Object statusObject = fileMoveResult.get("status");
+                boolean isSuccess = false;
+
+                if (statusObject instanceof Boolean) {
+                    isSuccess = (Boolean) statusObject;
+                } else if (statusObject instanceof String) {
+                    isSuccess = "success".equals(statusObject); // "success" 문자열과 비교
+                }
+                // 다른 타입일 경우, isSuccess는 기본값 false 유지
+
+                if (!isSuccess) { // isSuccess가 false일 경우 (null 포함)
+                    log.error("게시글 이미지 파일 처리 중 오류 발생: {}", fileMoveResult.get("message"));
+                    resp.put("success", false);
+                    resp.put("message", "게시글은 저장되었으나 이미지 파일 처리 중 문제가 발생했습니다: " + fileMoveResult.get("message"));
+                    throw new RuntimeException("이미지 파일 처리 실패: " + fileMoveResult.get("message")); // 롤백을 위해 예외 발생
+                }
+            }
+
+            // 외부 첨부 파일 저장
+            if (files != null && files.length > 0) {
+                fileService.saveAttachmentFiles(userId, postId, files);
+            }
+
+            // temp 파일 및 폴더 삭제
+            Map<String, Object> deleteTempResult = fileService.deleteTempFolder(userId);
+            String deleteStatus = (String) deleteTempResult.get("status");
+            if (deleteStatus == null || !deleteStatus.equals("success")) {
+                log.warn("남은 임시 폴더 삭제 중 경고 발생: {}", deleteTempResult.get("message"));
+            }
+            fileMapper.deleteTempFileList(userId);
+
         } catch (Exception e) {
-            log.error("게시글 저장 중 오류 발생 (userId: {}): {}", userId, e.getMessage());
+            log.error("게시글 저장 중 오류 발생 (userId: {}): {}", userId, e.getMessage(), e);
             resp.put("success", false);
             resp.put("message", "게시글 저장 중 오류가 발생했습니다: " + e.getMessage());
             throw e; // 롤백을 위해 예외 다시 던지기
         }
         return resp;
     }
+
 
     // 게시글 조회
     @Transactional(readOnly = true)
