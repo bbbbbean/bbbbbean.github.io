@@ -2,6 +2,7 @@ package com.club.match.Mapper;
 
 import com.club.match.Domain.DTO.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -57,4 +58,10 @@ public interface ChatMapper {
     int updateComment(CommentDTO commentDTO);
 
     int deleteComment(CommentDTO commentDTO);
+
+    String findOneToOneChatCode(@Param("userIds") List<String> userIds, @Param("type") int type);
+    int deleteChatParticipants(@Param("chatCode") String chatCode);
+    int deleteChat(@Param("chatCode") String chatCode);
+
+
 }

@@ -2,6 +2,7 @@ package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.FriendDTO;
 import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Domain.Service.ChatService;
 import com.club.match.Domain.Service.FriendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class FriendController {
 
     @Autowired
     FriendService friendService;
+
+    @Autowired
+    ChatService chatService;
 
     //유저 검색(조회) - 1
     @PostMapping("/findFriend")
@@ -60,8 +64,11 @@ public class FriendController {
         dto.setUserId(auth.getName());
 
         boolean result = friendService.acceptFriend(dto);
-        return result ? ResponseEntity.ok("친구 요청을 수락했습니다.")
-                : ResponseEntity.badRequest().body("수락 실패");
+        if (result) {
+            return ResponseEntity.ok("친구 요청을 수락하고 채팅방을 생성했습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("수락 실패");
+        }
     }
 
 
@@ -74,13 +81,12 @@ public class FriendController {
 
         boolean success;
 
-        if (dto.getStatus() == 0) {
-            // 친구 수락
-            success = friendService.acceptFriend(dto); // 양방향 처리 포함됨
-        } else {
-            // 즐겨찾기/차단 등 단방향 처리
+        if(dto.getStatus() != 4){
             success = friendService.updateFriendStatus(dto);
+        } else {
+            success = friendService.deleteFriend(dto);
         }
+
         if (success) {
             return ResponseEntity.ok().body("상태가 변경되었습니다.");
         } else {
@@ -127,7 +133,7 @@ public class FriendController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         friendDTO.setUserId(authentication.getName());
-        boolean isOk = friendService.removeFriend(friendDTO);
+        boolean isOk = friendService.deleteFriend(friendDTO);
         if(!isOk){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

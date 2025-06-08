@@ -9,7 +9,7 @@ import java.util.List;
 public interface MatchMapper {
 
     int insertMatch(MatchDto matchDto);
-    int insertChatting(ChattingDto chattingDto);
+    long insertChatting(ChattingDto chattingDto);
     int insertChatparticipant(ChatParticipantDto chatParticipantDto);
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
