@@ -21,5 +21,6 @@
         <typeAlias type="com.club.match.Domain.DTO.CommentDTO" alias="CommentDTO" />
         <typeAlias type="com.club.match.Domain.DTO.CalendarDto" alias="CalendarDto" />
         <typeAlias type="com.club.match.Domain.DTO.BookmarkDto" alias="BookmarkDto" />
+        <typeAlias type="com.club.match.Domain.DTO.MatchOneDto" alias="MatchOneDto" />
     </typeAliases>
 </configuration>

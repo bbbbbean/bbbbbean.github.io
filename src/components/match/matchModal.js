@@ -1,22 +1,41 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import api from "../../axios"
 import "../../css/matching_css/matchModalContent.css";
 
 const MatchModal = ({ selectMatch, setMatchList }) => {
     const { matchId } = useParams();
-    const [matche, setMatche] = useState([]);
-    // matchId로 정보 조회 - title, people, condis, kategorie, startTime, location, creatorId(nickname), chatId
-    useEffect(() => {
-        api.get(`/match/detail?matchId=${matchId}`)
-            .then(res => {
-                setMatche(res.data);
-                console.log(res.data)
-            })
-            .catch(err => { });
-    }, []);
 
+    const location = useLocation();
+    const match = location.state?.match;
+
+    console.log("match", match);
+
+    // 상태 정보들
+    match.anonymousCondi = match.anonymousCondi == 0 ? "익명" : "실명";
+
+    if (match.genderCondi === "0") {
+        if (match.gender === "female") {
+            match.genderCondi = "여성만";
+        } else {
+            match.genderCondi = "남성만";
+        }
+    } else {
+        match.genderCondi = "남녀 모두";
+    }
+
+    // 날짜
+    const formatDateInfo = (startTimeStr) => {
+        console.log(startTimeStr);
+        const date = new Date(startTimeStr);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const weekday = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+        return { month, day, weekday };
+    };
+    const { month, day, weekday } = formatDateInfo(match.startTime);
 
 
     console.log("Select : " + selectMatch);
@@ -64,7 +83,7 @@ const MatchModal = ({ selectMatch, setMatchList }) => {
                 <div className="match-left">
                     <div className="match-modal-img"></div>
                     <div className="match-modal-title">
-                        <p>{matche.title}</p>
+                        <p>{match.title}</p>
                     </div>
                     <div className="modal-blue-line"></div>
                     <div className="match-modal-info">
@@ -73,7 +92,7 @@ const MatchModal = ({ selectMatch, setMatchList }) => {
                                 {["Check", "Groups", "Wc"].map((icon, i) => (
                                     <div className="match-symbol" key={i}>
                                         <span className="material-symbols-outlined">{icon}</span>
-                                        <p>{[matche.people, matche.anonymousCondi, matche.genderCondi][i]}</p>
+                                        <p>{[match.people + "명", match.anonymousCondi, match.genderCondi][i]}</p>
                                     </div>
                                 ))}
                             </div>
@@ -83,13 +102,13 @@ const MatchModal = ({ selectMatch, setMatchList }) => {
                                 <span>운동</span>
                             </div>
                             <div className="match-info-content">
-                                <p>month, day, weekday</p>
-                                <p>time</p>
-                                <p>location</p>
-                                <a href="#">location</a>
+                                <p>{month}월 {day}일 {weekday}요일</p>
+                                <p>{match.time}</p>
+                                <p>{match.location}</p>
+                                <a href="#">지도로 확인하기</a>
                             </div>
                             <div className="match-info-user">
-                                <button>creatorNick</button>
+                                <button>{match.nickName}</button>
                             </div>
                             <div className="match-modal-btn">
                                 <button>신청하기</button>
