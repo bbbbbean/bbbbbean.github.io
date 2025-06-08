@@ -14,5 +14,4 @@ public interface MatchMapper {
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
     List<MatchDto> matchAllList();
-    int addMatchSchedule(String userId,Long matchId);
 }
