@@ -9,8 +9,11 @@
         SELECT * FROM user_tbl
         WHERE userId = #{userId}
     </select>
-    <select id="findUserByNickName">
-        SELECT * FROM user_tbl WHERE nickName LIKE CONCAT('%', #{nickName}, '%');
+
+    <!-- 닉네임으로 유저 검색 -->
+    <select id="findUserByNickName" resultType="com.club.match.Domain.DTO.UserDTO">
+        SELECT * FROM user_tbl
+        WHERE nickName LIKE CONCAT('%', #{nickName}, '%')
     </select>
 
     <!-- 친구 요청 존재 여부 확인 -->
@@ -21,7 +24,7 @@
         AND friendId = #{friendId}
     </select>
 
-    <!-- 친구 요청 추가 (status = 2: 요청 대기 상태) -->
+    <!-- 친구 요청 추가 (status = 3: 요청 대기 상태) -->
     <insert id="insertFriendRequest">
         INSERT INTO friend_tbl (userId, friendId, status)
         VALUES (#{userId}, #{friendId}, #{status})
@@ -29,44 +32,51 @@
 
     <!-- 받은 사람 기준으로 친구 요청 목록 조회 -->
     <select id="findRequestsByFriendId" resultType="com.club.match.Domain.DTO.FriendDTO">
-        SELECT * FROM friend_tbl
+        SELECT *
+        FROM friend_tbl
         WHERE friendId = #{friendId}
         AND status = 3
     </select>
 
-    <!-- 친구 요청 거절 (요청 자체 삭제) -->
-    <delete id="deleteFriendRequest">
-        DELETE FROM friend_tbl
+    <!-- 단방향 친구 상태 변경 (즐겨찾기/차단 등) -->
+    <update id="updateFriendStatusOneWay">
+        UPDATE friend_tbl
+        SET status = #{status}
         WHERE userId = #{userId}
         AND friendId = #{friendId}
+    </update>
+
+    <!-- 양방향 친구 상태 변경 (친구 수락 등) -->
+    <update id="updateFriendStatusBothWay">
+        UPDATE friend_tbl
+        SET status = #{status}
+        WHERE (userId = #{userId} AND friendId = #{friendId})
+        OR (userId = #{friendId} AND friendId = #{userId})
+    </update>
+
+    <!-- 친구 등록 (수락 시 양방향 insert) -->
+    <insert id="insertFriend">
+        INSERT INTO friend_tbl (userId, friendId, status)
+        VALUES (#{userId}, #{friendId}, #{status})
+    </insert>
+
+    <!-- 친구 요청 거절 (요청 자체 삭제) -->
+    <delete id="deleteFriendRequest">
+        <!-- 요청자: friendId / 수락자: userId -->
+        DELETE FROM friend_tbl
+        WHERE userId = #{friendId}
+        AND friendId = #{userId}
         AND status = 3
     </delete>
 
-    <!-- 친구 삭제 (양방향 삭제 포함) -->
+    <!-- 친구 삭제 (양방향 삭제) -->
     <delete id="deleteFriend">
         DELETE FROM friend_tbl
         WHERE (userId = #{userId} AND friendId = #{friendId})
         OR (userId = #{friendId} AND friendId = #{userId})
     </delete>
 
-    <!-- 친구 상태 변경 (예: 수락: 0, 즐겨찾기: 1, 차단: 2) -->
-    <update id="updateFriendStatus">
-        UPDATE friend_tbl
-        SET status = #{status}
-        WHERE userId = #{userId}
-        AND friendId = #{friendId}
-    </update>
-
-    <update id="updateStatus">
-        UPDATE friend_tbl
-        SET status = #{status}
-        WHERE userId = #{userId}
-        AND friendId = #{friendId}
-        OR (userId = #{friendId}
-        AND friendId = #{userId})
-    </update>
-
-    <!-- 친구 목록 조회 (status = 0: 일반 친구) -->
+    <!-- 친구 목록 조회 (status 기반 필터링) -->
     <select id="getFriendList" resultType="com.club.match.Domain.DTO.FriendDTO">
         SELECT *
         FROM friend_tbl
