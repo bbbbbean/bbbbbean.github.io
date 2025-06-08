@@ -166,5 +166,31 @@
         DELETE FROM comment_tbl where commentId = #{commentId} AND userId = #{userId}
     </delete>
 
+    <select id="findOneToOneChatCode" resultType="string">
+        SELECT a.chatCode
+        FROM bb.chat_tbl a
+        JOIN (
+        SELECT chatCode
+        FROM bb.chatparticipant_tbl
+        WHERE userId IN
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        GROUP BY chatCode
+        HAVING COUNT(DISTINCT userId) = 2
+        ) b ON a.chatCode = b.chatCode
+        WHERE a.type = #{type}
+    </select>
+
+    <delete id="deleteChatParticipants">
+        DELETE FROM bb.chatparticipant_tbl WHERE chatCode = #{chatCode}
+    </delete>
+
+    <delete id="deleteChat">
+        DELETE FROM bb.chat_tbl WHERE chatCode = #{chatCode}
+    </delete>
+
+
+
 </mapper>
 

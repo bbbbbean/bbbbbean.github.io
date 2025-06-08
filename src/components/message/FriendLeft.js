@@ -60,7 +60,7 @@ const sendFriendRequest = (friendId) => {
     console.error('친구 요청 실패:', error);
   });
 };
-//친구 신청 수락락
+//친구 신청 수락
 const acceptFriend = (friendId) => {
   api.post("/api/friend/accept", {
     friendId: friendId
@@ -99,7 +99,7 @@ const rejectFriend = (friendId) => {
     console.error("친구 요청 거절 실패:", error);
   });
 };
-  //즐겨찾기, 차단 상태 변경
+  //즐겨찾기, 차단, 삭제 상태 변경
   const friendStatus = ((userId, newStatus)=>{
   console.log("변경할 친구 ID:", userId);
   console.log("새로운 상태 값:", newStatus);
@@ -202,8 +202,7 @@ const rejectFriend = (friendId) => {
             <div className={`friendmenu ${openMenuKey === `best-${idx}` ? 'show' : ''}`}>
               <ul>
                 <li onClick={() => friendStatus(friend.userId, 0)}>즐겨찾기 해제</li>
-                <li>친구 삭제</li>
-                <li onClick={() => friendStatus(friend.userId, 2)}>친구 차단</li>
+                <li onClick={() => friendStatus(friend.userId, 4)}>친구 삭제</li>
                 <li>신고하기</li>
               </ul>
             </div>
@@ -223,7 +222,7 @@ const rejectFriend = (friendId) => {
             <div className={`friendmenu ${openMenuKey === `common-${idx}` ? 'show' : ''}`}>
               <ul>
                 <li onClick={() => friendStatus(friend.userId, 1)}>즐겨찾기 설정</li>
-                <li>친구 삭제</li>
+                <li onClick={() => friendStatus(friend.userId, 4)}>친구 삭제</li>
                 <li onClick={() => friendStatus(friend.userId, 2)}>친구 차단</li>
                 <li>신고하기</li>
               </ul>
