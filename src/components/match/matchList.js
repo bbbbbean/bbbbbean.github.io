@@ -19,6 +19,7 @@ import 'swiper/css/navigation';
 
 
 const MatchList = () => {
+    const navigate = useNavigate();
 
     const [selectMatch, setMatchList] = useState(null);
     const [topMatches, setTopMatches] = useState([]);
@@ -26,9 +27,10 @@ const MatchList = () => {
     const [bookmark, setBookmark] = useState({});
 
     const handleModal = (e) => {
-        setMatchList(e.target.classList[1]);
+        const matchId = e.currentTarget.value;
+        navigate(`/match/${matchId}`);
     }
-    const navigate = useNavigate();
+    
 
 
     // 전체 조회해서 데이터 들고오기
@@ -138,14 +140,14 @@ const MatchList = () => {
         return `${month}월 ${day}일`;
     };
     // 카테고리
-    const kategorieName = (kategorie)=>{
-        if(kategorie == 1){
+    const kategorieName = (kategorie) => {
+        if (kategorie == 1) {
             kategorie = "운동";
-        }else if(kategorie == 2){
+        } else if (kategorie == 2) {
             kategorie = "여행";
-        }else if(kategorie == 3){
+        } else if (kategorie == 3) {
             kategorie = "게임";
-        }else if(kategorie == 4){
+        } else if (kategorie == 4) {
             kategorie = "기타";
         }
         return kategorie;
@@ -224,7 +226,7 @@ const MatchList = () => {
                                                 <div className="match-info-btn">
                                                     <button
                                                         className={match.status === 0 && match.countPeople < match.people ? "ok" : "no"}
-                                                        onClick={handleModal}
+                                                        onClick={handleModal} value={match.matchId}
                                                     >
                                                         {/* 0:신청 가능 1: 모집완료 */}
                                                         {match.status === 0 && match.countPeople < match.people ? "신청 가능" : "모집 완료"}
