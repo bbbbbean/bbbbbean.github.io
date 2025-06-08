@@ -47,8 +47,8 @@ const FriendLeft = () => {
 
         // 친구쪽 프론트 갱신
         client.publish({
-            destination: "/pub/friend",
-            body: JSON.stringify({ "friendId": friendId })
+          destination: "/pub/friend",
+          body: JSON.stringify({ "friendId": friendId, "status": "add"})
         });
       })
       .catch(error => {
@@ -74,8 +74,8 @@ const FriendLeft = () => {
 
         // 친구쪽 프론트 갱신
         client.publish({
-            destination: "/pub/friend",
-            body: JSON.stringify({ "friendId": friendId })
+          destination: "/pub/friend",
+          body: JSON.stringify({ "friendId": friendId, "status": "acc" })
         });
 
         // 메뉴 닫기
@@ -100,7 +100,7 @@ const FriendLeft = () => {
         console.error("친구 요청 거절 실패:", error);
       });
   };
-  //즐겨찾기, 차단, 삭제 상태 변경
+  //즐겨찾기, 삭제 상태 변경
   const friendStatus = ((userId, newStatus) => {
     console.log("변경할 친구 ID:", userId);
     console.log("새로운 상태 값:", newStatus);
@@ -137,6 +137,13 @@ const FriendLeft = () => {
 
         // 메뉴 닫기 (UX 개선용)
         setOpenMenuKey(null);
+
+        if (newStatus === 4) {
+          client.publish({
+            destination: "/pub/friend",
+            body: JSON.stringify({ "friendId": userId })
+          });
+        }
 
       })
       .catch((error) => {
@@ -224,7 +231,6 @@ const FriendLeft = () => {
               <ul>
                 <li onClick={() => friendStatus(friend.userId, 1)}>즐겨찾기 설정</li>
                 <li onClick={() => friendStatus(friend.userId, 4)}>친구 삭제</li>
-                <li onClick={() => friendStatus(friend.userId, 2)}>친구 차단</li>
                 <li>신고하기</li>
               </ul>
             </div>

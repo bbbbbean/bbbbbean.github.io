@@ -3,7 +3,9 @@ package com.club.match.Controller;
 import com.club.match.Domain.DTO.ChatDTO;
 import com.club.match.Domain.DTO.ChatFileDTO;
 import com.club.match.Domain.DTO.MessageDTO;
+import com.club.match.Domain.DTO.NotificationDTO;
 import com.club.match.Domain.Service.ChatService;
+import com.club.match.Domain.Service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -37,6 +40,9 @@ public class ChatController {
     ChatService chatService;
 
     @Autowired
+    NotificationService notificationService;
+
+    @Autowired
     private SimpUserRegistry simpUserRegistry;
 
     private final SimpMessagingTemplate template;       // 특정 사용자에게 메시지를 보내는데 사용되는 STOMP을 이용한 템플릿입니다.
@@ -44,6 +50,24 @@ public class ChatController {
     @Autowired
     public ChatController(SimpMessagingTemplate template) {
         this.template = template;
+    }
+
+    @PostMapping("/alarm/list")
+    public ResponseEntity<?> alarmList() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<String,Object> resp = notificationService.selectAll(authentication.getName());
+
+        return ResponseEntity.ok().body(resp);
+    }
+
+    @PostMapping("/alarm/read")
+    public ResponseEntity<?> alarmRead() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isOk = notificationService.read(authentication.getName());
+
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("/getChatRoom")
@@ -149,14 +173,35 @@ public class ChatController {
         return ResponseEntity.ok().body(null);
     }
 
-    @MessageMapping("/friend")
-    public void addFriend(@RequestBody Map<String,Object> req) throws InterruptedException {
-        String friendId = (String) req.get("friendId");
-        Map<String,Object> resp = new HashMap<>();
+        @MessageMapping("/friend")
+        public void addFriend(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
+            String friendId = (String) req.get("friendId");
+            String status = (String) req.get("status");
+            Map<String,Object> resp = new HashMap<>();
 
-        resp.put("friendAlert","ok");
+            NotificationDTO notificationDTO = NotificationDTO.builder()
+                    .userId(friendId)
+                    .receivedAt(LocalDateTime.now())
+                    .notificationCode(2)
+                    .build();
 
-        template.convertAndSend("/sub/user/"+friendId, resp);
+            if(status.equals("add")){ // 친구요청
+
+                notificationDTO.setContent(principal.getName()+"님이 친구신청을 하였습니다.");
+                notificationService.sendNotification(notificationDTO);
+                resp.put("addFriend","ok");
+
+            } else if(status.equals("acc")){ // 친구수락
+
+                notificationDTO.setContent(principal.getName()+"님이 친구요청을 수락하였습니다.");
+                notificationService.sendNotification(notificationDTO);
+                resp.put("accFriend","ok");
+            }
+
+            resp.put("friendAlert","ok");
+
+            template.convertAndSend("/sub/user/"+friendId, resp);
+            template.convertAndSend("/sub/user/"+principal.getName(), resp);
     }
 
     @MessageMapping("/enter")

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.NotificationMapper">
+    <insert id="insert">
+        INSERT INTO notificationone_tbl(content, receivedAt, userId, notificationCode) VALUES (#{content}, #{receivedAt}, #{userId}, #{notificationCode});
+    </insert>
+
+    <select id="selectAll">
+        SELECT * from notificationone_tbl where userId = #{userId};
+    </select>
+
+    <update id="readAll">
+        UPDATE notificationone_tbl SET readAt = #{readAt} where userId = #{userId};
+    </update>
+
+</mapper>
+

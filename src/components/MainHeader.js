@@ -6,8 +6,10 @@ import loginIcon from "../image/image_index/login-b-icon.svg";
 import noticeIcon from "../image/image_index/notice-b-icon.svg";
 import menuIcon from "../image/image_index/menu-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
-import {setIsAuth} from "../store";
-import { useEffect } from "react";
+import { setIsAuth } from "../store";
+import { useEffect, useState } from "react";
+import Alarm from "./Alert/Alarm";
+import api from "../axios";
 
 
 
@@ -18,9 +20,38 @@ const MainHeader = () => {
 
   const isAuth = useSelector(state => state.auth.isAuth);
 
-  useEffect(()=>{
+  const [openAlarm, setOpenAlarm] = useState(false);
+
+  const [alarmList, setAlarmList] = useState([]);
+
+  const [alarmCount, setAlarmCount] = useState(0);
+
+  useEffect(() => {
+    api.post("/api/chat/alarm/list")
+      .then(response => {
+        setAlarmList(response.data.notificationDTOList);
+        setAlarmCount(response.data.noRead);
+      })
+      .catch(error => {
+      });
+  }, []);
+
+  const openAlarmShow = () => {
+    setOpenAlarm(prev => !prev)
+    if(alarmCount > 0) {
+      api.post("/api/chat/alarm/read")
+        .then(response => {
+          setAlarmCount(0);
+        })
+        .catch(error => {
+          console.error("알림 읽기 실패:", error);
+        });
+    }
+  }
+
+  useEffect(() => {
     dispatch(setIsAuth(localStorage.getItem("isAuth")));
-  },[])
+  }, [])
   return (
     <header>
       <ul className="logo">
@@ -78,7 +109,13 @@ const MainHeader = () => {
               </NavLink>
             </li>
             <li>
-              <a href="#"><img src={noticeIcon} alt="" /><span>알림</span></a>
+              <a className="chatnum-parent" onClick={openAlarmShow}>
+                <img src={noticeIcon} alt="" />
+                <span>알림</span>
+                {alarmCount > 0 &&
+                  <div className="chatnum">{alarmCount}</div>
+                }
+              </a>
             </li>
             <li>
               <NavLink to="/mypage/">
@@ -97,8 +134,8 @@ const MainHeader = () => {
           </ul>
         }
       </nav>
-
       <div className="line" />
+      <Alarm openAlarm={openAlarm} alarmList={alarmList} />
     </header>
   );
 };
