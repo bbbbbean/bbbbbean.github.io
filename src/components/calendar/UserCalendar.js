@@ -15,6 +15,7 @@ function UserCalendar() {
   const [viewModal, setviewModal] = useState(false);
   const [hasUpdated, setHasUpdated] = useState(false);
   const [note, setNote] = useState([]);
+  const [match, setMatch] = useState([]);
   const [keyEvent, setKeyEvent] = useState(false);
   const [calendarId, setCalendarId] = useState(0);
 
@@ -53,7 +54,9 @@ function UserCalendar() {
   useEffect(() => {
     api.post("api/calendar/getMemo", { "year": selectedDate.getFullYear(), "month": selectedDate.getMonth() + 1 })
       .then((response) => {
+        console.log(response);
         setNote(response.data.noteData);
+        setMatch(response.data.matchData);
       })
       .catch(() => {});
       
@@ -102,6 +105,13 @@ function UserCalendar() {
                 const itemDate = new Date(item.date);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
                   return <p key={item.calendarId} data-id={item.calendarId} style={{ color: 'orange' }} onContextMenu={handleRightClick}>{item.content}</p>;
+                }
+                return null;
+              })}
+              {match.map((item) => {
+                const itemDate = new Date(item.startTime);
+                if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
+                  return <p key={item.matchId} data-id={item.matchId} style={{ color: 'black' }} onContextMenu={handleRightClick}>{item.title}</p>;
                 }
                 return null;
               })}

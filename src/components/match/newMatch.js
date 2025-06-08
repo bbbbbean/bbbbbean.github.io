@@ -73,8 +73,6 @@ const NewMatch = ()=>{
             helpEl[1].style.display="block";
         }else if(e.target.dataset.condi==='3'){
             helpEl[2].style.display="block";
-        }else if(e.target.dataset.condi==='4'){
-            helpEl[3].style.display="block";
         }
     }
     const closeHelp = (e)=>{
@@ -86,8 +84,6 @@ const NewMatch = ()=>{
             helpEl[1].style.display="none";
         }else if(e.target.dataset.condi==='3'){
             helpEl[2].style.display="none";
-        }else if(e.target.dataset.condi==='4'){
-            helpEl[3].style.display="none";
         }
     }
     // 확인...
@@ -176,13 +172,8 @@ const NewMatch = ()=>{
                     <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
                     
                 </div>  
-                <div>
-                    <label>매너 제한 <span className="new-match-help" data-condi="3" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
-                    <input type="text" name="manner_condi"/>
-                    <p className="new-match-help-el">기본 설정 안내</p>
-                </div>
                 <div className="new-match-radio">
-                    <label>동성 여부 <span className="new-match-help" data-condi="4" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
+                    <label>동성 여부 <span className="new-match-help" data-condi="3" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
                     <input type="radio" name="genderCondi" value="0" checked={form.genderCondi === "0"} onChange={handleChange}/> <span>O</span>
                     <input type="radio" name="genderCondi" value="1" checked={form.genderCondi === "1"} onChange={handleChange}/> <span>X</span>
                     <p className="new-match-help-el">호스트 성별을 기준으로 설정됩니다</p>

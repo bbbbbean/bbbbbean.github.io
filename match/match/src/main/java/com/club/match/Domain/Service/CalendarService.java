@@ -1,6 +1,7 @@
 package com.club.match.Domain.Service;
 
 
+import com.club.match.Domain.DTO.CalendarDto;
 import com.club.match.Domain.DTO.CalendarMemoDTO;
 import com.club.match.Mapper.CalendarMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +30,35 @@ public class CalendarService {
         return isOk;
     }
     @Transactional(rollbackFor = Exception.class)
-    public Map<String,Object> getMemo(String userId, int year, int month){
+    public Map<String,Object> getCalendar(String userId, int year, int month){
         Map<String,Object> resp = new HashMap<>();
         List<CalendarMemoDTO> calendarNoteDTOs = calendarMapper.selectAllUserMemo(userId,year,month);
         for (CalendarMemoDTO calendarMemoDTO : calendarNoteDTOs){
-            calendarMemoDTO.setContent(calendarMemoDTO.getContent().substring(0,4)+"...");
+            if(calendarMemoDTO.getContent().length()>=5){
+                calendarMemoDTO.setContent(calendarMemoDTO.getContent().substring(0,5)+"...");
+            }else {
+                calendarMemoDTO.setContent(calendarMemoDTO.getContent());
+            }
+
         }
+
+        List<CalendarDto> calendarDTOs = calendarMapper.selectAllUserMatch(userId,year,month);
+        log.info("a"+calendarDTOs);
+        for (CalendarDto calendarDto : calendarDTOs){
+            if(calendarDto.getTitle().length()>=5){
+                calendarDto.setTitle(calendarDto.getTitle().substring(0,5)+"...");
+            }else {
+                calendarDto.setTitle(calendarDto.getTitle());
+            }
+
+        }
+        resp.put("matchData",calendarDTOs);
         resp.put("noteData",calendarNoteDTOs);
 
         return resp;
     }
+
+
 
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> getOneMemo(String calendarId) {

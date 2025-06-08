@@ -5,17 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class CalendarDto {
+@Data
+public class BookmarkDto {
     private long matchId;
-    private String participantId;
-
-    // 내용 추가를 위한 제목, 날짜
-    private String title;
-    private LocalDateTime startTime;
+    private String userId;
+    private boolean isBookmark;
 }

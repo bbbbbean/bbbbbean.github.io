@@ -101,19 +101,21 @@ public class MatchService {
         return listAll;
     }
 
-    // 호스트 캘린더 업데이트
+    // 북마크 추가
     @Transactional
-    public void CalendarUpdate(MatchDto matchDto){
-        // 캘린더 DB에 userId, matchId 추가
-        String userId = matchDto.getCreatorId();
-        long matchId = matchDto.getMatchId();
-        // 캘린더 DTO
-        CalendarDto calendarDto = CalendarDto.builder()
-                .userId(userId)
-                .matchId(matchId)
-                .startTime(matchDto.getStartTime())
-                .title(matchDto.getTitle())
-                .build();
+    public void addBookmark(BookmarkDto bookmarkDto){
+        matchMapper.addBookmark(bookmarkDto);
     }
+    // 북마크 삭제
+    @Transactional
+    public void removeBookmark(BookmarkDto bookmarkDto){
+        matchMapper.removeBookmark(bookmarkDto);
+    }
+    // 해당 유저 북마크 조회
+    @Transactional
+    public List<Long> viewUserBookmark(String userId){
+        return matchMapper.userBookmark(userId);
+    }
+
 
 }

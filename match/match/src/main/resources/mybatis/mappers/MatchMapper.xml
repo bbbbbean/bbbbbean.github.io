@@ -4,8 +4,8 @@
 <mapper namespace="com.club.match.Mapper.MatchMapper">
     <!-- 매칭 생성 -->
     <insert id="insertMatch" useGeneratedKeys="true" keyProperty="matchId" keyColumn="matchId">
-        insert into match_tbl(creatorId, title, createAt, startTime, status, location, url, people, kategorie, anonymousCondi, mannerCondi, genderCondi, chatCode) values(#{creatorId},#{title},#{createAt},#{startTime},#{status},#{location},#{url},#{people},
-        #{kategorie},#{anonymousCondi},#{mannerCondi},#{genderCondi},#{chatCode});
+        insert into match_tbl(creatorId, title, createAt, startTime, status, location, url, people, kategorie, anonymousCondi, genderCondi, chatCode) values(#{creatorId},#{title},#{createAt},#{startTime},#{status},#{location},#{url},#{people},
+        #{kategorie},#{anonymousCondi},#{genderCondi},#{chatCode});
     </insert>
     <!-- 그룹채팅 생성 -->
     <insert id="insertChatting" useGeneratedKeys="true" keyProperty="chatCode" keyColumn="chatCode">
@@ -36,4 +36,16 @@
         GROUP BY m.matchId, startTime, title, people, status, tag;
     </select>
 
+    <!-- 북마크 테이블 추가 -->
+    <insert id="addBookmark">
+        insert into bookmark_tbl values (#{userId}, #{matchId})
+    </insert>
+    <!-- 북마크 테이블 삭제 -->
+    <delete id="removeBookmark">
+        delete from bookmark_tbl where userId=#{userId} and matchId=#{matchId}
+    </delete>
+    <!-- 해당 유저 북마크 테이블 조회 -->
+    <select id="userBookmark">
+        select matchId from bookmark_tbl where userId=#{userId}
+    </select>
 </mapper>

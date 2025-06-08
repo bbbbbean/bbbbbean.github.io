@@ -71,7 +71,7 @@ public class CalendarController {
 
             log.info(userId + "/" + year + "/" + month);
 
-            resp = calendarService.getMemo(userId,year,month);
+            resp = calendarService.getCalendar(userId,year,month);
 
             return ResponseEntity.ok().body(resp);
         }
