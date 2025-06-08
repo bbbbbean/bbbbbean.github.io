@@ -22,6 +22,8 @@ public class MatchDto {
     private int status;
     private String location;
     private String url;
+    private int people;
+    private int kategorie;
     private int anonymousCondi;
     private int mannerCondi;
     private String genderCondi;

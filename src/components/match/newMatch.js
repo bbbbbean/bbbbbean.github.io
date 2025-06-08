@@ -11,6 +11,7 @@ const NewMatch = ()=>{
         title: '',
         startTime: '',
         location: '온라인',
+        people: '',
         // 0 : 익명 , 1 : 실명
         anonymousCondi: '1',
         mannerCondi: '50',
@@ -26,6 +27,7 @@ const NewMatch = ()=>{
     };
 
     const [isOnline, setIsOnline] = useState(true);
+    const [onKategorie, setOnKategorie] = useState(1);
     const [isWarn, setIsWarn] = useState("");
     const [tags, setTags] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -70,6 +72,8 @@ const NewMatch = ()=>{
             helpEl[1].style.display="block";
         }else if(e.target.dataset.condi==='3'){
             helpEl[2].style.display="block";
+        }else if(e.target.dataset.condi==='4'){
+            helpEl[3].style.display="block";
         }
     }
     const closeHelp = (e)=>{
@@ -81,6 +85,8 @@ const NewMatch = ()=>{
             helpEl[1].style.display="none";
         }else if(e.target.dataset.condi==='3'){
             helpEl[2].style.display="none";
+        }else if(e.target.dataset.condi==='4'){
+            helpEl[3].style.display="none";
         }
     }
     // 확인...
@@ -119,9 +125,24 @@ const NewMatch = ()=>{
             <div className="new-match-title"><span>매칭</span><span> 등록</span></div>
             <form className="new-match-form" onSubmit={handleSubmit}>
                 <span className="new-match-warn">{isWarn}</span>
+                <div className="new-match-kategorie">
+                    <label>카테고리</label>
+                    <div>
+                        <div>
+                            <span className={onKategorie==1 ? "new-match-check" : ""} value="1"
+                                onClick={() => {setOnKategorie(1); setForm((prev)=>({...prev, kategorie: 1}))}}>운동</span>
+                            <span className={onKategorie==2 ? "new-match-check" : ""} value="2"
+                                onClick={() => {setOnKategorie(2); setForm((prev)=>({...prev, kategorie: 2}))}}>여행</span>
+                            <span className={onKategorie==3 ? "new-match-check" : ""} value="3"
+                                onClick={() => {setOnKategorie(3); setForm((prev)=>({...prev, kategorie: 3}))}}>게임</span>
+                            <span className={onKategorie==4 ? "new-match-check" : ""} value="4"
+                                onClick={() => {setOnKategorie(4); setForm((prev)=>({...prev, kategorie: 4}))}}>기타</span>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label>제목</label>
-                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다." value={form.title} onChange={handleChange} />
+                    <input type="text" name="title" placeholder="30자까지 입력 가능합니다" value={form.title} onChange={handleChange} />
                     {form.title.length >= 30 && (<span className="new-match-warning">30자까지 입력 가능합니다.</span>)}
                 </div>
                 <div>
@@ -142,23 +163,28 @@ const NewMatch = ()=>{
                         </div>
                     </div>
                 </div>
+                <div>
+                    <label>전체 인원 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
+                    <input type="number" max={50} min={1} placeholder="최대 50명까지 가능합니다" name="people" onChange={handleChange}/>
+                    <p className="new-match-help-el">본인 포함 전체 인원수를 선택해주세요</p>
+                </div>
                 <div className="new-match-radio">
-                    <label>익명 여부 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
+                    <label>익명 여부 <span className="new-match-help" data-condi="2" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
                     <input type="radio" name="anonymousCondi" value="0" checked={form.anonymousCondi === "0"} onChange={handleChange}/> <span>O</span>
                     <input type="radio" name="anonymousCondi" value="1" checked={form.anonymousCondi === "1"} onChange={handleChange}/> <span>X</span>
                     <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
                     
                 </div>  
                 <div>
-                    <label>매너 제한 <span className="new-match-help" data-condi="2" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
+                    <label>매너 제한 <span className="new-match-help" data-condi="3" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span></label>
                     <input type="text" name="manner_condi"/>
                     <p className="new-match-help-el">기본 설정 안내</p>
                 </div>
                 <div className="new-match-radio">
-                    <label>익명 여부 <span className="new-match-help" data-condi="1" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
+                    <label>동성 여부 <span className="new-match-help" data-condi="4" onMouseEnter={openHelp} onMouseLeave={closeHelp}>?</span> </label>
                     <input type="radio" name="genderCondi" value="0" checked={form.genderCondi === "0"} onChange={handleChange}/> <span>O</span>
                     <input type="radio" name="genderCondi" value="1" checked={form.genderCondi === "1"} onChange={handleChange}/> <span>X</span>
-                    <p className="new-match-help-el">익명 설정 시 닉네임만 보여집니다</p>
+                    <p className="new-match-help-el">호스트 성별을 기준으로 설정됩니다</p>
                     
                 </div>
                 <div>
