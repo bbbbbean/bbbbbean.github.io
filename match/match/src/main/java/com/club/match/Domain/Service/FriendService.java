@@ -81,7 +81,13 @@ public class FriendService {
     }
 
     public boolean updateFriendStatus(FriendDTO dto) {
+        // 로그인한 사용자 기준으로만 업데이트 (단방향)
         int result = friendMapper.updateFriendStatusOneWay(dto.getUserId(), dto.getFriendId(), dto.getStatus());
+
+        if (result == 0) {
+            log.warn("즐겨찾기 상태 변경 실패 - 대상 행 없음: userId={}, friendId={}", dto.getUserId(), dto.getFriendId());
+        }
+
         return result > 0;
     }
 
