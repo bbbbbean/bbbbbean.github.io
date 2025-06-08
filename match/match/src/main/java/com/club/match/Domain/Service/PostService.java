@@ -2,6 +2,8 @@ package com.club.match.Domain.Service;
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Domain.DTO.PostDTO;
+import com.club.match.Domain.DTO.PostDetailResultDTO;
+import com.club.match.Domain.DTO.PostRecommendationDTO;
 import com.club.match.Mapper.FileMapper;
 import com.club.match.Mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -126,18 +129,115 @@ public class PostService {
         log.info("게시글 ID: {} 조회수 증가", postId);
 
         // 2. 게시글 상세 정보 조회 (첨부파일도 함께 가져옴)
-        PostDTO post = postMapper.selectPostByPostId(postId);
+        PostDetailResultDTO postDetail = postMapper.selectPostByPostId(postId);
 
-        // 3. 첨부 파일 정보 조회 및 DTO에 설정
-        if (post == null) {
+        // 3. 첨부 파일 정보 별도로 조회
+        List<AttachmentFileDTO> attachments = postMapper.selectAttachmentsByPostId(postId);
+
+        // 4. PostDTO로 결과 통합 및 반환
+        if (postDetail == null) {
             log.warn("게시글 ID: {} 를 찾을 수 없습니다.", postId);
+            return null;
         } else {
-            // 첨부 파일 목록이 잘 로드되었는지 확인하는 로그 추가 (선택 사항)
+            // PostDetailResultDTO의 필드들을 PostDTO로 복사
+            PostDTO post = new PostDTO();
+            post.setPostId(postDetail.getPostId());
+            post.setUserId(postDetail.getUserId());
+            post.setNickName(postDetail.getNickName());
+            post.setTitle(postDetail.getTitle());
+            post.setContent(postDetail.getContent());
+            post.setCreateAt(postDetail.getCreateAt());
+            post.setViewCount(postDetail.getViewCount());
+            post.setPostCodeId(postDetail.getPostCodeId());
+            post.setLikeCount(postDetail.getLikeCount());
+            post.setDislikeCount(postDetail.getDislikeCount());
+            post.setAttachments(attachments); // 첨부 파일 목록 설정
+
             log.info("게시글 ID: {} 상세 정보 조회 성공. 제목: {}, 첨부 파일 수: {}",
                     postId, post.getTitle(), post.getAttachments() != null ? post.getAttachments().size() : 0);
+            return post;
         }
-        return post;
     }
+
+    // 게시글 좋아요/싫어요 기능
+    @Transactional
+    public boolean handlePostReaction(Long postId, String userId, Integer requestedType) {
+        if (requestedType != 1 && requestedType != -1) {
+            log.warn("유효하지 않은 반응 타입: {}. postId: {}, userId: {}", requestedType, postId, userId);
+            return false; // 유효하지 않은 요청 타입
+        }
+
+        // 1. 해당 사용자가 해당 게시글에 이미 반응한 기록이 있는지 조회
+        PostRecommendationDTO existingReaction = postMapper.selectPostRecommendationByUserIdAndPostId(postId, userId);
+
+        try {
+            // 기존 반응이 없다면
+            if (existingReaction == null) {
+                log.info("새로운 반응: postId={}, userId={}, type={}", postId, userId, requestedType);
+
+                PostRecommendationDTO newReaction = new PostRecommendationDTO();
+                newReaction.setPostId(postId);
+                newReaction.setUserId(userId);
+                newReaction.setReactionType(requestedType);
+                newReaction.setCreateAt(LocalDateTime.now());
+
+                // insertPostRecommendation 호출 후, Mybatis가 자동으로 newReaction 객체에 생성된 postRecommendationId를 주입해줍니다.
+                postMapper.insertPostRecommendation(newReaction);
+
+                if (requestedType == 1) { // 좋아요
+                    postMapper.incrementLikeCount(postId);
+                } else { // 싫어요 (-1)
+                    postMapper.incrementDislikeCount(postId);
+                }
+                return true;
+            } else {
+                Integer existingType = existingReaction.getReactionType();
+                if (existingType.equals(requestedType)) { // existingReaction.equals(requestedType) -> existingType.equals(requestedType) 로 변경
+                    // 만약 지금 반응하려는게 이전에 반응한거랑 동일하다면 -> 좋아요/싫어요 취소
+                    log.info("반응 취소: postId={}, userId={}, type={}", postId, userId, requestedType);
+                    postMapper.deletePostRecommendation(postId,userId);
+
+                    if (requestedType == 1) {
+                        postMapper.decrementLikeCount(postId);
+                    } else {
+                        postMapper.decrementDislikeCount(postId);
+                    }
+                    return true;
+                } else {
+                    // 좋아요 눌려져있는데 싫어요 누른다면, 또는 반대라면
+                    log.info("반응 변경: postId={}, userId={}, 기존 type={}, 요청 type={}", postId, userId, existingType, requestedType);
+
+                    //기존반응삭제
+                    postMapper.deletePostRecommendation(postId, userId);
+                    if (existingType == 1) { // 기존이 좋아요였으면 좋아요 카운트 감소
+                        postMapper.decrementLikeCount(postId);
+                    } else { // 기존이 싫어요였으면 싫어요 카운트 감소
+                        postMapper.decrementDislikeCount(postId);
+                    }
+                    // 새로운 반응 추가
+                    PostRecommendationDTO newReaction = new PostRecommendationDTO();
+                    newReaction.setPostId(postId);
+                    newReaction.setUserId(userId);
+                    newReaction.setReactionType(requestedType);
+                    newReaction.setCreateAt(LocalDateTime.now());
+
+                    // insertPostRecommendation 호출 후, Mybatis가 자동으로 newReaction 객체에 생성된 postRecommendationId를 주입해줍니다.
+                    postMapper.insertPostRecommendation(newReaction);
+
+                    if (requestedType == 1) { // 새로운 반응이 좋아요
+                        postMapper.incrementLikeCount(postId);
+                    } else { // 새로운 반응이 싫어요 (-1)
+                        postMapper.incrementDislikeCount(postId);
+                    }
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            log.error("게시글 반응 처리 중 오류 발생: postId={}, userId={}, type={}", postId, userId, requestedType, e);
+            throw new RuntimeException("게시글 반응 처리 실패", e); // 롤백을 위해 런타임 예외 throw
+        }
+    }
+
 
     // 게시글 삭제
     @Transactional(rollbackFor = Exception.class)

@@ -19,6 +19,7 @@
         <typeAlias type="com.club.match.Domain.DTO.PostDTO" alias="PostDTO" />
         <typeAlias type="com.club.match.Domain.DTO.ChatFileDTO" alias="ChatFileDTO" />
         <typeAlias type="com.club.match.Domain.DTO.CommentDTO" alias="CommentDTO" />
-        <typeAlias type="com.club.match.Domain.DTO.postDetailResultDTO" alias="postDetailResultDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.PostDetailResultDTO" alias="PostDetailResultDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.PostRecommendationDTO" alias="PostRecommendationDTO" />
     </typeAliases>
 </configuration>

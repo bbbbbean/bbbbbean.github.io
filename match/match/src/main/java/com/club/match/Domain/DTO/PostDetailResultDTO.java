@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDTO {
-    private Long postId; // 저장버튼 누르면 자동으로 작성
+public class PostDetailResultDTO {
+    private Long postId;
     private String userId;
     private String nickName;
     private String title;
@@ -22,5 +21,4 @@ public class PostDTO {
     private String postCategory;
     private Integer likeCount;
     private Integer dislikeCount;
-    private List<AttachmentFileDTO> attachments;
 }

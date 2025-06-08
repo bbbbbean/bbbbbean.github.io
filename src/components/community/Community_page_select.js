@@ -13,6 +13,11 @@ const Community_page_select = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 물어보기
+  const currentUserId = "user1"; // 이거 Authentication에서 받나?
+
+  const API_BASE_URL = "http://localhost:8100/api/posts";
+
   // Quill 에디터 내용(HTML)을 안전하게 렌더링하기 위한 함수
   const createMarkup = (htmlContent) => {
     return { __html: htmlContent };
