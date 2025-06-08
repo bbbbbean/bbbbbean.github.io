@@ -1,5 +1,6 @@
 package com.club.match.Mapper;
 
+import com.club.match.Domain.DTO.CalendarDto;
 import com.club.match.Domain.DTO.CalendarMemoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,5 +12,6 @@ public interface CalendarMapper {
     int deleteUserMemo(CalendarMemoDTO calendarMemoDTO);
     CalendarMemoDTO selectOneMemo(String calendarId);
     List<CalendarMemoDTO> selectAllUserMemo(String userId, int year, int month);
+    List<CalendarDto> selectAllUserMatch(String userId, int year, int month);
     int updateUserMemo(CalendarMemoDTO calendarMemoDTO);
 }

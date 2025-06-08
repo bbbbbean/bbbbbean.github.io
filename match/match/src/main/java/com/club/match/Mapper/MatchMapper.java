@@ -14,4 +14,7 @@ public interface MatchMapper {
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
     List<MatchDto> matchAllList();
+    int addBookmark(BookmarkDto bookmarkDto);
+    int removeBookmark(BookmarkDto bookmarkDto);
+    List<Long> userBookmark(String userId);
 }

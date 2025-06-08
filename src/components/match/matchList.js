@@ -1,5 +1,7 @@
 
 import "../../css/matching_css/matchingList.css";
+import mark1 from "../../image/image_match/bookmark_border.svg"
+import mark2 from "../../image/image_match/bookmark.svg"
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -20,11 +22,13 @@ const MatchList = () => {
 
     const [selectMatch, setMatchList] = useState(null);
     const [matches, setMatches] = useState([]);
+    const [bookmark, setBookmark] = useState({});
 
     const handleModal = (e) => {
         setMatchList(e.target.classList[1]);
     }
     const navigate = useNavigate();
+
 
     // 전체 조회해서 데이터 들고오기
     useEffect(() => {
@@ -32,9 +36,24 @@ const MatchList = () => {
             .then(res => {
                 setMatches(res.data);
                 console.log(res.data)
-                
+
             })
             .catch(err => { });
+    }, []);
+
+    // 북마크 조회해서 기본 적용
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+
+        api.get(`/match/bookmark/list?userId=${userId}`)
+            .then(res => {
+                const map = {};
+                res.data.forEach(matchId => {
+                    map[matchId] = true;
+                });
+                setBookmark(map);
+            });
     }, []);
 
     // 날짜
@@ -46,6 +65,7 @@ const MatchList = () => {
         const weekday = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
         return { month, day, weekday };
     };
+
     // 같은 날짜별로 그룹 묶기
     const groupByDay = (matchList) => {
         const grouped = {};
@@ -75,6 +95,22 @@ const MatchList = () => {
         const dateB = new Date(arrB[0].startTime.replace(" ", "T"));
         return dateA - dateB;
     });
+
+    // 북마크
+    const handleBookmarkClick = async (matchId) => {
+        const userId = localStorage.getItem("userId");
+        const nextState = !bookmark[matchId];
+        if (!userId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+        await api.post("/match/bookmark", { matchId, userId, isBookmark: nextState });
+        console.log(matchId, userId);
+        setBookmark(prev => ({
+            ...prev,
+            [matchId]: nextState
+        }));
+    };
 
     selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
@@ -311,6 +347,7 @@ const MatchList = () => {
                                     <div className="match-data">
                                         <ul>
                                             <li>
+                                                <div><img src={bookmark[match.matchId] ? mark2 : mark1} onClick={() => handleBookmarkClick(match.matchId)} style={{ cursor: "pointer" }} /></div>
                                                 <div className="match-time">{match.time}</div>
                                                 <div className="match-content">
                                                     {match.title}
@@ -326,7 +363,7 @@ const MatchList = () => {
                                                         onClick={handleModal}
                                                     >
                                                         {/* 0:신청 가능 1: 모집완료 */}
-                                                        {match.status === 0 && match.countPeople < match.people? "신청 가능" : "모집 완료"}
+                                                        {match.status === 0 && match.countPeople < match.people ? "신청 가능" : "모집 완료"}
                                                     </button>
                                                 </div>
                                                 <div className="match-line"></div>

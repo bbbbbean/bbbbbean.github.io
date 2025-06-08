@@ -1,5 +1,6 @@
 package com.club.match.Controller;
 
+import com.club.match.Domain.DTO.BookmarkDto;
 import com.club.match.Domain.DTO.MatchDto;
 import com.club.match.Domain.DTO.MatchListDto;
 import com.club.match.Domain.Service.MatchService;
@@ -61,9 +62,6 @@ public class MatchController {
 
         // 호스트 생성된 매칭에 참여
         matchService.joinMatch(matchDto.getMatchId(),userId);
-        
-        // 캘린더 추가
-        matchService.CalendarUpdate(matchDto);
 
         log.info("a : " + matchDto);
 
@@ -77,4 +75,21 @@ public class MatchController {
         return ResponseEntity.ok().body(resp);
     }
 
+    // 북마크
+    @PostMapping("/bookmark")
+    public ResponseEntity<?> bookmarked(@RequestBody BookmarkDto bookmarkDto){
+        log.info("bookmarkDto"+bookmarkDto);
+        if (bookmarkDto.isBookmark()) {
+            matchService.addBookmark(bookmarkDto);
+        } else {
+            matchService.removeBookmark(bookmarkDto);
+        }
+        return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/bookmark/list")
+    public ResponseEntity<?> allBookmark(@RequestParam String userId){
+        List<Long> bookmarkedMatchIds = matchService.viewUserBookmark(userId);
+        return ResponseEntity.ok().body(bookmarkedMatchIds);
+    }
 }
