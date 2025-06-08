@@ -13,6 +13,7 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import searchIcon from "../image/image_main/serch-icon.svg";
 import MatchModal from "./match/matchModal";
 import AccordionModal from "./modal/AccordionModal";
+import api from "../axios";
 
 const Main = () => {
 
@@ -34,6 +35,22 @@ const Main = () => {
   }
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
+
+  const [tags, setTags] = useState([]);
+
+useEffect(() => {
+  async function fetchTags() {
+    try {
+      const res = await api.get("/api/main/popular");
+      setTags(res.data);
+    } catch (err) {
+      console.error("인기 태그 불러오기 실패", err.response?.data || err.message);
+    }
+  }
+
+  fetchTags();
+}, []);
+
 
   return (
     <>
@@ -127,11 +144,11 @@ const Main = () => {
                 <div className="main-textbox main-sky"></div>
               </div>
               <ul className="main-rank-els">
-                {['달리기', '보드게임', '발로란트', '배드민턴', '당일치기'].map((item, index) => (
+                {Array.isArray(tags) && tags.map((item, index) => (
                   <li className="main-rank-el" key={index}>
                     <ul>
                       <li className="main-rank-el-num">{index + 1}</li>
-                      <li className="main-rank-el-con">{item}</li>
+                      <li className="main-rank-el-con">{item.tag}</li>
                       <li className="main-rank-el-go">
                         <a className="main-sky">
                           <img src={searchIcon} alt="돋보기" />
