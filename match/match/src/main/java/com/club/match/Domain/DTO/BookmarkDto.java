@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class BookmarkDto {
     private long matchId;
     private String userId;
-    private boolean isBookmark;
+    private boolean bookmark;
 }

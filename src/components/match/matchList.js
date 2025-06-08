@@ -21,6 +21,7 @@ import 'swiper/css/navigation';
 const MatchList = () => {
 
     const [selectMatch, setMatchList] = useState(null);
+    const [topMatches, setTopMatches] = useState([]);
     const [matches, setMatches] = useState([]);
     const [bookmark, setBookmark] = useState({});
 
@@ -35,8 +36,11 @@ const MatchList = () => {
         api.get("/match/list")
             .then(res => {
                 setMatches(res.data);
-                console.log(res.data)
+                const sortedTop5 = res.data
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // 최신순 예시
+                    .slice(0, 5);
 
+                setTopMatches(sortedTop5);
             })
             .catch(err => { });
     }, []);
@@ -104,13 +108,48 @@ const MatchList = () => {
             alert("로그인이 필요합니다.");
             return;
         }
-        await api.post("/match/bookmark", { matchId, userId, isBookmark: nextState });
-        console.log(matchId, userId);
-        setBookmark(prev => ({
-            ...prev,
-            [matchId]: nextState
-        }));
+        const CurrentBookmark = bookmark[matchId];
+        const url = CurrentBookmark
+            ? "/match/bookmark/remove"
+            : "/match/bookmark/add";
+
+        try {
+            await api.post(url, {
+                matchId,
+                userId
+            });
+
+            console.log("Bookmark 요청:", matchId, userId, url);
+
+            setBookmark(prev => ({
+                ...prev,
+                [matchId]: !prev[matchId]
+            }));
+        } catch (err) {
+            console.error("북마크 요청 실패:", err);
+        }
     };
+
+    // 슬라이드 날짜 포멧팅팅
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${month}월 ${day}일`;
+    };
+    // 카테고리
+    const kategorieName = (kategorie)=>{
+        if(kategorie == 1){
+            kategorie = "운동";
+        }else if(kategorie == 2){
+            kategorie = "여행";
+        }else if(kategorie == 3){
+            kategorie = "게임";
+        }else if(kategorie == 4){
+            kategorie = "기타";
+        }
+        return kategorie;
+    }
 
     selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
@@ -124,205 +163,30 @@ const MatchList = () => {
                 {/* Swiper component */}
                 <>
                     <Swiper
-                        centeredSlides={true}
-                        slidesOffsetBefore={10}
+                        slidesPerView={4}
                         loop={true}
-                        breakpoints={
-                            {
-                                0: {
-                                    slidesPerView: 2,
-                                },
-                                768: {
-                                    slidesPerView: 3,
-                                },
-                                1024: {
-                                    slidesPerView: 4,
-                                },
-                                1280: {
-                                    slidesPerView: 5,
-                                },
-                            }
-                        }
-                        autoplay={{
-                            delay: 2500,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true,
-                        }}
-                        pagination={{
-                            clickable: true,
-                        }}
+                        autoplay={{ delay: 2500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                        pagination={{ clickable: true }}
                         navigation={true}
                         modules={[Autoplay, Pagination, Navigation]}
                         className="mySwiper"
                     >
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
+                        {topMatches.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <div className="promotion-match">
+                                    <div className="pm-match-container">
+                                        <p>{formatDate(item.startTime)}</p>
+                                        <span>{kategorieName(item.kategorie)}</span>
+                                    </div>
+                                    <div className="pm-match-title">
+                                        {item.tags.map((tag, i) => (
+                                            <p key={i}>#{tag} </p>
+                                        ))}
+                                        <span>{item.title}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="promotion-swiper">
-                                <div className="swiper-wrapper">
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <div className="swiper-slide" key={i}>
-                                            <div className="promotion-match">
-                                                <div className="pm-match-container">
-                                                    <p>1월22일</p>
-                                                    <span>운동</span>
-                                                </div>
-                                                <div className="pm-match-title">
-                                                    <p>5VS5</p>
-                                                    <p>온라인</p>
-                                                    <span>발로란트 내전 5vs5 너만오면 고</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </SwiperSlide>
+                            </SwiperSlide>
+                        ))}
                     </Swiper>
                 </>
             </div>

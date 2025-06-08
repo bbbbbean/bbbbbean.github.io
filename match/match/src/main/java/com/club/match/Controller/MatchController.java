@@ -72,18 +72,21 @@ public class MatchController {
     public ResponseEntity<?> matchAllList(){
         List<MatchListDto> resp = matchService.MatchAllList();
         log.info("resp"+resp);
+        log.info("resp"+resp.getFirst().getKategorie());
         return ResponseEntity.ok().body(resp);
     }
 
     // 북마크
-    @PostMapping("/bookmark")
-    public ResponseEntity<?> bookmarked(@RequestBody BookmarkDto bookmarkDto){
+    @PostMapping("/bookmark/add")
+    public ResponseEntity<?> bookmarkAdd(@RequestBody BookmarkDto bookmarkDto){
         log.info("bookmarkDto"+bookmarkDto);
-        if (bookmarkDto.isBookmark()) {
-            matchService.addBookmark(bookmarkDto);
-        } else {
-            matchService.removeBookmark(bookmarkDto);
-        }
+        matchService.addBookmark(bookmarkDto);
+        return ResponseEntity.ok().body(null);
+    }
+    @PostMapping("/bookmark/remove")
+    public ResponseEntity<?> bookmarkRemove(@RequestBody BookmarkDto bookmarkDto){
+        log.info("bookmarkDto"+bookmarkDto);
+        matchService.removeBookmark(bookmarkDto);
         return ResponseEntity.ok().body(null);
     }
 
