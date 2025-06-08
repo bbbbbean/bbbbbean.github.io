@@ -145,6 +145,26 @@
         SELECT attachmentUrl, originalFileName, contentType FROM chatattachment_tbl where messageId = #{messageId};
     </select>
 
+    <!--댓글용-->
+    <insert id="insertComment">
+        INSERT INTO comment_tbl (postId, userId, nickName, content, createAt, commentTo, parentId)
+        VALUES (#{postId}, #{userId}, #{nickName}, #{content}, #{createAt}, #{commentTo}, #{parentId})
+    </insert>
+    <select id="getParentComment">
+        SELECT * FROM comment_tbl where postId = #{postId} and parentId IS NULL order by createAt;
+    </select>
+
+    <select id="getChildComment">
+        SELECT * FROM comment_tbl where parentId = #{commentId} order by createAt;
+    </select>
+
+    <update id="updateComment">
+        UPDATE comment_tbl SET content = #{content} where userId = #{userId} and commentId = #{commentId}
+    </update>
+
+    <delete id="deleteComment">
+        DELETE FROM comment_tbl where commentId = #{commentId} AND userId = #{userId}
+    </delete>
 
 </mapper>
 

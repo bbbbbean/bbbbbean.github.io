@@ -5,7 +5,8 @@ import imageApi from '../../ImageAxios'
 import { useDropzone } from 'react-dropzone'
 import FileIcon from "../../image/file.svg"
 import UploadIcon from "../../image/upload.svg"
-const Chat = ({ pos, openChat, setOpenChat }) => {
+
+const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
 
     const [mainImage, setMainImage] = useState("");
     const [title, setTitle] = useState("");
@@ -19,7 +20,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         setInputMessage("");
         setInputFileName(acceptedFiles[0].name);
         setFile(acceptedFiles[0]);
-        console.log("test : " + acceptedFiles[0].name);
     }, [])
     const onCancel = () => {
         setInputFileName("")
@@ -36,7 +36,8 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
     const getChatMessage = () => {
         api.post("api/chat/getChatMessage", { "chatCode": openChat })
             .then((response) => {
-                const resData = response.data?.data;
+
+                const resData = response.data.data;
 
                 setMainImage(resData.mainImage || "");
                 setTitle(resData.title || "");
@@ -52,7 +53,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                         minute: "2-digit"
                     }),
                 }));
-                console.log(formattedMessages);
                 setMessages(formattedMessages);
             });
     }
@@ -76,7 +76,6 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
     useEffect(() => {
         const subscription = client.subscribe(`/sub/count/${openChat}`, (message) => {
             const data = JSON.parse(message.body);
-            console.log(data);
             if (data.isOk) {
                 setEntered(true);
             }
@@ -137,8 +136,14 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
         }, 0);
     }
 
+    // mergedStyle에 height가 없으면 기본값으로 "75%"를 지정
+    const chatContentStyle = {
+        ...style2,
+        height: style2 && style2.height ? style2.height : "82%"
+    };
+
     return (
-        <div className="match-chat-container">
+        <div className="match-chat-container" style={{marginRight:"10px", marginLeft:"0", height: "770px"}}>
             <div className="match-chat-title">
                 <div className="match-chat-img">
                     <img
@@ -161,7 +166,7 @@ const Chat = ({ pos, openChat, setOpenChat }) => {
                 </div>
             </div>
             <div className="match-chat-line"></div>
-            <div className="match-chat-content" style={pos === "friend" || pos === "group" ? { height: "82%" } : { height: "75%" }}>
+            <div className="match-chat-content" style={chatContentStyle}>
                 {messages.map((msg, index) => (
                     msg.userId === localStorage.getItem("userId") ? (
                         <div key={index} className="your-chat-container">

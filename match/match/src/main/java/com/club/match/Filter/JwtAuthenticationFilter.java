@@ -44,7 +44,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         log.info("JwtFilter URL : " + request.getRequestURI());
 
-        if(token == null || request.getRequestURI().startsWith("/profile")
+        if(token == null
+                || request.getRequestURI().startsWith("/profile")
+                || request.getRequestURI().startsWith("/chatFile")
+                || request.getRequestURI().contains("logout")
                 || refreshHeader != null){
             filterChain.doFilter(servletRequest,servletResponse);
             return;

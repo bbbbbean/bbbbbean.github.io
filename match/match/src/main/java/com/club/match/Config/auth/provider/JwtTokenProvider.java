@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key;
-    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000*60*30;
+    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000*30*60;
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000*60*60*24; //60*60*24;
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

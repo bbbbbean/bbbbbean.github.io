@@ -1,11 +1,11 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../axios"
 import { setUserName } from "../../store";
 import { useDispatch } from "react-redux";
 import ChangeImage from "../modal/ChangeImageModal";
 import PasswordCheck from "./Pwdcheck";
-    
-const UserEditForm = ({profile,setProfile}) => {
+
+const UserEditForm = ({ profile, setProfile }) => {
 
     const dispatch = useDispatch();
 
@@ -32,7 +32,6 @@ const UserEditForm = ({profile,setProfile}) => {
         introduction: userDTO.introduction,
         isPrivate: ""
     });
-
     useEffect(() => {
         privateV = userDTO.private ? "1" : "0";
         setFormData(prev => ({ ...prev, ["isPrivate"]: privateV }));
@@ -49,6 +48,9 @@ const UserEditForm = ({profile,setProfile}) => {
         console.log(btnClass[0]);
         api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "type": btnClass[0] })
             .then((response) => {
+                if (response.status !== 200) {
+                    return;
+                }
                 if (btnClass[0] === "nickname") {
                     dispatch(setUserName(response.data.userDTO.nickName));
                 }
@@ -120,6 +122,20 @@ const UserEditForm = ({profile,setProfile}) => {
                     <span>{userDTO.birthday}</span>
                 </div>
                 <span></span>
+                <div className="phone">
+                    <label>연락처</label>
+                    <span>{userDTO.phone}</span>
+                    {/* {editField !== "phone" ? (
+                        <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
+                    ) : (
+                        <div className="info-edit">
+                            <label></label>
+                            <button className="btn-code-phone my-page-btn">본인인증</button>
+                            <button className="address my-page-btn" onClick={hideEdit}>완료</button>
+                        </div>
+                    )} */}
+                </div>
+                <span></span>
                 <div className="profile">
                     <label>이미지</label>
                     <img src={profile} style={{ maxWidth: "50px", maxHeight: "50px", position: "absolute", borderRadius: "50%" }}></img>
@@ -128,7 +144,7 @@ const UserEditForm = ({profile,setProfile}) => {
                 <span></span>
                 <div className="introduction">
                     <label>소개</label>
-                    <span>{userDTO.introduction}</span>
+                    <div>{userDTO.introduction}</div>
                     {editField !== "introduction" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("introduction")}>수정하기</button>
                     ) : (
@@ -166,20 +182,6 @@ const UserEditForm = ({profile,setProfile}) => {
                                 onChange={handleInput}
                             />
                             <button className="nickname my-page-btn" onClick={hideEdit}>완료</button>
-                        </div>
-                    )}
-                </div>
-                <span></span>
-                <div className="phone">
-                    <label>연락처</label>
-                    <span>{userDTO.phone}</span>
-                    {editField !== "phone" ? (
-                        <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
-                    ) : (
-                        <div className="info-edit">
-                            <label></label>
-                            <button className="btn-code-phone my-page-btn">본인인증</button>
-                            <button className="address my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
@@ -241,7 +243,7 @@ const UserEditForm = ({profile,setProfile}) => {
 
 }
 
-const UserEdit = ({profile,setProfile}) => {
+const UserEdit = ({ profile, setProfile }) => {
 
     const [password, setPassword] = useState("");
     const [ok, setOk] = useState(false);

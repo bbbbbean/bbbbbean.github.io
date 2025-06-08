@@ -122,6 +122,11 @@ public class UserController {
 
         String userId = authentication.getName();
         String value = (String)req.get("value");
+
+        if(value.trim().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         String type = (String)req.get("type");
 
         if(type.equals("phone")) {
@@ -179,6 +184,10 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        String regex1 = "^(?=.*[a-zA-Z]).+$"; // 영문자 포함
+        String regex2 = "^(?=.*[!@#$%^*+=-]).+$"; // 특수문자 포함
+        String regex3 = "^(?=.*[0-9]).+$"; // 숫자 포함
+        String regex4 = "^.{8,15}$"; // 길이 8~15자
 
         String curpassword = (String)req.get("curpassword");
         String newpassword = (String)req.get("newpassword");
@@ -192,16 +201,38 @@ public class UserController {
 
         boolean isOk = passwordEncoder.matches(curpassword, userDTO.getPassword());
 
-        if(!isOk){
-            resp.put("code","1");//사용중인 비밀번호가 일치하지 않습니다.
+        if(!isOk) {
+            resp.put("code", "1");
+            resp.put("error", "사용중인 비밀번호가 일치하지 않습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
+
         if(!newpassword.equals(chkpassword)){
-            resp.put("code","2");//새로운 비밀번호와 확인이 일치하지 않습니다.
+            resp.put("code", "2");
+            resp.put("error","새로운 비밀번호와 확인이 일치하지 않습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
         if(passwordEncoder.matches(newpassword,userDTO.getPassword())){
-            resp.put("code","3");//이미 사용중인 비밀번호입니다.
+            resp.put("code", "3");
+            resp.put("error","이미 사용중인 비밀번호입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        if (!newpassword.matches(regex1)) {
+            resp.put("code","3");
+            resp.put("error","비밀번호는 영어가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!newpassword.matches(regex2)) {
+            resp.put("code","3");
+            resp.put("error","비밀번호는 특수문자가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!newpassword.matches(regex3)) {
+            resp.put("code","3");
+            resp.put("error","비밀번호는 숫자가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!newpassword.matches(regex4)) {
+            resp.put("code","3");
+            resp.put("error", "비밀번호는 8~15자 사이여야 합니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
 
@@ -209,7 +240,7 @@ public class UserController {
 
         boolean isChange = userService.changeUserPassword(userId,password);
         if(!isChange){
-            resp.put("code","4");//비밀번호 변경에 실패했습니다. 다시 입력해주세요.
+            resp.put("error","비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
 

@@ -1,9 +1,6 @@
 package com.club.match.Mapper;
 
-import com.club.match.Domain.DTO.ChatRoomDTO;
-import com.club.match.Domain.DTO.ChatFileDTO;
-import com.club.match.Domain.DTO.MessageDTO;
-import com.club.match.Domain.DTO.UserDTO;
+import com.club.match.Domain.DTO.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -50,4 +47,14 @@ public interface ChatMapper {
     int insertChatFile(ChatFileDTO fileDTO);
 
     ChatFileDTO getChatFile(String messageId);
+
+    int insertComment(CommentDTO commentDTO);
+
+    List<CommentDTO> getParentComment(String postId);
+
+    List<CommentDTO> getChildComment(String commentId);
+
+    int updateComment(CommentDTO commentDTO);
+
+    int deleteComment(CommentDTO commentDTO);
 }

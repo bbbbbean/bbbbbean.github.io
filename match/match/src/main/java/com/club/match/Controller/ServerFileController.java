@@ -31,7 +31,7 @@ public class ServerFileController {
     private static final List<String> IMAGE_EXTENSION = Arrays.asList("jpg", "jpeg", "png", "gif", "webp");
     private final String BASE_UPLOAD_DIR = "src/main/resources/Users/";
 
-    // 프로파일 이미지 업로드
+    // 프로파일 이미지
     @GetMapping("/profile/{userId}")
     public ResponseEntity<?> profile(@PathVariable String userId) throws IOException {
 
@@ -59,7 +59,7 @@ public class ServerFileController {
                 .body(imageResource);
     }
 
-    @GetMapping("/chat/{userId}/{fileName}/{fileType}")
+    @GetMapping("/chatFile/{userId}/{fileName}/{fileType}")
     public ResponseEntity<?> chatImage(
             @PathVariable String userId,
             @PathVariable String fileName,

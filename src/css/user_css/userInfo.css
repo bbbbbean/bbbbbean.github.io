@@ -138,7 +138,7 @@ p {
 .user-info-content>div>button {
     position: absolute;
     top: 5px;
-    right: 20%;
+    right: 50px;
 }
 
 .user-info-content>div>button,
@@ -173,4 +173,17 @@ p {
     position: absolute;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.introduction> label {
+    text-align: center;
+}
+
+.introduction>div:nth-child(2) {
+    display: inline-block;
+    max-width: 40%;
+    font-size: 18px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }

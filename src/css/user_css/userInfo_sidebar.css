@@ -32,16 +32,15 @@
     top: -1px;
     left: -2px;
 }
-.info-container>.info-left>.info-user-profile{
+
+.info-container>.info-left>.info-user-profile {
     text-align: center;
 }
 
 .info-container>.info-left>.info-user-profile>img {
     width: 100%;
-    min-width: 300px;
     max-width: 300px;
-    min-height: 300px;
-    max-height: 300px;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -68,7 +67,8 @@
 .info-container>.info-left>.info-menu>div {
     margin: 25px;
 }
-.info-container>.info-left>.info-menu>.active{
+
+.info-container>.info-left>.info-menu>.active {
     font-weight: bold;
     font-size: 26px;
 }
