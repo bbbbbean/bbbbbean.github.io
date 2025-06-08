@@ -169,3 +169,27 @@
 .comment-pagination .next {
   padding: 8px 15px;
 }
+
+.loading-message,
+.error-message,
+.not-found-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #555;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #d9534f; /* 빨간색 계열 */
+  background-color: #f2dede; /* 연한 빨간색 배경 */
+  border: 1px solid #ebccd1;
+}
+
+.not-found-message {
+  color: #337ab7; /* 파란색 계열 */
+  background-color: #d9edf7; /* 연한 파란색 배경 */
+  border: 1px solid #bce8f1;
+}

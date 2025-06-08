@@ -105,4 +105,22 @@ public class PostController {
             return new ResponseEntity<>("게시글 저장 중 예외 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // 게시글 조회
+    @GetMapping("/community/post/{postId}")
+    public ResponseEntity<?> getPostDetail(@PathVariable("postId") Long postId) {
+        log.info("게시글 상세 조회 요청 수신. postId: {}", postId);
+        try {
+            PostDTO postDetail = postService.getPostByPostId(postId);
+
+            if (postDetail != null) {
+                return new ResponseEntity<>(postDetail, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("게시글 상세 조회 중 오류 발생: postId={}, 에러: {}", postId, e.getMessage(), e);
+            return new ResponseEntity<>("게시글 상세 조회 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

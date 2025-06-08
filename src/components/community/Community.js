@@ -8,7 +8,7 @@ const Community = () => {
     <Routes>
       <Route path="/" element={<Community_list />} />
       <Route path="/write" element={<Community_page_write />} />
-      <Route path="/select" element={<Community_page_select />} />
+      <Route path="/select/:postId" element={<Community_page_select />} />
     </Routes>
   );
 };

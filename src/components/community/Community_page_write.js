@@ -3,6 +3,7 @@ import Quill from "quill";
 import "../../css/CSS_community-page/community_page_write.css";
 import api from "../../axios";
 import imageApi from "../../ImageAxios";
+import postImageApi from "../../postImageAxios";
 import file_icons from "./images/file_icon.svg";
 
 import "quill/dist/quill.snow.css"; // For Snow theme
@@ -28,7 +29,7 @@ function Community_page_write() {
   const [editorContent, setEditorContent] = useState("");
   const [title, setTitle] = useState(""); // 게시글 제목
   const [selectedPostCodeId, setSelectedPostCodeId] = useState(5); // 게시판 코드 ID, 5는 자유게시판(디폴트)
-  const [uploadFiles, setUploadFile] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
 
   // 이미지 업로드 핸들러
   const handleFileUpload = useCallback(() => {
@@ -37,9 +38,10 @@ function Community_page_write() {
 
     const input = document.createElement("input");
     input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*"); // 이미지 파일만 선택하도록 제한
     input.click();
 
-    input.onchange = () => {
+    input.onchange = async () => {
       if (!isMounted) return;
 
       const file = input.files[0];
@@ -47,32 +49,29 @@ function Community_page_write() {
         const formData = new FormData();
         formData.append("file", file);
 
-        imageApi
-          .post(`/upload/file`, formData)
-          .then((response) => {
-            const data = response.data;
-            const imageUrl = data.fileUrl;
-
-            // Quill에 이미지 삽입
-            const range = quill.getSelection();
-            if (range) {
-              quill.insertEmbed(range.index, "image", imageUrl);
-              quill.setSelection(range.index + 1); // 커서 위치 조정
-            } else {
-              // 커서가 없을 경우 (예: 에디터가 비어있을 때) 맨 마지막에 삽입
-              quill.insertEmbed(quill.getLength(), "image", imageUrl);
-              quill.setSelection(quill.getLength() + 1);
-            }
-            console.log("이미지 업로드 성공:", imageUrl);
-          })
-          .catch((error) => {
-            console.error("이미지 업로드 중 오류 발생:", error);
-            if (error.response) {
-              console.error("오류 응답 데이터:", error.response.data);
-              console.error("오류 응답 상태:", error.response.status);
-            }
-            alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
-          });
+        try {
+          const response = await postImageApi.post(`/upload/file`, formData);
+          const data = response.data;
+          const imageUrl = data.fileUrl;
+          // Quill에 이미지 삽입
+          const range = quill.getSelection();
+          if (range) {
+            quill.insertEmbed(range.index, "image", imageUrl);
+            quill.setSelection(range.index + 1); // 커서 위치 조정
+          } else {
+            // 커서가 없을 경우 (예: 에디터가 비어있을 때) 맨 마지막에 삽입
+            quill.insertEmbed(quill.getLength(), "image", imageUrl);
+            quill.setSelection(quill.getLength() + 1);
+          }
+          console.log("이미지 업로드 성공:", imageUrl);
+        } catch (error) {
+          console.error("이미지 업로드 중 오류 발생:", error);
+          if (error.response) {
+            console.error("오류 응답 데이터:", error.response.data);
+            console.error("오류 응답 상태:", error.response.status);
+          }
+          alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+        }
       }
       return () => {
         isMounted = false;
@@ -170,12 +169,8 @@ function Community_page_write() {
     }
 
     // Postservice.savePost 호출
-    api
-      .post("/post/save", formData, {
-        // headers: {
-        // "Content-Type": "multipart/form-data", // 파일 업로드를 위해 content-type 변경. 그런데 브라우저가 자동으로 설정하므로 제거하라함
-        // },
-      })
+    postImageApi
+      .post("/post/save", formData)
       .then((response) => {
         console.log("게시글 저장 : ", response.data);
         if (response.data.success) {
@@ -202,6 +197,14 @@ function Community_page_write() {
       });
   };
 
+  const handleAttachedFileChange = (e) => {
+    // 기존 파일에 새로운 파일들을 추가합니다.
+    setUploadFiles((prevFiles) => [
+      ...prevFiles,
+      ...Array.from(e.target.files),
+    ]);
+  };
+
   return (
     <div>
       <h3>여기에 운동, 게임, 자유게시판 등 어느게시판에 올릴지 표시</h3>
@@ -225,7 +228,7 @@ function Community_page_write() {
       <input
         type="file"
         multiple // 여러 파일 선택 가능하도록
-        onChange={(e) => setUploadFile(Array.from(e.target.files))} // 파일 목록을 배열로 저장
+        onChange={handleAttachedFileChange} // 파일 목록을 배열로 저장
         style={{ marginTop: "1px" }}
       />
       <div
