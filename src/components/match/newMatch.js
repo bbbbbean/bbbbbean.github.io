@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import KakaoPostcodeMap from "../map/map"
 import api from "../../axios"
 import "../../css/matching_css/newMatch.css";
@@ -9,11 +10,10 @@ const NewMatch = ()=>{
     const [form, setForm] = useState({
         title: '',
         startTime: '',
-        // 온라인 오프라인 isOnline으로 1차 판별 -> 오프일 경우 주소 들고와야함함
-        location: '',
+        location: '온라인',
         // 0 : 익명 , 1 : 실명
         anonymousCondi: '1',
-        mannerCondi: '',
+        mannerCondi: '50',
         // 0 : 동성 , 1 : 전체
         genderCondi: '1'
     });
@@ -21,12 +21,15 @@ const NewMatch = ()=>{
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "title" && value.length > 30) return;
+        setIsWarn("");
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const [isOnline, setIsOnline] = useState(true);
+    const [isWarn, setIsWarn] = useState("");
     const [tags, setTags] = useState([]);
     const [inputValue, setInputValue] = useState("");
+    const navigate = useNavigate();
 
     const handleLocationSelect = (selectedAddress) => {
         setForm((prev) => ({ ...prev, location: selectedAddress }));
@@ -35,6 +38,7 @@ const NewMatch = ()=>{
     const MAX_TAGS = 5;
 
     const handleKeyDown = (e) => {
+        setIsWarn("");
         const trimmed = inputValue.trim();
 
         if ((e.key === " " || e.key === "Enter") && trimmed !== "") {
@@ -55,6 +59,7 @@ const NewMatch = ()=>{
     const removeTag = (indexToRemove) => {
         setTags(tags.filter((_, i) => i !== indexToRemove));
     };
+
 
     const openHelp = (e)=>{
         const helpEl=document.querySelectorAll(".new-match-help-el")
@@ -89,14 +94,22 @@ const NewMatch = ()=>{
         console.log("매너 조건:", form.mannerCondi);
         console.log("성별 조건:", form.genderCondi);
         console.log("태그:", tags);
-
         const requestData = {
             ...form,
             tags: tags
         };
         console.log(requestData);
 
-        api.post("/match/list/newMatch",requestData).then(()=>{}).catch(()=>{})
+        api.post("/match/list/newMatch",requestData)
+            .then((resp)=>{
+                if(resp.status==200)
+                    navigate("/match/list");
+                else{
+                    setIsWarn(resp.data.warnning)
+                }
+            })
+            .catch(()=>{
+            })
     };
 
     return(
@@ -105,6 +118,7 @@ const NewMatch = ()=>{
         <div className="new-match-wrap">
             <div className="new-match-title"><span>매칭</span><span> 등록</span></div>
             <form className="new-match-form" onSubmit={handleSubmit}>
+                <span className="new-match-warn">{isWarn}</span>
                 <div>
                     <label>제목</label>
                     <input type="text" name="title" placeholder="30자까지 입력 가능합니다." value={form.title} onChange={handleChange} />
@@ -119,7 +133,7 @@ const NewMatch = ()=>{
                     <div>
                         <div>
                             <span className={isOnline ? "new-match-check" : ""}
-                                onClick={() => setIsOnline(true)}>온라인</span>
+                                onClick={() => {setIsOnline(true); setForm((prev)=>({...prev, location: "온라인"}))}}>온라인</span>
                             <span className={!isOnline ? "new-match-check" : ""}
                                 onClick={() => setIsOnline(false)}>오프라인</span>
                         </div>

@@ -2,19 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.club.match.Mapper.MatchMapper">
+    <!-- 매칭 생성 -->
     <insert id="insertMatch" useGeneratedKeys="true" keyProperty="matchId" keyColumn="matchId">
         insert into match_tbl(creatorId, title, createAt, startTime, status, location, url, anonymousCondi, mannerCondi, genderCondi, chatCode) values(#{creatorId},#{title},#{createAt},#{startTime},#{status},#{location},#{url},#{anonymousCondi},#{mannerCondi},#{genderCondi},#{chatCode});
     </insert>
+    <!-- 그룹채팅 생성 -->
     <insert id="insertChatting" useGeneratedKeys="true" keyProperty="chatCode" keyColumn="chatCode">
         insert into chat_tbl(type, hostId, chatTitle) values(#{type},#{hostId},#{chatTitle});
     </insert>
+    <!-- 그룹채팅 참여 -->
     <insert id="insertChatparticipant">
         insert into chatparticipant_tbl values(#{chatCode}, #{userId}, #{createAt});
     </insert>
+    <!-- 매칭 태그 테이블에 태그 추가 -->
     <insert id="insertTag">
         insert into matchtag_tbl values
         <foreach collection="tags" item="tag" separator=",">
             (#{matchId}, #{tag})
         </foreach>
+    </insert>
+    <!-- 매칭 참여 -->
+    <insert id="joinMatch">
+        insert into matchparticipant_tbl values(#{matchId}, #{participantId})
     </insert>
 </mapper>

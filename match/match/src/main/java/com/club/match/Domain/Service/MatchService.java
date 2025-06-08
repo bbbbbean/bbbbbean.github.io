@@ -1,9 +1,6 @@
 package com.club.match.Domain.Service;
 
-import com.club.match.Domain.DTO.ChatParticipantDto;
-import com.club.match.Domain.DTO.ChattingDto;
-import com.club.match.Domain.DTO.MatchDto;
-import com.club.match.Domain.DTO.MatchTagDto;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.MatchMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +57,15 @@ public class MatchService {
                 .build();
         matchMapper.insertTag(matchTagDto);
         log.info("tag : " + matchTagDto);
+    }
+
+    // 호스트 생성 매치 참여
+    public void joinMatch(long matchId, String hostId){
+        MatchParticipantDto matchParticipantDto = MatchParticipantDto.builder()
+                .matchId(matchId)
+                .participantId(hostId)
+                .build();
+        matchMapper.joinMatch(matchParticipantDto);
     }
 
 }
