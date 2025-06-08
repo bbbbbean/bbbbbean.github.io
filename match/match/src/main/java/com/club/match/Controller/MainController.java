@@ -1,12 +1,16 @@
 package com.club.match.Controller;
 
+import com.club.match.Domain.DTO.MatchDto;
 import com.club.match.Domain.DTO.TagDTO;
 import com.club.match.Domain.Service.MainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -19,6 +23,17 @@ public class MainController {
     @GetMapping("/popular")
     public List<TagDTO> getPopularTags() {
         return mainService.getTopTags(5);  // 기본 5개 반환
+    }
+
+    @PostMapping("/matches")
+    public ResponseEntity<?> getMatchList(){
+
+        Map<String, Object> resp = new HashMap<>();
+
+        List<MatchDto> matchList = mainService.getAllMatches();
+
+        resp.put("matches",matchList);
+        return ResponseEntity.ok().body(resp);
     }
 
 }

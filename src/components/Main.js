@@ -51,6 +51,20 @@ useEffect(() => {
   fetchTags();
 }, []);
 
+  // DB에서 불러온 리스트 상태 관리
+ const [matchList, setNewMatchList] = useState([]);
+  useEffect(() => {
+    async function fetchMatchList() {
+      try {
+        const res = await api.get("/api/matches"); // 예시 엔드포인트
+        setMatchList(res.data);
+      } catch (err) {
+        console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
+      }
+    }
+    fetchMatchList();
+  }, []);
+
 
   return (
     <>
@@ -177,21 +191,21 @@ useEffect(() => {
 
           <div className="main-matchlist">
             <ul>
-              {['운동', '운동', '운동', '운동', '운동'].map((category, index) => (
-                <li className={`main-matchlist-els ${index}`} key={index}>
+              {matchList.map((match, index) => (
+                <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{category}</span>
+                      <span className="main-matchlist-tag">{match.kategorie}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
                     <a className="main-matchlist-el-link">
                       <div className="main-matchlist-el-tit">
-                        <span>한강에서 1시간 러닝하실 분</span>
+                        <span>{match.title}</span>
                       </div>
                       <div className="main-matchlist-el-info">
-                        <span>한강둔치</span>
-                        <span>5명</span>
+                        <span>{match.location}</span>
+                        <span>{match.people}명</span>
                         <span>1/23</span>
                       </div>
                       <img src={searchIcon} alt="돋보기" />
