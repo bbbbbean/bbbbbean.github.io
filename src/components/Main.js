@@ -184,7 +184,6 @@ const Main = () => {
               ))}
             </ul>
           </div>
-          {/* {isAuth && <AccordionModal />} */}
         </section>
       </main>
       {selectMatch != null && <MatchModal selectMatch={selectMatch} setMatchList={setMatchList} />}

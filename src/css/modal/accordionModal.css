@@ -5,6 +5,8 @@
   right: 2rem;
   bottom: 1rem;
   z-index: 2000;
+  top: 550px;
+  right: 0px;
 }
 .accordion-button{
   position: absolute;
@@ -20,7 +22,7 @@
   font-weight: bold;
   color: white;
   top: 0;
-  right: -40px;
+  right: 0;
 }
 
 #Accordion_wrap{
