@@ -72,9 +72,15 @@ public class FriendController {
 
         dto.setUserId(userId); // 변경 주체인 본인의 ID 설정
 
-        // 상태 변경 로직 호출
-        boolean success = friendService.updateFriendStatus(dto);
+        boolean success;
 
+        if (dto.getStatus() == 0) {
+            // 친구 수락
+            success = friendService.acceptFriend(dto); // 양방향 처리 포함됨
+        } else {
+            // 즐겨찾기/차단 등 단방향 처리
+            success = friendService.updateFriendStatus(dto);
+        }
         if (success) {
             return ResponseEntity.ok().body("상태가 변경되었습니다.");
         } else {

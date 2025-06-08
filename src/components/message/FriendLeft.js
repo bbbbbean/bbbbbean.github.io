@@ -44,6 +44,22 @@ const FriendLeft = () => {
       setFriendSearch(response.data.friendFind);
     });
   })
+
+const sendFriendRequest = (friendId) => {
+  api.post('/api/friend/addFriend', {
+    friendId: friendId,
+    status: 3
+  })
+  .then(response => {
+    console.log('친구 요청 보냄:', response.data);
+    // 검색 목록에서 제거
+    setFriendSearch(prev => prev.filter(friend => friend.userId !== friendId));
+  })
+  .catch(error => {
+    console.error('친구 요청 실패:', error);
+  });
+};
+  
   const friendStatus = ((userId, newStatus)=>{
   console.log("변경할 친구 ID:", userId);
   console.log("새로운 상태 값:", newStatus);
@@ -54,6 +70,33 @@ const FriendLeft = () => {
   })
   .then((response) => {
     console.log("상태 변경 완료:", response.data);
+
+    // 상태에 따라 friends / bestFriends 목록 갱신
+    if (newStatus === 1) {
+      // 즐겨찾기 설정: friends → bestFriends
+      const movedFriend = friends.find(f => f.friendId === userId);
+      if (movedFriend) {
+        setFriends(prev => prev.filter(f => f.friendId !== userId));
+        setBestFriends(prev => [...prev, movedFriend]);
+      }
+    } else if (newStatus === 0) {
+      // 즐겨찾기 해제: bestFriends → friends
+      const movedFriend = bestFriends.find(f => f.friendId === userId);
+      if (movedFriend) {
+        setBestFriends(prev => prev.filter(f => f.friendId !== userId));
+        setFriends(prev => [...prev, movedFriend]);
+      }
+    }
+
+        api.post("/api/friend/list").then((response) => {
+      setFriends(response.data.commonFriend);
+      setBestFriends(response.data.bestFriend);
+      setFriendRequest(response.data.friendRequest);
+    });
+
+    // 메뉴 닫기 (UX 개선용)
+    setOpenMenuKey(null);
+
   })
   .catch((error) => {
     console.error("상태 변경 실패:", error);
@@ -81,7 +124,7 @@ const FriendLeft = () => {
                   <div className="oneline">{friend.introduction}</div>
                 </div>
                 <div className="requestbuttons">
-                  <button className="accept">신청</button>
+                  <button className="accept" onClick={() => sendFriendRequest(friend.userId)}>신청</button>
                 </div>
               </div>
             ))}
@@ -97,7 +140,7 @@ const FriendLeft = () => {
                 <div className="oneline">{friend.introduction}</div>
               </div>
               <div className="requestbuttons">
-                <button className="accept">수락</button>
+                <button className="accept" onClick={() => friendStatus(friend.userId, 0)}>수락</button>
                 <button className="reject">거절</button>
               </div>
             </div>
