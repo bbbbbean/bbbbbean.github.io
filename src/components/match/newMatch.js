@@ -1,5 +1,6 @@
 import { useState } from "react";
 import KakaoPostcodeMap from "../map/map"
+import api from "../../axios"
 import "../../css/matching_css/newMatch.css";
 
 
@@ -88,6 +89,8 @@ const NewMatch = ()=>{
         console.log("매너 조건:", form.mannerCondi);
         console.log("성별 조건:", form.genderCondi);
         console.log("태그:", tags);
+
+        api.post("/match/list/newMatch",form).then(()=>{}).catch(()=>{})
     };
 
     return(
