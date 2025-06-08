@@ -20,4 +20,5 @@ public class MatchListDto {
     private int people;
     private int countPeople;
     private int status;
+    private int kategorie;
 }

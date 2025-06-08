@@ -92,6 +92,7 @@ public class MatchService {
                     matchList.setStartTime(item.getStartTime());
                     matchList.setPeople(item.getPeople());
                     matchList.setCountPeople(item.getCountPeople());
+                    matchList.setKategorie(item.getKategorie());
                     tags.add(item.getTag());
                 }
                 matchList.setTags(tags);
