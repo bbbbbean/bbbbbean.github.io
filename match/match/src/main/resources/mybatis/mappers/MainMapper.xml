@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.club.match.Mapper.MainMapper">
+
+    <select id="getTopTags" resultType="com.club.match.Domain.DTO.TagDTO">
+        SELECT tag, COUNT(*) AS count
+        FROM bb.preferencetag_tbl
+        GROUP BY tag
+        ORDER BY count DESC, tag ASC
+        LIMIT #{limit}
+    </select>
+</mapper>
