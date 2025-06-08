@@ -16,6 +16,7 @@ import CommunityLayout from './components/layout/CommunityLayout';
 import NewMatch from './components/match/newMatch';
 import Comment from './components/community/Comment';
 import { WebSocketProvider } from './WebSocket';
+import { useEffect, useState } from 'react';
 
 
 function AppComponent() {
@@ -31,6 +32,7 @@ function AppComponent() {
         <>
           <div className="wrapper">
             <MainHeader />
+            {isAuth && <AccordionModal />}
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
@@ -45,7 +47,6 @@ function AppComponent() {
             </Routes>
           </div>
           <Footer />
-          {isAuth && <AccordionModal />}
         </>
       )
         :

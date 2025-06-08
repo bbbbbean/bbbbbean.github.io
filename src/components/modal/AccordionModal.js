@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import chatIcon from "../../image/image_main/chat-icon.svg";
 import calendarIcon from "../../image/image_main/calendar-icon.svg";
 import callIcon from "../../image/image_main/call-icon.svg";
@@ -18,6 +18,24 @@ const AccordionModal = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [dragging, setDragging] = useState(false);
   const [wasDragging, setWasDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const prevYOffset = useRef(window.pageYOffset);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentYOffset = window.pageYOffset;
+      const delta = currentYOffset - prevYOffset.current;
+      setPosition(prev => ({
+        x: prev.x,
+        y: prev.y + delta
+      }));
+      prevYOffset.current = currentYOffset;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     setActiveAccordion(null);
@@ -49,6 +67,7 @@ const AccordionModal = () => {
   return (
     <>
       <Draggable
+        position={position}
         onStart={() => {
           setDragging(true);
           setWasDragging(false);
@@ -56,12 +75,13 @@ const AccordionModal = () => {
         onDrag={() => {
           setWasDragging(true);
         }}
-        onStop={() => {
+        onStop={(e, data) => {
           setDragging(false);
+          setPosition({ x: data.x, y: data.y });
           setTimeout(() => setWasDragging(false), 100);
         }}
       >
-        <div className="Accordion-modal" style={{ position: 'relative', zIndex: 10 }}>
+        <div className="Accordion-modal">
           <div
             id="Accordion_wrap"
             className={
@@ -69,7 +89,7 @@ const AccordionModal = () => {
                 activeAccordion === 2 ? "accCalendar" :
                   activeAccordion === 3 ? "" : ""
             }
-            style={{ width: isOpen ? '140px' : '0px' }}
+            style={{ width: isOpen ? '140px' : '40px' }}
           >
             <button
               className="accordion-button"
