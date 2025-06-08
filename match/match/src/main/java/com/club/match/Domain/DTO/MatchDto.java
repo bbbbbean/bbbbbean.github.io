@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +27,5 @@ public class MatchDto {
     private String genderCondi;
     private int chatCode;
 
+    private List<String> tag;
 }

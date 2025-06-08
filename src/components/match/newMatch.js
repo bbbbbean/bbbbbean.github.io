@@ -16,6 +16,7 @@ const NewMatch = ()=>{
         mannerCondi: '',
         // 0 : 동성 , 1 : 전체
         genderCondi: '1'
+
     });
 
     const handleChange = (e) => {
@@ -90,7 +91,7 @@ const NewMatch = ()=>{
         console.log("성별 조건:", form.genderCondi);
         console.log("태그:", tags);
 
-        api.post("/match/list/newMatch",form).then(()=>{}).catch(()=>{})
+        api.post("/match/list/newMatch",{form, tags}).then(()=>{}).catch(()=>{})
     };
 
     return(
