@@ -9,6 +9,11 @@ export const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
 
+    // 각각 매칭, 친구 페이지 갱신용 상태값
+    const [matchingUpdate, setMatchingUpdate] = useState(false);
+    const [friendUpdate, setFriendUpdate] = useState(false);
+
+
     const clientRef = useRef(null);
     const [client, setClient] = useState(null);
     const [connected, setConnected] = useState(false);
@@ -82,6 +87,11 @@ export const WebSocketProvider = ({ children }) => {
                     console.log('User ID:', userId);
                     sub = stompClient.subscribe(`/sub/user/${userId}`, (message) => {
                         const data = JSON.parse(message.body);
+
+                        if (data.friendAlert) {
+                            setFriendUpdate(prev => (!prev));
+                        }
+
                         const roomId = data.chatCode;
                         if (roomId === openChatRef.current) {
                             showMessageInChat(data);
@@ -143,7 +153,7 @@ export const WebSocketProvider = ({ children }) => {
     }
 
     return (
-        <WebSocketContext.Provider value={{ client, openChat, setOpenChat, messages, setMessages, rooms, setRooms }}>
+        <WebSocketContext.Provider value={{ client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate }}>
             {children}
         </WebSocketContext.Provider>
     );

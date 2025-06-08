@@ -149,6 +149,16 @@ public class ChatController {
         return ResponseEntity.ok().body(null);
     }
 
+    @MessageMapping("/friend")
+    public void addFriend(@RequestBody Map<String,Object> req) throws InterruptedException {
+        String friendId = (String) req.get("friendId");
+        Map<String,Object> resp = new HashMap<>();
+
+        resp.put("friendAlert","ok");
+
+        template.convertAndSend("/sub/user/"+friendId, resp);
+    }
+
     @MessageMapping("/enter")
     public void chatRoomEnter(ChatDTO chatDTO, Principal principal) throws InterruptedException {
         Map<String,Object> resp = new HashMap<>();

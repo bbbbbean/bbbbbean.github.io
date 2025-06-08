@@ -1,7 +1,8 @@
 import searchIcon from "../../image/image_message/search-icon.svg"
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import moreIcon from "../../image/image_message/more-icon.svg"
 import api from "../../axios";
+import { WebSocketContext } from '../../WebSocket'
 
 const FriendLeft = () => {
   const [friendRequest, setFriendRequest] = useState([]);
@@ -15,19 +16,7 @@ const FriendLeft = () => {
     setOpenMenuKey(prev => (prev === key ? null : key));
   };
 
-  const friendsData = [
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-    { name: '친구 이름', intro: '한줄 소개입니당' },
-  ];
+  const { client, friendUpdate } = useContext(WebSocketContext);
 
   useEffect(() => {
     api.post("/api/friend/list").then((response) => {
@@ -36,112 +25,124 @@ const FriendLeft = () => {
       setBestFriends(response.data.bestFriend);
       setFriendRequest(response.data.friendRequest);
     });
-  }, [])
+  }, [friendUpdate])
   //유저찾기
-  const friendfind = (()=>{
+  const friendfind = (() => {
     console.log(friendfindValue);
-    api.post("/api/friend/findFriend",{"nickName":friendfindValue}).then((response)=>{
+    api.post("/api/friend/findFriend", { "nickName": friendfindValue }).then((response) => {
       console.log(response.data.friendFind);
       setFriendSearch(response.data.friendFind);
     });
   })
-//요청보내기
-const sendFriendRequest = (friendId) => {
-  api.post('/api/friend/addFriend', {
-    friendId: friendId,
-    status: 3
-  })
-  .then(response => {
-    console.log('친구 요청 보냄:', response.data);
-    // 검색 목록에서 제거
-    setFriendSearch(prev => prev.filter(friend => friend.userId !== friendId));
-  })
-  .catch(error => {
-    console.error('친구 요청 실패:', error);
-  });
-};
-//친구 신청 수락
-const acceptFriend = (friendId) => {
-  api.post("/api/friend/accept", {
-    friendId: friendId
-  })
-  .then((response) => {
-    console.log("친구 요청 수락 완료:", response.data);
-    // 친구 요청 목록에서 제거
-    setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
-    
-    // 친구 목록 갱신
-    api.post("/api/friend/list").then((response) => {
-      setFriends(response.data.commonFriend);
-      setBestFriends(response.data.bestFriend);
-      setFriendRequest(response.data.friendRequest);
-    });
+  //요청보내기
+  const sendFriendRequest = (friendId) => {
+    api.post('/api/friend/addFriend', {
+      friendId: friendId,
+      status: 3
+    })
+      .then(response => {
+        console.log('친구 요청 보냄:', response.data);
+        // 검색 목록에서 제거
+        setFriendSearch(prev => prev.filter(friend => friend.userId !== friendId));
 
-    // 메뉴 닫기
-    setOpenMenuKey(null);
-  })
-  .catch((error) => {
-    console.error("친구 요청 수락 실패:", error);
-  });
-};
+        // 친구쪽 프론트 갱신
+        client.publish({
+            destination: "/pub/friend",
+            body: JSON.stringify({ "friendId": friendId })
+        });
+      })
+      .catch(error => {
+        console.error('친구 요청 실패:', error);
+      });
+  };
+  //친구 신청 수락
+  const acceptFriend = (friendId) => {
+    api.post("/api/friend/accept", {
+      friendId: friendId
+    })
+      .then((response) => {
+        console.log("친구 요청 수락 완료:", response.data);
+        // 친구 요청 목록에서 제거
+        setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
 
-//요청 거절
-const rejectFriend = (friendId) => {
-  console.log("rejectFriend 보내는 값:", friendId);
-  api.post("/api/friend/reject", {
-    friendId: friendId
-  })
-  .then((response) => {
-    console.log("친구 요청 거절:", response.data);
-    setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
-  })
-  .catch((error) => {
-    console.error("친구 요청 거절 실패:", error);
-  });
-};
+        // 친구 목록 갱신
+        api.post("/api/friend/list").then((response) => {
+          setFriends(response.data.commonFriend);
+          setBestFriends(response.data.bestFriend);
+          setFriendRequest(response.data.friendRequest);
+        });
+
+        // 친구쪽 프론트 갱신
+        client.publish({
+            destination: "/pub/friend",
+            body: JSON.stringify({ "friendId": friendId })
+        });
+
+        // 메뉴 닫기
+        setOpenMenuKey(null);
+      })
+      .catch((error) => {
+        console.error("친구 요청 수락 실패:", error);
+      });
+  };
+
+  //요청 거절
+  const rejectFriend = (friendId) => {
+    console.log("rejectFriend 보내는 값:", friendId);
+    api.post("/api/friend/reject", {
+      friendId: friendId
+    })
+      .then((response) => {
+        console.log("친구 요청 거절:", response.data);
+        setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
+      })
+      .catch((error) => {
+        console.error("친구 요청 거절 실패:", error);
+      });
+  };
   //즐겨찾기, 차단, 삭제 상태 변경
-  const friendStatus = ((userId, newStatus)=>{
-  console.log("변경할 친구 ID:", userId);
-  console.log("새로운 상태 값:", newStatus);
+  const friendStatus = ((userId, newStatus) => {
+    console.log("변경할 친구 ID:", userId);
+    console.log("새로운 상태 값:", newStatus);
 
-  api.post("/api/friend/friendStatus", {
-    friendId: userId,
-    status: newStatus
-  })
-  .then((response) => {
-    console.log("상태 변경 완료:", response.data);
+    api.post("/api/friend/friendStatus", {
+      friendId: userId,
+      status: newStatus
+    })
+      .then((response) => {
+        console.log("상태 변경 완료:", response.data);
 
-    // 상태에 따라 friends / bestFriends 목록 갱신
-    if (newStatus === 1) {
-      // 즐겨찾기 설정: friends → bestFriends
-      const movedFriend = friends.find(f => f.friendId === userId);
-      if (movedFriend) {
-        setFriends(prev => prev.filter(f => f.friendId !== userId));
-        setBestFriends(prev => [...prev, movedFriend]);
-      }
-    } else if (newStatus === 0) {
-      // 즐겨찾기 해제: bestFriends → friends
-      const movedFriend = bestFriends.find(f => f.friendId === userId);
-      if (movedFriend) {
-        setBestFriends(prev => prev.filter(f => f.friendId !== userId));
-        setFriends(prev => [...prev, movedFriend]);
-      }
-    }
+        // 상태에 따라 friends / bestFriends 목록 갱신
+        if (newStatus === 1) {
+          // 즐겨찾기 설정: friends → bestFriends
+          const movedFriend = friends.find(f => f.friendId === userId);
+          if (movedFriend) {
+            setFriends(prev => prev.filter(f => f.friendId !== userId));
+            setBestFriends(prev => [...prev, movedFriend]);
+          }
+        } else if (newStatus === 0) {
+          // 즐겨찾기 해제: bestFriends → friends
+          const movedFriend = bestFriends.find(f => f.friendId === userId);
+          if (movedFriend) {
+            setBestFriends(prev => prev.filter(f => f.friendId !== userId));
+            setFriends(prev => [...prev, movedFriend]);
+          }
+        }
 
         api.post("/api/friend/list").then((response) => {
-      setFriends(response.data.commonFriend);
-      setBestFriends(response.data.bestFriend);
-      setFriendRequest(response.data.friendRequest);
-    });
+          setFriends(response.data.commonFriend);
+          setBestFriends(response.data.bestFriend);
+          setFriendRequest(response.data.friendRequest);
+        });
 
-    // 메뉴 닫기 (UX 개선용)
-    setOpenMenuKey(null);
+        // 메뉴 닫기 (UX 개선용)
+        setOpenMenuKey(null);
 
+      })
+      .catch((error) => {
+        console.error("상태 변경 실패:", error);
+      });
   })
-  .catch((error) => {
-    console.error("상태 변경 실패:", error);
-  });
-})
   return (
     <section className="left">
       <div className="all">
@@ -149,9 +150,9 @@ const rejectFriend = (friendId) => {
           <h1>친구</h1>
         </div>
         <div className="find">
-          <input type="text" placeholder="친구 검색하기" value={friendfindValue} onChange={(e) =>{
+          <input type="text" placeholder="친구 검색하기" value={friendfindValue} onChange={(e) => {
             setFriendfindValue(e.target.value);
-          }}/>
+          }} />
           <button onClick={friendfind}>
             <img src={searchIcon} alt="친구찾기" />
           </button>
@@ -188,7 +189,7 @@ const rejectFriend = (friendId) => {
         </div>
         <div className="usually">
           <h1>즐겨찾는 친구</h1>
-        </div> 
+        </div>
         {bestFriends.map((friend, idx) => (
           <div className="person" key={`best-${idx}`}>
             <img src={friend.profile} className="profile"></img>
