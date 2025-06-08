@@ -1,5 +1,6 @@
 package com.club.match.Domain.Service;
 
+import com.club.match.Domain.DTO.MatchDto;
 import com.club.match.Domain.DTO.TagDTO;
 import com.club.match.Mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,9 @@ public class MainService {
 
     public List<TagDTO> getTopTags(int limit) {
         return mainMapper.getTopTags(limit);
+    }
+
+    public List<MatchDto> getAllMatches() {
+        return null;
     }
 }
