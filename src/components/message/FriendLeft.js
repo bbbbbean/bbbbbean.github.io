@@ -37,6 +37,7 @@ const FriendLeft = () => {
       setFriendRequest(response.data.friendRequest);
     });
   }, [])
+  //유저찾기
   const friendfind = (()=>{
     console.log(friendfindValue);
     api.post("/api/friend/findFriend",{"nickName":friendfindValue}).then((response)=>{
@@ -44,7 +45,7 @@ const FriendLeft = () => {
       setFriendSearch(response.data.friendFind);
     });
   })
-
+//요청보내기
 const sendFriendRequest = (friendId) => {
   api.post('/api/friend/addFriend', {
     friendId: friendId,
@@ -59,7 +60,46 @@ const sendFriendRequest = (friendId) => {
     console.error('친구 요청 실패:', error);
   });
 };
-  
+//친구 신청 수락락
+const acceptFriend = (friendId) => {
+  api.post("/api/friend/accept", {
+    friendId: friendId
+  })
+  .then((response) => {
+    console.log("친구 요청 수락 완료:", response.data);
+    // 친구 요청 목록에서 제거
+    setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
+    
+    // 친구 목록 갱신
+    api.post("/api/friend/list").then((response) => {
+      setFriends(response.data.commonFriend);
+      setBestFriends(response.data.bestFriend);
+      setFriendRequest(response.data.friendRequest);
+    });
+
+    // 메뉴 닫기
+    setOpenMenuKey(null);
+  })
+  .catch((error) => {
+    console.error("친구 요청 수락 실패:", error);
+  });
+};
+
+//요청 거절
+const rejectFriend = (friendId) => {
+  console.log("rejectFriend 보내는 값:", friendId);
+  api.post("/api/friend/reject", {
+    friendId: friendId
+  })
+  .then((response) => {
+    console.log("친구 요청 거절:", response.data);
+    setFriendRequest(prev => prev.filter(friend => friend.userId !== friendId));
+  })
+  .catch((error) => {
+    console.error("친구 요청 거절 실패:", error);
+  });
+};
+  //즐겨찾기, 차단 상태 변경
   const friendStatus = ((userId, newStatus)=>{
   console.log("변경할 친구 ID:", userId);
   console.log("새로운 상태 값:", newStatus);
@@ -140,8 +180,8 @@ const sendFriendRequest = (friendId) => {
                 <div className="oneline">{friend.introduction}</div>
               </div>
               <div className="requestbuttons">
-                <button className="accept" onClick={() => friendStatus(friend.userId, 0)}>수락</button>
-                <button className="reject">거절</button>
+                <button className="accept" onClick={() => acceptFriend(friend.userId)}>수락</button>
+                <button className="reject" onClick={() => rejectFriend(friend.userId)}>거절</button>
               </div>
             </div>
           ))}

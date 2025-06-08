@@ -55,8 +55,7 @@ public class FriendController {
 
     //요청 수락시 친구 목록 추가(status 변경 0) - 3
     @PostMapping("/accept")
-    public ResponseEntity<String> acceptFriend(@RequestBody FriendDTO dto) {
-
+    public ResponseEntity<?> acceptFriend(@RequestBody FriendDTO dto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         dto.setUserId(auth.getName());
 
@@ -64,6 +63,7 @@ public class FriendController {
         return result ? ResponseEntity.ok("친구 요청을 수락했습니다.")
                 : ResponseEntity.badRequest().body("수락 실패");
     }
+
 
     @PostMapping("/friendStatus")
     public ResponseEntity<?> updateFriendStatus(@RequestBody FriendDTO dto) {
@@ -88,10 +88,9 @@ public class FriendController {
         }
     }
 
-
     //요청 거절(DB에서 삭제) - 3
     @PostMapping("/reject")
-    public ResponseEntity<String> rejectFriend(@RequestBody FriendDTO dto) {
+    public ResponseEntity<?> rejectFriend(@RequestBody FriendDTO dto) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         dto.setUserId(auth.getName());
