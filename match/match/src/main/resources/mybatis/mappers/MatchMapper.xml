@@ -51,7 +51,7 @@
 
     <!-- 모달용 단일 매치 정보 -->
     <select id="selectMatchOne">
-        select matchId, title, startTime, status, location, anonymousCondi, genderCondi, chatCode, people, kategorie, nickName from match_tbl m
+        select anonymousCondi, genderCondi, chatCode, nickName, gender, location from match_tbl m
         join user_tbl u
         on m.creatorId = u.userId
         where matchId = #{matchId}

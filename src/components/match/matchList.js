@@ -26,20 +26,39 @@ const MatchList = () => {
     const [matches, setMatches] = useState([]);
     const [bookmark, setBookmark] = useState({});
 
-    const handleModal = (e) => {
-        const matchId = e.currentTarget.value;
-        navigate(`/match/${matchId}`);
-    }
-    
 
-
-    // 전체 조회해서 데이터 들고오기
+    // 전체 조회해서 데이터 들고오기 + 닉네임, 젠더 추가
     useEffect(() => {
         api.get("/match/list")
-            .then(res => {
-                setMatches(res.data);
+            .then(async res => {
+                // match 전체 데이터
+                const matches = res.data;
+
+                // 필요한 호스트 유저 데이터
+                const detailPromises = matches.map(match =>
+                    api.get(`/match/detail?matchId=${match.matchId}`)
+                        .then((res) => { return res.data })
+                        .catch(() => null)
+                );
+                const userDetail = await Promise.all(detailPromises);
+
+                // match + user
+                const fullMatch = matches.map((match, i) => ({
+                    ...match,
+                    nickName: userDetail[i]?.[0]?.nickName,
+                    gender: userDetail[i]?.[0]?.gender,
+                    anonymousCondi:userDetail[i]?.[0]?.anonymousCondi,
+                    genderCondi:userDetail[i]?.[0]?.genderCondi,
+                    chatCode:userDetail[i]?.[0]?.chatCode,
+                    location:userDetail[i]?.[0]?.location
+                }));
+
+                setMatches(fullMatch);
+                console.log("setMatches" + setMatches);
+
+                // 최근 등록 매치 5개
                 const sortedTop5 = res.data
-                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // 최신순 예시
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                     .slice(0, 5);
 
                 setTopMatches(sortedTop5);
@@ -226,7 +245,7 @@ const MatchList = () => {
                                                 <div className="match-info-btn">
                                                     <button
                                                         className={match.status === 0 && match.countPeople < match.people ? "ok" : "no"}
-                                                        onClick={handleModal} value={match.matchId}
+                                                        onClick={() => navigate(`/match/${match.matchId}`, { state: { match } })}
                                                     >
                                                         {/* 0:신청 가능 1: 모집완료 */}
                                                         {match.status === 0 && match.countPeople < match.people ? "신청 가능" : "모집 완료"}
