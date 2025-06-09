@@ -33,4 +33,9 @@
         ORDER BY startTime ASC
         LIMIT 9
     </select>
+
+    <select id="getRandomMatch" resultType="com.club.match.Domain.DTO.MatchDto">
+        SELECT * FROM match_tbl
+        WHERE status = 0
+    </select>
 </mapper>

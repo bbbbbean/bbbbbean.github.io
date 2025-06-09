@@ -52,6 +52,29 @@ useEffect(() => {
   fetchTags();
 }, []);
 
+// 랜덤 매칭 리스트 상태 관리
+const [randomMatchList, setRandomMatchList] = useState([]);
+useEffect(() => {
+  async function fetchRandomMatchList() {
+    try {
+      // 예: GET 방식, 랜덤 매칭 리스트를 받는 API 엔드포인트
+      const res = await api.post("/api/main/random");
+      setRandomMatchList(res.data.random); // matches 배열로 받는다고 가정
+    } catch (err) {
+      console.error("랜덤 매칭 리스트 불러오기 실패", err.response?.data || err.message);
+    }
+  }
+
+  fetchRandomMatchList();
+}, []);
+
+const categoryMap = {
+  "1": "운동",
+  "2": "여행",
+  "3": "게임",
+  "4": "기타"
+};
+
   // DB에서 불러온 리스트 상태 관리
  const [newMatchList, setNewMatchList] = useState([]);
 useEffect(() => {
@@ -164,11 +187,6 @@ useEffect(() => {
                     <ul>
                       <li className="main-rank-el-num">{index + 1}</li>
                       <li className="main-rank-el-con">{item.tag}</li>
-                      <li className="main-rank-el-go">
-                        <a className="main-sky">
-                          <img src={searchIcon} alt="돋보기" />
-                        </a>
-                      </li>
                     </ul>
                   </li>
                 ))}
@@ -176,13 +194,21 @@ useEffect(() => {
             </div>
             <div className="main-ranking-match">
               <ul>
-                {['1월22일', '1월23일', '1월24일'].map((date, index) => (
+                {Array.isArray(randomMatchList) && randomMatchList.map((data, index) => (
                   <li className="main-rank-match" key={index}>
                     <button onClick={handleModal} className={`main-rank-match-btn ${index}`}>
-                      <span>{date}</span>
-                      <span>11VS11</span>
-                      <span>시흥 서울대학교 스포츠 파크</span>
-                      <span>시흥 서울대학교 스포츠 파크(풋살) 11VS11</span>
+                      <div className="category">
+                        <div className="catename">{categoryMap[data.kategorie] || "기타"}</div>
+                      </div>
+                      <div>{(() => {
+                        const date = new Date(data.startTime);
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        return `${month}월${day}일`;
+                      })()}</div>
+                      <div>{data.people}명 모집</div>
+                      <div>{data.location}</div>
+                      <div>{data.title}</div>
                     </button>
                   </li>
                 ))}
@@ -196,7 +222,7 @@ useEffect(() => {
                 <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{match.kategorie}</span>
+                      <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
@@ -207,8 +233,15 @@ useEffect(() => {
                       <div className="main-matchlist-el-info">
                         <span>{match.location}</span>
                         <span>{match.people}명</span>
-                        <span>{match.startTime}</span>
-                      </div>
+                        <span>{(() => {
+                          const date = new Date(match.startTime);
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const hour = String(date.getHours()).padStart(2, '0');
+                          const minute = String(date.getMinutes()).padStart(2, '0');
+                          return `${month}월${day}일 ${hour}시${minute}분`;
+                        })()}</span>
+                                            </div>
                       <img src={searchIcon} alt="돋보기" />
                     </a>
                   </div>

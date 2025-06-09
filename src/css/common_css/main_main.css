@@ -276,6 +276,7 @@
 }
 
 .main-rank-match button{
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
@@ -283,25 +284,44 @@
   display: flex;
   flex-direction: column;
   align-items: end;
-  justify-content: center;
+  justify-content:end;
   gap: 7px;
 }
-.main-rank-match span{
+.main-rank-match div{
   color: #fff;
 }
-.main-rank-match span:first-child{
+.main-rank-match div:first-child{
+  font-size: 1.1rem;
+  align-self: flex-start;
+  border: 1px solid #F9AF0E ;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  width: 100px;
+  background-color: rgba(228, 156, 0, 0.4);
+}
+.main-rank-match>button>.category>.catename{
+  font-size: 1.4rem;
+  font-weight: 700;
+  border: none;
+}
+.main-rank-match div:nth-child(2){
+  position: absolute;
   font-size: 1.4rem;
   font-weight: 700;
   align-self: flex-start;
+  margin-bottom: 17px
 }
-.main-rank-match span:nth-child(2),
-.main-rank-match span:nth-child(3)
+.main-rank-match div:nth-child(3),
+.main-rank-match div:nth-child(4)
 {
   font-size: 1.1rem;
+  align-self: flex-end;
 }
-.main-rank-match span:last-child{
+.main-rank-match div:last-child{
   font-size: 1.7rem;
   font-weight: 800;
+  margin-bottom: 13px;
 }
 
 /* match list */

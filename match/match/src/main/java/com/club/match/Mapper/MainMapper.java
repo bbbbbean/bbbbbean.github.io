@@ -13,4 +13,6 @@ public interface MainMapper {
     List<TagDTO> getTopTags(@Param("limit") int limit);
 
     List<MatchDto> getAllMatches();
+
+    List<MatchDto> getRandomMatch();
 }
