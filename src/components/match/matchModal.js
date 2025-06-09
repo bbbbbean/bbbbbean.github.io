@@ -9,15 +9,15 @@ import mark2 from "../../image/image_match/bookmark.svg";
 
 const MatchModal = ({ selectMatch, setMatchList, match }) => {
   const { matchId } = useParams();
-  const chatCode = match.chatCode;
-  const oneMatchId = match.matchId;
+  const chatCode = match?.chatCode;
+  const oneMatchId = match?.matchId;
 
   const location = useLocation();
 
   console.log("match", match);
 
   // 상태 정보들
-  match.anonymousCondi = match.anonymousCondi == 0 ? "익명" : "실명";
+  match.anonymousCondi = match?.anonymousCondi == 0 ? "익명" : "실명";
 
   if (match.genderCondi === "0") {
     if (match.gender === "female") {
@@ -64,9 +64,9 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
     matchModalBtn.addEventListener("click", (e) => {
       // eslint-disable-next-line no-restricted-globals
       if (confirm("신청 하시겠습니까?")) {
-        console.log("dho"+oneMatchId, chatCode);
+        console.log("dho" + oneMatchId, chatCode);
         api
-          .post("/match/join", { "matchId":oneMatchId, chatCode })
+          .post("/match/join", { "matchId": oneMatchId, chatCode })
           .then((res) => {
           })
           .catch((err) => {
@@ -101,7 +101,7 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
           <div className="match-info-tag">
             <span>{kategorieName(match.kategorie)}</span>
 
-            {match.isBookmarked && <span><img src={mark2}/></span>}
+            {match.isBookmarked && <span><img src={mark2} /></span>}
 
           </div>
           <div className="match-modal-title">

@@ -2,6 +2,7 @@ package com.club.match.Controller;
 
 import com.club.match.Config.auth.PrincipalDetails;
 import com.club.match.Domain.DTO.SocialLinkDTO;
+import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -276,6 +279,14 @@ public class UserController {
         } else {
             return new ResponseEntity<>("사용자 ID를 가져올 수 없습니다.", HttpStatus.NOT_FOUND);
         }
+    }
+    @PostMapping("/bookMark")
+    public ResponseEntity<?> bookMark(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        LocalDateTime now = LocalDateTime.now();
+        List<UserBookMarkDTO> list = userService.getAllBookMark(now,userId);
+        return ResponseEntity.ok().body(list);
     }
 }
 
