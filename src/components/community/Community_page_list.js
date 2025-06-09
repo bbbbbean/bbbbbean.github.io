@@ -103,7 +103,7 @@ const Community_page_list = () => {
       <div className="forum">
         <div className="forum-menu">
           <div className="forum-menu-el">
-            <NavLink
+            {/* <NavLink
               key={category.id}
               to={`/community/list/${category.id}`}
               data-type={category.id}
@@ -113,7 +113,7 @@ const Community_page_list = () => {
               }
             >
               {category.name}
-            </NavLink>
+            </NavLink> */}
           </div>
           <div className="forum-menu-serch">
             <input

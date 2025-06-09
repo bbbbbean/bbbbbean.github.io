@@ -22,5 +22,7 @@
         <typeAlias type="com.club.match.Domain.DTO.CalendarDto" alias="CalendarDto" />
         <typeAlias type="com.club.match.Domain.DTO.BookmarkDto" alias="BookmarkDto" />
         <typeAlias type="com.club.match.Domain.DTO.MatchOneDto" alias="MatchOneDto" />
+        <typeAlias type="com.club.match.Domain.DTO.PostDetailResultDTO" alias="PostDetailResultDTO" />
+        <typeAlias type="com.club.match.Domain.DTO.PostRecommendationDTO" alias="PostRecommendationDTO" />
     </typeAliases>
 </configuration>

@@ -64,7 +64,7 @@ public class MainService {
 
     }
 
-    public List<MatchDto> searchMatchesByKeyword(String keyword) {
-        return matchMapper.findMatchesByKeyword(keyword);
-    }
+//    public List<MatchDto> searchMatchesByKeyword(String keyword) {
+//        return matchMapper.findMatchesByKeyword(keyword);
+//    }
 }

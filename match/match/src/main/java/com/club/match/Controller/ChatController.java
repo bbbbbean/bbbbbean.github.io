@@ -223,7 +223,7 @@ public class ChatController {
         String childId = (String) req.get("childId");
         Map<String,Object> resp = new HashMap<>();
 
-        PostDTO postDTO = postService.getPostById(postId);
+        PostDTO postDTO = postService.getPostByPostId(postId);
 
         NotificationDTO notificationDTO = NotificationDTO.builder()
                 .receivedAt(LocalDateTime.now())
