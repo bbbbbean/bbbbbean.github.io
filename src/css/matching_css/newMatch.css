@@ -58,9 +58,45 @@
     margin-bottom: 20px;
     margin-left: 10px;
 }
+
+/* 태그 */
+.new-match-wrap>.new-match-form>.match-tag-wrap{
+    display: flex;
+    align-items: start;
+    gap:5px;
+    border: 0;
+    height: 30px;
+}
+.match-tag-box{
+    border: 2px solid #fbb00e;
+    border-radius: 50px;
+    padding: 5px 10px 5px 15px;
+}
+.match-tag-box>span>button{
+    padding-left: 5px;
+}
+
+/* 등록 버튼 */
+.new-match-form>.match-submit-btn-wrap{
+    border: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+.match-submit-btn{
+    background-color: #fbb00e;
+    padding: 15px 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 18px;
+}
+
+
 /* 경고 안내 */
 .new-match-warning{
     color: red;
+    align-self: center;
+    font-size: 14px;
 }
 .new-match-warn{
     align-self: center;
@@ -124,6 +160,11 @@
 .new-match-check{
     background-color: rgba(110, 195, 255, 0.3);
 }
+
+.new-match-defalt>div{
+    width: 69%;
+}
+
 /* 토글 오프라인 */
 .new-match-form>.new-match-off{
     height: 90px;

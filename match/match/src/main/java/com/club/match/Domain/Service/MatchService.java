@@ -31,7 +31,7 @@ public class MatchService {
         return chatCode;
     }
 
-    // 호스트 채팅방 참여
+    // 호스트, 유저 채팅방 참여
     @Transactional(rollbackFor = Exception.class)
     public void addHostGroupChat(int chatCode, String hostId) {
         ChatParticipantDto chatParticipantDto = ChatParticipantDto.builder()
@@ -60,21 +60,26 @@ public class MatchService {
         log.info("tag : " + matchTagDto);
     }
 
-    // 호스트 생성 매치 참여
+    // 생성 매치 참여
     @Transactional(rollbackFor = Exception.class)
-    public void joinMatch(long matchId, String hostId) {
+    public void joinMatch(long matchId, String userId) {
         MatchParticipantDto matchParticipantDto = MatchParticipantDto.builder()
                 .matchId(matchId)
-                .participantId(hostId)
+                .participantId(userId)
                 .build();
         matchMapper.joinMatch(matchParticipantDto);
     }
 
     // 태그 모아 출력
     @Transactional(rollbackFor = Exception.class)
-    public List<MatchListDto> MatchAllList() {
+    public List<MatchListDto> MatchAllList(String type) {
         // 태그마다 한줄씩 생성 - 여기 태그는 string tag에 저장
-        List<MatchDto> list = matchMapper.matchAllList();
+        List<MatchDto> list = new ArrayList<>();
+        if(type.equals("all")){
+            list = matchMapper.matchAllList();
+        } else {
+            list = matchMapper.matchTypeList(type);
+        }
         Set<Long> matchId = new HashSet<>();
 
         for (MatchDto item : list) {

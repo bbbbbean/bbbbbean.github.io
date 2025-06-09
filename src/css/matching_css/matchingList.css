@@ -1,15 +1,17 @@
 .match-titlebar {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
   background-color: #6ec3ff;
-  font-size: 35px;
+  font-size: 25px;
   font-weight: bold;
   padding: 0px 50px;
-  height: 70px;
-  position: relative;
-  top: 0;
-  right: 0;
+  height: 50px;
+  margin-bottom: 50px;
+}
+.match-titlebar p {
+  color: white;
+  font-size: 80px;
 }
 
 button {
@@ -18,14 +20,7 @@ button {
   cursor: pointer;
 }
 
-.match-titlebar p {
-  position: absolute;
-  color: white;
-  font-size: 104px;
-  top: -130px;
-  right: 50px;
-}
-
+/* 슬라이더 */
 .pm-center {
   width: 100%;
   display: flex;
@@ -36,12 +31,14 @@ button {
 .promotion-swiper {
   align-items: center;
   margin: 50px 0;
-  width: 1280px;
+  width: 1000px;
   height: 430px;
   overflow: hidden;
 }
 
-.promotion-swiper>.swiper-wrapper {}
+.swiper{
+  margin-bottom: 10px;
+}
 
 .promotion-swiper>.swiper-wrapper>.swiper-slide {
   min-width: 256px;
@@ -54,15 +51,15 @@ button {
   justify-content: space-between;
   flex-direction: column;
   background-color: lightgray;
-  border-radius: 50px 0 0 0;
+  border-radius: 35px 2px 2px 2px;
+  cursor: pointer;
 }
 
 .pm-match-container {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
-  padding-right: 10px;
+  padding: 25px;
 }
 
 .pm-match-container p {
@@ -72,21 +69,21 @@ button {
 }
 
 .pm-match-container span {
-  border: 1px solid white;
-  width: 90px;
-  font-size: 22px;
+  border: 2px solid white;
+  padding: 5px 20px;
+  font-size: 18px;
   text-align: center;
   border-radius: 30px;
   color: white;
 }
 
 .pm-match-title {
-  padding: 20px;
+  padding: 25px;
   color: white;
 }
 
 .pm-match-title p {
-  font-size: 19px;
+  font-size: 16px;
   margin: 0;
   margin-bottom: 10px;
   font-weight: 100;
@@ -116,13 +113,14 @@ button {
   position: absolute;
   right: 30px;
   top: -20px;
-  z-index: 100;
+  z-index: 99;
 }
 
 .match-continer {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   margin-top: 20px;
+  
 }
 
 .match-continer>.match-day {
@@ -130,17 +128,21 @@ button {
   justify-content: left;
   align-items: center;
   margin-left: 40px;
+  padding-bottom: 10px;
+  gap:3px;
+  
 }
 
 .match-continer>.match-day p {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
 }
 
 .match-continer>.match-day span {
-  font-size: 45px;
+  font-size: 36px;
   font-weight: bold;
   color: #fbb00e;
+  margin-right: 10px;
 }
 
 .match-data {
@@ -150,7 +152,7 @@ button {
 .match-data>ul>li {
   display: flex;
   min-height: 70px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding-right: 50px;
   position: relative;
@@ -159,16 +161,17 @@ button {
 .match-data>ul>li>.match-time {
   flex-grow: 1;
   text-align: center;
-  font-size: 27px;
+  font-size: 22px;
   font-weight: bold;
+  max-width: 150px;
   min-width: 150px;
 }
 
 .match-data>ul>li>.match-content {
   flex-grow: 2;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  min-width: 300px;
+  min-width: 450px;
 }
 
 .match-data>ul>li>.match-sub-info {
@@ -178,10 +181,12 @@ button {
   color: #949494;
   gap: 10px;
   padding-right: 20px;
+  width: 250px;
 }
 
 .match-data>ul>li>.match-sub-info p {
   min-width: 60px;
+  font-size: 14px;
   text-align: center;
   margin: 0;
 }
@@ -219,18 +224,12 @@ button {
   width: 100%;
   height: 2px;
   background-color: #6ec3ff;
-  position: absolute;
-  top: 50px;
-  left: 0;
 }
 
 .match-blue-line {
   width: 100%;
   height: 2px;
   background-color: #6ec3ff;
-  position: absolute;
-  top: 70px;
-  left: 0;
 }
 
 .match-line {
@@ -241,6 +240,11 @@ button {
   top: 70px;
   left: 0;
 }
+
+/* 북마크 */
+  .match-book-mark{
+    margin-left: 15px;
+  }
 
 /* 미디어 */
 @media (width <=870px) {

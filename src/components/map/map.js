@@ -35,7 +35,7 @@ const KakaoAddressMap = ({onSelectLocation}) => {
         readOnly
         style={{ marginRight: "8px" }}
       />
-      <input type="button" onClick={handleAddressSearch} value="주소 검색" />
+      <input type="button" onClick={handleAddressSearch} value="주소 검색" style={{ width: "100px" }} />
     </div>
   );
 };
