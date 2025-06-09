@@ -35,6 +35,15 @@
         LEFT JOIN matchtag_tbl t ON m.matchId = t.matchId
         GROUP BY m.matchId, startTime, title, people, status, tag, kategorie;
     </select>
+    <select id="matchTypeList">
+        SELECT m.matchId AS matchId, startTime, title, people, status, COUNT(DISTINCT mp.matchId) AS countPeople, t.tag, kategorie
+        FROM match_tbl m
+        INNER JOIN matchparticipant_tbl mp ON m.matchId = mp.matchId
+        LEFT JOIN matchtag_tbl t ON m.matchId = t.matchId
+        WHERE kategorie = #{type}
+        GROUP BY m.matchId, startTime, title, people, status, tag, kategorie;
+    </select>
+
 
     <!-- 북마크 테이블 추가 -->
     <insert id="addBookmark">

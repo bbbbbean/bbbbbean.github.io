@@ -34,15 +34,17 @@ const MainHeader = () => {
       <nav className="menu-box">
         <ul>
           <li className="mainmenu">
-            <NavLink to="/match/list">매칭</NavLink>
+            <NavLink to="#">매칭</NavLink>
             <ul className="submenu">
-              <li><a href="#">운동</a></li>
+              <li><NavLink to="/match/list/all">전체</NavLink></li>
               <div className="submenu-line"></div>
-              <li><a href="#">여행</a></li>
+              <li><NavLink to="/match/list/1">운동</NavLink></li>
               <div className="submenu-line"></div>
-              <li><a href="#">게임</a></li>
+              <li><NavLink to="/match/list/2">여행</NavLink></li>
               <div className="submenu-line"></div>
-              <li><a href="#">기타</a></li>
+              <li><NavLink to="/match/list/3">게임</NavLink></li>
+              <div className="submenu-line"></div>
+              <li><NavLink to="/match/list/4">기타</NavLink></li>
             </ul>
           </li>
           <li className="mainmenu">

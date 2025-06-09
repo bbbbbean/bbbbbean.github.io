@@ -36,7 +36,7 @@ function AppComponent() {
             <MainHeader />
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route path="/match/list" element={<MatchList />} />
+              <Route path="/match/list/:type" element={<MatchList />} />
               <Route path="/match/list/newMatch" element={<NewMatch />} />
               <Route path="/match/:matchId" element={<MatchModal />} />
               <Route path="/event/list" element={<EventList />} />

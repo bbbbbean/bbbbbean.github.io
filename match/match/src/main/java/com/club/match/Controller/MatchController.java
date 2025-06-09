@@ -70,8 +70,10 @@ public class MatchController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> matchAllList(){
-        List<MatchListDto> resp = matchService.MatchAllList();
+    public ResponseEntity<?> matchAllList(@RequestParam Map<String,Object> req){
+        String type = (String)req.get("type");
+        log.info("type"+type);
+        List<MatchListDto> resp = matchService.MatchAllList(type);
         log.info("resp"+resp);
         log.info("resp"+resp.getFirst().getKategorie());
         return ResponseEntity.ok().body(resp);
@@ -103,5 +105,22 @@ public class MatchController {
         List<MatchOneDto> oneMatch = matchService.selectOneMatch(matchId);
         log.info("oneMatch"+oneMatch);
         return ResponseEntity.ok().body(oneMatch);
+    }
+
+    // 매치 참가
+    @PostMapping("/join")
+    public ResponseEntity<?> joinOneMatch(@RequestBody Map<String,Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = (String)authentication.getName();
+        Long matchId = ((Integer)req.get("matchId")).longValue();
+        int chatCode = (int)req.get("chatCode");
+
+        log.info("thiiiiis"+userId+matchId+chatCode);
+        // 매치 참여자 테이블 삽입
+        matchService.joinMatch(matchId,userId);
+        // 채팅 테이블 삽입
+        matchService.addHostGroupChat(chatCode,userId);
+
+        return ResponseEntity.ok().body(null);
     }
 }

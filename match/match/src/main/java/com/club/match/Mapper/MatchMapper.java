@@ -18,4 +18,5 @@ public interface MatchMapper {
     int removeBookmark(BookmarkDto bookmarkDto);
     List<Long> userBookmark(String userId);
     List<MatchOneDto> selectMatchOne(long matchId);
+    List<MatchDto> matchTypeList(String type);
 }
