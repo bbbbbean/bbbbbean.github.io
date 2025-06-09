@@ -3,6 +3,7 @@ package com.club.match.Controller;
 import com.club.match.Domain.DTO.BookmarkDto;
 import com.club.match.Domain.DTO.MatchDto;
 import com.club.match.Domain.DTO.MatchListDto;
+import com.club.match.Domain.DTO.MatchOneDto;
 import com.club.match.Domain.Service.MatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,13 @@ public class MatchController {
     public ResponseEntity<?> allBookmark(@RequestParam String userId){
         List<Long> bookmarkedMatchIds = matchService.viewUserBookmark(userId);
         return ResponseEntity.ok().body(bookmarkedMatchIds);
+    }
+
+    // 단건 매치 detail
+    @GetMapping("/detail")
+    public ResponseEntity<?> selectOneMatch(@RequestParam Long matchId){
+        List<MatchOneDto> oneMatch = matchService.selectOneMatch(matchId);
+        log.info("oneMatch"+oneMatch);
+        return ResponseEntity.ok().body(oneMatch);
     }
 }

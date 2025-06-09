@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
@@ -16,10 +17,11 @@ import CommunityLayout from './components/layout/CommunityLayout';
 import NewMatch from './components/match/newMatch';
 import Comment from './components/community/Comment';
 import { WebSocketProvider } from './WebSocket';
-import { useEffect, useState } from 'react';
+import MatchModal from './components/match/matchModal';
 
 
 function AppComponent() {
+  const navigate = useNavigate();
 
   //로그인 여부 확인
   const isAuth = localStorage.getItem("isAuth");
@@ -32,11 +34,11 @@ function AppComponent() {
         <>
           <div className="wrapper">
             <MainHeader />
-            {isAuth && <AccordionModal />}
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/match/list" element={<MatchList />} />
               <Route path="/match/list/newMatch" element={<NewMatch />} />
+              <Route path="/match/:matchId" element={<MatchModal />} />
               <Route path="/event/list" element={<EventList />} />
               <Route path="/friend" element={<FriendLoyout />} />
               <Route path="/mypage/*" element={<MyPageLayout />} />
@@ -47,6 +49,7 @@ function AppComponent() {
             </Routes>
           </div>
           <Footer />
+          {isAuth && <AccordionModal />}
         </>
       )
         :

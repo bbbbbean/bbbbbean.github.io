@@ -1,79 +1,95 @@
-import { useEffect} from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import api from "../../axios"
 import "../../css/matching_css/matchModalContent.css";
 
-const MatchModal = ({ selectMatch, setMatchList}) => {
+const MatchModal = ({ selectMatch, setMatchList }) => {
+    const { matchId } = useParams();
+    const [matche, setMatche] = useState([]);
+    // matchId로 정보 조회 - title, people, condis, kategorie, startTime, location, creatorId(nickname), chatId
+    useEffect(() => {
+        api.get(`/match/detail?matchId=${matchId}`)
+            .then(res => {
+                setMatche(res.data);
+                console.log(res.data)
+            })
+            .catch(err => { });
+    }, []);
+
+
+
     console.log("Select : " + selectMatch);
     useEffect(() => {
-            const matchModal = document.querySelector(".match-modal");
-            const matchChatContent = document.querySelector(".match-chat-content");
-            const matchModalBtn = document.querySelector(".match-modal-btn");
-            const matchChatLock = document.querySelector(".match-chat-lock");
-    
-            matchModalBtn.addEventListener("click", (e) => {
-                // eslint-disable-next-line no-restricted-globals
-                if (confirm("신청 하시겠습니까?")) {
-                    matchChatLock.style.display = "none";
-                }
-            });
-    
-            matchChatContent.addEventListener("wheel", (e) => {
-                e.preventDefault();
-                matchChatContent.scrollTop += e.deltaY / 5;
-            });
-    
-            let modalOut = true;
-            matchModal.addEventListener("mouseenter", (e) => {
-                modalOut = !modalOut;
-            });
-            matchModal.addEventListener("mouseleave", (e) => {
-                modalOut = !modalOut;
-            });
-    
-            const matchModalContainer = document.querySelector(
-                ".match-modal-container"
-            );
-            matchModalContainer.addEventListener("click", (e) => {
-                if (modalOut) setMatchList(null);
-            });
+        const matchModal = document.querySelector(".match-modal");
+        const matchChatContent = document.querySelector(".match-chat-content");
+        const matchModalBtn = document.querySelector(".match-modal-btn");
+        const matchChatLock = document.querySelector(".match-chat-lock");
 
-            window.document.addEventListener("keydown", (e) => {
-                if (e.keyCode === 27) setMatchList(null);
-            });
+        matchModalBtn.addEventListener("click", (e) => {
+            // eslint-disable-next-line no-restricted-globals
+            if (confirm("신청 하시겠습니까?")) {
+                matchChatLock.style.display = "none";
+            }
+        });
 
-        }, [setMatchList]);
+        matchChatContent.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            matchChatContent.scrollTop += e.deltaY / 5;
+        });
+
+        let modalOut = true;
+        matchModal.addEventListener("mouseenter", (e) => {
+            modalOut = !modalOut;
+        });
+        matchModal.addEventListener("mouseleave", (e) => {
+            modalOut = !modalOut;
+        });
+
+        const matchModalContainer = document.querySelector(
+            ".match-modal-container"
+        );
+        matchModalContainer.addEventListener("click", (e) => {
+            if (modalOut) setMatchList(null);
+        });
+
+        window.document.addEventListener("keydown", (e) => {
+            if (e.keyCode === 27) setMatchList(null);
+        });
+
+    }, [setMatchList]);
     return (
         <div className="match-modal-container">
             <div className="match-modal">
                 <div className="match-left">
                     <div className="match-modal-img"></div>
                     <div className="match-modal-title">
-                        <p>시흥 서울대학교 스포츠파크(풋살) 11VS11</p>
+                        <p>{matche.title}</p>
                     </div>
                     <div className="modal-blue-line"></div>
                     <div className="match-modal-info">
                         <div className="match-modal-info-left">
                             <div className="match-symbol-container">
-                                {["Swords", "Check", "Groups", "Wc", "question_mark", "question_mark"].map((icon, i) => (
+                                {["Check", "Groups", "Wc"].map((icon, i) => (
                                     <div className="match-symbol" key={i}>
                                         <span className="material-symbols-outlined">{icon}</span>
-                                        <p>{["11vs11", "조건사항4", "20-25", "남녀모두", "...", "..."][i]}</p>
+                                        <p>{[matche.people, matche.anonymousCondi, matche.genderCondi][i]}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
                         <div className="match-modal-info-right">
                             <div className="match-info-tag">
-                                <span>예약 가능</span>
                                 <span>운동</span>
                             </div>
                             <div className="match-info-content">
-                                <p>1월22일 수요일</p>
-                                <p>19:00</p>
-                                <p>시흥 서울대학교 스포츠파크</p>
-                                <a href="#">경기도 시흥시 서울대학로</a>
+                                <p>month, day, weekday</p>
+                                <p>time</p>
+                                <p>location</p>
+                                <a href="#">location</a>
                             </div>
                             <div className="match-info-user">
-                                <button>호스트 닉네임</button>
+                                <button>creatorNick</button>
                             </div>
                             <div className="match-modal-btn">
                                 <button>신청하기</button>
@@ -143,10 +159,10 @@ const MatchModal = ({ selectMatch, setMatchList}) => {
                         <div className="match-chat-input">
                             <input type="text" />
                             <button>
-                            <span className="material-symbols-outlined">Send</span>
-                        </button>
+                                <span className="material-symbols-outlined">Send</span>
+                            </button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
