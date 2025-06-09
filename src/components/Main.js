@@ -13,10 +13,11 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import searchIcon from "../image/image_main/serch-icon.svg";
 import MatchModal from "./match/matchModal";
 import AccordionModal from "./modal/AccordionModal";
+import api from "../axios";
 
 const Main = () => {
 
-  const [isAuth] = useState(localStorage.getItem("isAuth"));
+  const [isAuth] = useState(localStorage.getItem("isAuth"));;
 
   useEffect(() => {
     const mainMatchlistEls = document.querySelectorAll(".main-matchlist-els");
@@ -34,6 +35,72 @@ const Main = () => {
   }
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
+
+  const [findMatchValue, setFindMatchValue] = useState("")
+  const [matchSearch,setMatchSearch] = useState([]);
+  //매칭 검색
+  const matchfind = (() => {
+    console.log(findMatchValue);
+    api.post("/api/main/findMatch",{"keyword":findMatchValue}).then((response)=>{
+      console.log(response.data.matchfind);
+      setMatchSearch(response.data.matchfind)
+    });
+
+  })
+
+  const [tags, setTags] = useState([]);
+
+  // 인기 태그 불러오기
+useEffect(() => {
+  async function fetchTags() {
+    try {
+      const res = await api.get("/api/main/popular");
+      setTags(res.data);
+    } catch (err) {
+      console.error("인기 태그 불러오기 실패", err.response?.data || err.message);
+    }
+  }
+
+  fetchTags();
+}, []);
+
+// 랜덤 매칭 리스트 상태 관리
+const [randomMatchList, setRandomMatchList] = useState([]);
+useEffect(() => {
+  async function fetchRandomMatchList() {
+    try {
+      // 예: GET 방식, 랜덤 매칭 리스트를 받는 API 엔드포인트
+      const res = await api.post("/api/main/random");
+      setRandomMatchList(res.data.random); // matches 배열로 받는다고 가정
+    } catch (err) {
+      console.error("랜덤 매칭 리스트 불러오기 실패", err.response?.data || err.message);
+    }
+  }
+
+  fetchRandomMatchList();
+}, []);
+
+const categoryMap = {
+  "1": "운동",
+  "2": "여행",
+  "3": "게임",
+  "4": "기타"
+};
+
+  // DB에서 불러온 리스트 상태 관리
+ const [newMatchList, setNewMatchList] = useState([]);
+useEffect(() => {
+  async function fetchMatchList() {
+    try {
+      const res = await api.post("/api/main/matches"); // ← POST 방식, URL도 수정
+      setNewMatchList(res.data.matches); // ← matches 배열만 꺼내서 저장
+    } catch (err) {
+      console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
+    }
+  }
+  fetchMatchList();
+}, []);
+
 
   return (
     <>
@@ -108,10 +175,12 @@ const Main = () => {
             <ul className="serch-bar">
               <li className="main-search-input">
                 {/* 글자수 제한 */}
-                <input type="text" placeholder="검색어를 입력하세요" />
+                <input type="text" placeholder="검색어를 입력하세요" value={findMatchValue} onChange={(e)=>{
+                  setFindMatchValue(e.target.value);
+                }}/>
               </li>
               <li className="main-search-btn">
-                <button>
+                <button onClick={matchfind}>
                   <img src={searchIcon} alt="돋보기" />
                 </button>
               </li>
@@ -127,16 +196,11 @@ const Main = () => {
                 <div className="main-textbox main-sky"></div>
               </div>
               <ul className="main-rank-els">
-                {['달리기', '보드게임', '발로란트', '배드민턴', '당일치기'].map((item, index) => (
+                {Array.isArray(tags) && tags.map((item, index) => (
                   <li className="main-rank-el" key={index}>
                     <ul>
                       <li className="main-rank-el-num">{index + 1}</li>
-                      <li className="main-rank-el-con">{item}</li>
-                      <li className="main-rank-el-go">
-                        <a className="main-sky">
-                          <img src={searchIcon} alt="돋보기" />
-                        </a>
-                      </li>
+                      <li className="main-rank-el-con">{item.tag}</li>
                     </ul>
                   </li>
                 ))}
@@ -144,13 +208,21 @@ const Main = () => {
             </div>
             <div className="main-ranking-match">
               <ul>
-                {['1월22일', '1월23일', '1월24일'].map((date, index) => (
+                {Array.isArray(randomMatchList) && randomMatchList.map((data, index) => (
                   <li className="main-rank-match" key={index}>
                     <button onClick={handleModal} className={`main-rank-match-btn ${index}`}>
-                      <span>{date}</span>
-                      <span>11VS11</span>
-                      <span>시흥 서울대학교 스포츠 파크</span>
-                      <span>시흥 서울대학교 스포츠 파크(풋살) 11VS11</span>
+                      <div className="category">
+                        <div className="catename">{categoryMap[data.kategorie] || "기타"}</div>
+                      </div>
+                      <div>{(() => {
+                        const date = new Date(data.startTime);
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        return `${month}월${day}일`;
+                      })()}</div>
+                      <div>{data.people}명 모집</div>
+                      <div>{data.location}</div>
+                      <div>{data.title}</div>
                     </button>
                   </li>
                 ))}
@@ -160,23 +232,30 @@ const Main = () => {
 
           <div className="main-matchlist">
             <ul>
-              {['운동', '운동', '운동', '운동', '운동'].map((category, index) => (
-                <li className={`main-matchlist-els ${index}`} key={index}>
+              {Array.isArray(newMatchList) && newMatchList.map((match, index) => (
+                <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{category}</span>
+                      <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
                     <a className="main-matchlist-el-link">
                       <div className="main-matchlist-el-tit">
-                        <span>한강에서 1시간 러닝하실 분</span>
+                        <span>{match.title}</span>
                       </div>
                       <div className="main-matchlist-el-info">
-                        <span>한강둔치</span>
-                        <span>5명</span>
-                        <span>1/23</span>
-                      </div>
+                        <span>{match.location}</span>
+                        <span>{match.people}명</span>
+                        <span>{(() => {
+                          const date = new Date(match.startTime);
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const hour = String(date.getHours()).padStart(2, '0');
+                          const minute = String(date.getMinutes()).padStart(2, '0');
+                          return `${month}월${day}일 ${hour}시${minute}분`;
+                        })()}</span>
+                                            </div>
                       <img src={searchIcon} alt="돋보기" />
                     </a>
                   </div>
