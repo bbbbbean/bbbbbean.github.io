@@ -21,7 +21,7 @@ const MatchList = () => {
   const navigate = useNavigate();
   const { type } = useParams();
 
-  const [selectMatch, setMatchList] = useState(null);
+  const [selectMatch, setSelectMatch] = useState(null);
   const [topMatches, setTopMatches] = useState([]);
   const [matches, setMatches] = useState([]);
   const [bookmark, setBookmark] = useState({});
@@ -37,26 +37,8 @@ const MatchList = () => {
         // match 전체 데이터
         const matches = res.data;
 
-        // 필요한 호스트 유저 데이터
-        const detailPromises = matches.map((match) =>
-          api
-            .get(`/match/detail?matchId=${match.matchId}`)
-            .then((res) => {
-              return res.data;
-            })
-            .catch(() => null)
-        );
-        const userDetail = await Promise.all(detailPromises);
-
-        // match + user
         const fullMatch = matches.map((match, i) => ({
-          ...match,
-          nickName: userDetail[i]?.[0]?.nickName,
-          gender: userDetail[i]?.[0]?.gender,
-          anonymousCondi: userDetail[i]?.[0]?.anonymousCondi,
-          genderCondi: userDetail[i]?.[0]?.genderCondi,
-          chatCode: userDetail[i]?.[0]?.chatCode,
-          location: userDetail[i]?.[0]?.location,
+          ...match
         }));
 
         setMatches(fullMatch);
@@ -249,7 +231,7 @@ const MatchList = () => {
                   className="promotion-match"
                   onClick={() => {
                     setMatchOne(item);
-                    setMatchList(item.matchId);
+                    setSelectMatch(item.matchId);
                   }}
                 >
                   <div className="pm-match-container">
@@ -273,7 +255,7 @@ const MatchList = () => {
         {/* 로그인 여부에 따라 이동 변경 */}
         <button
           className="match-reg-btn"
-          onClick={() => navigate("./newMatch")}
+          onClick={() => navigate("/match/newMatch")}
         >
           매칭 등록
         </button>
@@ -319,8 +301,7 @@ const MatchList = () => {
                                 : "no"
                             }
                             onClick={() => {
-                              setMatchOne({ ...match, isBookmarked: bookmark[match.matchId] || false });
-                              setMatchList(match.matchId);
+                              setSelectMatch(match.matchId);
                             }}
                           >
                             {/* 0:신청 가능 1: 모집완료 */}
@@ -341,11 +322,7 @@ const MatchList = () => {
         })}
       </div>
       {selectMatch != null && (
-        <MatchModal
-          selectMatch={selectMatch}
-          setMatchList={setMatchList}
-          match={matchOne}
-        />
+        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch}/>
       )}
     </div>
   );

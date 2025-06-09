@@ -5,6 +5,7 @@ import imageApi from '../../ImageAxios'
 import { useDropzone } from 'react-dropzone'
 import FileIcon from "../../image/file.svg"
 import UploadIcon from "../../image/upload.svg"
+import "../../css/message_css/chatting.css";
 
 const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
 

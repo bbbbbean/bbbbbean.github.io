@@ -1,23 +1,52 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import api from "../../axios";
 import "../../css/matching_css/matchModalContent.css";
 import mark2 from "../../image/image_match/bookmark.svg";
+import { useNavigate } from "react-router-dom";
+import { WebSocketContext } from "../../WebSocket";
 
 
-const MatchModal = ({ selectMatch, setMatchList, match }) => {
-  const { matchId } = useParams();
-  const chatCode = match?.chatCode;
-  const oneMatchId = match?.matchId;
+const MatchModal = ({ selectMatch, setSelectMatch }) => {
 
-  const location = useLocation();
+  const { client } = useContext(WebSocketContext);
 
-  console.log("match", match);
+  const navigate = useNavigate();
+
+  const [match, setMatch] = useState({
+    anonymousCondi: "",
+    chatCode: 0,
+    genderCondi: "0",
+    gender: "",
+    kategorie: 1,
+    isBookmarked: false,
+    title: "",
+    nickName: "",
+    tags: [],
+    startTime: "",
+    location: "",
+    people: 0,
+    countPeople: 0,
+    status: 0,
+  });
+
+  useEffect(() => {
+    console.log("Fetching match data for ID:", selectMatch);
+    api.post("/match/detail", { matchId: selectMatch })
+      .then((response) => {
+        console.log("Match data:", response.data);
+        if (response.status === 200) {
+          setMatch(response.data);
+        } else {
+          console.error("Failed to fetch match data");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching match data:", error);
+      });
+  }, [selectMatch]);
 
   // 상태 정보들
-  match.anonymousCondi = match?.anonymousCondi == 0 ? "익명" : "실명";
+  match.anonymousCondi = match.anonymousCondi == 0 ? "익명" : "실명";
 
   if (match.genderCondi === "0") {
     if (match.gender === "female") {
@@ -57,23 +86,6 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
   console.log("Select : " + selectMatch);
   useEffect(() => {
     const matchModal = document.querySelector(".match-modal");
-    const matchChatContent = document.querySelector(".match-chat-content");
-    const matchModalBtn = document.querySelector(".match-modal-btn");
-    //const matchChatLock = document.querySelector(".match-chat-lock");
-
-    matchModalBtn.addEventListener("click", (e) => {
-      // eslint-disable-next-line no-restricted-globals
-      if (confirm("신청 하시겠습니까?")) {
-        console.log("dho" + oneMatchId, chatCode);
-        api
-          .post("/match/join", { "matchId": oneMatchId, chatCode })
-          .then((res) => {
-          })
-          .catch((err) => {
-            console.error("신청 실패:", err);
-          });
-      }
-    });
 
     let modalOut = true;
     matchModal.addEventListener("mouseenter", (e) => {
@@ -87,22 +99,49 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
       ".match-modal-container"
     );
     matchModalContainer.addEventListener("click", (e) => {
-      if (modalOut) setMatchList(null);
+      if (modalOut) setSelectMatch(null);
     });
 
     window.document.addEventListener("keydown", (e) => {
-      if (e.keyCode === 27) setMatchList(null);
+      if (e.keyCode === 27) setSelectMatch(null);
     });
-  }, [setMatchList]);
+  }, []);
+
+  // 시간과 분만 추출하는 함수
+  const formatTime = (startTimeStr) => {
+    if (!startTimeStr) return "";
+    const date = new Date(startTimeStr);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const [showJoinConfirm, setShowJoinConfirm] = useState(false);
+
+  const handleJoin = () => {
+    const chatCode = match.chatCode;
+    api
+      .post("/match/join", { "matchId": selectMatch, chatCode })
+      .then((response) => {
+        client.publish({
+          destination: "/pub/matchJoin",
+          body: JSON.stringify({ "matchId": selectMatch })
+        });
+        navigate(`/friend`, { state: { chatCode: match.chatCode } });
+      }).catch((err) => {
+        console.error("신청 실패:", err);
+      });
+    setSelectMatch(null);
+    setShowJoinConfirm(false);
+  };
+
   return (
     <div className="match-modal-container">
       <div className="match-modal">
         <div className="match-modal-header">
           <div className="match-info-tag">
             <span>{kategorieName(match.kategorie)}</span>
-
             {match.isBookmarked && <span><img src={mark2} /></span>}
-
           </div>
           <div className="match-modal-title">
             <p>{match.title}</p>
@@ -121,7 +160,7 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
             <p>
               {month}월 {day}일 {weekday}요일
             </p>
-            <p>{match.time}</p>
+            <p>{formatTime(match.startTime)}</p>
             <p className="match-info-content-location">{match.location}</p>
             {match.location !== "온라인" && (
               <a
@@ -135,8 +174,8 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
           <div className="match-modal-info-left">
             <div className="match-symbol-container">
               {["Check", "Groups", "Wc"].map((icon, i) => (
-                <div className="match-symbol-el">
-                  <div className="match-symbol" key={i}>
+                <div className="match-symbol-el" key={i}>
+                  <div className="match-symbol">
                     <span className="material-symbols-outlined">{icon}</span>
                   </div>
                   <p>
@@ -164,11 +203,24 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
                 disabled={
                   !(match.status === 0 && match.countPeople < match.people)
                 }
+                onClick={() => setShowJoinConfirm(true)}
               >
                 {match.status === 0 && match.countPeople < match.people
                   ? "신청하기"
                   : "모집 완료"}
               </button>
+              {showJoinConfirm && (
+                <div className="custom-confirm-modal">
+                  <div className="custom-confirm-content">
+                    <p>신청 하시겠습니까?</p>
+                    <button onClick={handleJoin}>확인</button>
+                    <button onClick={() => {
+                      setShowJoinConfirm(false);
+                      setSelectMatch(null);
+                    }}>취소</button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

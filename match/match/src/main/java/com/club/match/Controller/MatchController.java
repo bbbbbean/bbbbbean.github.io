@@ -100,9 +100,14 @@ public class MatchController {
     }
 
     // 단건 매치 detail
-    @GetMapping("/detail")
-    public ResponseEntity<?> selectOneMatch(@RequestParam Long matchId){
-        List<MatchOneDto> oneMatch = matchService.selectOneMatch(matchId);
+    @PostMapping("/detail")
+    public ResponseEntity<?> selectOneMatch(@RequestBody Map<String,Object> req){
+        Long matchId = ((Integer)req.get("matchId")).longValue();
+        MatchOneDto oneMatch = matchService.selectOneMatch(matchId);
+        oneMatch.setStartTime(oneMatch.getStartTime());
+        oneMatch.setMatchId(matchId);
+        List<String> tags = matchService.getTags(matchId);
+        oneMatch.setTags(tags);
         log.info("oneMatch"+oneMatch);
         return ResponseEntity.ok().body(oneMatch);
     }
@@ -113,11 +118,11 @@ public class MatchController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String)authentication.getName();
         Long matchId = ((Integer)req.get("matchId")).longValue();
-        int chatCode = (int)req.get("chatCode");
+        int chatCode = (Integer)req.get("chatCode");
 
         log.info("thiiiiis"+userId+matchId+chatCode);
         // 매치 참여자 테이블 삽입
-        matchService.joinMatch(matchId,userId);
+            matchService.joinMatch(matchId,userId);
         // 채팅 테이블 삽입
         matchService.addHostGroupChat(chatCode,userId);
 

@@ -290,7 +290,8 @@
 .main-rank-match div{
   color: #fff;
 }
-.main-rank-match div:first-child{
+
+.main-rank-match>button>.category>.catename{
   font-size: 1.1rem;
   align-self: flex-start;
   border: 1px solid #F9AF0E ;
@@ -299,11 +300,10 @@
   border-radius: 30px;
   width: 100px;
   background-color: rgba(228, 156, 0, 0.4);
-}
-.main-rank-match>button>.category>.catename{
-  font-size: 1.4rem;
-  font-weight: 700;
-  border: none;
+  position: absolute;
+  padding: 5px;
+  top: 30px;
+  left: -10px;
 }
 .main-rank-match div:nth-child(2){
   position: absolute;

@@ -125,7 +125,11 @@ public class MatchService {
 
     // 모달용 단일 매치 정보 조회
     @Transactional(rollbackFor = Exception.class)
-    public List<MatchOneDto> selectOneMatch(long matchId){
+    public MatchOneDto selectOneMatch(long matchId){
         return matchMapper.selectMatchOne(matchId);
+    }
+
+    public List<String> getTags(Long matchId) {
+        return matchMapper.getTags(matchId);
     }
 }

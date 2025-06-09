@@ -60,9 +60,14 @@
 
     <!-- 모달용 단일 매치 정보 -->
     <select id="selectMatchOne">
-        select anonymousCondi, genderCondi, chatCode, nickName, gender, location from match_tbl m
-        join user_tbl u
-        on m.creatorId = u.userId
-        where matchId = #{matchId}
+        select anonymousCondi, genderCondi, chatCode, userId, nickName, gender, location, startTime, title,people,
+               (SELECT count(*) from matchparticipant_tbl where matchId = #{matchId}) as countPeople, status, kategorie
+        from bb.match_tbl m
+                 join bb.user_tbl u
+                      on m.creatorId = u.userId where matchId = #{matchId};
+    </select>
+
+    <select id="getTags">
+        SELECT tag from matchtag_tbl where matchId = #{matchId};
     </select>
 </mapper>

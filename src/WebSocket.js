@@ -94,7 +94,7 @@ export const WebSocketProvider = ({ children }) => {
                             setAlarmUpdate(prev => (!prev));
                         }
 
-                        if (data.commentAlert) {
+                        if (data.commentAlert || data.matchAlert) {
                             setAlarmUpdate(prev => (!prev));
                         }
 
