@@ -49,10 +49,7 @@
   color: black;
   font-size: 1.2rem;
 }
-
-.on {
-  /* background-color: #6ec3ff; */
-  /* color: #fff !important; */
+.forum-menu-el > .active {
   border-bottom: #6ec3ff 2px solid;
 }
 /* 서치 */

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class CommentController {
                 }
             }
             commentDTO.setChildCount(childComment.size());
-            commentDTO.setCommentDTOs(childComment);
+            commentDTO.setCommentDTOs(childComment != null ? childComment : new ArrayList<>());
         }
         resp.put("commentDTOs",commentDTOs);
         resp.put("total",total);
