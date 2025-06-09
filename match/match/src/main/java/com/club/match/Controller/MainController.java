@@ -36,4 +36,15 @@ public class MainController {
         return ResponseEntity.ok().body(resp);
     }
 
+    @PostMapping("/random")
+    public ResponseEntity<?> getRandomMatchList(){
+
+        Map<String, Object> resp = new HashMap<>();
+
+        List<MatchDto> randomMatchList = mainService.getRandomMatchList();
+
+        resp.put("random",randomMatchList);
+        return ResponseEntity.ok().body(resp);
+    }
+
 }

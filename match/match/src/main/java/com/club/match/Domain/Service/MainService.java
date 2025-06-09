@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,5 +43,24 @@ public class MainService {
                     .build());
         }
         return matchDtoList;
+    }
+
+    public List<MatchDto> getRandomMatchList() {
+        List<MatchDto> randomMatchList = mainMapper.getRandomMatch();
+
+        Collections.shuffle(randomMatchList);
+
+        return randomMatchList.stream()
+                .limit(3)
+                .map(matchDto -> MatchDto.builder()
+                        .matchId(matchDto.getMatchId())
+                        .kategorie(matchDto.getKategorie())
+                        .title(matchDto.getTitle())
+                        .people(matchDto.getPeople())
+                        .location(matchDto.getLocation())
+                        .startTime(matchDto.getStartTime())
+                        .build())
+                .collect(Collectors.toList());
+
     }
 }
