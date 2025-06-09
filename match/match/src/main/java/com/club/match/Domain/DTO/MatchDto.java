@@ -25,7 +25,6 @@ public class MatchDto {
     private int people;
     private int kategorie;
     private int anonymousCondi;
-    private int mannerCondi;
     private String genderCondi;
     private int chatCode;
 

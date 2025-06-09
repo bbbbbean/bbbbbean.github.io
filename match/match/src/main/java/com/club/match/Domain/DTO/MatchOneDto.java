@@ -5,17 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class CalendarDto {
+public class MatchOneDto {
     private long matchId;
-    private String participantId;
-
-    // 내용 추가를 위한 제목, 날짜
-    private String title;
-    private LocalDateTime startTime;
+    private String nickName;
+    private String gender;
+    private int anonymousCondi;
+    private String genderCondi;
+    private int chatCode;
+    private String location;
 }
