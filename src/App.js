@@ -45,7 +45,6 @@ function AppComponent() {
               <Route path="/community/*" element={<CommunityLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/ok" element={<SuccessLogin />} />
-              <Route path='/test' element={<Comment />} />
             </Routes>
           </div>
           <Footer />

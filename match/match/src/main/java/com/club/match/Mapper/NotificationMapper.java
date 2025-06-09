@@ -14,4 +14,6 @@ public interface NotificationMapper {
     List<NotificationDTO> selectAll(String userId);
 
     int readAll(String userId, LocalDateTime readAt);
+
+    int delete(String userId, String notificationId);
 }

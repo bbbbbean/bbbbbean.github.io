@@ -48,8 +48,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                            "/api/auth/logout","/api/auth/sign"
-                            ,"/api/auth/check-id","/profile/**"
+                            "/api/auth/logout","/api/auth/sign", "/api/auth/idSearch"
+                            ,"/api/auth/check-id","/api/auth/pwEdit","/profile/**"
                             ,"/chatFile/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");

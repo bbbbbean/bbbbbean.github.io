@@ -1,11 +1,11 @@
 package com.club.match.Controller;
 
-import com.club.match.Domain.DTO.ChatDTO;
-import com.club.match.Domain.DTO.ChatFileDTO;
-import com.club.match.Domain.DTO.MessageDTO;
-import com.club.match.Domain.DTO.NotificationDTO;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.ChatService;
 import com.club.match.Domain.Service.NotificationService;
+import com.club.match.Domain.Service.PostService;
+import com.club.match.Domain.Service.UserService;
+import com.club.match.Mapper.ChatMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,12 @@ public class ChatController {
     NotificationService notificationService;
 
     @Autowired
+    PostService postService;
+
+    @Autowired
+    ChatMapper chatMapper;
+
+    @Autowired
     private SimpUserRegistry simpUserRegistry;
 
     private final SimpMessagingTemplate template;       // 특정 사용자에게 메시지를 보내는데 사용되는 STOMP을 이용한 템플릿입니다.
@@ -66,6 +72,15 @@ public class ChatController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isOk = notificationService.read(authentication.getName());
+
+        return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/alarm/del")
+    public ResponseEntity<?> alarmRemove(@RequestBody NotificationDTO notificationDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isOk = notificationService.delete(authentication.getName(), notificationDTO.getNotificationId());
 
         return ResponseEntity.ok().body(null);
     }
@@ -173,35 +188,79 @@ public class ChatController {
         return ResponseEntity.ok().body(null);
     }
 
-        @MessageMapping("/friend")
-        public void addFriend(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
-            String friendId = (String) req.get("friendId");
-            String status = (String) req.get("status");
-            Map<String,Object> resp = new HashMap<>();
+    @MessageMapping("/friend")
+    public void alarmFriend(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
+        String friendId = (String) req.get("friendId");
+        String status = (String) req.get("status");
+        Map<String,Object> resp = new HashMap<>();
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .userId(friendId)
+                .receivedAt(LocalDateTime.now())
+                .notificationCode(2)
+                .build();
 
-            NotificationDTO notificationDTO = NotificationDTO.builder()
-                    .userId(friendId)
-                    .receivedAt(LocalDateTime.now())
-                    .notificationCode(2)
-                    .build();
+        if(status.equals("add")){ // 친구요청
 
-            if(status.equals("add")){ // 친구요청
+            notificationDTO.setContent(principal.getName()+"님이 친구신청을 하였습니다.");
 
-                notificationDTO.setContent(principal.getName()+"님이 친구신청을 하였습니다.");
-                notificationService.sendNotification(notificationDTO);
-                resp.put("addFriend","ok");
+        } else if(status.equals("acc")){ // 친구수락
 
-            } else if(status.equals("acc")){ // 친구수락
+            notificationDTO.setContent(principal.getName()+"님이 친구요청을 수락하였습니다.");
+        }
 
-                notificationDTO.setContent(principal.getName()+"님이 친구요청을 수락하였습니다.");
-                notificationService.sendNotification(notificationDTO);
-                resp.put("accFriend","ok");
+        notificationService.sendNotification(notificationDTO);
+
+        resp.put("friendAlert","ok");
+
+        template.convertAndSend("/sub/user/"+friendId, resp);
+        template.convertAndSend("/sub/user/"+principal.getName(), resp);
+    }
+
+    @MessageMapping("/comment")
+    public void alarmComment(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
+
+        Long postId = ((Integer) req.get("postId")).longValue();
+        String childId = (String) req.get("childId");
+        Map<String,Object> resp = new HashMap<>();
+
+        PostDTO postDTO = postService.getPostById(postId);
+
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .receivedAt(LocalDateTime.now())
+                .notificationCode(3)
+                .from(postId.toString())
+                .build();
+
+        resp.put("commentAlert","ok");
+
+        if(childId == null){ // 댓글
+            // 자기자신 알람 방지
+            if(principal.getName().equals(postDTO.getUserId()))
+            {
+                return;
+            }
+            notificationDTO.setUserId(postDTO.getUserId());
+            notificationDTO.setContent("게시글에 답글이 달렸습니다.");
+            notificationService.sendNotification(notificationDTO);
+
+            template.convertAndSend("/sub/user/"+postDTO.getUserId(), resp);
+
+        } else { //대댓글
+
+            CommentDTO commentDTO = chatMapper.selectOneComment(childId);
+
+            // 자기자신 알람 방지
+            if(principal.getName().equals(commentDTO.getUserId()))
+            {
+                return;
             }
 
-            resp.put("friendAlert","ok");
+            notificationDTO.setUserId(commentDTO.getUserId());
+            notificationDTO.setContent("답글에 댓글이 달렸습니다.");
+            notificationService.sendNotification(notificationDTO);
 
-            template.convertAndSend("/sub/user/"+friendId, resp);
-            template.convertAndSend("/sub/user/"+principal.getName(), resp);
+            template.convertAndSend("/sub/user/"+commentDTO.getUserId(), resp);
+        }
     }
 
     @MessageMapping("/enter")

@@ -35,8 +35,8 @@
                  )
     </insert>
 
-    <select id="selectUserPhone" resultType="int">
-        SELECT COUNT(*) FROM user_tbl WHERE phone=#{phone};
+    <select id="selectUserPhone" resultType="UserDTO">
+        SELECT * FROM user_tbl WHERE phone=#{phone};
     </select>
 
     <delete id="deleteUser">

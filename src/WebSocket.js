@@ -12,6 +12,7 @@ export const WebSocketProvider = ({ children }) => {
     // 각각 매칭, 친구 페이지 갱신용 상태값
     const [matchingUpdate, setMatchingUpdate] = useState(false);
     const [friendUpdate, setFriendUpdate] = useState(false);
+    const [alarmUpdate, setAlarmUpdate] = useState(false);
 
 
     const clientRef = useRef(null);
@@ -90,6 +91,11 @@ export const WebSocketProvider = ({ children }) => {
 
                         if (data.friendAlert) {
                             setFriendUpdate(prev => (!prev));
+                            setAlarmUpdate(prev => (!prev));
+                        }
+
+                        if (data.commentAlert) {
+                            setAlarmUpdate(prev => (!prev));
                         }
 
                         const roomId = data.chatCode;
@@ -124,9 +130,9 @@ export const WebSocketProvider = ({ children }) => {
                     stompClient.deactivate();
                 },
                 onWebSocketClose: () => {
-                    api.post("/api").then((response) =>{
+                    api.post("/api").then((response) => {
                     }).catch((error) => {
-                        if(isAuth){
+                        if (isAuth) {
                             window.location.reload();
                         }
                     });
@@ -153,7 +159,9 @@ export const WebSocketProvider = ({ children }) => {
     }
 
     return (
-        <WebSocketContext.Provider value={{ client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate }}>
+        <WebSocketContext.Provider value={
+            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate }
+        }>
             {children}
         </WebSocketContext.Provider>
     );

@@ -92,7 +92,7 @@ public class AuthController {
             resp.put("fail","비밀번호는 8~15자 사이여야 합니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }else if(!signDTO.getPassword().equals(signDTO.getRepassword())){
-            resp.put("fail","비밀번호가 일치하지 않습니다.");
+            resp.put("fail","비밀번호 확인이 일치하지 않습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
 
@@ -100,9 +100,9 @@ public class AuthController {
 
         PortOneDTO portOneDTO = authService.portOneGetData(signDTO.getImp_uid(), portoneToken);
 
-        boolean isPhone = authService.phoneCkeck(portOneDTO.getResponse().getPhone());
+        UserDTO userCkeck = authService.phoneCkeck(portOneDTO.getResponse().getPhone());
 
-        if(isPhone){
+        if(userCkeck != null){
             resp.put("fail","같은 명의로 등록된 계정이 있습니다.");
             resp.put("authReset",1);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
@@ -141,6 +141,89 @@ public class AuthController {
 
         System.out.println(userDTO);
         return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/idSearch")
+    public ResponseEntity<?> idCheck(@RequestBody @Validated SignDTO signDTO) {
+        Map<String, Object> resp = new HashMap<>();
+
+        if(!signDTO.isAuthCheck()){
+            resp.put("fail","본인인증이 진행되지 않았습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        log.info("signDTO.getImp_uid() : " + signDTO.getImp_uid());
+
+        String portoneToken = authService.portOneGetToken();
+
+        PortOneDTO portOneDTO = authService.portOneGetData(signDTO.getImp_uid(), portoneToken);
+
+        UserDTO userCkeck = authService.phoneCkeck(portOneDTO.getResponse().getPhone());
+
+        if(userCkeck == null){
+            resp.put("fail","해당 명의로 등록된 계정이 없습니다.");
+            resp.put("authReset",1);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else {
+            userCkeck.setUserId(userCkeck.getUserId().substring(0, userCkeck.getUserId().length()-2)+"**");
+            resp.put("userId", userCkeck.getUserId());
+        }
+
+        return ResponseEntity.ok().body(resp);
+    }
+
+    @PostMapping("/pwEdit")
+    public ResponseEntity<?> pwEdit(@RequestBody @Validated SignDTO signDTO) {
+        Map<String, Object> resp = new HashMap<>();
+
+        String regex1 = "^(?=.*[a-zA-Z]).+$"; // 영문자 포함
+        String regex2 = "^(?=.*[!@#$%^*+=-]).+$"; // 특수문자 포함
+        String regex3 = "^(?=.*[0-9]).+$"; // 숫자 포함
+        String regex4 = "^.{8,15}$"; // 길이 8~15자
+
+        if(!signDTO.isAuthCheck()){
+            resp.put("fail","본인인증이 진행되지 않았습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        log.info("signDTO.getImp_uid() : " + signDTO.getImp_uid());
+
+        String portoneToken = authService.portOneGetToken();
+
+        PortOneDTO portOneDTO = authService.portOneGetData(signDTO.getImp_uid(), portoneToken);
+
+        UserDTO userCkeck = authService.phoneCkeck(portOneDTO.getResponse().getPhone());
+
+        if(userCkeck == null){
+            resp.put("fail","해당 명의로 등록된 계정이 없습니다.");
+            resp.put("authReset",1);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+        if(!userCkeck.getUserId().equals(signDTO.getUserId())){
+            resp.put("fail","아이디가 틀렸습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+        if (!signDTO.getPassword().matches(regex1)) {
+            resp.put("fail","비밀번호는 영어가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!signDTO.getPassword().matches(regex2)) {
+            resp.put("fail","비밀번호는 특수문자가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!signDTO.getPassword().matches(regex3)) {
+            resp.put("fail","비밀번호는 숫자가 포함되어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if (!signDTO.getPassword().matches(regex4)) {
+            resp.put("fail","비밀번호는 8~15자 사이여야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }else if(!signDTO.getPassword().equals(signDTO.getRepassword())){
+            resp.put("fail","비밀번호 확인이 일치하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        userService.changeUserPassword(userCkeck.getUserId(), passwordEncoder.encode(signDTO.getPassword()));
+
+        return ResponseEntity.ok().body(resp);
+
     }
 
     @PostMapping("/remove")

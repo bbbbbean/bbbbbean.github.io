@@ -131,13 +131,13 @@ const LoginForm = () => {
                         <span>회원가입</span>
                     </Link>
                     <span>|</span>
-                    <a href="#">
+                    <Link to="/user/idSearch">
                         <span>아이디찾기</span>
-                    </a>
+                    </Link>
                     <span>|</span>
-                    <a href="#">
+                    <Link to="/user/pwSearch">
                         <span>비밀번호찾기</span>
-                    </a>
+                    </Link>
                 </div>
                 <div className="sns-login">
                     <span>SNS 계정으로 간편하게 로그인하세요</span>

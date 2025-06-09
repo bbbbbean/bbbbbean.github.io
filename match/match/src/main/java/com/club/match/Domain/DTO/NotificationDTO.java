@@ -20,4 +20,5 @@ public class NotificationDTO {
     private String type;
     private String time;
     private int notificationCode;
+    private String from;
 }
