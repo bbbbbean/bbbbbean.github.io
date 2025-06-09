@@ -11,13 +11,22 @@ const CalendarMemoViewModal = ({ calendarId, setviewModal, setHasUpdated }) => {
     const [editMemo, setEditMemo] = useState(false);
 
     useEffect(() => {
-        api.post("api/calendar/getMemo", { calendarId })
-            .then((response) => {
-                setDate(response.data.noteData.date);
-                setContent(response.data.noteData.content);
-                setOldContent(response.data.noteData.content);
-            });
-    }, [calendarId]);
+        if (itemType === "note") {
+            api.post("api/calendar/getMemo", { calendarId })
+                .then((response) => {
+                    setDate(response.data.noteData.date);
+                    setContent(response.data.noteData.content);
+                    setOldContent(response.data.noteData.content);
+                });
+        }else if (itemType === "match") {
+            api.post("api/calendar/get~~", { matchId })
+                .then((response) => {
+                    setDate(response.data);
+                    setContent(response.data);
+                    setOldContent(response.data);
+                });   
+        }
+    }, [calendarId, itemType]);
 
     const handleButton = (e) => {
         if (editMemo) {
@@ -41,7 +50,7 @@ const CalendarMemoViewModal = ({ calendarId, setviewModal, setHasUpdated }) => {
         <div className="memo-modal">
             <button onClick={() => setviewModal(false)}>X</button>
             <div className="memo-modal-content">
-                <div>{date}</div>
+                <div className="memo-modal-content-date">{date}</div>
                 {editMemo ?
                     <div>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -55,10 +64,10 @@ const CalendarMemoViewModal = ({ calendarId, setviewModal, setHasUpdated }) => {
                         </form>
                     </div>
                     :
-                    <div>{content}</div>}
-                {!editMemo &&<div>
-                    <br></br>
-                    <button onClick={handleButton}>수정</button></div>}
+                    <div className="memo-modal-content-el">{content}</div>}
+                {!editMemo && <div className="memo-modal-edit">
+                    <button onClick={handleButton}>수정</button>
+                </div>}
             </div>
         </div>
     );
@@ -84,12 +93,12 @@ const CalendarMemoAddModal = ({ date, setAddModal, setHasUpdated }) => {
         <div className="memo-modal">
             <button onClick={() => setAddModal(false)}>X</button>
             <div className="memo-modal-content">
-                {date}
+                <div className="memo-modal-content-date">{date}</div>
                 <div className="memo-modal-input">
                     <form onSubmit={handleSubmit}>
-                        <input type="text" placeholder="메모를 입력하세요"
+                        <div className="memo-modal-input-warp"><input type="text" placeholder="메모를 입력하세요"
                             onChange={(e) => setContent(e.target.value)} value={content} />
-                        <br />
+                        </div>
                         <button type="submit">저장</button>
                     </form>
                 </div>

@@ -9,7 +9,7 @@ import mark2 from "../../image/image_match/bookmark.svg";
 
 const MatchModal = ({ selectMatch, setMatchList, match }) => {
   const { matchId } = useParams();
-  const chatCode = match.chatCode;
+  const chatCode = match?.chatCode ?? null;
   const oneMatchId = match.matchId;
 
   const location = useLocation();
@@ -58,7 +58,7 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
   useEffect(() => {
     const matchModal = document.querySelector(".match-modal");
     const matchChatContent = document.querySelector(".match-chat-content");
-    const matchModalBtn = document.querySelector(".match-modal-btn");
+    const matchModalBtn = document.querySelector(".match-modal-btn-el");
     //const matchChatLock = document.querySelector(".match-chat-lock");
 
     matchModalBtn.addEventListener("click", (e) => {
@@ -159,7 +159,7 @@ const MatchModal = ({ selectMatch, setMatchList, match }) => {
                 className={
                   match.status === 0 && match.countPeople < match.people
                     ? "match-modal-btn-el ok"
-                    : "match-modal-btn no"
+                    : "match-modal-btn-el no"
                 }
                 disabled={
                   !(match.status === 0 && match.countPeople < match.people)

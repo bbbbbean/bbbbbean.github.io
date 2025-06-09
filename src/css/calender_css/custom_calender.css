@@ -8,19 +8,20 @@
 
 .react-calendar { 
  width: 100%;
- background-color: #E0F2FF;
+ background-color: #ffffff;
  color: #222;
  border-radius: 8px;
- box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+ border: 1px solid #6EC3FF;
+ box-shadow: 0px 0px 9px #cae9ff;
  font-family: Arial, Helvetica, sans-serif;
  line-height: 1.125em;
 }
 .react-calendar__navigation button {
- color: #6EC3FF;
+ color: #133957;
  min-width: 44px;
  background: none;
  font-size: 16px;
- margin-top: 8px;
+ margin: 8px 10px 0;
 }
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
@@ -40,19 +41,19 @@ abbr[title] {
  }
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
- background: #6EC3FF;
- color: #6f48eb;
+ background: #ddf1ff;
+ color: #6750b4;
  border-radius: 6px;
 }
 .react-calendar__tile--now {
- background: #B3E1FF;
+ background: #c8e8ff;
  border-radius: 6px;
  font-weight: bold;
- color: #6f48eb;
+ color: #4093ce;
 }
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
- background: #97D4FF;
+ background: #b8e1ff;
  border-radius: 6px;
  font-weight: bold;
  color: #6f48eb;;
@@ -62,14 +63,14 @@ abbr[title] {
  background: #f8f8fa;
 }
 .react-calendar__tile--active {
- background: #97D4FF;
+ background: #c0e5ff;
  border-radius: 6px;
  font-weight: bold;
  color: white;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
- background: #6EC3FF;
+ background: #90d1ff;
  color: white;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
@@ -81,19 +82,13 @@ abbr[title] {
  border-radius: 0;
 }
 .react-calendar__tile--rangeStart {
- border-top-right-radius: 0;
- border-bottom-right-radius: 0;
- border-top-left-radius: 6px;
- border-bottom-left-radius: 6px;
+ border-radius: 3px;
  background: #6EC3FF;
  color: white;
 }
 .react-calendar__tile--rangeEnd {
- border-top-left-radius: 0;
- border-bottom-left-radius: 0;
- border-top-right-radius: 6px;
- border-bottom-right-radius: 6px;
- background: #6EC3FF;
+ border-radius: 3px;
+ background: #98d4ff;
  color: white;
 }
 .calendar-content{

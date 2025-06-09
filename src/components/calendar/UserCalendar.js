@@ -18,13 +18,21 @@ function UserCalendar() {
   const [match, setMatch] = useState([]);
   const [keyEvent, setKeyEvent] = useState(false);
   const [calendarId, setCalendarId] = useState(0);
+  const [itemType, setItemType] = useState("");
 
   const handleRightClick = (e) => {
     e.preventDefault();
+
     console.log(e.target.dataset.id);
-      setCalendarId(e.target.dataset.id);
-    if (keyEvent) {
-      api.post("api/calendar/deleteMemo", { "calendarId":e.target.dataset.id })
+
+    const id = e.target.dataset.id;
+    const type = e.target.dataset.type;
+
+    setCalendarId(id);
+    setItemType(type);
+
+    if (keyEvent&& type === "note") {
+      api.post("api/calendar/deleteMemo", { "calendarId": id })
         .then((response) => {
           setHasUpdated(!hasUpdated);
         });
@@ -33,6 +41,7 @@ function UserCalendar() {
       setAddModal(false);
     }
   }
+
 
   const dummy = (e) => {
     e.preventDefault();
@@ -58,13 +67,13 @@ function UserCalendar() {
         setNote(response.data.noteData);
         setMatch(response.data.matchData);
       })
-      .catch(() => {});
-      
+      .catch(() => { });
+
   }, [selectedDate, hasUpdated]);
 
   return (
     <div onContextMenu={dummy} style={{ position: "relative" }}>
-      {viewModal && <CalendarModal.CalendarMemoViewModal calendarId={calendarId} setviewModal={setviewModal} setHasUpdated={setHasUpdated} />}
+      {viewModal && <CalendarModal.CalendarMemoViewModal calendarId={calendarId} itemType={itemType} setviewModal={setviewModal} setHasUpdated={setHasUpdated} />}
       {addModal && <CalendarModal.CalendarMemoAddModal date={date} setAddModal={setAddModal} setHasUpdated={setHasUpdated} />}
       <Calendar
         onChange={onChange}
@@ -104,14 +113,14 @@ function UserCalendar() {
               {note.map((item) => {
                 const itemDate = new Date(item.date);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
-                  return <p key={item.calendarId} data-id={item.calendarId} style={{ color: 'orange' }} onContextMenu={handleRightClick}>{item.content}</p>;
+                  return <p key={item.calendarId} data-id={item.calendarId} data-type="note" style={{ color: 'orange', backgroundColor: '#FFF', width: '100%', marginTop: '3px' }} onContextMenu={handleRightClick}>{item.content}</p>;
                 }
                 return null;
               })}
               {match.map((item) => {
                 const itemDate = new Date(item.startTime);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
-                  return <p key={item.matchId} data-id={item.matchId} style={{ color: 'black' }} onContextMenu={handleRightClick}>{item.title}</p>;
+                  return <p key={item.matchId} data-id={item.matchId} data-type="match" style={{ color: 'black', backgroundColor: '#eff9ff', width: '100%', marginTop: '2px' }} onContextMenu={handleRightClick}>{item.title}</p>;
                 }
                 return null;
               })}
