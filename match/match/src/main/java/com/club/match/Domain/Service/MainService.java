@@ -63,4 +63,8 @@ public class MainService {
                 .collect(Collectors.toList());
 
     }
+
+    public List<MatchDto> searchMatchesByKeyword(String keyword) {
+        return matchMapper.findMatchesByKeyword(keyword);
+    }
 }

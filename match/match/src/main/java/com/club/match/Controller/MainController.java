@@ -47,4 +47,14 @@ public class MainController {
         return ResponseEntity.ok().body(resp);
     }
 
+    @PostMapping("/findMatch")
+    public ResponseEntity<?> getMatchSearchList(@RequestBody Map<Object, String> req){
+        String keyword = req.get("keyword");
+        List<MatchDto> matches = mainService.searchMatchesByKeyword(keyword);
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("matches", matches);
+        return ResponseEntity.ok().body(resp);
+    }
+
 }

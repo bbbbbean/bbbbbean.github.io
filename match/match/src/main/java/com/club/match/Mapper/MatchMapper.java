@@ -14,4 +14,6 @@ public interface MatchMapper {
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
     List<MatchDto> matchAllList();
+
+    List<MatchDto> findMatchesByKeyword(String keyword);
 }

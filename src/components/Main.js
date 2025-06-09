@@ -17,7 +17,7 @@ import api from "../axios";
 
 const Main = () => {
 
-  const [isAuth] = useState(localStorage.getItem("isAuth"));
+  const [isAuth] = useState(localStorage.getItem("isAuth"));;
 
   useEffect(() => {
     const mainMatchlistEls = document.querySelectorAll(".main-matchlist-els");
@@ -35,6 +35,18 @@ const Main = () => {
   }
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
+
+  const [findMatchValue, setFindMatchValue] = useState("")
+  const [matchSearch,setMatchSearch] = useState([]);
+  //매칭 검색
+  const matchfind = (() => {
+    console.log(findMatchValue);
+    api.post("/api/main/findMatch",{"keyword":findMatchValue}).then((response)=>{
+      console.log(response.data.matchfind);
+      setMatchSearch(response.data.matchfind)
+    });
+
+  })
 
   const [tags, setTags] = useState([]);
 
@@ -163,10 +175,12 @@ useEffect(() => {
             <ul className="serch-bar">
               <li className="main-search-input">
                 {/* 글자수 제한 */}
-                <input type="text" placeholder="검색어를 입력하세요" />
+                <input type="text" placeholder="검색어를 입력하세요" value={findMatchValue} onChange={(e)=>{
+                  setFindMatchValue(e.target.value);
+                }}/>
               </li>
               <li className="main-search-btn">
-                <button>
+                <button onClick={matchfind}>
                   <img src={searchIcon} alt="돋보기" />
                 </button>
               </li>
