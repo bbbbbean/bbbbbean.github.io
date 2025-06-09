@@ -8,13 +8,18 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
+    // INSERT
     int insertPost(PostDTO postDTO);
 
+    // SELECT
     PostDTO selectPostByPostId(Long postId);
 
-    String selectContentByPostId(Long postId);
+    List<AttachmentFileDTO> selectAttachmentsByPostId(Long postId);
 
-    Long getPostId(PostDTO postDTO);
+    // UPDATE
+    void incrementViewCount(Long postId);
 
+    // DELETE
     int deletePost(Long postId);
+
 }

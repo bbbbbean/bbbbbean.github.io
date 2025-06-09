@@ -3,29 +3,147 @@
 
 <mapper namespace="com.club.match.Mapper.PostMapper">
 
+    <resultMap id="postDetailResultMap" type="com.club.match.Domain.DTO.PostDTO">
+        <id property="postId" column="p_postId"/>
+        <result property="userId" column="p_userId"/>
+        <result property="userNickName" column="u_nickName"/>
+        <result property="title" column="p_title"/>
+        <result property="content" column="p_content"/>
+        <result property="createAt" column="p_createAt"/>
+        <result property="viewCount" column="p_viewCount"/>
+        <result property="postCodeId" column="p_postCodeId"/>
+        <result property="postCategory" column="pc_category"/>
+        <result property="likeCount" column="p_like_count"/>
+        <result property="dislikeCount" column="p_dislike_count"/>
+
+        <collection property="attachments" ofType="com.club.match.Domain.DTO.AttachmentFileDTO"
+                    javaType="java.util.ArrayList">
+            <id property="postAttachmentId" column="a_postAttachmentId"/>
+            <result property="postId" column="a_postId"/>
+            <result property="userId" column="a_userId"/>
+            <result property="attachmentUrl" column="a_attachmentUrl"/>
+            <result property="originalFileName" column="a_originalFileName"/>
+            <result property="contentType" column="a_contentType"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="attachmentFileResultMap" type="com.club.match.Domain.DTO.AttachmentFileDTO">
+        <id property="postAttachmentId" column="postAttachmentId"/>
+        <result property="postId" column="postId"/>
+        <result property="userId" column="userId"/>
+        <result property="attachmentUrl" column="attachmentUrl"/>
+        <result property="originalFileName" column="originalFileName"/>
+        <result property="contentType" column="contentType"/>
+    </resultMap>
+
+    <resultMap id="postRecommendationResultMap" type="com.club.match.Domain.DTO.PostRecommendationDTO">
+        <id property="postRecommendationId" column="postRecommendationId"/>
+        <result property="postId" column="postId"/>
+        <result property="userId" column="userId"/>
+        <result property="reactionType" column="reactionType"/>
+        <result property="createAt" column="createAt"/>
+    </resultMap>
+
+    <!--  INSERT  -->
     <insert id="insertPost" useGeneratedKeys="true" keyProperty="postId">
         INSERT INTO post_tbl (userId, title, content, postCodeId, createAt)
         VALUES (#{userId}, #{title}, #{content}, #{postCodeId}, NOW());
     </insert>
 
-    <select id="selectPostByPostId" resultType="PostDTO">
-        SELECT postId, userId, title, content, createAt, viewCount, postCodeId
-        FROM post_tbl
+    <!--  SELECT  -->
+    <select id="selectPostByPostId" resultMap="postDetailResultMap">
+        SELECT
+        p.postId as p_postId,
+        p.userId as p_userId,
+        u.nickName as u_nickName,
+        p.title as p_title,
+        p.content as p_content,
+        p.createAt as p_createAt,
+        p.viewCount as p_viewCount,
+        p.postCodeId as p_postCodeId,
+        pc.category as pc_category,
+        p.like_count as p_like_count,    p.dislike_count as p_dislike_count,a.postAttachmentId as a_postAttachmentId,
+        a.postId as a_postId,
+        a.userId as a_userId,
+        a.attachmentUrl as a_attachmentUrl,
+        a.originalFileName as a_originalFileName,
+        a.contentType as a_contentType
+
+        FROM post_tbl p
+        JOIN user_tbl u ON p.userId = u.userId
+        JOIN postCode_tbl pc ON p.postCodeId = pc.postCodeId
+        LEFT JOIN postAttachment_tbl a ON p.postId = a.postId
+        WHERE p.postId = #{postId}
+    </select>
+
+    <select id="selectAttachmentsByPostId" resultMap="attachmentFileResultMap">
+        SELECT
+        postAttachmentId,
+        postId,
+        userId,
+        attachmentUrl,
+        originalFileName,
+        contentType
+        FROM
+        postAttachment_tbl
         WHERE postId = #{postId};
     </select>
 
-    <select id="selectContentByPostId">
-        SELECT content FROM post_tbl WHERE postId = #{postId};
+    <update id="incrementViewCount">
+        UPDATE post_tbl
+        SET viewCount = viewCount + 1
+        WHERE postId = #{postId}
+    </update>
+
+    <update id="incrementLikeCount">
+        UPDATE post_tbl
+        SET like_count = like_count + 1
+        WHERE postId = #{postId}
+    </update>
+
+    <update id="decrementLikeCount">
+        UPDATE post_tbl
+        SET like_count = like_count - 1
+        WHERE postId = #{postId}
+    </update>
+
+    <update id="incrementDislikeCount">
+        UPDATE post_tbl
+        SET dislike_count = dislike_count + 1
+        WHERE postId = #{postId}
+    </update>
+
+    <update id="decrementDislikeCount">
+        UPDATE post_tbl
+        SET dislike_count = dislike_count - 1
+        WHERE postId = #{postId}
+    </update>
+
+    <select id="selectPostRecommendationByUserIdAndPostId" resultMap="postRecommendationResultMap">
+        SELECT
+        postRecommendationId,
+        postId,
+        userId,
+        reactionType,
+        createAt
+        FROM
+        postRecommendation_tbl
+        WHERE
+        postId = #{postId} AND userId = #{userId}
     </select>
 
-    <select id="getPostId">
-        SELECT postId FROM post_tbl where userId = #{userId} And title = #{title} order by createAt DESC limit 1;
-    </select>
+    <insert id="insertPostRecommendation">
+        INSERT INTO postRecommendation_tbl (postRecommendationId, postId, userId, reactionType, createAt)
+        VALUES (#{postRecommendationId}, #{postId}, #{userId}, #{reactionType}, NOW())
+    </insert>
+
+    <delete id="deletePostRecommendation">
+        DELETE FROM postRecommendation_tbl
+        WHERE postId = #{postId} AND userId = #{userId}
+    </delete>
 
     <delete id="deletePost">
         DELETE FROM post_tbl WHERE postId = #{postId};
     </delete>
-
-
 
 </mapper>

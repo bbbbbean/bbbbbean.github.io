@@ -119,9 +119,24 @@ public class PostService {
 
 
     // 게시글 조회
-    @Transactional(readOnly = true)
-    public PostDTO getPostById(Long postId) {
-        return postMapper.selectPostByPostId(postId);
+    @Transactional
+    public PostDTO getPostByPostId(Long postId) {
+        // 1. 조회수 증가
+        postMapper.incrementViewCount(postId);
+        log.info("게시글 ID: {} 조회수 증가", postId);
+
+        // 2. 게시글 상세 정보 조회 (첨부파일도 함께 가져옴)
+        PostDTO post = postMapper.selectPostByPostId(postId);
+
+        // 3. 첨부 파일 정보 조회 및 DTO에 설정
+        if (post == null) {
+            log.warn("게시글 ID: {} 를 찾을 수 없습니다.", postId);
+        } else {
+            // 첨부 파일 목록이 잘 로드되었는지 확인하는 로그 추가 (선택 사항)
+            log.info("게시글 ID: {} 상세 정보 조회 성공. 제목: {}, 첨부 파일 수: {}",
+                    postId, post.getTitle(), post.getAttachments() != null ? post.getAttachments().size() : 0);
+        }
+        return post;
     }
 
     // 게시글 삭제
