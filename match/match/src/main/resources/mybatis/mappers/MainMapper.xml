@@ -10,4 +10,27 @@
         ORDER BY count DESC, tag ASC
         LIMIT #{limit}
     </select>
+
+    <select id="getAllMatches" resultType="com.club.match.Domain.DTO.MatchDto">
+        SELECT
+        matchId,
+        creatorId,
+        title,
+        createAt,
+        startTime,
+        DATE_FORMAT(startTime, '%m-%d %H:%i') AS formattedStartTime,
+        status,
+        location,
+        url,
+        anonymousCondi,
+        mannerCondi,
+        genderCondi,
+        chatCode,
+        people,
+        kategorie
+        FROM bb.match_tbl
+        WHERE startTime >= NOW()
+        ORDER BY startTime ASC
+        LIMIT 9
+    </select>
 </mapper>

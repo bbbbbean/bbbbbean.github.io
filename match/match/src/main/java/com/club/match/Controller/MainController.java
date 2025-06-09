@@ -30,7 +30,7 @@ public class MainController {
 
         Map<String, Object> resp = new HashMap<>();
 
-        List<MatchDto> matchList = mainService.getAllMatches();
+        List<MatchDto> matchList = mainService.getMatchList();
 
         resp.put("matches",matchList);
         return ResponseEntity.ok().body(resp);
