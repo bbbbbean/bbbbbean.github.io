@@ -15,7 +15,7 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
   
 
   const [activeTab, setActiveTab] = useState('friend');
-  const { openChat, setOpenChat, rooms, setRooms } = useContext(WebSocketContext);
+  const { openChat, setOpenChat, rooms, setRooms, friendUpdate } = useContext(WebSocketContext);
 
   const handleOpenChat = (e) => {
     const roomId = e.currentTarget.dataset.roomId;
@@ -32,7 +32,6 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
   }
 
   useEffect(() => {
-    if (rooms.length > 0) return;
     api.post('/api/chat/getChatRoom')
       .then(response => {
         const respRooms = [];
@@ -62,7 +61,7 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
       }).catch(() => {
 
       });
-  }, []);
+  }, [friendUpdate]);
 
   return (
     <section className="right" style={mergedStyle} {...props}>
