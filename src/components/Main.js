@@ -17,7 +17,7 @@ import api from "../axios";
 
 const Main = () => {
 
-  const [isAuth] = useState(localStorage.getItem("isAuth"));;
+  const [isAuth] = useState(localStorage.getItem("isAuth"));
 
   useEffect(() => {
     const mainMatchlistEls = document.querySelectorAll(".main-matchlist-els");
@@ -36,21 +36,8 @@ const Main = () => {
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
-  const [findMatchValue, setFindMatchValue] = useState("")
-  const [matchSearch,setMatchSearch] = useState([]);
-  //매칭 검색
-  const matchfind = (() => {
-    console.log(findMatchValue);
-    api.post("/api/main/findMatch",{"keyword":findMatchValue}).then((response)=>{
-      console.log(response.data.matchfind);
-      setMatchSearch(response.data.matchfind)
-    });
-
-  })
-
   const [tags, setTags] = useState([]);
 
-  // 인기 태그 불러오기
 useEffect(() => {
   async function fetchTags() {
     try {
@@ -64,7 +51,13 @@ useEffect(() => {
   fetchTags();
 }, []);
 
-// 랜덤 매칭 리스트 상태 관리
+const categoryMap = {
+  "1": "운동",
+  "2": "여행",
+  "3": "게임",
+  "4": "기타"
+};
+
 const [randomMatchList, setRandomMatchList] = useState([]);
 useEffect(() => {
   async function fetchRandomMatchList() {
@@ -80,27 +73,19 @@ useEffect(() => {
   fetchRandomMatchList();
 }, []);
 
-const categoryMap = {
-  "1": "운동",
-  "2": "여행",
-  "3": "게임",
-  "4": "기타"
-};
-
   // DB에서 불러온 리스트 상태 관리
- const [newMatchList, setNewMatchList] = useState([]);
-useEffect(() => {
-  async function fetchMatchList() {
-    try {
-      const res = await api.post("/api/main/matches"); // ← POST 방식, URL도 수정
-      setNewMatchList(res.data.matches); // ← matches 배열만 꺼내서 저장
-    } catch (err) {
-      console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
+ const [matchList, setNewMatchList] = useState([]);
+  useEffect(() => {
+    async function fetchMatchList() {
+      try {
+        const res = await api.get("/api/main/matches"); // 예시 엔드포인트
+        setNewMatchList(res.data);
+      } catch (err) {
+        console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
+      }
     }
-  }
-  fetchMatchList();
-}, []);
-
+    fetchMatchList();
+  }, []);
 
   return (
     <>
@@ -175,12 +160,10 @@ useEffect(() => {
             <ul className="serch-bar">
               <li className="main-search-input">
                 {/* 글자수 제한 */}
-                <input type="text" placeholder="검색어를 입력하세요" value={findMatchValue} onChange={(e)=>{
-                  setFindMatchValue(e.target.value);
-                }}/>
+                <input type="text" placeholder="검색어를 입력하세요" />
               </li>
               <li className="main-search-btn">
-                <button onClick={matchfind}>
+                <button>
                   <img src={searchIcon} alt="돋보기" />
                 </button>
               </li>
@@ -201,6 +184,11 @@ useEffect(() => {
                     <ul>
                       <li className="main-rank-el-num">{index + 1}</li>
                       <li className="main-rank-el-con">{item.tag}</li>
+                      <li className="main-rank-el-go">
+                        <a className="main-sky">
+                          <img src={searchIcon} alt="돋보기" />
+                        </a>
+                      </li>
                     </ul>
                   </li>
                 ))}
@@ -229,14 +217,13 @@ useEffect(() => {
               </ul>
             </div>
           </div>
-
           <div className="main-matchlist">
             <ul>
-              {Array.isArray(newMatchList) && newMatchList.map((match, index) => (
+              {matchList.map((match, index) => (
                 <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
+                      <span className="main-matchlist-tag">{match.kategorie}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
@@ -247,15 +234,8 @@ useEffect(() => {
                       <div className="main-matchlist-el-info">
                         <span>{match.location}</span>
                         <span>{match.people}명</span>
-                        <span>{(() => {
-                          const date = new Date(match.startTime);
-                          const month = String(date.getMonth() + 1).padStart(2, '0');
-                          const day = String(date.getDate()).padStart(2, '0');
-                          const hour = String(date.getHours()).padStart(2, '0');
-                          const minute = String(date.getMinutes()).padStart(2, '0');
-                          return `${month}월${day}일 ${hour}시${minute}분`;
-                        })()}</span>
-                                            </div>
+                        <span>1/23</span>
+                      </div>
                       <img src={searchIcon} alt="돋보기" />
                     </a>
                   </div>
@@ -263,6 +243,7 @@ useEffect(() => {
               ))}
             </ul>
           </div>
+          {/* {isAuth && <AccordionModal />} */}
         </section>
       </main>
       {selectMatch != null && <MatchModal selectMatch={selectMatch} setMatchList={setMatchList} />}
