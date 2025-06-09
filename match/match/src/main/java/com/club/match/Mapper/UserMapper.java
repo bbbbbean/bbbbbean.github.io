@@ -2,6 +2,7 @@ package com.club.match.Mapper;
 
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserDTO;
+import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 
@@ -19,7 +20,7 @@ public interface UserMapper {
 
     List<String> selectUserTag(String userId);
 
-    int selectUserPhone(String phone);
+    UserDTO selectUserPhone(String phone);
 
     int updateUserInfo(String userId, String value, String type);
 

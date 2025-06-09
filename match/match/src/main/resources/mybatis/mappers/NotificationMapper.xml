@@ -3,16 +3,20 @@
 
 <mapper namespace="com.club.match.Mapper.NotificationMapper">
     <insert id="insert">
-        INSERT INTO notificationone_tbl(content, receivedAt, userId, notificationCode) VALUES (#{content}, #{receivedAt}, #{userId}, #{notificationCode});
+        INSERT INTO notificationone_tbl(content, receivedAt, userId, notificationCode, `from`) VALUES (#{content}, #{receivedAt}, #{userId}, #{notificationCode}, #{from});
     </insert>
 
     <select id="selectAll">
-        SELECT * from notificationone_tbl where userId = #{userId};
+        SELECT * from notificationone_tbl where userId = #{userId} order by receivedAt desc;
     </select>
 
     <update id="readAll">
         UPDATE notificationone_tbl SET readAt = #{readAt} where userId = #{userId};
     </update>
+
+    <delete id="delete">
+        DELETE FROM notificationone_tbl where userId = #{userId} and notificationId = #{notificationId};
+    </delete>
 
 </mapper>
 

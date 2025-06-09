@@ -7,11 +7,10 @@ import noticeIcon from "../image/image_index/notice-b-icon.svg";
 import menuIcon from "../image/image_index/menu-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsAuth } from "../store";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Alarm from "./Alert/Alarm";
 import api from "../axios";
-
-
+import { WebSocketContext } from '../WebSocket'
 
 
 const MainHeader = () => {
@@ -26,28 +25,43 @@ const MainHeader = () => {
 
   const [alarmCount, setAlarmCount] = useState(0);
 
-  useEffect(() => {
-    api.post("/api/chat/alarm/list")
+  const { alarmUpdate } = useContext(WebSocketContext);
+
+  const readAlarm = () => {
+    api.post("/api/chat/alarm/read")
       .then(response => {
-        setAlarmList(response.data.notificationDTOList);
-        setAlarmCount(response.data.noRead);
+        setAlarmCount(0);
       })
       .catch(error => {
+        console.error("알림 읽기 실패:", error);
       });
-  }, []);
+  }
 
-  const openAlarmShow = () => {
-    setOpenAlarm(prev => !prev)
-    if(alarmCount > 0) {
-      api.post("/api/chat/alarm/read")
+  useEffect(() => {
+    if (isAuth) {
+      api.post("/api/chat/alarm/list")
         .then(response => {
-          setAlarmCount(0);
+          setAlarmList(response.data.notificationDTOList);
+          setAlarmCount(response.data.noRead);
+          //알람을 읽고 있을경우
+          if (openAlarm) {
+            readAlarm();
+          }
         })
         .catch(error => {
-          console.error("알림 읽기 실패:", error);
         });
     }
+  }, [alarmUpdate, isAuth, openAlarm]);
+
+  const openAlarmShow = (open) => {
+    if (open) {
+      setOpenAlarm(prev => !prev)
+    }
+    if (alarmCount > 0) {
+      readAlarm();
+    }
   }
+
 
   useEffect(() => {
     dispatch(setIsAuth(localStorage.getItem("isAuth")));

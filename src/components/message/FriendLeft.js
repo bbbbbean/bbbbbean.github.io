@@ -45,7 +45,7 @@ const FriendLeft = () => {
         // 검색 목록에서 제거
         setFriendSearch(prev => prev.filter(friend => friend.userId !== friendId));
 
-        // 친구쪽 프론트 갱신
+        // 친구쪽 프론트 갱신 및 알람
         client.publish({
           destination: "/pub/friend",
           body: JSON.stringify({ "friendId": friendId, "status": "add"})

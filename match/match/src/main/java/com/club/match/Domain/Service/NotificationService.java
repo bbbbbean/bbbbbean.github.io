@@ -55,7 +55,7 @@ public class NotificationService {
 
             if (minutesAgo < 1) {
                 long secondsAgo = duration.toSeconds();
-                notificationDTO.setTime(secondsAgo + "초 전");
+                notificationDTO.setTime(secondsAgo+1 + "초 전");
             } else if (minutesAgo < 60) {
                 notificationDTO.setTime(minutesAgo + "분 전");
             } else if (minutesAgo < 1440) { // 60분 * 24시간
@@ -80,5 +80,9 @@ public class NotificationService {
 
     public boolean read(String userId) {
         return notificationMapper.readAll(userId, LocalDateTime.now()) > 0;
+    }
+
+    public boolean delete(String userId, String notificationId) {
+        return notificationMapper.delete(userId,notificationId) > 0;
     }
 }

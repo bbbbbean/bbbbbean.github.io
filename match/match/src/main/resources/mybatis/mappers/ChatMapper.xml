@@ -150,6 +150,11 @@
         INSERT INTO comment_tbl (postId, userId, nickName, content, createAt, commentTo, parentId)
         VALUES (#{postId}, #{userId}, #{nickName}, #{content}, #{createAt}, #{commentTo}, #{parentId})
     </insert>
+
+    <select id="selectOneComment">
+        SELECT * FROM comment_tbl where commentId = #{commentId};
+    </select>
+
     <select id="getParentComment">
         SELECT * FROM comment_tbl where postId = #{postId} and parentId IS NULL order by createAt;
     </select>

@@ -64,4 +64,5 @@ public interface ChatMapper {
     int deleteChat(@Param("chatCode") String chatCode);
 
 
+    CommentDTO selectOneComment(String commentId);
 }

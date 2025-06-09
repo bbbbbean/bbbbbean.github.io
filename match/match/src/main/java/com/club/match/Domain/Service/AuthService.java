@@ -215,9 +215,8 @@ public class AuthService {
         return response;
     }
     @Transactional(rollbackFor = Exception.class)
-    public boolean phoneCkeck(String phone) {
-        boolean isPhone = userMapper.selectUserPhone(phone) != 0;
-        return isPhone;
+    public UserDTO phoneCkeck(String phone) {
+        return userMapper.selectUserPhone(phone);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../../css/CSS_community-page/comment.css";
 import api from "../../axios"
+import { WebSocketContext } from '../../WebSocket'
 
 const Comment = () => {
 
@@ -27,6 +28,8 @@ const Comment = () => {
 
     const [commentRe, setCommentRe] = useState(true);
 
+    const { client } = useContext(WebSocketContext);
+
     useEffect(() => {
         api.post("/get/comment", { "postId": 1 })
             .then((response) => {
@@ -46,7 +49,14 @@ const Comment = () => {
             api.post("/add/comment", { "postId": 1, "content": comment }).then((response) => {
                 setCommentRe(prev => !prev);
                 setShowChildInput({});
-                commentEl.innerHTML="";
+                commentEl.innerHTML = "";
+
+                // 댓글 알람
+                client.publish({
+                    destination: "/pub/comment",
+                    body: JSON.stringify({ "postId": 1 })
+                });
+
             }).catch((error) => {
 
             });
@@ -60,6 +70,13 @@ const Comment = () => {
             api.post("/add/comment", { "postId": 1, "commentTo": who, "content": comment, parentId }).then((response) => {
                 setCommentRe(prev => !prev);
                 setShowChildInput({});
+
+                // 대댓글 알람
+                client.publish({
+                    destination: "/pub/comment",
+                    body: JSON.stringify({ "postId": 1, "childId":childId })
+                });
+
             }).catch((error) => {
 
             });
@@ -187,7 +204,7 @@ const Comment = () => {
 
     return (
         <div className="comment-container">
-            <h3 style={{width: "100%"}}>댓글{total !== 0 && ("("+total+")")}</h3>
+            <h3 style={{ width: "100%" }}>댓글{total !== 0 && ("(" + total + ")")}</h3>
             <div className="comment-form">
                 <div
                     contentEditable="true"
@@ -242,8 +259,8 @@ const Comment = () => {
                             {(showChildComment[parent.commentId] || parent.childCount < CHILD_OPEN_BUTTON_COUNT) && (
                                 <div className="child-comment">
                                     {parent.commentDTOs.map(child => (
-                                        <div 
-                                        className={"del" + child.commentId + " child-comment-item"} key={child.commentId}>
+                                        <div
+                                            className={"del" + child.commentId + " child-comment-item"} key={child.commentId}>
                                             <div className="comment-img">
                                                 <img src={`http://localhost:8100/profile/${child.userId}`} alt="profile" />
                                             </div>
