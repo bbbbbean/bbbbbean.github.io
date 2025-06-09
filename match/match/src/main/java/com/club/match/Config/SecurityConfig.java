@@ -47,10 +47,18 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.disable());
 
         http.authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/login","/api/auth/reneToken",
-                            "/api/auth/logout","/api/auth/sign", "/api/auth/idSearch"
-                            ,"/api/auth/check-id","/api/auth/pwEdit","/profile/**"
-                            ,"/chatFile/**").permitAll();
+                    auth.requestMatchers(
+                            "/api/auth/login",
+                            "/api/auth/reneToken",
+                            "/api/auth/logout",
+                            "/api/auth/sign",
+                            "/api/auth/idSearch",
+                            "/api/auth/check-id",
+                            "/api/auth/pwEdit",
+                            "/profile/**",
+                            "/chatFile/**",
+                            "/select/**",
+                            "/list/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");
                     auth.anyRequest().authenticated();

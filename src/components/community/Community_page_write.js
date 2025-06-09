@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useContext,
+} from "react";
 import Quill from "quill";
 import "../../css/CSS_community-page/community_page_write.css";
 import api from "../../axios";
