@@ -64,7 +64,20 @@ public class MainService {
 
     }
 
-//    public List<MatchDto> searchMatchesByKeyword(String keyword) {
-//        return matchMapper.findMatchesByKeyword(keyword);
-//    }
+    public List<MatchDto> searchMatchesByKeyword(String keyword) {
+
+        List<MatchDto> matchSearchList = mainMapper.getMatchSearchByKeyword(keyword);
+        List<MatchDto> matchFindList = new ArrayList<>();
+        for(MatchDto matchDto : matchSearchList){
+            matchFindList.add(MatchDto.builder()
+                            .matchId(matchDto.getMatchId())
+                            .status(matchDto.getStatus())
+                            .tags(matchDto.getTags())
+                            .startTime(matchDto.getStartTime())
+                            .title(matchDto.getTitle())
+                    .build());
+        }
+
+        return matchFindList;
+    }
 }
