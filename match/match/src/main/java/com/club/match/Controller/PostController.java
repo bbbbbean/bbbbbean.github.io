@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -151,6 +152,34 @@ public class PostController {
         } catch (Exception e) {
             log.error("게시글 반응 처리 중 서버 오류 발생: postId={}, 에러: {}", postId, e.getMessage(), e);
             return new ResponseEntity<>("Failed to handle post reaction due to server error.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deletePost(@PathVariable Long postId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+        // 1. 게시글 존재 여부 및 작성자 일치 여부 확인
+        PostDTO postToDelete = postService.getPostByPostId(postId); // 기존 조회 메서드 활용 (삭제 로직에서는 Jsoup 변환 불필요)
+        if (postToDelete == null) {
+            log.warn("게시글 ID: {} 를 찾을 수 없습니다.", postId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다.");
+        }
+        if (!postToDelete.getUserId().equals(userId)) {
+            log.warn("게시글 ID: {} 삭제 권한 없음: 요청자 {} vs 작성자 {}", postId, userId, postToDelete.getUserId());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("게시글을 삭제할 권한이 없습니다.");
+        }
+        try {
+            // 2. 게시글 삭제 서비스 호출
+            postService.deletePost(postId, userId); // 서비스 계층에 삭제 로직 구현
+
+            log.info("게시글 ID: {} 삭제 성공. 요청자: {}", postId, userId);
+            return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("게시글 ID: {} 삭제 실패: {}", postId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 삭제 중 오류가 발생했습니다.");
         }
     }
 

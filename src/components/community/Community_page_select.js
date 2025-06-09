@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react"; // React Hooks 임포트
 import { useParams, useNavigate } from "react-router-dom"; // useParams 추가, useNavigate 추가
-import axios from "axios"; // axios 임포트
-import { api } from "../../axios"; // 가정 (인증 토큰 등을 사용하는 axios 인스턴스)
-
+import api from "../../axios";
 import "../../css/CSS_community-page/community_page_select.css";
 import Comment from "./Comment";
 
 const Community_page_select = () => {
-  const { postId } = useParams();
+  const { postNumber } = useParams();
+  const [postId] = useState(postNumber);
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 물어보기
-  const currentUserId = "user1"; // 이거 Authentication에서 받나?
-
-  const API_BASE_URL = "http://localhost:8100/api/posts";
+  const currentUserId = localStorage.getItem("userId");
 
   // Quill 에디터 내용(HTML)을 안전하게 렌더링하기 위한 함수
   const createMarkup = (htmlContent) => {
@@ -66,9 +62,59 @@ const Community_page_select = () => {
     }
   }, [postId, fetchPost]);
 
+  // 좋아요/싫어요 반응 처리 함수
+  const handleReaction = async (reactionType) => {
+    if (!currentUserId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+    try {
+      const response = await api.post(`/${postId}/react`, {
+        userId: currentUserId,
+        reactionType: reactionType,
+      });
+
+      console.log("반응 처리 성공:", response.data);
+      alert(`반응이 성공적으로 처리되었습니다: ${response.data}`);
+      fetchPost();
+    } catch (err) {
+      console.error("반응 처리 오류:", err);
+      if (err.response && err.response.data) {
+        alert(`반응 처리 실패: ${err.response.data}`);
+      } else {
+        alert("반응 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   // "목록" 버튼 클릭 핸들러
   const handleListClick = () => {
-    navigate("/community"); // 또는 '/community/list' 등 목록 페이지 경로로 이동
+    navigate("/community/list");
+  };
+
+  // 수정 버튼 클릭 핸들러
+  const EditPost = async () => {};
+
+  // 삭제 버튼 클릭 핸들러
+  const deletePost = async () => {
+    // 사용자에게 삭제 확인 받기
+    if (!window.confirm("정말 게시글을 삭제하시겠습니까?")) {
+      return; // 사용자가 취소하면 함수 종료
+    }
+    try {
+      const response = await api.delete(`/${postId}`);
+      console.log("게시글 삭제 성공!", response.data);
+      alert(`게시글이 성공적으로 삭제되었습니다 : ${response.data}`);
+      navigate("/community/list");
+    } catch (err) {
+      console.error("게시글 삭제 실패 :", err);
+      if (err.response && err.response.data) {
+        alert("게시글 삭제 실패 :  ${err.response.data}");
+      } else {
+        alert("게시글 삭제 실패! 알 수 없는 오류 발생");
+      }
+    }
   };
 
   // 로딩 중일 때
@@ -161,7 +207,7 @@ const Community_page_select = () => {
           <div className="view-header">
             <h2 className="view-title">{post.title}</h2>
             <div className="view-info">
-              <span className="info-writer">작성자: {post.userNickName}</span>
+              <span className="info-writer">작성자: {post.nickName}</span>
               {/* 날짜 형식 포맷팅 (예: 2025-05-05T10:30:00 -> 2025.05.05 10:30) */}
               <span className="info-date">
                 작성일:{" "}
@@ -178,8 +224,10 @@ const Community_page_select = () => {
                   .trim()}
               </span>
               <span className="info-hit">조회수: {post.viewCount}</span>
-              {/* 추천수는 postRecommendation_tbl에서 가져와야 하므로, 현재 PostDTO에는 없음. 추후 필요하다면 백엔드 API 및 DTO 수정 필요 */}
-              <span className="info-like">추천: 0</span>
+              <span className="info-like">좋아요 : {post.likeCount || 0}</span>
+              <span className="info-dislike">
+                싫어요 : {post.dislikeCount || 0}
+              </span>
             </div>
           </div>
           <hr className="view-divider" />
@@ -189,7 +237,7 @@ const Community_page_select = () => {
           />
 
           {/* 첨부 파일 영역 */}
-          {post.attachments && post.attachments.length > 0 && (
+          {post && currentUserId && currentUserId === post.userId && (
             <div className="post-attachments">
               <h3>첨부 파일</h3>
               <ul>
@@ -217,18 +265,26 @@ const Community_page_select = () => {
             >
               목록
             </a>
-            {/* 수정/삭제 버튼은 사용자 권한 및 작성자 여부에 따라 표시 로직 추가 필요 */}
-            {/* 예: currentUserId === post.userId && ( ... ) */}
-            <a href="javascript:void(0)" className="button">
-              수정
-            </a>
-            <a href="javascript:void(0)" className="button">
-              삭제
-            </a>
+            <button onClick={() => handleReaction(1)} className="button">
+              좋아요 ({post.likeCount || 0})
+            </button>
+            <button onClick={() => handleReaction(-1)} className="button">
+              싫어요 ({post.dislikeCount || 0})
+            </button>
+            {currentUserId && post && currentUserId == post.userId && (
+              <>
+                <button onClick={EditPost} className="button">
+                  수정
+                </button>
+                <button onClick={deletePost} className="button">
+                  삭제
+                </button>
+              </>
+            )}
           </div>
           {/* 댓글 개수 한 30개 정도 나오면 페이지 스위칭으로 이동 */}
           <div className="view-comment">
-            <Comment />
+            <Comment postId={postId} />
             {/* 댓글 페이지 번호 */}
             <div className="comment-pagination" />
           </div>

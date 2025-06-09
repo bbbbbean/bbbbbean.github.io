@@ -15,7 +15,8 @@
     </insert>
 
     <!--  SELECT  -->
-    <select id="selectPostByPostId" resultMap="postDetailResultDTO">
+    <select id="selectPostByPostId" resultType="postDetailResultDTO">
+        SELECT
         p.postId,
         p.userId,
         u.nickName,
@@ -65,25 +66,25 @@
 
     <update id="incrementLikeCount">
         UPDATE post_tbl
-        SET like_count = like_count + 1
+        SET likeCount = likeCount + 1
         WHERE postId = #{postId}
     </update>
 
     <update id="decrementLikeCount">
         UPDATE post_tbl
-        SET like_count = like_count - 1
+        SET likeCount = likeCount - 1
         WHERE postId = #{postId}
     </update>
 
     <update id="incrementDislikeCount">
         UPDATE post_tbl
-        SET dislike_count = dislike_count + 1
+        SET dislikeCount = dislikeCount + 1
         WHERE postId = #{postId}
     </update>
 
     <update id="decrementDislikeCount">
         UPDATE post_tbl
-        SET dislike_count = dislike_count - 1
+        SET dislikeCount = dislikeCount - 1
         WHERE postId = #{postId}
     </update>
 

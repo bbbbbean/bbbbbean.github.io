@@ -22,6 +22,6 @@ public class CommentDTO {
     private String time;
     private String commentTo;
     private String parentId;
-    private int ChildCount;
+    private int childCount;
     public List<CommentDTO> commentDTOs;
 }

@@ -2,23 +2,21 @@ package com.club.match.Domain.Service;
 
 import com.club.match.Domain.DTO.AttachmentFileDTO;
 import com.club.match.Mapper.FileMapper;
-import com.club.match.Mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -271,59 +269,12 @@ public class FileService {
 
     // 파일 삭제 메서드
     @Transactional(rollbackFor = Exception.class)
-    public boolean deleteAttachmentFile(Long postAttachmentId) {
+    public void deleteAttachmentFile(Long postId, String userId) {
+        File directoryToDelete = new File(BASE_UPLOAD_ROOT_DIR + userId + "/community/" + postId);
         try {
-            // DB에서 파일 정보 조회
-            AttachmentFileDTO fileToDelete = fileMapper.selectAt(postAttachmentId);
-            if (fileToDelete == null) {
-                log.warn("삭제할 파일 정보를 찾을 수 없습니다: postAttachmentId={}", postAttachmentId);
-                return false; // 파일 정보가 없으면 삭제할 필요 없음
-            }
-
-            // 파일 시스템에서 파일 삭제 (경로 파싱하여 삭제)
-            String fileUrl = fileToDelete.getAttachmentUrl();
-            try {
-                // URL에서 경로 파싱: BASE_URL/{userId}/community/{postId}/{filename}
-                Pattern urlPattern = Pattern.compile(Pattern.quote(BASE_URL) + "([^/]+)/community/([^/]+)/([^/]+)");
-                Matcher matcher = urlPattern.matcher(fileUrl);
-
-                if (matcher.find()) {
-                    String userIdFromFile = matcher.group(1);
-                    String fileName = matcher.group(2); // 파일명
-
-                    Long currentPostId = fileToDelete.getPostId();
-                    Path filePath;
-                    if (currentPostId == null) {
-                        // 임시 파일 경로
-                        filePath = Paths.get(BASE_UPLOAD_ROOT_DIR, userIdFromFile, "community", "temp", fileName);
-                    } else {
-                        // 최종 파일 경로
-                        filePath = Paths.get(BASE_UPLOAD_ROOT_DIR, userIdFromFile, "community", String.valueOf(currentPostId), fileName);
-                    }
-
-                    Files.deleteIfExists(filePath); // 파일이 존재하면 삭제
-                    log.info("파일 시스템에서 파일 삭제 완료: {}", filePath);
-
-                    // 파일 삭제 후 해당 디렉토리가 비어있으면 삭제 시도 (temp/actualPostId 디렉토리까지)
-                    Path parentDir = filePath.getParent();
-                    if (parentDir != null && Files.exists(parentDir) && Files.isDirectory(parentDir)) {
-                        deleteDirectoryIfEmpty(parentDir); // 해당 postId 디렉토리 삭제 시도
-                    }
-
-                } else {
-                    log.warn("삭제할 파일의 URL 경로를 파싱할 수 없습니다. DB에서만 삭제 시도: {}", fileUrl);
-                }
-            } catch (IOException e) {
-                log.error("파일 시스템에서 파일 삭제 중 오류 발생: {}", e.getMessage(), e);
-                // 파일 시스템 삭제 실패해도 DB 삭제는 진행
-            }
-
-            // DB에서 파일 정보 삭제
-            int rowsAffected = fileMapper.deleteFile(postAttachmentId);
-            return rowsAffected > 0;
+            FileUtils.deleteDirectory(directoryToDelete);
         } catch (Exception e) {
-            log.error("파일 정보 삭제 중 오류 발생: {}", e.getMessage(), e);
-            return false;
+            log.info("파일 삭제 실패");
         }
     }
 

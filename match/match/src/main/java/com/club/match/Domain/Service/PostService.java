@@ -139,13 +139,19 @@ public class PostService {
             log.warn("게시글 ID: {} 를 찾을 수 없습니다.", postId);
             return null;
         } else {
-            // PostDetailResultDTO의 필드들을 PostDTO로 복사
             PostDTO post = new PostDTO();
             post.setPostId(postDetail.getPostId());
             post.setUserId(postDetail.getUserId());
             post.setNickName(postDetail.getNickName());
             post.setTitle(postDetail.getTitle());
-            post.setContent(postDetail.getContent());
+
+            String originalContent = postDetail.getContent();
+            if (originalContent != null && !originalContent.isEmpty()) {
+                String modifiedContent = modifyImageSrcWithPostId(originalContent, postId, postDetail.getUserId());
+                post.setContent(modifiedContent);
+            } else {
+                post.setContent(originalContent);
+            }
             post.setCreateAt(postDetail.getCreateAt());
             post.setViewCount(postDetail.getViewCount());
             post.setPostCodeId(postDetail.getPostCodeId());
@@ -153,11 +159,61 @@ public class PostService {
             post.setDislikeCount(postDetail.getDislikeCount());
             post.setAttachments(attachments); // 첨부 파일 목록 설정
 
+             if (attachments != null) {
+                 for (AttachmentFileDTO attachment : attachments) {
+                     // 파일명만 있는 경우, 올바른 URL로 재구성
+                     String originalUrl = attachment.getAttachmentUrl(); // 예: /user1/community/파일명.png
+                     String filename = originalUrl.substring(originalUrl.lastIndexOf('/') + 1); // 파일명 추출
+                     String newUrl = BASE_URL + post.getUserId() + "/community/" + postId + "/" + filename;
+                     attachment.setAttachmentUrl(newUrl);
+                 }
+             }
             log.info("게시글 ID: {} 상세 정보 조회 성공. 제목: {}, 첨부 파일 수: {}",
                     postId, post.getTitle(), post.getAttachments() != null ? post.getAttachments().size() : 0);
             return post;
         }
     }
+
+    // 게시글 Url 주소 바꾸는 기능
+    private String modifyImageSrcWithPostId(String htmlContent, Long postId, String userId) {
+        Document doc = Jsoup.parse(htmlContent); // HTML 파싱
+        Elements images = doc.select("img[src]"); // 모든 <img> 태그 중 src 속성이 있는 것 선택
+
+        String expectedPathPrefix = userId + "/community/";
+
+        for (Element img : images) {
+            String originalSrc = img.attr("src");
+
+            // 1. 이미 올바른 postId 경로를 포함하고 있는지 (예: "/community/2/파일명.png")
+            if (originalSrc.contains("/community/" + postId + "/")) {
+                continue; // 이미 처리된 URL이므로 스킵
+            }
+
+            // 2. 'http://localhost:8100/user1/community/파일명.png' 형태의 src를 찾아서 수정
+            // 예: "http://localhost:8100/user1/community/abc.png"
+            if (originalSrc.startsWith(BASE_URL + expectedPathPrefix)) {
+                String filename = originalSrc.substring((BASE_URL + expectedPathPrefix).length());
+                String newSrc = BASE_URL + expectedPathPrefix + postId + "/" + filename;
+                img.attr("src", newSrc);
+                log.debug("Modified image src from {} to {}", originalSrc, newSrc);
+            }
+            // originalSrc가 BASE_URL 없이 바로 /userId/community/파일명.png 형태로 저장된 경우
+            // 예: "/user1/community/abc.png"
+            else if (originalSrc.startsWith(expectedPathPrefix)) {
+                String filename = originalSrc.substring(expectedPathPrefix.length());
+                String newSrc = BASE_URL + expectedPathPrefix + postId + "/" + filename;
+                img.attr("src", newSrc);
+                log.debug("Modified image src from {} to {}", originalSrc, newSrc);
+            }
+            else {
+                // 예상치 못한 형식의 이미지 src는 수정하지 않고 로그만 남김
+                log.warn("Image src not matching expected pattern for modification: {}", originalSrc);
+            }
+        }
+
+        return doc.html(); // 수정된 HTML 문자열 반환
+    }
+
 
     // 게시글 좋아요/싫어요 기능
     @Transactional
@@ -175,15 +231,15 @@ public class PostService {
             if (existingReaction == null) {
                 log.info("새로운 반응: postId={}, userId={}, type={}", postId, userId, requestedType);
 
+                // postRecommendation_tbl 을 업데이트
                 PostRecommendationDTO newReaction = new PostRecommendationDTO();
                 newReaction.setPostId(postId);
                 newReaction.setUserId(userId);
                 newReaction.setReactionType(requestedType);
                 newReaction.setCreateAt(LocalDateTime.now());
-
-                // insertPostRecommendation 호출 후, Mybatis가 자동으로 newReaction 객체에 생성된 postRecommendationId를 주입해줍니다.
                 postMapper.insertPostRecommendation(newReaction);
 
+                // post_tbl 을 업데이트
                 if (requestedType == 1) { // 좋아요
                     postMapper.incrementLikeCount(postId);
                 } else { // 싫어요 (-1)
@@ -192,7 +248,7 @@ public class PostService {
                 return true;
             } else {
                 Integer existingType = existingReaction.getReactionType();
-                if (existingType.equals(requestedType)) { // existingReaction.equals(requestedType) -> existingType.equals(requestedType) 로 변경
+                if (existingType.equals(requestedType)) {
                     // 만약 지금 반응하려는게 이전에 반응한거랑 동일하다면 -> 좋아요/싫어요 취소
                     log.info("반응 취소: postId={}, userId={}, type={}", postId, userId, requestedType);
                     postMapper.deletePostRecommendation(postId,userId);
@@ -214,6 +270,7 @@ public class PostService {
                     } else { // 기존이 싫어요였으면 싫어요 카운트 감소
                         postMapper.decrementDislikeCount(postId);
                     }
+
                     // 새로운 반응 추가
                     PostRecommendationDTO newReaction = new PostRecommendationDTO();
                     newReaction.setPostId(postId);
@@ -221,7 +278,6 @@ public class PostService {
                     newReaction.setReactionType(requestedType);
                     newReaction.setCreateAt(LocalDateTime.now());
 
-                    // insertPostRecommendation 호출 후, Mybatis가 자동으로 newReaction 객체에 생성된 postRecommendationId를 주입해줍니다.
                     postMapper.insertPostRecommendation(newReaction);
 
                     if (requestedType == 1) { // 새로운 반응이 좋아요
@@ -241,16 +297,10 @@ public class PostService {
 
     // 게시글 삭제
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> deletePost(Long postId) {
+    public Map<String, Object> deletePost(Long postId, String userId) {
         Map<String, Object> resp = new HashMap<>();
         try {
-            // 게시글에 연결된 첨부파일 목록 조회
-            List<AttachmentFileDTO> filesToDelete = fileService.getAttachmentFilesByPostId(postId);
-
-            // 각 첨부파일 삭제 (파일 시스템 및 DB)
-            for (AttachmentFileDTO file : filesToDelete) {
-                fileService.deleteAttachmentFile(file.getPostAttachmentId()); // 파일 시스템 및 DB에서 개별 파일 삭제
-            }
+            fileService.deleteAttachmentFile(postId,userId);
             log.info("게시글 ID {}에 연결된 모든 파일이 삭제되었습니다.", postId);
 
             // 게시글 DB에서 삭제
