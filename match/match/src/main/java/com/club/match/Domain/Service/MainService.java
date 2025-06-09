@@ -3,11 +3,13 @@ package com.club.match.Domain.Service;
 import com.club.match.Domain.DTO.MatchDto;
 import com.club.match.Domain.DTO.TagDTO;
 import com.club.match.Mapper.MainMapper;
+import com.club.match.Mapper.MatchMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,12 +20,26 @@ public class MainService {
     @Autowired
     MainMapper mainMapper;
 
+    @Autowired
+    MatchMapper matchMapper;
 
     public List<TagDTO> getTopTags(int limit) {
         return mainMapper.getTopTags(limit);
     }
 
-    public List<MatchDto> getAllMatches() {
-        return null;
+    public List<MatchDto> getMatchList() {
+        List<MatchDto> dbMatchList = mainMapper.getAllMatches();
+        List<MatchDto> matchDtoList = new ArrayList<>();
+        for(MatchDto matchDto : dbMatchList) {
+            matchDtoList.add(MatchDto.builder()
+                            .matchId(matchDto.getMatchId())
+                            .title(matchDto.getTitle())
+                            .location(matchDto.getLocation())
+                            .people(matchDto.getPeople())
+                            .kategorie(matchDto.getKategorie())
+                            .startTime(matchDto.getStartTime())
+                    .build());
+        }
+        return matchDtoList;
     }
 }
