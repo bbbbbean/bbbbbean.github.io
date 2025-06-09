@@ -123,4 +123,35 @@ public class PostController {
             return new ResponseEntity<>("게시글 상세 조회 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // 게시글 좋아요/싫어요 처리 엔드포인트
+    @PostMapping("{postId}/react")
+    public ResponseEntity<String> handlePostReaction(
+            @PathVariable Long postId,
+            @RequestBody Map<String,Object> payload) {
+        try {
+            String userId = payload.get("userId").toString();
+            Integer reactionType = (Integer) payload.get("reactionType");
+
+            if (userId == null || reactionType == null) {
+                log.warn("필수 파라미터 누락: postId={}, userId={}, reactionType={}", postId, userId, reactionType);
+                return new ResponseEntity<>("Required parameters (userId, reactionType) are missing.", HttpStatus.BAD_REQUEST);
+            }
+
+            log.info("게시글 반응 요청: postId={}, userId={}, reactionType={}", postId, userId, reactionType);
+            boolean success = postService.handlePostReaction(postId, userId, reactionType);
+
+            if (success) {
+                return new ResponseEntity<>("Post reaction handled successfully.", HttpStatus.OK);
+            } else {
+                // 서비스에서 false를 반환하는 경우는 유효하지 않은 reactionType일 때
+                return new ResponseEntity<>("Invalid reaction type provided.", HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e) {
+            log.error("게시글 반응 처리 중 서버 오류 발생: postId={}, 에러: {}", postId, e.getMessage(), e);
+            return new ResponseEntity<>("Failed to handle post reaction due to server error.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
