@@ -5,7 +5,7 @@ import mark2 from "../../image/image_match/bookmark.svg";
 import { useNavigate } from "react-router-dom";
 import { WebSocketContext } from "../../WebSocket";
 
-const MatchModal = ({ selectMatch, setSelectMatch }) => {
+const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
   const { client } = useContext(WebSocketContext);
   const isAuth = localStorage.getItem("isAuth");
 
@@ -26,6 +26,7 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
     people: 0,
     countPeople: 0,
     status: 0,
+    hosted: 0,
   });
 
   useEffect(() => {
@@ -117,6 +118,7 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
   };
 
   const [showJoinConfirm, setShowJoinConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleJoin = () => {
     const chatCode = match.chatCode;
@@ -129,7 +131,7 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
             body: JSON.stringify({ matchId: selectMatch }),
           });
           navigate(`/friend`, { state: { chatCode: match.chatCode } });
-        }else{
+        } else {
           console.error("신청 실패:", response.data);
           alert("신청에 실패했습니다. 조건을 확인해주세요");
         }
@@ -139,6 +141,41 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
       });
     setSelectMatch(null);
     setShowJoinConfirm(false);
+  };
+
+  const handleDelete = () => {
+    if (match.hosted == 1) {
+      api
+        .post("/match/delete", { matchId: selectMatch })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("매치가 삭제되었습니다.");
+            setSelectMatch(null);
+            setReload((prev) => !prev);
+          } else {
+            console.error("매치 삭제 실패:", response.data);
+          }
+        })
+        .catch((error) => {
+          console.error("매치 삭제 오류:", error);
+        });
+    }else{
+      api
+        .post("/match/cancel", { matchId: selectMatch })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("매치 참여를 취소했습니다.");
+            setSelectMatch(null);
+            setReload((prev) => !prev);
+          } else {
+            console.error("매치 참여 취소 실패:", response.data);
+          }
+        })
+        .catch((error) => {
+          console.error("매치 참여 취소 오류:", error);
+        });
+    }
+    setShowDeleteConfirm(false);
   };
 
   return (
@@ -213,14 +250,24 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
                 disabled={
                   !(match.status === 0 && match.countPeople < match.people)
                 }
-                onClick={() => {isAuth?setShowJoinConfirm(true): navigate("/user/Login")}}
+                onClick={() => {
+                  isAuth ? setShowJoinConfirm(true) : navigate("/user/Login");
+                }}
               >
                 {match.status === 0 && match.countPeople < match.people
                   ? "신청하기"
                   : "모집 완료"}
               </button>
-              {}
-              <button></button>
+              {match.hosted === 1 &&   (
+                <button className="match-modal-btn-el" onClick={()=>{setShowDeleteConfirm(true)}}>
+                  매치 삭제
+                </button>
+              )}
+              {match.hosted == 2 && (
+                <button className="match-modal-btn-el" onClick={()=>{setShowDeleteConfirm(true)}}>
+                  참여 취소
+                </button>
+              )}
               {showJoinConfirm && (
                 <div className="custom-confirm-modal">
                   <div className="custom-confirm-content">
@@ -229,6 +276,22 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
                     <button
                       onClick={() => {
                         setShowJoinConfirm(false);
+                        setSelectMatch(null);
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              )}
+              {showDeleteConfirm && (
+                <div className="custom-confirm-modal">
+                  <div className="custom-confirm-content">
+                    <p>취소 하시겠습니까?</p>
+                    <button onClick={handleDelete}>확인</button>
+                    <button
+                      onClick={() => {
+                        setShowDeleteConfirm(false);
                         setSelectMatch(null);
                       }}
                     >

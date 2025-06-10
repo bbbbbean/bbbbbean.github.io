@@ -29,6 +29,7 @@ const MatchList = () => {
   const [matches, setMatches] = useState([]);
   const [bookmark, setBookmark] = useState({});
   const [matchOne, setMatchOne] = useState({});
+  const [reload, setReload] = useState(false);
 
   const isAuth = localStorage.getItem("isAuth");
 
@@ -57,7 +58,7 @@ const MatchList = () => {
         setTopMatches(sortedTop5);
       })
       .catch((err) => {});
-  }, [type]);
+  }, [type, reload]);
 
   // 북마크 조회해서 기본 적용
   useEffect(() => {
@@ -353,7 +354,7 @@ useEffect(() => {
         })}
       </div>
       {selectMatch != null && (
-        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch}/>
+        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch} setReload={setReload}/>
       )}
     </div>
   );
