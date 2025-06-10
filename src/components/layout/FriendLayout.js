@@ -5,7 +5,6 @@ import InformationPro from '../myInfo/InformationPro';
 
 const MyPageLayout = () => {
 
-
     return (
         <div className="friend-container">
             <FriendLeft />
