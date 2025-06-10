@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -230,7 +231,6 @@ public class PostService {
         return doc.html(); // 수정된 HTML 문자열 반환
     }
 
-
     // 게시글 좋아요/싫어요 기능
     @Transactional
     public boolean handlePostReaction(Long postId, String userId, Integer requestedType) {
@@ -310,6 +310,41 @@ public class PostService {
         }
     }
 
+//    // 게시글 수정
+//    @Transactional(rollbackFor = Exception.class)
+//    public PostDTO updatePost(PostDTO postDTO, List<MultipartFile> files) throws Exception {
+//        // 1. 필수 값 검증 (postId, userId, title, content)
+//        Objects.requireNonNull(postDTO.getPostId(), "Post ID must not be null for update.");
+//        Objects.requireNonNull(postDTO.getUserId(), "User ID must not be null.");
+//        Objects.requireNonNull(postDTO.getTitle(), "Title must not be null.");
+//        Objects.requireNonNull(postDTO.getContent(), "Content must not be null.");
+//
+//        // 2. 게시글 존재 여부 및 작성자 일치 여부 확인 (권한 확인)
+//        // 현재 게시글의 작성자 ID와 DTO의 userId가 일치하는지 확인
+//        PostDetailResultDTO existingPost = postMapper.selectPostByPostId(postDTO.getPostId());
+//        if (existingPost == null) {
+//            throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+//        }
+//        // 로그인 유저의 ID와 게시글 작성자 ID 비교
+//        if (!existingPost.getUserId().equals(postDTO.getUserId())) {
+//            throw new IllegalAccessException("게시글을 수정할 권한이 없습니다."); // 403 Forbidden
+//        }
+//
+//        // 3. 게시글 정보 업데이트
+//        // PostMapper에 게시글 정보를 업데이트하는 메서드를 호출합니다.
+//        int rowsAffected = postMapper.updatePost(postDTO); // postDTO를 인자로 넘김
+//        if (rowsAffected == 0) {
+//            throw new RuntimeException("게시글 업데이트에 실패했습니다. (DB 반영 실패)");
+//        }
+//        log.info("게시글 ID {}가 성공적으로 업데이트되었습니다.", postDTO.getPostId());
+//
+//        // 4. 첨부 파일 처리
+//        fileService.updateFilesForPost(postDTO.getPostId(), postDTO.getContent(), files); // 예시 메서드명
+//
+//        log.info("게시글 ID {}의 파일 처리가 완료되었습니다.", postDTO.getPostId());
+//
+//        return postDTO; // 업데이트된 DTO 반환 또는, 필요하다면 DB에서 최신 정보를 다시 조회하여 반환
+//    }
 
     // 게시글 삭제
     @Transactional(rollbackFor = Exception.class)

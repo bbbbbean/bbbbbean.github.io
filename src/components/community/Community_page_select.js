@@ -27,7 +27,7 @@ const Community_page_select = () => {
       setLoading(true); // 로딩 시작
       setError(null); // 이전 에러 초기화
 
-      const response = await api.get(`/community/post/${postId}`);
+      const response = await api.get(`/post/${postId}`);
       setPost(response.data);
       setCurrentPostCategoryId(response.data.postCodeId);
       setSelectedMenu(response.data.postCodeId);
@@ -181,9 +181,9 @@ const Community_page_select = () => {
 
   const categories = [
     { id: 1, name: "운동" },
-    { id: 2, name: "여행" },
+    { id: 2, name: "게임" },
     { id: 3, name: "취미" },
-    { id: 4, name: "게임" },
+    { id: 4, name: "여행" },
     { id: 5, name: "자유게시판" },
   ];
 

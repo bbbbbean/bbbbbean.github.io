@@ -32,6 +32,9 @@ public interface PostMapper {
     );
 
     // UPDATE
+
+    int updatePost(PostDTO postDTO);
+
     void incrementViewCount(Long postId);
 
     int incrementLikeCount(Long postId);
