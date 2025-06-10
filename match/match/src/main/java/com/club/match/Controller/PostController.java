@@ -1,6 +1,7 @@
 package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.PostDTO;
+import com.club.match.Domain.DTO.PostDetailResultDTO;
 import com.club.match.Domain.DTO.PostListDTO;
 import com.club.match.Domain.DTO.PostListResponseDTO;
 import com.club.match.Domain.Service.FileService;

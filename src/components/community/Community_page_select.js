@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"; // React Hooks 임포트
-import { useParams, useNavigate } from "react-router-dom"; // useParams 추가, useNavigate 추가
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import api from "../../axios";
 import "../../css/CSS_community-page/community_page_select.css";
 import Comment from "./Comment";
@@ -11,6 +11,8 @@ const Community_page_select = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPostCategoryId, setCurrentPostCategoryId] = useState(null);
+  const [selectedMenu, setSelectedMenu] = useState(5);
 
   const currentUserId = localStorage.getItem("userId");
 
@@ -27,6 +29,10 @@ const Community_page_select = () => {
 
       const response = await api.get(`/community/post/${postId}`);
       setPost(response.data);
+      setCurrentPostCategoryId(response.data.postCodeId);
+      setSelectedMenu(response.data.postCodeId);
+      console.log("포스트아이디 :", postId);
+      console.log("포스트 코드 아이디 : ", response.data.postCodeId);
       console.log("게시글 데이터 로드 성공:", response.data);
     } catch (err) {
       console.error("게시글 로드 실패:", err);
@@ -90,11 +96,20 @@ const Community_page_select = () => {
 
   // "목록" 버튼 클릭 핸들러
   const handleListClick = () => {
-    navigate("/community/list");
+    if (post && post.postCodeId) {
+      navigate(`/community/list/${post.postCodeId}`);
+    } else {
+      // postCodeId를 알 수 없다면, 기본 자유게시판으로 이동
+      navigate("/community/list/5");
+    }
   };
 
   // 수정 버튼 클릭 핸들러
-  const EditPost = async () => {};
+  const EditPost = async () => {
+    if (post && post.postId) {
+      navigate(`/community/edit/${post.postId}`);
+    }
+  };
 
   // 삭제 버튼 클릭 핸들러
   const deletePost = async () => {
@@ -115,6 +130,14 @@ const Community_page_select = () => {
         alert("게시글 삭제 실패! 알 수 없는 오류 발생");
       }
     }
+  };
+
+  // 게시판 메뉴 클릭시
+  const handlerSelectMenu = (e) => {
+    const selected = Number(e.currentTarget.dataset.type);
+    setSelectedMenu(selected);
+    console.log("선택한 게시글 타입 :", selected);
+    navigate(`/community/list/${selected}`);
   };
 
   // 로딩 중일 때
@@ -156,51 +179,33 @@ const Community_page_select = () => {
     );
   }
 
+  const categories = [
+    { id: 1, name: "운동" },
+    { id: 2, name: "여행" },
+    { id: 3, name: "취미" },
+    { id: 4, name: "게임" },
+    { id: 5, name: "자유게시판" },
+  ];
+
   // 데이터 로드 성공 시 게시글 렌더링
   return (
     <div className="forum-wrap">
       <div className="forum">
         <div className="forum-menu">
           <div className="forum-menu-el">
-            <a
-              href="javascript:void(0)"
-              className={post.postCategory === "운동" ? "on" : ""}
-            >
-              운동
-            </a>
-            <a
-              href="javascript:void(0)"
-              className={post.postCategory === "게임" ? "on" : ""}
-            >
-              게임
-            </a>
-            <a
-              href="javascript:void(0)"
-              className={post.postCategory === "여행" ? "on" : ""}
-            >
-              여행
-            </a>
-            <a
-              href="javascript:void(0)"
-              className={post.postCategory === "취미" ? "on" : ""}
-            >
-              취미
-            </a>
-            <a
-              href="javascript:void(0)"
-              className={post.postCategory === "자유게시판" ? "on" : ""}
-            >
-              자유게시판
-            </a>
-          </div>
-          <div className="forum-menu-serch">
-            <input type="text" placeholder="검색어를 입력하세요" />
-            <a href="javascript:void(0)">
-              <img
-                src="../../static/image/image_event/search_icon.svg"
-                alt="검색"
-              />
-            </a>
+            {categories.map((category) => (
+              <NavLink
+                key={category.id}
+                to={`/community/list/${category.id}`}
+                data-type={category.id}
+                onClick={handlerSelectMenu}
+                className={({ isActive }) =>
+                  isActive || selectedMenu === category.id ? "on" : ""
+                }
+              >
+                {category.name}
+              </NavLink>
+            ))}
           </div>
         </div>
         <div className="forum-view">

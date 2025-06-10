@@ -159,6 +159,7 @@ public class PostService {
             post.setUserId(postDetail.getUserId());
             post.setNickName(postDetail.getNickName());
             post.setTitle(postDetail.getTitle());
+            post.setPostCategory(postDetail.getPostCategory());
 
             String originalContent = postDetail.getContent();
             if (originalContent != null && !originalContent.isEmpty()) {
