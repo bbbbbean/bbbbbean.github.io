@@ -290,9 +290,8 @@ public class UserController {
         List<UserBookMarkDTO> list = userService.getAllBookMark(now,userId);
         return ResponseEntity.ok().body(list);
     }
-<<<<<<< HEAD
     @PostMapping("/prevMatch")
-    public ResponseEntity<?> prevMatch(){
+    public ResponseEntity<?> prevMatch() {
         // 지난 매치 들고오기, match status 3
         // userid 기준 : 참가 매치, 매치 전체 목록 join 조회 -> 이중 status=3, 참가 아이디 = userId인 목록 조회 후 출력
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -301,8 +300,7 @@ public class UserController {
 
 
         return ResponseEntity.ok().body(list);
-=======
-
+    }
     @PostMapping("/infomation")
     public ResponseEntity<?> infomation(@RequestBody UserDTO reqUserDTO){
 
@@ -345,7 +343,6 @@ public class UserController {
 
 
         return ResponseEntity.ok().body(respUserDTO);
->>>>>>> 16b71e6d92422c0f54cd87d86e4d11d24ebffc3e
     }
 }
 
