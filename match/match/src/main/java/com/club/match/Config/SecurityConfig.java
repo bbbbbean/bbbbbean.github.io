@@ -63,7 +63,7 @@ public class SecurityConfig {
                             "/list/**",
                             "/community/post/**",
                             "/get/comment",
-                            "/api/user/infomation"
+                            "/api/user/information"
                             ).permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");

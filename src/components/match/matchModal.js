@@ -151,7 +151,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
         destination: "/pub/matchJoin",
         body: JSON.stringify({ matchId: selectMatch, ok: "del" }),
       });
-      
+
       api
         .post("/match/delete", { matchId: selectMatch })
         .then((response) => {
@@ -249,23 +249,26 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
               <p>
                 현재 참여 인원 <span>{match.countPeople}</span>/{match.people}
               </p>
-              <button
-                className={
-                  match.status === 0 && match.countPeople < match.people
-                    ? "match-modal-btn-el ok"
-                    : "match-modal-btn-el no"
-                }
-                disabled={
-                  !(match.status === 0 && match.countPeople < match.people)
-                }
-                onClick={() => {
-                  isAuth ? setShowJoinConfirm(true) : navigate("/user/Login");
-                }}
-              >
-                {match.status === 0 && match.countPeople < match.people
-                  ? "신청하기"
-                  : "모집 완료"}
-              </button>
+              {match.hosted === 3 &&
+                <button
+                  className={
+                    match.status === 0 && match.countPeople < match.people
+                      ? "match-modal-btn-el ok"
+                      : "match-modal-btn-el no"
+                  }
+                  disabled={
+                    !(match.status === 0 && match.countPeople < match.people)
+                  }
+                  onClick={() => {
+                    isAuth ? setShowJoinConfirm(true) : navigate("/user/Login");
+                  }}
+                >
+                  {match.status === 0 && match.countPeople < match.people
+                    ? "신청하기"
+                    : "모집 완료"}
+                </button>
+              }
+
               {match.hosted === 1 && (
                 <button className="match-modal-btn-el" onClick={() => { setShowDeleteConfirm(true) }}>
                   매치 삭제
