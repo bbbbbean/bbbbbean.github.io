@@ -10,7 +10,7 @@ const NewMatch = () => {
     title: "",
     startTime: "",
     location: "온라인",
-    people: "",
+    people: "2",
     // 0 : 익명 , 1 : 실명
     anonymousCondi: "1",
     mannerCondi: "50",
@@ -242,13 +242,13 @@ const NewMatch = () => {
             <input
               type="number"
               max={50}
-              min={1}
+              min={2}
               placeholder="최대 50명까지 가능합니다"
               name="people"
               onChange={handleChange}
             />
             <p className="new-match-help-el">
-              본인 포함 전체 인원수를 선택해주세요
+              본인 포함 전체 인원수를 선택해주세요. 기본설정 2명
             </p>
           </div>
           <div className="new-match-radio">
@@ -322,7 +322,11 @@ const NewMatch = () => {
               className=""
               name="tag"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length > 6) {
+                  e.target.value = e.target.value.substring(0, 6);
+                }
+                setInputValue(e.target.value)}}
               onKeyDown={handleKeyDown}
               placeholder="최대 5개까지 입력 가능합니다."
             />

@@ -28,4 +28,8 @@ public class MatchOneDto {
     private int countPeople;
     private int status;
     private int kategorie;
+
+    // 해당 매치 호스트인지 참가자인지 판별
+    private int hosted;
+
 }

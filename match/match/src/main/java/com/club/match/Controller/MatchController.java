@@ -1,10 +1,8 @@
 package com.club.match.Controller;
 
-import com.club.match.Domain.DTO.BookmarkDto;
-import com.club.match.Domain.DTO.MatchDto;
-import com.club.match.Domain.DTO.MatchListDto;
-import com.club.match.Domain.DTO.MatchOneDto;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.MatchService;
+import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +25,20 @@ public class MatchController {
     @Autowired
     private MatchService matchService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/list/newMatch")
     public ResponseEntity<?> matchNew(@RequestBody @Validated MatchDto matchDto){
-
         Map<Object,String> warnning = new HashMap<>();
         if(matchDto.getTitle()==null||matchDto.getStartTime()==null||matchDto.getTags().isEmpty()){
             warnning.put("warnning","필수 입력 값이 누락되었습니다.");
             return ResponseEntity.badRequest().body(warnning);
+        }
+
+        if(matchDto.getStartTime().isBefore(LocalDateTime.now())){
+            warnning.put("warnning","선택할 수 없는 날짜입니다.");
+            return ResponseEntity.badRequest().body(null);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,6 +51,7 @@ public class MatchController {
         matchDto.setCreateAt(createAt);
         matchDto.setStatus(status);
         matchDto.setUrl(url);
+
 
         // 그룹 채팅 생성  -> 채팅 코드 받아오기
         int chatCode = matchService.createNewGroupChat(userId, matchDto.getTitle());
@@ -109,6 +115,12 @@ public class MatchController {
         List<String> tags = matchService.getTags(matchId);
         oneMatch.setTags(tags);
         log.info("oneMatch"+oneMatch);
+
+        // 비교값 호스트(0), 참가자(1) = 로그인한 유저
+        // 참가자 아이디 set1 / && 호스트 아이디 set0
+        if(oneMatch)
+        oneMatch.setHosted(1);
+
         return ResponseEntity.ok().body(oneMatch);
     }
 
@@ -120,11 +132,31 @@ public class MatchController {
         Long matchId = ((Integer)req.get("matchId")).longValue();
         int chatCode = (Integer)req.get("chatCode");
 
+        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+        UserDTO userDTO = userService.serchUserOne(userId);
+
         log.info("thiiiiis"+userId+matchId+chatCode);
+        // 조건 검사 : condi 값들, 유저의 gender, 공개여부
+        // 실명
+        if(matchOneDto.getAnonymousCondi() == 0 && userDTO.isPrivate()){
+            log.info("nononononononononono");
+            return ResponseEntity.badRequest().body(null);
+        }
+        // 성별
+        if(matchOneDto.getGenderCondi() == 1 && matchOneDto.getGender()!=userDTO.getGender()){
+            log.info("nonononononononononononono");
+            return ResponseEntity.badRequest().body(null);
+        }
+
         // 매치 참여자 테이블 삽입
-            matchService.joinMatch(matchId,userId);
+        matchService.joinMatch(matchId,userId);
         // 채팅 테이블 삽입
         matchService.addHostGroupChat(chatCode,userId);
+
+        // 사람수 비교 후 status 상태 업데이트
+        if(matchOneDto.getCountPeople()+1 == matchOneDto.getPeople()){
+            matchService.updateStatus(1, matchId);
+        }
 
         return ResponseEntity.ok().body(null);
     }
