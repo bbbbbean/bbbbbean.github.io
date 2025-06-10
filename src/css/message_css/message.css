@@ -461,3 +461,18 @@ background-color: rgb(110, 195, 255, 0.55);
     margin-right: 10px;
 }
 
+/* 리스트에 아무것도 없는 경우 */
+.no-friend{
+   justify-items: center;
+   text-align: center;
+   padding-top: 170px;
+}
+.no-friend>img{
+    width: 100px;
+    align-self: center;
+}
+.no-friend>.no-friends-message{
+    font-size: 20px;
+    color: #6EC3FF;
+    font-weight: 700;
+}
