@@ -1,9 +1,9 @@
 import api from "../../axios"
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import "../../css/common_css/information.css"
+import "../../css/common_css/information_pro.css"
 
-const Information = ({ userInfo }) => {
+const InformationPro = ({ userInfo }) => {
   //const { profile, nickName, name, userId, birthday, introduction, gender, address} = userInfo;
 
   console.log(userInfo);
@@ -18,4 +18,4 @@ const Information = ({ userInfo }) => {
             </div>
         </div>
 )}
-export default Information;
+export default InformationPro;
