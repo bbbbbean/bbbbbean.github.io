@@ -462,6 +462,8 @@ background-color: rgb(110, 195, 255, 0.55);
 }
 
 /* 리스트에 아무것도 없는 경우 */
+
+/* 친구 없음 */
 .no-friend{
    justify-items: center;
    text-align: center;
@@ -472,6 +474,23 @@ background-color: rgb(110, 195, 255, 0.55);
     align-self: center;
 }
 .no-friend>.no-friends-message{
+    font-size: 20px;
+    color: #6EC3FF;
+    font-weight: 700;
+}
+
+/* 채팅창 없음 */
+.no-chat-message{
+    justify-items: center;
+    text-align: center;
+    padding-top: 212px;
+
+}
+.no-chat-message>img{
+    width: 100px;
+    align-self: center;
+}
+.no-chat-message>div{
     font-size: 20px;
     color: #6EC3FF;
     font-weight: 700;
