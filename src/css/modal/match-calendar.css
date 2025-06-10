@@ -41,6 +41,7 @@
 
 .calendar-match-modal-title {
   position: relative;
+  min-width: 300px;
   font-size: 26px;
   font-weight: 800;
   padding-left: 16px;

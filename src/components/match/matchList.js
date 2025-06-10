@@ -43,6 +43,8 @@ const MatchList = () => {
         // match 전체 데이터
         const matches = res.data;
 
+        console.log(matches);
+
         const fullMatch = matches.map((match, i) => ({
           ...match
         }));
@@ -57,7 +59,7 @@ const MatchList = () => {
 
         setTopMatches(sortedTop5);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, [type, reload]);
 
   // 북마크 조회해서 기본 적용
@@ -71,22 +73,22 @@ const MatchList = () => {
         map[matchId] = true;
       });
       setBookmark(map);
-      
+
     });
   }, []);
 
   // 날짜
   const formatDateInfo = (startTimeStr) => {
 
-      console.log("formatDateInfo 호출:", startTimeStr);
-  if (!startTimeStr) {
-    console.warn("startTime이 없어요:", startTimeStr);
-    return {
-      month: "-",
-      day: "-",
-      weekday: "-"
-    };
-  }
+    console.log("formatDateInfo 호출:", startTimeStr);
+    if (!startTimeStr) {
+      console.warn("startTime이 없어요:", startTimeStr);
+      return {
+        month: "-",
+        day: "-",
+        weekday: "-"
+      };
+    }
 
     console.log(startTimeStr);
     const date = new Date(startTimeStr.replace(" ", "T"));
@@ -206,7 +208,7 @@ const MatchList = () => {
           <p>GAME</p>
         </div>
       );
-    }else if (type === "4") {
+    } else if (type === "4") {
       return (
         <div className="match-titlebar">
           기타
@@ -227,67 +229,67 @@ const MatchList = () => {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
 
-useEffect(() => {
-  if (keyword) {
-    api.post("/api/main/findMatch", { keyword })
-      .then((res) => setMatches(res.data.matches))
-      .catch((err) => console.error("검색 실패", err));
-  } else {
-    api.get(`/match/list?type=${type}`)
-      .then((res) => setMatches(res.data))
-      .catch((err) => console.error("전체 리스트 실패", err));
-  }
-}, [keyword, type]);
+  useEffect(() => {
+    if (keyword) {
+      api.post("/api/main/findMatch", { keyword })
+        .then((res) => setMatches(res.data.matches))
+        .catch((err) => console.error("검색 실패", err));
+    } else {
+      api.get(`/match/list?type=${type}`)
+        .then((res) => setMatches(res.data))
+        .catch((err) => console.error("전체 리스트 실패", err));
+    }
+  }, [keyword, type]);
 
   return (
     <div className="match-page">
       {topHeader(type)}
       <div className="pm-center">
         {/* Swiper component */}
-        <>
-          <Swiper
-            slidesPerView={4}
-            loop={true}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            pagination={{ clickable: true }}
-            navigation={true}
-            modules={[Autoplay, Navigation]}
-            className="mySwiper"
-          >
-            {topMatches.map((item, index) => (
-              <SwiperSlide key={index}>
-                <div
-                  className="promotion-match"
-                  onClick={() => {
-                    setMatchOne(item);
-                    setSelectMatch(item.matchId);
-                  }}
-                >
-                  <div className="pm-match-container">
-                    <p>{formatDate(item.startTime)}</p>
-                    <span>{kategorieName(item.kategorie)}</span>
+          {topMatches.length > 4 &&
+            <Swiper
+              slidesPerView={4}
+              loop={true}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              pagination={{ clickable: true }}
+              navigation={true}
+              modules={[Autoplay, Navigation]}
+              className="mySwiper"
+            >
+              {topMatches.map((item, index) => (
+                <SwiperSlide key={index}>
+                  <div
+                    className="promotion-match"
+                    onClick={() => {
+                      setMatchOne(item);
+                      setSelectMatch(item.matchId);
+                    }}
+                  >
+                    <div className="pm-match-container">
+                      <p>{formatDate(item.startTime)}</p>
+                      <span>{kategorieName(item.kategorie)}</span>
+                    </div>
+                    <div className="pm-match-title">
+                      {item.tags.map((tag, i) => (
+                        <p key={i}>#{tag} </p>
+                      ))}
+                      <span>{item.title}</span>
+                    </div>
                   </div>
-                  <div className="pm-match-title">
-                    {item.tags.map((tag, i) => (
-                      <p key={i}>#{tag} </p>
-                    ))}
-                    <span>{item.title}</span>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            }
       </div>
 
       <div className="match-list">
         <button
           className="match-reg-btn"
-          onClick={() => isAuth?navigate("/match/newMatch"):navigate("/user/login")}
+          onClick={() => isAuth ? navigate("/match/newMatch") : navigate("/user/login")}
         >
           매칭 등록
         </button>
@@ -328,7 +330,7 @@ useEffect(() => {
                           <button
                             className={
                               match.status === 0 &&
-                              match.countPeople < match.people
+                                match.countPeople < match.people
                                 ? "ok"
                                 : "no"
                             }
@@ -338,7 +340,7 @@ useEffect(() => {
                           >
                             {/* 0:신청 가능 1: 모집완료 */}
                             {match.status === 0 &&
-                            match.countPeople < match.people
+                              match.countPeople < match.people
                               ? "신청 가능"
                               : "모집 완료"}
                           </button>
@@ -354,7 +356,7 @@ useEffect(() => {
         })}
       </div>
       {selectMatch != null && (
-        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch} setReload={setReload}/>
+        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch} setReload={setReload} />
       )}
     </div>
   );
