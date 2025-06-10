@@ -72,6 +72,9 @@ const IdSearch = () => {
     return (
         <div>
             <section className="login-section">
+                <div className='join-form-title'>
+                    <p><span>아이디</span>찾기</p>
+                </div>
                 <img src={logo} alt="logo" />
                 <form id="login-form" onSubmit={handleSubmit}>
                     <label>회원정보에 등록한 휴대전화로 인증</label>
