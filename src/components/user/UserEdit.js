@@ -23,6 +23,8 @@ const UserEditForm = ({ profile, setProfile }) => {
 
     const [editField, setEditField] = useState(null);
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     let privateV = "";
 
     const [formData, setFormData] = useState({
@@ -40,6 +42,7 @@ const UserEditForm = ({ profile, setProfile }) => {
     const handleInput = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        setErrorMessage("");
     };
 
     const showEdit = (field) => setEditField(field);
@@ -49,6 +52,7 @@ const UserEditForm = ({ profile, setProfile }) => {
         api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "type": btnClass[0] })
             .then((response) => {
                 if (response.status !== 200) {
+                setErrorMessage(response.data.error);
                     return;
                 }
                 if (btnClass[0] === "nickname") {
@@ -125,6 +129,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
+                    <label></label><span style={{color:'red', fontWeight:'bold'}}>{errorMessage}</span>
                     {/* {editField !== "phone" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
                     ) : (
@@ -142,7 +147,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                     <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
                 <span></span>
-                <div className="introduction">
+                <div className="introduction"> 
                     <label>소개</label>
                     <div>{userDTO.introduction}</div>
                     {editField !== "introduction" ? (
@@ -194,13 +199,30 @@ const UserEditForm = ({ profile, setProfile }) => {
                     ) : (
                         <div className="info-edit">
                             <label></label>
-                            <input
-                                type="text"
+                            <select
                                 name="address"
-                                placeholder="새로운 주소를 입력해주세요."
                                 value={formData.address}
                                 onChange={handleInput}
-                            />
+                            >
+                                <option value="">선택하세요</option>
+                                <option value="서울">서울</option>
+                                <option value="부산">부산</option>
+                                <option value="대구">대구</option>
+                                <option value="인천">인천</option>
+                                <option value="광주">광주</option>
+                                <option value="대전">대전</option>
+                                <option value="울산">울산</option>
+                                <option value="세종">세종</option>
+                                <option value="경기">경기</option>
+                                <option value="강원">강원</option>
+                                <option value="충북">충북</option>
+                                <option value="충남">충남</option>
+                                <option value="전북">전북</option>
+                                <option value="전남">전남</option>
+                                <option value="경북">경북</option>
+                                <option value="경남">경남</option>
+                                <option value="제주">제주</option>
+                            </select>
                             <button className="address my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}

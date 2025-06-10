@@ -72,7 +72,7 @@ public class AuthController {
         String regex4 = "^.{8,15}$"; // 길이 8~15자
 
         // 닉네임
-        String regex5 = "^{2,10}$";
+        String regex5 = "^.{2,10}$";
 
         if(signDTO.getPassword().isEmpty() || signDTO.getNickName().isEmpty() || signDTO.getRepassword().isEmpty()){
             resp.put("fail","입력하지 않은 값이 존재합니다.");

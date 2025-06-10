@@ -212,9 +212,6 @@ useEffect(() => {
                       <li className="main-rank-el-num">{index + 1}</li>
                       <li className="main-rank-el-con">{item.tag}</li>
                       <li className="main-rank-el-go">
-                        <a className="main-sky">
-                          <img src={searchIcon} alt="돋보기" />
-                        </a>
                       </li>
                     </ul>
                   </li>
@@ -247,7 +244,7 @@ useEffect(() => {
           <div className="main-matchlist">
             <ul>
               {matchList.map((match, index) => (
-                <li className={`main-matchlist-els ${match.matchId}`} key={match.id || index}>
+                <li onClick={handleModal} className={`main-matchlist-els ${match.matchId}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
                       <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>

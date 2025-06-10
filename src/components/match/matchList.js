@@ -100,6 +100,9 @@ const MatchList = () => {
 
   // 같은 날짜별로 그룹 묶기
   const groupByDay = (matchList) => {
+    console.log("groupByDay matchList: ", matchList);
+    console.log("Type of matchList: ", typeof matchList);
+
     const grouped = {};
     matchList.forEach((match) => {
       const { month, day, dateObj } = formatDateInfo(match.startTime);
@@ -246,44 +249,44 @@ const MatchList = () => {
       {topHeader(type)}
       <div className="pm-center">
         {/* Swiper component */}
-          {topMatches.length > 4 &&
-            <Swiper
-              slidesPerView={4}
-              loop={true}
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }}
-              pagination={{ clickable: true }}
-              navigation={true}
-              modules={[Autoplay, Navigation]}
-              className="mySwiper"
-            >
-              {topMatches.map((item, index) => (
-                <SwiperSlide key={index}>
-                  <div
-                    className="promotion-match"
-                    onClick={() => {
-                      setMatchOne(item);
-                      setSelectMatch(item.matchId);
-                    }}
-                  >
-                    <div className="pm-match-container">
-                      <p>{formatDate(item.startTime)}</p>
-                      <span>{kategorieName(item.kategorie)}</span>
-                    </div>
-                    <div className="pm-match-title">
-                      {item.tags.map((tag, i) => (
-                        <p key={i}>#{tag} </p>
-                      ))}
-                      <span>{item.title}</span>
-                    </div>
+        {topMatches.length > 4 &&
+          <Swiper
+            slidesPerView={4}
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            pagination={{ clickable: true }}
+            navigation={true}
+            modules={[Autoplay, Navigation]}
+            className="mySwiper"
+          >
+            {topMatches.map((item, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="promotion-match"
+                  onClick={() => {
+                    setMatchOne(item);
+                    setSelectMatch(item.matchId);
+                  }}
+                >
+                  <div className="pm-match-container">
+                    <p>{formatDate(item.startTime)}</p>
+                    <span>{kategorieName(item.kategorie)}</span>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            }
+                  <div className="pm-match-title">
+                    {item.tags.map((tag, i) => (
+                      <p key={i}>#{tag} </p>
+                    ))}
+                    <span>{item.title}</span>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        }
       </div>
 
       <div className="match-list">

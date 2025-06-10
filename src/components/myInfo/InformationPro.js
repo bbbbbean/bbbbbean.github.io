@@ -7,11 +7,12 @@ import { WebSocketContext } from "../../WebSocket";
 const InformationPro = () => {
     const { userInfomation, setUserInfomation } = useContext(WebSocketContext);
     const [info, setInfo] = useState([]);
+    const [tags, setTags] = useState([]);
     useEffect(() => {
         if (userInfomation !== "") {
-            api.post("/api/user/infomation", { "userId": userInfomation }).then((response) => {
-                setInfo(response.data);
-                console.log(response.data);
+            api.post("/api/user/information", { "userId": userInfomation }).then((response) => {
+                setInfo(response.data.userInfo);
+                setTags(response.data.tags);
             }).catch(error => {
 
             });
@@ -34,6 +35,9 @@ const InformationPro = () => {
                         {info.name ? <li>{info.birthdayMonth}월 {info.birthdayDay}일</li> : <li>비공개</li>}
                         <li>{info.address}</li>
                     </ul>
+                    {tags.map((tag, idx) => (
+                        <span key={idx} className="tag">{tag}</span>
+                    ))}
                 </div>
             </div>
         </div>

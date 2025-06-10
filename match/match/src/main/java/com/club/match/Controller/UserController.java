@@ -122,6 +122,9 @@ public class UserController {
     public ResponseEntity<?> infoUpdate(@RequestBody Map<String, Object> req){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        String nickNameRegex = "^.{2,10}$";
+        String introductionRegex = "^.{1,40}$";
+
         Map<String, Object> resp = new HashMap<>();
 
         UserDTO userDTO = null;
@@ -130,10 +133,23 @@ public class UserController {
         String value = (String)req.get("value");
 
         if(value.trim().isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            resp.put("error","값을 입력해주세요");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
 
         String type = (String)req.get("type");
+
+        if(type.equals("nickname")){
+            if(!value.matches(nickNameRegex)){
+                resp.put("error","닉네임은 2~10글자 사이여야합니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+            };
+        } else if(type.equals("introduction")) {
+            if(!value.matches(introductionRegex)){
+                resp.put("error","소개글은 최대 40글자 입니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+            };
+        }
 
         if(type.equals("phone")) {
             log.info("폰번호 변경");
@@ -301,10 +317,12 @@ public class UserController {
 
         return ResponseEntity.ok().body(list);
     }
-    @PostMapping("/infomation")
-    public ResponseEntity<?> infomation(@RequestBody UserDTO reqUserDTO){
+    @PostMapping("/information")
+    public ResponseEntity<?> information(@RequestBody UserDTO reqUserDTO){
 
         UserDTO userDTO = userService.serchUserOne(reqUserDTO.getUserId());
+
+        Map<String, Object> resp = userService.serchUserTag(reqUserDTO.getUserId());
 
         LocalDate birthday = userDTO.getBirthday();
         String month = String.format("%02d", birthday.getMonthValue());
@@ -341,8 +359,9 @@ public class UserController {
                     .build();
         }
 
+        resp.put("userInfo", respUserDTO);
 
-        return ResponseEntity.ok().body(respUserDTO);
+        return ResponseEntity.ok().body(resp);
     }
 }
 

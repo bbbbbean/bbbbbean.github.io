@@ -22,13 +22,9 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
 
   const chatCode = location.state?.chatCode;
 
-  console.log("FriendRight chatCode:", chatCode);
-
   useEffect(() => {
     if (chatCode) {
-      setTimeout(() => {
-        setOpenChat(chatCode);
-      }, 1000); // 1초 후에 실행
+      setActiveTab("group");
     }
   }, []);
 

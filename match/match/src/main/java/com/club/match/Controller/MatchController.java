@@ -81,7 +81,6 @@ public class MatchController {
         log.info("type"+type);
         List<MatchListDto> resp = matchService.MatchAllList(type);
         log.info("resp"+resp);
-        log.info("resp"+resp.getFirst().getKategorie());
         return ResponseEntity.ok().body(resp);
     }
 
