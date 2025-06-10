@@ -41,13 +41,13 @@
 
     <select id="getMatchSearchByKeyword" resultType="com.club.match.Domain.DTO.MatchDto">
         SELECT DISTINCT
-        m.match_id,
+        m.matchId,
         m.title,
         t.tag
         FROM
         match_tbl m
         INNER JOIN
-        matchtag_tbl t ON m.match_id = t.match_id
+        matchtag_tbl t ON m.matchId = t.matchId
         WHERE
         m.title LIKE CONCAT('%', #{keyword}, '%')
         OR t.tag LIKE CONCAT('%', #{keyword}, '%')

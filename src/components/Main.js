@@ -36,6 +36,21 @@ const Main = () => {
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
 
+  //검색 코드
+  const [matchFindValue, setMatchFindValue] = useState("");
+  const matchFind = () => {
+    console.log("검색어:", matchFindValue);
+    api.post("/api/main/findMatch", { keyword: matchFindValue })
+      .then((response) => {
+        console.log(response.data.matches);
+        setNewMatchList(response.data.matches);
+      })
+      .catch((error) => {
+        console.error("검색 실패:", error.response?.data || error.message);
+        setNewMatchList([]); 
+      });
+  };
+
   const [tags, setTags] = useState([]);
 
 useEffect(() => {
@@ -160,10 +175,12 @@ useEffect(() => {
             <ul className="serch-bar">
               <li className="main-search-input">
                 {/* 글자수 제한 */}
-                <input type="text" placeholder="검색어를 입력하세요" />
+                <input type="text" placeholder="검색어를 입력하세요" value={matchFindValue} onChange={(e) => {
+                  setMatchFindValue(e.target.value);
+                }} />
               </li>
               <li className="main-search-btn">
-                <button>
+                <button onClick={matchFind}>
                   <img src={searchIcon} alt="돋보기" />
                 </button>
               </li>
