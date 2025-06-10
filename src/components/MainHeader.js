@@ -10,14 +10,12 @@ import { setIsAuth } from "../store";
 import { useEffect, useState, useContext } from "react";
 import Alarm from "./Alert/Alarm";
 import api from "../axios";
-import { WebSocketContext } from '../WebSocket'
-
+import { WebSocketContext } from "../WebSocket";
 
 const MainHeader = () => {
-
   const dispatch = useDispatch();
 
-  const isAuth = useSelector(state => state.auth.isAuth);
+  const isAuth = useSelector((state) => state.auth.isAuth);
 
   const [openAlarm, setOpenAlarm] = useState(false);
 
@@ -28,19 +26,21 @@ const MainHeader = () => {
   const { alarmUpdate } = useContext(WebSocketContext);
 
   const readAlarm = () => {
-    api.post("/api/chat/alarm/read")
-      .then(response => {
+    api
+      .post("/api/chat/alarm/read")
+      .then((response) => {
         setAlarmCount(0);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("알림 읽기 실패:", error);
       });
-  }
+  };
 
   useEffect(() => {
     if (isAuth) {
-      api.post("/api/chat/alarm/list")
-        .then(response => {
+      api
+        .post("/api/chat/alarm/list")
+        .then((response) => {
           setAlarmList(response.data.notificationDTOList);
           setAlarmCount(response.data.noRead);
           //알람을 읽고 있을경우
@@ -48,24 +48,22 @@ const MainHeader = () => {
             readAlarm();
           }
         })
-        .catch(error => {
-        });
+        .catch((error) => {});
     }
   }, [alarmUpdate, isAuth, openAlarm]);
 
   const openAlarmShow = (open) => {
     if (open) {
-      setOpenAlarm(prev => !prev)
+      setOpenAlarm((prev) => !prev);
     }
     if (alarmCount > 0) {
       readAlarm();
     }
-  }
-
+  };
 
   useEffect(() => {
     dispatch(setIsAuth(localStorage.getItem("isAuth")));
-  }, [])
+  }, []);
   return (
     <header>
       <ul className="logo">
@@ -81,32 +79,64 @@ const MainHeader = () => {
           <li className="mainmenu">
             <NavLink to="#">매칭</NavLink>
             <ul className="submenu">
-              <li><NavLink to="/match/list/all">전체</NavLink></li>
+              <li>
+                <NavLink to="/match/list/all">전체</NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><NavLink to="/match/list/1">운동</NavLink></li>
+              <li>
+                <NavLink to="/match/list/1">운동</NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><NavLink to="/match/list/2">여행</NavLink></li>
+              <li>
+                <NavLink to="/match/list/2">여행</NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><NavLink to="/match/list/3">게임</NavLink></li>
+              <li>
+                <NavLink to="/match/list/3">게임</NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><NavLink to="/match/list/4">기타</NavLink></li>
+              <li>
+                <NavLink to="/match/list/4">기타</NavLink>
+              </li>
             </ul>
           </li>
           <li className="mainmenu">
             <NavLink to="/friend">친구</NavLink>
           </li>
           <li className="mainmenu">
-            <NavLink to="/community/list">커뮤니티</NavLink>
+            <NavLink key={"5"} to="/community/list/5">
+              커뮤니티
+            </NavLink>
             <ul className="submenu">
-              <li><a href="#">운동</a></li>
+              <li>
+                <NavLink key={"1"} to="/community/list/1">
+                  운동
+                </NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><a href="#">게임</a></li>
+              <li>
+                <NavLink key={"2"} to="/community/list/2">
+                  게임
+                </NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><a href="#">취미</a></li>
+              <li>
+                <NavLink key={"3"} to="/community/list/3">
+                  취미
+                </NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><a href="#">여행</a></li>
+              <li>
+                <NavLink key={"4"} to="/community/list/4">
+                  여행
+                </NavLink>
+              </li>
               <div className="submenu-line"></div>
-              <li><a href="#">자유게시판</a></li>
+              <li>
+                <NavLink key={"5"} to="/community/list/5">
+                  자유게시판
+                </NavLink>
+              </li>
             </ul>
           </li>
           <li className="mainmenu">
@@ -116,7 +146,7 @@ const MainHeader = () => {
       </nav>
 
       <nav className="icon">
-        {isAuth ?
+        {isAuth ? (
           <ul>
             <li>
               <NavLink to="/user/logout">
@@ -128,9 +158,7 @@ const MainHeader = () => {
               <a className="chatnum-parent" onClick={openAlarmShow}>
                 <img src={noticeIcon} alt="" />
                 <span>알림</span>
-                {alarmCount > 0 &&
-                  <div className="chatnum">{alarmCount}</div>
-                }
+                {alarmCount > 0 && <div className="chatnum">{alarmCount}</div>}
               </a>
             </li>
             <li>
@@ -139,7 +167,7 @@ const MainHeader = () => {
               </NavLink>
             </li>
           </ul>
-          :
+        ) : (
           <ul>
             <li>
               <NavLink to="/user/login">
@@ -148,7 +176,7 @@ const MainHeader = () => {
               </NavLink>
             </li>
           </ul>
-        }
+        )}
       </nav>
       <div className="line" />
       <Alarm openAlarm={openAlarm} alarmList={alarmList} />

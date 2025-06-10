@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import api from "../../axios";
 import "../../css/CSS_community-page/community_page_list.css";
 import searchIcons from "../../../src/image/image_event/search_icon.svg";
 
 const Community_page_list = () => {
-  const [selectedMenu, setSelectedMenu] = useState(5);
+  const { postCodeNumber } = useParams();
+  const [selectedMenu, setSelectedMenu] = useState(() => {
+    return postCodeNumber ? Number(postCodeNumber) : 5;
+  });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [searchKeyword, setSearchKeyword] = useState(""); // 검색어 상태
+  const [searchKeyword, setSearchKeyword] = useState("");
 
-  const navigate = useNavigate(); // 페이지 이동을 위한 훅
+  const navigate = useNavigate();
   const API_BASE_URL = "http://localhost:8100";
 
   const fetchPosts = useCallback(async () => {
@@ -22,8 +25,18 @@ const Community_page_list = () => {
     setError(null);
     try {
       const url = API_BASE_URL + "/list/" + selectedMenu;
-      console.log("링크 : ", url);
-      const response = await axios.get(url, {
+      console.log(
+        "링크 : ",
+        url,
+        "페이지 :",
+        currentPage,
+        "검색어 :",
+        searchKeyword,
+        "현재 selectedMenu :",
+        selectedMenu
+      );
+      console.log("포스트코드 넘버", postCodeNumber);
+      const response = await api.get(url, {
         params: {
           page: currentPage, // 현재 페이지 번호
           limit: 10, // 한 페이지당 게시글 수
@@ -42,18 +55,29 @@ const Community_page_list = () => {
     }
   }, [selectedMenu, currentPage, searchKeyword]);
 
+  useEffect(() => {
+    const newMenuId = postCodeNumber ? Number(postCodeNumber) : 5;
+    if (newMenuId !== selectedMenu) {
+      setSelectedMenu(newMenuId);
+    }
+    setCurrentPage(1);
+    setSearchKeyword("");
+  }, [postCodeNumber]);
+
   // 초기 렌더링
   useEffect(() => {
     fetchPosts();
-  }, [fetchPosts]);
+  }, [selectedMenu, currentPage, searchKeyword, fetchPosts]);
 
   // 게시판 메뉴 클릭시
   const handlerSelectMenu = (e) => {
     const selected = Number(e.currentTarget.dataset.type);
     console.log("선택한 게시글 타입 :", selected);
     setSelectedMenu(selected);
+    console.log("바꾼거", selectedMenu);
     setCurrentPage(1);
     setSearchKeyword("");
+    navigate(`/community/list/${selected}`);
   };
 
   // 검색어 입력
@@ -64,7 +88,6 @@ const Community_page_list = () => {
   // 검색 버튼 클릭
   const handleSearchSubmit = () => {
     setCurrentPage(1); // 검색 시 페이지를 1로 초기화
-    fetchPosts(); // 검색 결과 다시 불러오기
   };
 
   // 페이지 번호 클릭

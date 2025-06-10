@@ -255,7 +255,7 @@ public class ChatController {
     @MessageMapping("/comment")
     public void alarmComment(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
 
-        Long postId = ((Integer) req.get("postId")).longValue();
+        Long postId = Long.valueOf(((String)req.get("postId")));
         String childId = (String) req.get("childId");
         Map<String,Object> resp = new HashMap<>();
 
