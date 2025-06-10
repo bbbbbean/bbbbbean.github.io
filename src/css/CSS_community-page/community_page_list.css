@@ -112,7 +112,7 @@
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 30px;
+  margin-top: 20px;
   padding-right: 20px;
 }
 .page {
@@ -130,7 +130,7 @@
   align-items: center;
   gap: 15px;
 }
-.page > div > a {
+.page > div > button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -147,6 +147,7 @@
   gap: 10px;
 }
 .dirction-button {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
@@ -169,15 +170,17 @@
   align-items: center;
 }
 .forum-write > a {
-  width: 45px;
-  height: 25px;
-  right: 10px;
+  width: 90px;
+  height: 30px;
+  right: -20px;
 
   display: flex;
-  position: absolute;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 
   color: #fff;
   background-color: #6ec3ff;
-  border-radius: 50px;
-  padding: 10px 20px;
+  border-radius: 10px;
+  padding: 0px 0px;
 }
