@@ -20,48 +20,48 @@ li {
     list-style: none;
 }
 
-.join-form-wrap{
+.join-form-wrap,
+.find-login-info-wrap,
+.find-pw-info-wrap{
     width: 980px;
     margin: 0 auto;
 }
 
-.login-section {
-    /*font-family: ;*/
-    width: var(--main-width);
-    margin: 60px auto 0 auto;
-    padding: 20px 60px;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-.join-form-section {
+.join-form-section,
+.find-login-info-section,
+.find-pw-info-section {
     width: 100%;
     margin: 60px auto 0 auto;
     padding: 20px 60px;
     border-radius: 2px;
     text-align: center;
 }
-#login-form{
+#login-form,
+#find-login-info-form,
+#find-pw-info-form{
     margin-left: 7px;
 }
 
-.join-form-title{
+.join-form-title,
+.find-pw-info-title{
     width: 100%;
     border-bottom: 2px solid #6ec3ff;
     display: flex;
     justify-content: left;
 }
-.join-form-title p{
+.join-form-title p,
+.find-pw-info-title p{
     font-size: 30px;
     padding: 15px 20px;
     border-bottom: 2px solid #6ec3ff;
 }
-.join-form-title p span{
+.join-form-title p span,
+.find-pw-info-title p span{
     font-weight: 700;
 }
 
-.join-form-part{
+.join-form-part,
+.find-pw-info-form-part{
     width: 100%;
     display: flex;
     justify-content: left;
@@ -69,7 +69,8 @@ li {
     padding-top: 25px;
     border-bottom: 1px solid #c2c2c2;
 }
-.join-form-part label{
+.join-form-part label,
+.find-pw-info-form-part label{
     width: 150px;
     display: flex;
     justify-content: left;
@@ -78,35 +79,44 @@ li {
     padding: 10px 0 20px;
 }
 
-.join-form-part input{
+.join-form-part input,
+.find-pw-info-form-part input{
     width: 300px;
 }
 
-#login-form>#join-form-plus{
+#login-form>#join-form-plus,
+#find-pw-info-form>#find-pw-info-form-plus
+{
     display: flex;
     flex-direction: column;
 }
-#login-form>#join-form-plus div{
+#login-form>#join-form-plus div,
+#find-pw-info-form>#find-pw-info-form-plus div{
     display: flex;
 }
-#login-form>#join-form-plus div span{
+#login-form>#join-form-plus div span,
+#find-pw-info-form>#find-pw-info-form-plus div span{
     display: flex;
     align-items: center;
     justify-content: left;
     margin-left: 20px;
 }
-#login-form>#join-form-plus p{
+#login-form>#join-form-plus p,
+#find-pw-info-form>#find-pw-info-form-plus p{
     align-self: flex-start;
     color: #a0a0a0;
     padding: 7px 0 11px;
     font-size: 14px;
 }
 
-#login-form{
+#login-form,
+#find-login-info-form,
+#find-login-info-form{
     width: 97%;
 }
 
-#login-form input {
+#login-form input,
+#find-pw-info-form input{
     padding: 10px;
     margin: 4px 0;
     border: 1px solid #ccc;
@@ -114,8 +124,19 @@ li {
     background-color: var(--color-Light-Grays-3-rgba);
     outline-color: #6ec3ff;
 }
+#find-login-info-form div:first-child{
+    padding-top: 30px;
+}
+#find-login-info-form div label{
+    font-size: 20px;
+}
+#find-login-info-form div:first-child p{
+    margin-top: 11px;
+    color: #5e5e5e;
+}
 
-.join-form-wrap button {
+.join-form-wrap button,
+.find-pw-info-wrap button{
     width: 100%;
     margin-top: 20px;
     padding: 10px 0;
@@ -127,6 +148,34 @@ li {
     color: #fff;
     transition: 0.2s;
 }
+
+#find-login-info-form button {
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--menubar-color);
+    font-family: 900;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.2s;
+}
+.find-login-info-idbox{
+    border-top: 1px solid rgb(197, 197, 197);
+    border-bottom: 1px solid rgb(197, 197, 197);
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 0;
+}
+.find-login-info-idbox p{
+    color: #5e5e5e;
+}
+
 .submit{
     padding: 20px;
 }
@@ -140,7 +189,8 @@ li {
     justify-content: left;
 }
 
-#login-form>button:hover {
+#login-form>button:hover,
+#find-pw-info-form>button:hover {
     opacity: 0.8;
 }
 
@@ -185,7 +235,8 @@ li {
     color: #5e5e5e;
 }
 
-#login-form .success{
+#login-form .success,
+#find-pw-info-form .success{
     background-color: #4ebf8a;
 }
 

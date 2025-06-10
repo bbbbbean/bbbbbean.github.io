@@ -45,7 +45,7 @@ const IdSearch = () => {
     };
 
     const handleSubmit = (ok, value) => {
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/idSearch`, { "authCheck": ok, "imp_uid" : value })
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/idSearch`, { "authCheck": ok, "imp_uid": value })
             .then((response) => {
                 setUserId(response.data.userId);
             })
@@ -57,11 +57,11 @@ const IdSearch = () => {
             });
     };
 
-    const handlePassword = (e) =>{
+    const handlePassword = (e) => {
         e.preventDefault()
         console.log(impUid, Auth);
         navigate("/user/pwSearch", {
-            state: { imp_uid: impUid, Auth: Auth}
+            state: { imp_uid: impUid, Auth: Auth }
         });
     }
 
@@ -70,24 +70,27 @@ const IdSearch = () => {
     };
 
     return (
-        <div>
-            <section className="login-section">
+        <div className='find-login-info-wrap'>
+            <section className="find-login-info-section">
                 <div className='join-form-title'>
                     <p><span>아이디</span>찾기</p>
                 </div>
-                <img src={logo} alt="logo" />
-                <form id="login-form" onSubmit={handleSubmit}>
-                    <label>회원정보에 등록한 휴대전화로 인증</label>
-                    <span>회원정보에 등록한 휴대전화 번호와 입력한 휴대전화 번호가 같아야합니다.</span>
+                <form id="find-login-info-form" onSubmit={handleSubmit}>
+                    <div>
+                        <label>회원정보에 등록한 휴대전화로 인증</label>
+                        <p>회원정보에 등록한 휴대전화 번호와 입력한 휴대전화 번호가 같아야합니다.</p>
+                    </div>
                     <button type="button" className={Auth && "success"} onClick={Auth ? dummy : handleAuth}>
                         {Auth ? "인증성공" : "본인인증"}
                     </button>
                     <span style={{ color: "#dd3e3e", fontWeight: "bold" }}>{AuthError}</span>
-                    {userId != "" && 
-                    <>
-                        <span>아이디</span><span style={{ color: "#4ebf8a", fontWeight: "bold" }}>{userId}</span>
-                        <button type="button" onClick={handlePassword}>비밀번호 찾기</button>
-                    </>
+                    {userId != "" &&
+                        <>
+                            <div className='find-login-info-idbox'>
+                                <p>아이디 <span style={{ color: "#000", fontWeight: "bold" }}>{userId}ahdkshakdjsah</span></p>
+                            </div>
+                            <button type="button" onClick={handlePassword}>비밀번호 찾기</button>
+                        </>
                     }
                 </form>
             </section>
