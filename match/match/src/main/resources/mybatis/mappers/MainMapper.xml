@@ -39,6 +39,37 @@
         WHERE status = 0
     </select>
 
+<!--    <select id="getMatchSearchByKeyword" resultType="com.club.match.Domain.DTO.MatchDto">-->
+<!--        SELECT DISTINCT-->
+<!--        m.matchId,-->
+<!--        m.title,-->
+<!--        t.tag-->
+<!--        FROM-->
+<!--        match_tbl m-->
+<!--        INNER JOIN-->
+<!--        matchtag_tbl t ON m.matchId = t.matchId-->
+<!--        WHERE-->
+<!--        m.title LIKE CONCAT('%', #{keyword}, '%')-->
+<!--        OR t.tag LIKE CONCAT('%', #{keyword}, '%')-->
+<!--    </select>-->
+    <select id="getMatchSearchByKeyword" resultType="com.club.match.Domain.DTO.MatchDto">
+        SELECT DISTINCT
+        m.matchId,
+        m.title,
+        m.status,
+        m.startTime,
+        -- 태그가 여러 개일 수 있으니 JOIN해서 여러 행이 나올 수 있음
+        t.tag
+        FROM
+        match_tbl m
+        LEFT JOIN
+        matchtag_tbl t ON m.matchId = t.matchId
+        WHERE
+        m.title LIKE CONCAT('%', #{keyword}, '%')
+        OR t.tag LIKE CONCAT('%', #{keyword}, '%')
+        AND m.status = 0
+    </select>
+
 
 
 </mapper>
