@@ -7,13 +7,66 @@
     z-index: 1;
     background-color: white;
     text-align: right;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 9px #cae9ff;
 }
 .memo-modal button{
     padding-right: 5px;
+}
+.memo-modal>button{
+    font-weight: 900;
+    color: orange;
 }
 .memo-modal-content {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.memo-modal-content-date{
+    align-self: flex-start;
+    padding: 0 10px 3px;
+    margin-left: 15px;
+    border-bottom: 2px solid #6ec2fe;
+    margin-bottom: 15px;
+}
+.memo-modal-input{
+    width: 90%;
+}
+.memo-modal-input-warp{
+    border: 1px solid #6ec2fe;
+    padding: 5px;
+    border-radius: 3px;
+    display: flex;
+}
+.memo-modal-input-warp input{
+    width: 100%;
+    border: none;
+    outline: none;
+}
+.memo-modal-input form button{
+    background-color: #6ec2fe;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.memo-modal-edit{
+    align-self: flex-end;
+    background-color: #6ec2fe;
+    margin-top: 10px;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+.memo-modal-content-el{
+    min-height: 100px;
+    max-height: 260px;
+    width: 94%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
 }

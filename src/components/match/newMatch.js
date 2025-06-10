@@ -106,7 +106,7 @@ const NewMatch = () => {
     api
       .post("/match/list/newMatch", requestData)
       .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) navigate("/match/list");
+        if (resp.status >= 200 && resp.status < 300) navigate("/match/list/all");
         else {
           setIsWarn(resp.data.warnning);
         }
