@@ -23,4 +23,10 @@ public interface MatchMapper {
 
     List<String> getTags(Long matchId);
     int selectJoinMatch(Long matchId, String userId);
+
+    int deleteMatch(Long matchId);
+    int cancelMatch(Long matchId, String userId);
+    int deleteGroupChat(int chatCode);
+    int exitGroupChat(int chatCode, String userId);
+
 }
