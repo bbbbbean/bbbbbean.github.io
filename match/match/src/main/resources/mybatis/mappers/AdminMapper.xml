@@ -32,5 +32,12 @@
         GROUP BY DATE_FORMAT(createAt , '%Y-%m-%d') order by DATE_FORMAT(createAt , '%Y-%m-%d');
     </select>
 
+    <update id="matchCheck">
+        UPDATE bb.match_tbl
+        SET status = 3
+        WHERE startTime &lt; #{now}
+        AND status != 3;
+    </update>
+
 </mapper>
 

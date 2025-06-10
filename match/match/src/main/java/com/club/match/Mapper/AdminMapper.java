@@ -5,6 +5,7 @@ import com.club.match.Domain.DTO.PageDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -15,4 +16,6 @@ public interface AdminMapper {
     public int allUserCount();
 
     public List<LineChartDTO> registCount();
+
+    int matchCheck(LocalDateTime now);
 }
