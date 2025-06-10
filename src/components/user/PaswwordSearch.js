@@ -19,7 +19,7 @@ const PasswordSearch = () => {
     });
 
     const [Auth, setAuth] = useState(!!authFromState);
-    
+
     useEffect(() => {
         let script = document.createElement("script");
         script.src = "https://cdn.iamport.kr/v1/iamport.js"
@@ -85,42 +85,57 @@ const PasswordSearch = () => {
     };
 
     return (
-        <div>
-            <section className="login-section">
-                <img src={logo} alt="logo" />
-                <form id="login-form" onSubmit={handleSubmit}>
-                    <label>
-                        <input
-                            id="userId"
-                            type="text"
-                            name="userId"
-                            placeholder="아이디"
-                            value={formData.userId}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="비밀번호"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        <input
-                            type="password"
-                            name="repassword"
-                            placeholder="비밀번호 확인"
-                            value={formData.repassword}
-                            onChange={handleChange}
-                        />
-                    </label>
+        <div className='find-pw-info-wrap'>
+            <section className="find-pw-info-section">
+                <div className='find-pw-info-title'>
+                    <p><span>비밀번호</span> 변경</p>
+                </div>
+                <form id="find-pw-info-form" onSubmit={handleSubmit}>
+                    <div className='find-pw-info-form-part' id='find-pw-info-form-plus'>
+                        <div>
+                            <label>아이디 확인</label>
+                            <input
+                                id="userId"
+                                type="text"
+                                name="userId"
+                                placeholder="아이디"
+                                value={formData.userId}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <p>아이디에는 영문자와 숫자만 입력 가능합니다</p>
+                    </div>
+                    <div className='find-pw-info-form-part' id='find-pw-info-form-plus'>
+                        <div>
+                            <label>새로운 비밀번호</label>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="비밀번호"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <p>비밀번호는 대소문자와 숫자, 특수문자를 포함한 8~15자로 이루어져야 합니다</p>
+                    </div>
+                    <div className='find-pw-info-form-part' id='find-pw-info-form-plus'>
+                        <div>
+                            <label>새 비밀번호 확인</label>
+                            <input
+                                type="password"
+                                name="repassword"
+                                placeholder="비밀번호 확인"
+                                value={formData.repassword}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <p></p>
+                    </div>
+                    <p className='join-form-error'>{AuthError}</p>
                     <button type="button" className={Auth && "success"} onClick={Auth ? dummy : handleAuth}>
                         {Auth ? "인증성공" : "본인인증"}
                     </button>
-                    <span style={{ color: "#dd3e3e", fontWeight: "bold" }}>{AuthError}</span>
+                    
                     {Auth && formData.password && formData.repassword &&
                         <button className="submit" type="submit">
                             비밀번호 변경
