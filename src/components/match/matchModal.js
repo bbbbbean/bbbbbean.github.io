@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { WebSocketContext } from "../../WebSocket";
 
 const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
-  const { client } = useContext(WebSocketContext);
+  const { client, setUserInfomation } = useContext(WebSocketContext);
   const isAuth = localStorage.getItem("isAuth");
 
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
     isBookmarked: false,
     title: "",
     nickName: "",
+    userId: "",
     tags: [],
     startTime: "",
     location: "",
@@ -128,7 +129,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
         if (response.status == 200) {
           client.publish({
             destination: "/pub/matchJoin",
-            body: JSON.stringify({ matchId: selectMatch }),
+            body: JSON.stringify({ matchId: selectMatch, ok: "join" }),
           });
           navigate(`/friend`, { state: { chatCode: match.chatCode } });
         } else {
@@ -145,6 +146,12 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
 
   const handleDelete = () => {
     if (match.hosted == 1) {
+
+      client.publish({
+        destination: "/pub/matchJoin",
+        body: JSON.stringify({ matchId: selectMatch, ok: "del" }),
+      });
+      
       api
         .post("/match/delete", { matchId: selectMatch })
         .then((response) => {
@@ -152,6 +159,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
             alert("매치가 삭제되었습니다.");
             setSelectMatch(null);
             setReload((prev) => !prev);
+
           } else {
             console.error("매치 삭제 실패:", response.data);
           }
@@ -159,7 +167,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
         .catch((error) => {
           console.error("매치 삭제 오류:", error);
         });
-    }else{
+    } else {
       api
         .post("/match/cancel", { matchId: selectMatch })
         .then((response) => {
@@ -194,7 +202,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
             <p>{match.title}</p>
           </div>
           <div className="match-info-user">
-            <button>{match.nickName}</button>
+            <button onClick={() => { setUserInfomation(match.userId); }}>{match.nickName}</button>
           </div>
         </div>
         <div className="match-modal-info">
@@ -258,13 +266,13 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
                   ? "신청하기"
                   : "모집 완료"}
               </button>
-              {match.hosted === 1 &&   (
-                <button className="match-modal-btn-el" onClick={()=>{setShowDeleteConfirm(true)}}>
+              {match.hosted === 1 && (
+                <button className="match-modal-btn-el" onClick={() => { setShowDeleteConfirm(true) }}>
                   매치 삭제
                 </button>
               )}
               {match.hosted == 2 && (
-                <button className="match-modal-btn-el" onClick={()=>{setShowDeleteConfirm(true)}}>
+                <button className="match-modal-btn-el" onClick={() => { setShowDeleteConfirm(true) }}>
                   참여 취소
                 </button>
               )}

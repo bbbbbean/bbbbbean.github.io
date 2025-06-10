@@ -29,4 +29,5 @@ public interface MatchMapper {
     int deleteGroupChat(int chatCode);
     int exitGroupChat(int chatCode, String userId);
 
+    List<String> allUser(Long matchId);
 }

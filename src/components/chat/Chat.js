@@ -28,7 +28,7 @@ const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
-    const { client, messages, setMessages } = useContext(WebSocketContext);
+    const { client, messages, setMessages, setUserInfomation } = useContext(WebSocketContext);
 
     const handleClose = () => {
         setOpenChat(null);
@@ -196,7 +196,7 @@ const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
                         </div>
                     ) : (
                         <div key={index} className="user-chat-container">
-                            <img className="prf-image" src={`${process.env.REACT_APP_SERVER_URL}/profile/${msg.userId}`} alt="prf-i" />
+                            <img onClick={() => { setUserInfomation(msg.userId) }} className="prf-image" src={`${process.env.REACT_APP_SERVER_URL}/profile/${msg.userId}`} alt="prf-i" />
                             <div className="user-chat">
                                 <div className="user-name">{msg.nickName}</div>
                                 {msg.isFile ? (

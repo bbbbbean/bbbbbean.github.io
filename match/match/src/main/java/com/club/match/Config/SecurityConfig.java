@@ -62,7 +62,8 @@ public class SecurityConfig {
                             "/chatFile/**",
                             "/list/**",
                             "/community/post/**",
-                            "/get/comment"
+                            "/get/comment",
+                            "/api/user/infomation"
                             ).permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/pwdCheck").hasAnyRole("ADMIN","USER");

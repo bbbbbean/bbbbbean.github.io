@@ -27,7 +27,7 @@ const Comment = ({ postId }) => {
 
   const [commentRe, setCommentRe] = useState(true);
 
-  const { client } = useContext(WebSocketContext);
+  const { client, setUserInfomation } = useContext(WebSocketContext);
 
   useEffect(() => {
     api
@@ -232,7 +232,7 @@ const Comment = ({ postId }) => {
             className={"del" + parent.commentId + " parent-comment"}
             key={parent.commentId}
           >
-            <div className="comment-img">
+            <div className="comment-img" onClick={() => { setUserInfomation(parent.userId) }}>
               <img
                 src={`http://localhost:8100/profile/${parent.userId}`}
                 alt="profile"
@@ -303,7 +303,7 @@ const Comment = ({ postId }) => {
                       }
                       key={child.commentId}
                     >
-                      <div className="comment-img">
+                      <div className="comment-img" onClick={() => { setUserInfomation(child.userId) }}>
                         <img
                           src={`http://localhost:8100/profile/${child.userId}`}
                           alt="profile"

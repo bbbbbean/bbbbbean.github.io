@@ -14,6 +14,8 @@ export const WebSocketProvider = ({ children }) => {
     const [friendUpdate, setFriendUpdate] = useState(false);
     const [alarmUpdate, setAlarmUpdate] = useState(false);
 
+    const [userInfomation, setUserInfomation] = useState("");
+
 
     const clientRef = useRef(null);
     const [client, setClient] = useState(null);
@@ -160,7 +162,7 @@ export const WebSocketProvider = ({ children }) => {
 
     return (
         <WebSocketContext.Provider value={
-            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate }
+            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate, userInfomation, setUserInfomation}
         }>
             {children}
         </WebSocketContext.Provider>

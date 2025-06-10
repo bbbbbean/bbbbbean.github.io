@@ -16,7 +16,7 @@ const FriendLeft = () => {
     setOpenMenuKey(prev => (prev === key ? null : key));
   };
 
-  const { client, friendUpdate } = useContext(WebSocketContext);
+  const { client, friendUpdate, setUserInfomation } = useContext(WebSocketContext);
 
   useEffect(() => {
     api.post("/api/friend/list").then((response) => {
@@ -165,7 +165,7 @@ const FriendLeft = () => {
           </button>
           <div style={{ display: friendSearch.length !== 0 ? "block" : "none" }} className="searchResult">
             {friendSearch.map((friend, idx) => (
-              <div className="person">
+              <div onClick={() => { setUserInfomation(friend.userId) }} className="person">
                 <img src={friend.profile} className="profile"></img>
                 <div className="word1">
                   <div className="name">{friend.nickName}</div>
@@ -181,7 +181,7 @@ const FriendLeft = () => {
         <div className="friendalart">
           <h1>친구 요청</h1>
           {friendRequest.map((friend, idx) => (
-            <div className="person">
+            <div onClick={() => { setUserInfomation(friend.userId) }} className="person">
               <img src={friend.profile} className="profile"></img>
               <div className="word1">
                 <div className="name">{friend.nickName}</div>
@@ -218,7 +218,7 @@ const FriendLeft = () => {
         ))}
         <hr />
         {friends.map((friend, idx) => (
-          <div className="person" key={`common-${idx}`}>
+          <div onClick={() => { setUserInfomation(friend.userId) }} className="person">
             <img src={friend.profile} className="profile"></img>
             <div className="word1">
               <div className="name">{friend.nickName}</div>
