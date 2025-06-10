@@ -111,6 +111,7 @@ const MyPageSection = () => {
         >
           {errorTag}
         </span>
+        <p>엔터를 치면 태그가 등록됩니다</p>
         <div className="date-tag">
           {tags.map((tag, idx) => (
             <div
