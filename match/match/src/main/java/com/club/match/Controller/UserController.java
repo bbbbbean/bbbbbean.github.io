@@ -1,6 +1,7 @@
 package com.club.match.Controller;
 
 import com.club.match.Config.auth.PrincipalDetails;
+import com.club.match.Domain.DTO.PrevMatchDto;
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
@@ -286,6 +287,17 @@ public class UserController {
         String userId = authentication.getName();
         LocalDateTime now = LocalDateTime.now();
         List<UserBookMarkDTO> list = userService.getAllBookMark(now,userId);
+        return ResponseEntity.ok().body(list);
+    }
+    @PostMapping("/prevMatch")
+    public ResponseEntity<?> prevMatch(){
+        // 지난 매치 들고오기, match status 3
+        // userid 기준 : 참가 매치, 매치 전체 목록 join 조회 -> 이중 status=3, 참가 아이디 = userId인 목록 조회 후 출력
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        List<PrevMatchDto> list = userService.prevMatchSelectAll(userId);
+
+
         return ResponseEntity.ok().body(list);
     }
 }
