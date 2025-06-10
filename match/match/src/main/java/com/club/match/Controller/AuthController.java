@@ -65,16 +65,23 @@ public class AuthController {
     public ResponseEntity<?> userSign(@RequestBody @Validated SignDTO signDTO) {
         Map<String, Object> resp = new HashMap<>();
 
+        // 패스워드
         String regex1 = "^(?=.*[a-zA-Z]).+$"; // 영문자 포함
         String regex2 = "^(?=.*[!@#$%^*+=-]).+$"; // 특수문자 포함
         String regex3 = "^(?=.*[0-9]).+$"; // 숫자 포함
         String regex4 = "^.{8,15}$"; // 길이 8~15자
+
+        // 닉네임
+        String regex5 = "^{2,10}$";
 
         if(signDTO.getPassword().isEmpty() || signDTO.getNickName().isEmpty() || signDTO.getRepassword().isEmpty()){
             resp.put("fail","입력하지 않은 값이 존재합니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         } else if(!signDTO.isIdCheck()){
             resp.put("fail","아이디 체크를 확인해주세요");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        } else if(!signDTO.getNickName().matches(regex5)){
+            resp.put("fail","닉네임은 2~10글자 사이여야 합니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         } else if(!signDTO.isAuthCheck()){
             resp.put("fail","본인인증이 진행되지 않았습니다.");
@@ -91,7 +98,7 @@ public class AuthController {
         } else if (!signDTO.getPassword().matches(regex4)) {
             resp.put("fail","비밀번호는 8~15자 사이여야 합니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
-        }else if(!signDTO.getPassword().equals(signDTO.getRepassword())){
+        } else if(!signDTO.getPassword().equals(signDTO.getRepassword())){
             resp.put("fail","비밀번호 확인이 일치하지 않습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
