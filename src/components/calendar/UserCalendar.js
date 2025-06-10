@@ -31,7 +31,7 @@ function UserCalendar() {
     setCalendarId(id);
     setItemType(type);
 
-    if (keyEvent&& type === "note") {
+    if (keyEvent && type === "note") {
       api.post("api/calendar/deleteMemo", { "calendarId": id })
         .then((response) => {
           setHasUpdated(!hasUpdated);
@@ -40,6 +40,8 @@ function UserCalendar() {
       setviewModal(true);
       setAddModal(false);
     }
+
+
   }
 
 
@@ -113,14 +115,16 @@ function UserCalendar() {
               {note.map((item) => {
                 const itemDate = new Date(item.date);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
-                  return <p key={item.calendarId} data-id={item.calendarId} data-type="note" style={{ color: 'orange', backgroundColor: '#FFF', width: '100%', marginTop: '3px' }} onContextMenu={handleRightClick}>{item.content}</p>;
+                  return <p key={item.calendarId} data-id={item.calendarId} data-type="note" style={{ overflow:'hidden', whiteSpace: 'nowrap', color: 'orange', backgroundColor: '#FFF', width: '100%', marginTop: '3px' }} onContextMenu={handleRightClick}>{item.content}</p>;
                 }
                 return null;
               })}
               {match.map((item) => {
                 const itemDate = new Date(item.startTime);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
-                  return <p key={item.matchId} data-id={item.matchId} data-type="match" style={{ color: 'black', backgroundColor: '#eff9ff', width: '100%', marginTop: '2px' }} onContextMenu={handleRightClick}>{item.title}</p>;
+                  return item.matchId ? (
+                    <p key={item.matchId} data-id={item.matchId} data-type="match" style={{ overflow:'hidden', whiteSpace: 'nowrap', color: 'black', backgroundColor: '#eff9ff', width: '100%', marginTop: '2px' }} onContextMenu={handleRightClick}>{item.title}</p>
+                  ) : null;
                 }
                 return null;
               })}

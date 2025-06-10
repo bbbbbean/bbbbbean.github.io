@@ -29,10 +29,10 @@ const Main = () => {
   }, []);
 
   // 모달 상태 관리
-  const [selectMatch, setMatchList] = useState(null);
+  const [selectMatch, setSelectMatch] = useState(null);
 
   const handleModal = (e) => {
-    setMatchList(e.target.classList[1]);
+    setSelectMatch(parseInt(e.target.classList[1], 10));
   }
 
   selectMatch != null ? document.body.classList.add("stop-scrolling") : document.body.classList.remove("stop-scrolling");
@@ -225,7 +225,7 @@ useEffect(() => {
               <ul>
                 {Array.isArray(randomMatchList) && randomMatchList.map((data, index) => (
                   <li className="main-rank-match" key={index}>
-                    <button onClick={handleModal} className={`main-rank-match-btn ${index}`}>
+                    <button onClick={handleModal} className={`main-rank-match-btn ${data.matchId}`}>
                       <div className="category">
                         <div className="catename">{categoryMap[data.kategorie] || "기타"}</div>
                       </div>
@@ -247,7 +247,7 @@ useEffect(() => {
           <div className="main-matchlist">
             <ul>
               {matchList.map((match, index) => (
-                <li className={`main-matchlist-els ${index}`} key={match.id || index}>
+                <li className={`main-matchlist-els ${match.matchId}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
                       <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
@@ -280,7 +280,7 @@ useEffect(() => {
           {/* {isAuth && <AccordionModal />} */}
         </section>
       </main>
-      {selectMatch != null && <MatchModal selectMatch={selectMatch} setMatchList={setMatchList} />}
+      {selectMatch != null && <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch} />}
     </>
   );
 };

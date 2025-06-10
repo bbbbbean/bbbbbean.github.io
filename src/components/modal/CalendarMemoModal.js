@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import "../../css/modal/calendarMemo.css"
 import api from "../../axios";
+import CalendarMatchModal from "../modal/CalendarMatchModal";
 
 const CalendarMemoViewModal = ({ calendarId, itemType, setviewModal, setHasUpdated }) => {
 
@@ -14,21 +15,14 @@ const CalendarMemoViewModal = ({ calendarId, itemType, setviewModal, setHasUpdat
 
     useEffect(() => {
         if (itemType === "note") {
-            api.post("api/calendar/getMemo", { calendarId })
+            api.post("/api/calendar/getMemo", { calendarId })
                 .then((response) => {
                     setDate(response.data.noteData.date);
                     setContent(response.data.noteData.content);
                     setOldContent(response.data.noteData.content);
                 });
-        }else if (itemType === "match") {
-            api.post("api/calendar/get~~", { matchId: calendarId })
-                .then((response) => {
-                    setDate(response.data.matchData);
-                    setContent(response.data.matchData);
-                    setOldContent(response.data.matchData);
-                });   
         }
-    }, [calendarId, itemType]);
+    }, [calendarId]);
 
     const handleButton = (e) => {
         if (editMemo) {
@@ -52,24 +46,35 @@ const CalendarMemoViewModal = ({ calendarId, itemType, setviewModal, setHasUpdat
         <div className="memo-modal">
             <button onClick={() => setviewModal(false)}>X</button>
             <div className="memo-modal-content">
-                <div className="memo-modal-content-date">{date}</div>
-                {editMemo ?
-                    <div>
-                        <form onSubmit={(e) => e.preventDefault()}>
-                            <input type="text" name="content" value={content}
-                                onChange={
-                                    (e) => setContent(e.target.value)
-                                } />
+                {itemType === "note" ? (
+                    <>
+                        <div className="memo-modal-content-date">{date}</div>
+                        {editMemo ? (
                             <div>
-                                <button onClick={handleButton}>저장</button>
+                                <form onSubmit={(e) => e.preventDefault()}>
+                                    <input
+                                        type="text"
+                                        name="content"
+                                        value={content}
+                                        onChange={(e) => setContent(e.target.value)}
+                                    />
+                                    <div>
+                                        <button onClick={handleButton}>저장</button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                    </div>
-                    :
-                    <div className="memo-modal-content-el">{content}</div>}
-                {!editMemo && <div className="memo-modal-edit">
-                    <button onClick={handleButton}>수정</button>
-                </div>}
+                        ) : (
+                            <div className="memo-modal-content-el">{content}</div>
+                        )}
+                        {!editMemo && (
+                            <div className="memo-modal-edit">
+                                <button onClick={handleButton}>수정</button>
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <CalendarMatchModal selectMatch={Number(calendarId)} setSelectMatch={setviewModal} />
+                )}
             </div>
         </div>
     );
