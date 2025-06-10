@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,19 +63,30 @@ public class MainService {
     }
 
     public List<MatchDto> searchMatchesByKeyword(String keyword) {
-
         List<MatchDto> matchSearchList = mainMapper.getMatchSearchByKeyword(keyword);
-        List<MatchDto> matchFindList = new ArrayList<>();
-        for(MatchDto matchDto : matchSearchList){
-            matchFindList.add(MatchDto.builder()
-                            .matchId(matchDto.getMatchId())
-                            .status(matchDto.getStatus())
-                            .tags(matchDto.getTags())
-                            .startTime(matchDto.getStartTime())
-                            .title(matchDto.getTitle())
-                    .build());
+
+        // matchId별로 MatchDto를 하나로 묶고, 태그 리스트를 만든다
+        Map<Long, MatchDto> map = new LinkedHashMap<>();
+
+        for (MatchDto matchDto : matchSearchList) {
+            long id = matchDto.getMatchId();
+
+            if (!map.containsKey(id)) {
+                map.put(id, MatchDto.builder()
+                        .matchId(id)
+                        .status(matchDto.getStatus())
+                        .startTime(matchDto.getStartTime())
+                        .title(matchDto.getTitle())
+                        .tags(new ArrayList<>())  // 빈 리스트 초기화
+                        .build());
+            }
+            // tag가 null이 아니면 리스트에 추가
+            if (matchDto.getTag() != null) {
+                map.get(id).getTags().add(matchDto.getTag());
+            }
         }
 
-        return matchFindList;
+        return new ArrayList<>(map.values());
     }
+
 }

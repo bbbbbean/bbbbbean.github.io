@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useNavigate } from "react-router-dom";
 
 import "../css/common_css/main_main.css";
 
@@ -51,6 +52,15 @@ const Main = () => {
       });
   };
 
+  //검색 후 페이지 이동
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    if (matchFindValue.trim()) {
+       navigate(`/match/list/all?keyword=${encodeURIComponent(matchFindValue)}`);
+    }
+  };
+
+  
   const [tags, setTags] = useState([]);
 
 useEffect(() => {
@@ -93,13 +103,8 @@ useEffect(() => {
   useEffect(() => {
     async function fetchMatchList() {
       try {
-<<<<<<< HEAD
         const res = await api.post("/api/main/matches"); // 예시 엔드포인트
         setNewMatchList(res.data.matches);
-=======
-        const res = await api.get("/api/main/matches"); // 예시 엔드포인트
-        setNewMatchList(res.data);
->>>>>>> 611bd0e (검색 수정 랜덤 혹시 모르니 오류 수정할 것)
       } catch (err) {
         console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
       }
@@ -185,7 +190,7 @@ useEffect(() => {
                 }} />
               </li>
               <li className="main-search-btn">
-                <button onClick={matchFind}>
+                <button onClick={handleSearch}>
                   <img src={searchIcon} alt="돋보기" />
                 </button>
               </li>
@@ -245,7 +250,7 @@ useEffect(() => {
                 <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{match.kategorie}</span>
+                      <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
@@ -256,7 +261,6 @@ useEffect(() => {
                       <div className="main-matchlist-el-info">
                         <span>{match.location}</span>
                         <span>{match.people}명</span>
-<<<<<<< HEAD
                         <span>{(() => {
                           const date = new Date(match.startTime);
                           const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -265,9 +269,6 @@ useEffect(() => {
                           const minute = String(date.getMinutes()).padStart(2, '0');
                           return `${month}월${day}일 ${hour}시${minute}분`;
                         })()}</span>
-=======
-                        <span>1/23</span>
->>>>>>> 611bd0e (검색 수정 랜덤 혹시 모르니 오류 수정할 것)
                       </div>
                       <img src={searchIcon} alt="돋보기" />
                     </a>
