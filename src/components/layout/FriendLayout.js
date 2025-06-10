@@ -1,7 +1,7 @@
 import '../../css/message_css/message.css';
 import FriendLeft from '../message/FriendLeft';
 import FriendRight from '../message/FriendRight';
-import Information from '../myInfo/Information';
+import InformationPro from '../myInfo/InformationPro';
 
 const MyPageLayout = () => {
 
@@ -10,7 +10,7 @@ const MyPageLayout = () => {
         <div className="friend-container">
             <FriendLeft />
             <FriendRight />
-            <Information />
+            <InformationPro />
         </div>
     );
 };
