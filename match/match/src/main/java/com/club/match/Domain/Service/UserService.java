@@ -1,6 +1,7 @@
 package com.club.match.Domain.Service;
 
 import com.club.match.Domain.DTO.SocialLinkDTO;
+import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import com.club.match.Mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,5 +74,28 @@ public class UserService {
     public boolean changeUserPassword(String userId, String password) {
         boolean isChange = userMapper.updateUserPassword(userId,password) > 0;
         return isChange;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<UserBookMarkDTO> getAllBookMark(LocalDateTime now, String userId) {
+        List<UserBookMarkDTO> list = userMapper.bookMarkSelectAll(now,userId);
+        for(UserBookMarkDTO userBookMarkDTO : list){
+            switch (userBookMarkDTO.getKategorie()){
+                case "1":
+                    userBookMarkDTO.setKategorie("운동");
+                    break;
+                case "2":
+                    userBookMarkDTO.setKategorie("여행");
+                    break;
+                case "3":
+                    userBookMarkDTO.setKategorie("게임");
+                    break;
+                case "4":
+                    userBookMarkDTO.setKategorie("기타");
+                    break;
+            }
+        }
+
+        return list;
     }
 }

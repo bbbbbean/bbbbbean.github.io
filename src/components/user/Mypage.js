@@ -8,6 +8,7 @@ import "../../css/user_css/myPage.css";
 const MyPageSection = () => {
 
   const [tags, setTags] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
   const [tag, setTag] = useState("");
   const [errorTag, setErrorTag] = useState("");
 
@@ -30,7 +31,16 @@ const MyPageSection = () => {
       })
       .catch((error) => {
       });
+  }, []);
 
+  useEffect(() => {
+    api.post("/api/user/bookMark")
+      .then((response) => {
+        console.log(response.data);
+        setBookmarks([...response.data]);
+      })
+      .catch((error) => {
+      });
   }, []);
 
   const tagAdd = (e) => {
@@ -72,7 +82,7 @@ const MyPageSection = () => {
     description: "시흥 서울대학교 스포츠파크(풋살) 11VS11"
   });
 
-  const bookmarks = Array(4).fill({
+  const bookmarks1 = Array(4).fill({
     day: "1월 22일",
     type: "5vs5",
     mode: "온라인",
@@ -92,7 +102,7 @@ const MyPageSection = () => {
       <div className="user-info-tag info-title">
         <span>My</span>
         <span>Tag</span>
-        <span style={{paddingLeft:"5px",color: '#dd3e3e', fontWeight:"bold"}}>{errorTag}</span>
+        <span style={{ paddingLeft: "5px", color: '#dd3e3e', fontWeight: "bold" }}>{errorTag}</span>
         <div className="date-tag">
           {tags.map((tag, idx) => (
             <div key={idx} className="tag-item drag-prevent" data-tag={tag} onClick={tagDel}>
@@ -150,13 +160,12 @@ const MyPageSection = () => {
               {bookmarks.map((item, idx) => (
                 <div key={idx} className="book-mark-item">
                   <a href="#">
-                    <div className="day">{item.day}</div>
+                    <div className="day">{item.month}월 {item.day}일</div>
                     <div className="info">
-                      <span>{item.type}</span>
-                      <span>{item.mode}</span>
+                      <span>{item.location}</span>
                     </div>
                     <div className="title">{item.title}</div>
-                    <div className="tag">{item.tag}</div>
+                    <div className="tag">{item.kategorie}</div>
                   </a>
                 </div>
               ))}

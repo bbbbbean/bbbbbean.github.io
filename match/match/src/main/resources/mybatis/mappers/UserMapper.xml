@@ -89,5 +89,9 @@
 
     </select>
 
+    <select id="bookMarkSelectAll" resultType="UserBookMarkDTO">
+        SELECT matchId, month(startTime) as month,dayofmonth(startTime) as day,location, title, kategorie FROM bookmark_tbl natural join match_tbl where startTime > #{now} and userId = #{userId} order by startTime
+    </select>
+
 </mapper>
 

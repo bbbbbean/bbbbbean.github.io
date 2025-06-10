@@ -1,12 +1,14 @@
 package com.club.match.Mapper;
 
 import com.club.match.Domain.DTO.SocialLinkDTO;
+import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
 import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,4 +37,6 @@ public interface UserMapper {
     int deleteSocialLink(SocialLinkDTO socialLinkDTO);
 
     int deleteUserTag(String userId, String tag);
+
+    List<UserBookMarkDTO> bookMarkSelectAll(LocalDateTime now, String userId);
 }
