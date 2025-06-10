@@ -57,6 +57,34 @@
         WHERE postId = #{postId} AND userId = #{userId}
     </select>
 
+    <select id="selectPostList" resultType="PostListDTO">
+        SELECT
+        p.postId as postId,
+        p.title,
+        p.likeCount as likeCount,
+        p.dislikeCount as dislikeCount,
+        p.viewCount as viewCount,
+        u.nickName as nickName, p.createAt as createAt
+        FROM post_tbl p
+        JOIN user_tbl u ON p.userId = u.userId
+        WHERE p.postCodeId = #{postCodeId}
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (p.title LIKE CONCAT('%', #{searchKeyword}, '%') OR p.content LIKE CONCAT('%', #{searchKeyword}, '%'))
+        </if>
+        ORDER BY p.createAt DESC LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countPosts" resultType="int">
+        SELECT
+        COUNT(postId)
+        FROM
+        post_tbl WHERE
+        postCodeId = #{postCodeId}
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (title LIKE CONCAT('%', #{searchKeyword}, '%') OR content LIKE CONCAT('%', #{searchKeyword}, '%'))
+        </if>
+    </select>
+
     <!--  UPDATE  -->
     <update id="incrementViewCount">
         UPDATE post_tbl

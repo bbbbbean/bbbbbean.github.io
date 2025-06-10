@@ -1,6 +1,8 @@
 package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.PostDTO;
+import com.club.match.Domain.DTO.PostListDTO;
+import com.club.match.Domain.DTO.PostListResponseDTO;
 import com.club.match.Domain.Service.FileService;
 import com.club.match.Domain.Service.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -182,5 +182,17 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 삭제 중 오류가 발생했습니다.");
         }
     }
+
+    // 게시글 리스트 조회
+    @GetMapping("/list/{postCodeId}")
+    public ResponseEntity<PostListResponseDTO> postList(
+            @PathVariable Long postCodeId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) String search) {
+        PostListResponseDTO response = postService.getPaginatedPostList(postCodeId, page, limit, search);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

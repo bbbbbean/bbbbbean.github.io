@@ -1,9 +1,6 @@
 package com.club.match.Domain.Service;
 
-import com.club.match.Domain.DTO.AttachmentFileDTO;
-import com.club.match.Domain.DTO.PostDTO;
-import com.club.match.Domain.DTO.PostDetailResultDTO;
-import com.club.match.Domain.DTO.PostRecommendationDTO;
+import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.FileMapper;
 import com.club.match.Mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-
 
 @Service
 @Slf4j
@@ -118,6 +114,25 @@ public class PostService {
             throw e; // 롤백을 위해 예외 다시 던지기
         }
         return resp;
+    }
+
+    // 게시글 리스트 조회
+    public PostListResponseDTO getPaginatedPostList(Long postCodeId, int page, int limit, String searchKeyword) {
+        // offset 계산
+        int offset = (page - 1) * limit;
+
+        // 게시글 목록 조회
+        List<PostListDTO> posts = postMapper.selectPostList(postCodeId, offset, limit, searchKeyword);
+
+        // 총 게시글 수 조회
+        int totalElements = postMapper.countPosts(postCodeId, searchKeyword);
+
+        // 총 페이지 수 계산
+        int totalPages = (int) Math.ceil((double) totalElements / limit);
+
+        // 응답 DTO 생성 및 반환
+        return new PostListResponseDTO(posts, totalPages, totalElements);
+
     }
 
 

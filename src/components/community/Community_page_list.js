@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/CSS_community-page/community_page_list.css";
+import searchIcons from "../../../src/image/image_event/search_icon.svg";
 
 const Community_page_list = () => {
   const [selectedMenu, setSelectedMenu] = useState(5);
@@ -14,14 +15,16 @@ const Community_page_list = () => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어 상태
 
   const navigate = useNavigate(); // 페이지 이동을 위한 훅
+  const API_BASE_URL = "http://localhost:8100";
 
   const fetchPosts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("/list", {
+      const url = API_BASE_URL + "/list/" + selectedMenu;
+      console.log("링크 : ", url);
+      const response = await axios.get(url, {
         params: {
-          category: selectedMenu, // 선택된 메뉴 (게시판 종류)
           page: currentPage, // 현재 페이지 번호
           limit: 10, // 한 페이지당 게시글 수
           search: searchKeyword, // 검색어
@@ -71,11 +74,6 @@ const Community_page_list = () => {
     }
   };
 
-  // 글쓰기 버튼 클릭
-  const handleWriteClick = () => {
-    navigate("/community/write"); // 글쓰기 페이지 경로로 이동
-  };
-
   // 게시글 클릭 핸들러
   const handlePostClick = (postId) => {
     navigate(`/community/view/${postId}`); // 게시글 상세 페이지 경로로 이동
@@ -103,17 +101,19 @@ const Community_page_list = () => {
       <div className="forum">
         <div className="forum-menu">
           <div className="forum-menu-el">
-            {/* <NavLink
-              key={category.id}
-              to={`/community/list/${category.id}`}
-              data-type={category.id}
-              onClick={handlerSelectMenu}
-              className={({ isActive }) =>
-                isActive || selectedMenu === category.id ? "on" : ""
-              }
-            >
-              {category.name}
-            </NavLink> */}
+            {categories.map((category) => (
+              <NavLink
+                key={category.id}
+                to={`/community/list/${category.id}`}
+                data-type={category.id}
+                onClick={handlerSelectMenu}
+                className={({ isActive }) =>
+                  isActive || selectedMenu === category.id ? "on" : ""
+                }
+              >
+                {category.name}
+              </NavLink>
+            ))}
           </div>
           <div className="forum-menu-serch">
             <input
@@ -128,18 +128,16 @@ const Community_page_list = () => {
               }}
             />
             <button onClick={handleSearchSubmit} className="search-button">
-              <img
-                src="../../static/image/image_event/search_icon.svg"
-                alt=""
-              />
+              <img src={searchIcons} alt="검색" />
             </button>
           </div>
         </div>
         <ul className="forum-main">
-          <li className="forum-main-grid">
+          <li className="forum-main-grid forum-header">
             <p>글번호</p>
             <p>제목</p>
-            <p>추천</p>
+            <p>좋아요</p>
+            <p>싫어요</p>
             <p>조회수</p>
             <p>작성자</p>
             <p>작성일</p>
@@ -147,17 +145,18 @@ const Community_page_list = () => {
           {posts.length > 0 ? (
             posts.map((post) => (
               <li key={post.postId} className="forum-main-el">
-                <link
-                  onClick={() => handlePostClick(post.postId)}
-                  className="forum-main-grid"
+                <Link
+                  to={`/community/select/${post.postId}`}
+                  className="forum-main-grid clickable-post-row"
                 >
                   <p>{post.postId}</p>
                   <p>{post.title}</p>
                   <p>{post.likeCount}</p>
+                  <p>{post.dislikeCount}</p>
                   <p>{post.viewCount}</p>
                   <p>{post.nickName}</p>
                   <p>{new Date(post.createAt).toLocaleDateString()}</p>
-                </link>
+                </Link>
               </li>
             ))
           ) : (
@@ -190,17 +189,18 @@ const Community_page_list = () => {
               </button>
             </div>
             <div className="page-list">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    onClick={() => handlePageChange(pageNumber)}
-                    className={currentPage === pageNumber ? "list-on" : ""}
-                  >
-                    {pageNumber}
-                  </button>
-                )
-              )}
+              {totalPages > 0 &&
+                Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (pageNumber) => (
+                    <button
+                      key={pageNumber}
+                      onClick={() => handlePageChange(pageNumber)}
+                      className={currentPage === pageNumber ? "list-on" : ""}
+                    >
+                      {pageNumber}
+                    </button>
+                  )
+                )}
             </div>
             <div>
               <button
@@ -225,7 +225,9 @@ const Community_page_list = () => {
             </div>
           </div>
           <div className="forum-write">
-            <link onClick={handleWriteClick}> 글쓰기</link>
+            <NavLink to="/community/write" className="button-link">
+              글쓰기
+            </NavLink>
           </div>
         </ul>
       </div>

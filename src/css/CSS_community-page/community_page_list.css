@@ -83,7 +83,7 @@
 }
 .forum-main-grid {
   display: grid;
-  grid-template-columns: 80px auto 80px 80px 80px 80px;
+  grid-template-columns: 80px auto 80px 80px 80px 80px 80px;
   text-align: center;
 }
 
