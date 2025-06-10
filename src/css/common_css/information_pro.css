@@ -1,4 +1,4 @@
-.info-container{
+.friendInfoContainer{
     width: 300px;
     height: 100vh;
     position: fixed;
@@ -7,17 +7,44 @@
     /* transition: all 0.3s ease; */
     border-right: 1px solid #ccc;
 }
-.info-header{
+.friendInfoHeader{
     padding: 10px;
     background-color: #f1f1f1;
     border-bottom: 1px solid #ccc;
     font-weight: bold;
 }
-.info-list{
+.friendInfoList{
     background-color: white;
+    /* background-color: #f09292; */
     height: 100vh;
-    width: 300px;
-    padding: 5px;
+    width: 299px;
+    padding-top: 20px;
     overflow-y: scroll;
-     scrollbar-width: none; /*Firefox */
+    scrollbar-width: none;
+}
+.friendInfoList li{
+    list-style: none;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+    margin-left: auto;
+    /* background-color: aqua; */
+    font-size: 20px;
+}
+.friendInfoList li:first-child{
+    background-color: #FBB00E;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    padding: 60px;
+    margin-bottom: 10px;
+
+    display: flex;               /* flex 사용 */
+    justify-content: center;     /* 수평 정렬 */
+    align-items: center;         /* 수직 정렬 */
+    text-align: center;          /* 다중 줄 텍스트 중앙 정렬용 */
+    padding: 0;  
 }
