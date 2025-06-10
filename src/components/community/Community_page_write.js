@@ -14,6 +14,7 @@ import file_icons from "./images/file_icon.svg";
 
 import "quill/dist/quill.snow.css"; // For Snow theme
 import { ImageResize } from "quill-image-resize-module-ts";
+import { Navigate, useNavigate } from "react-router-dom";
 
 if (typeof window !== "undefined" && window.Quill) {
   window.Quill = Quill;
@@ -36,6 +37,7 @@ function Community_page_write() {
   const [title, setTitle] = useState(""); // 게시글 제목
   const [selectedPostCodeId, setSelectedPostCodeId] = useState(5); // 게시판 코드 ID, 5는 자유게시판(디폴트)
   const [uploadFiles, setUploadFiles] = useState([]);
+  const navigate = useNavigate();
 
   // 이미지 업로드 핸들러
   const handleFileUpload = useCallback(() => {
@@ -181,7 +183,7 @@ function Community_page_write() {
         console.log("게시글 저장 : ", response.data);
         if (response.data.success) {
           alert("게시글 저장 성공!");
-          window.location.href = "/community"; // 성공 시 이동. 나중에 방금 쓴 글로 이동하게 하기
+          navigate(`/community/list/${selectedPostCodeId}`); // 성공 시 이동. 나중에 방금 쓴 글로 이동하게 하기
         } else {
           alert("오류발생! 게시글을 저장하지 못했습니다.");
         }

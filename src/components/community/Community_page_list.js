@@ -167,6 +167,7 @@ const Community_page_list = () => {
         </ul>
         <ul className="forum-listnum">
           <div className="page">
+            {/* 왼쪽 방향 버튼 */}
             <div>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -188,9 +189,10 @@ const Community_page_list = () => {
                 </svg>
               </button>
             </div>
+            {/* 페이지 숫자 */}
             <div className="page-list">
               {totalPages > 0 &&
-                Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                Array.from({ length: 10 }, (_, i) => i + 1).map(
                   (pageNumber) => (
                     <button
                       key={pageNumber}
@@ -202,6 +204,7 @@ const Community_page_list = () => {
                   )
                 )}
             </div>
+            {/* 오른쪽 방향 버튼 */}
             <div>
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
@@ -224,11 +227,13 @@ const Community_page_list = () => {
               </button>
             </div>
           </div>
-          <div className="forum-write">
-            <NavLink to="/community/write" className="button-link">
-              글쓰기
-            </NavLink>
-          </div>
+          {localStorage.getItem("isAuth") && (
+            <div className="forum-write">
+              <NavLink to="/community/write" className="button-link">
+                글쓰기
+              </NavLink>
+            </div>
+          )}
         </ul>
       </div>
     </div>

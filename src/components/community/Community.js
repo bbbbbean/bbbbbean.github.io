@@ -4,17 +4,12 @@ import Community_page_write from "./Community_page_write";
 import Community_page_select from "./Community_page_select";
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "react-admin";
 
 const Community = () => {
-  const { isLoggedIn } = useContext(AuthContext);
   return (
     <Routes>
       <Route path="/" element={<Community_list />} />
-      isLoggedIn ? <Route
-        path="/write"
-        element={<Community_page_write />}
-      /> : <Navigate to="/login" replace />;
+      <Route path="/write" element={<Community_page_write />} />
       <Route path="/select/:postId" element={<Community_page_select />} />
     </Routes>
   );
