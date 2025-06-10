@@ -22,6 +22,8 @@ public class UserDTO {
     private String nickName;
     private String gender;
     private LocalDate birthday;
+    private String birthdayMonth;
+    private String birthdayDay;
     private String phone;
     private String address;
     private String profile;

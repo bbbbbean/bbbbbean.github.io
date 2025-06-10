@@ -26,6 +26,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -287,6 +288,50 @@ public class UserController {
         LocalDateTime now = LocalDateTime.now();
         List<UserBookMarkDTO> list = userService.getAllBookMark(now,userId);
         return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping("/infomation")
+    public ResponseEntity<?> infomation(@RequestBody UserDTO reqUserDTO){
+
+        UserDTO userDTO = userService.serchUserOne(reqUserDTO.getUserId());
+
+        LocalDate birthday = userDTO.getBirthday();
+        String month = String.format("%02d", birthday.getMonthValue());
+        String day = String.format("%02d", birthday.getDayOfMonth());
+        
+        if(userDTO.getGender().equals("male")){
+            userDTO.setGender("남자");
+        } else {
+            userDTO.setGender("여자");
+        }
+
+        UserDTO respUserDTO;
+
+        if(userDTO.isPrivate()){ // 공개
+
+            respUserDTO = UserDTO.builder()
+                    .nickName(userDTO.getNickName())
+                    .userId(userDTO.getUserId())
+                    .introduction(userDTO.getIntroduction())
+                    .name(userDTO.getName())
+                    .gender(userDTO.getGender())
+                    .birthdayMonth(month)
+                    .birthdayDay(day)
+                    .profile(userDTO.getProfile())
+                    .address(userDTO.getAddress())
+                    .build();
+        } else { // 비공개
+             respUserDTO = UserDTO.builder()
+                    .nickName(userDTO.getNickName())
+                    .userId(userDTO.getUserId())
+                    .introduction(userDTO.getIntroduction())
+                    .address(userDTO.getAddress())
+                     .profile(userDTO.getProfile())
+                    .build();
+        }
+
+
+        return ResponseEntity.ok().body(respUserDTO);
     }
 }
 

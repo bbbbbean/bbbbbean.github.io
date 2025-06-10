@@ -98,4 +98,8 @@
     <delete id="exitGroupChat">
         delete from chatparticipant_tbl where chatCode = #{chatCode} and userId = #{userId}
     </delete>
+
+    <select id="allUser">
+        select participantId from matchparticipant_tbl where matchId = #{matchId}
+    </select>
 </mapper>

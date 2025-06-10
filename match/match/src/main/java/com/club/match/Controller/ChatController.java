@@ -3,6 +3,7 @@ package com.club.match.Controller;
 import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.*;
 import com.club.match.Mapper.ChatMapper;
+import com.club.match.Mapper.MatchMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -229,27 +230,53 @@ public class ChatController {
     public void matchJoin(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
         Long matchId = ((Integer)req.get("matchId")).longValue();
 
-        String nickName = chatService.getNickName(principal.getName());
+        Map<String,Object> resp = new HashMap<>();
+        String type = req.get("ok").toString();
 
         MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
-        Map<String,Object> resp = new HashMap<>();
-        NotificationDTO notificationDTO = NotificationDTO.builder()
-                .userId(matchOneDto.getUserId())
-                .receivedAt(LocalDateTime.now())
-                .content("<span style='font-weight: bold; color: #1E90FF;'>" + nickName +
-                        "</span>님이<br/>" +
-                        "\"<span style='font-weight: bold; color: #7B68EE;'>" + matchOneDto.getTitle() +
-                        "</span>\"<br/>" +
-                        "매칭에 참여하였습니다.")
-                .notificationCode(1)
-                .build();
+
+        if(type.equals("join")){
+            String nickName = chatService.getNickName(principal.getName());
+            NotificationDTO notificationDTO = NotificationDTO.builder()
+                    .userId(matchOneDto.getUserId())
+                    .receivedAt(LocalDateTime.now())
+                    .content("<span style='font-weight: bold; color: #1E90FF;'>" + nickName +
+                            "</span>님이<br/>" +
+                            "\"<span style='font-weight: bold; color: #7B68EE;'>" + matchOneDto.getTitle() +
+                            "</span>\"<br/>" +
+                            "매칭에 참여하였습니다.")
+                    .notificationCode(1)
+                    .build();
+
+            notificationService.sendNotification(notificationDTO);
+
+            resp.put("matchAlert","ok");
+
+            template.convertAndSend("/sub/user/"+matchOneDto.getUserId(), resp);
+        } else {
+            List<String> list = matchService.allUser(matchId);
+
+            log.info("매칭 참여자 : " + list);
+
+            resp.put("matchAlert","ok");
 
 
-        notificationService.sendNotification(notificationDTO);
 
-        resp.put("matchAlert","ok");
 
-        template.convertAndSend("/sub/user/"+matchOneDto.getUserId(), resp);
+            for(String userId : list){
+                NotificationDTO notificationDTO = NotificationDTO.builder()
+                        .userId(userId)
+                        .receivedAt(LocalDateTime.now())
+                        .content("\"<span style='font-weight: bold; color: #7B68EE;'>" + matchOneDto.getTitle() +
+                                "</span>\"<br/>" +
+                                "매칭이 삭제 되었습니다.")
+                        .notificationCode(1)
+                        .build();
+                notificationService.sendNotification(notificationDTO);
+                template.convertAndSend("/sub/user/"+userId, resp);
+            }
+
+        }
     }
 
     @MessageMapping("/comment")

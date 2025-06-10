@@ -160,4 +160,8 @@ public class MatchService {
     public void exitGroupChat(int chatCode, String userId){
         matchMapper.exitGroupChat(chatCode,userId);
     }
+
+    public List<String> allUser(Long matchId) {
+        return matchMapper.allUser(matchId);
+    }
 }

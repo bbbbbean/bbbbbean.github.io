@@ -14,6 +14,7 @@ import SuccessLogin from './SuccessLogin'
 import AccordionModal from './components/modal/AccordionModal';
 import CommunityLayout from './components/layout/CommunityLayout';
 import { WebSocketProvider } from './WebSocket';
+import InformationPro from './components/myInfo/InformationPro'
 
 
 function AppComponent() {
@@ -49,6 +50,7 @@ function AppComponent() {
           <Route path="/admin/*" element={<AdminPage />} />
         </Routes>
       }
+      <InformationPro />
 
     </WebSocketProvider>
   );

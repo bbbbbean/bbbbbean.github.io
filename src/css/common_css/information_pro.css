@@ -1,13 +1,18 @@
 .friendInfoContainer{
-    width: 300px;
+    width: 0px;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     /* transition: all 0.3s ease; */
     border-right: 1px solid #ccc;
+    z-index: 1000;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 .friendInfoHeader{
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     background-color: #f1f1f1;
     border-bottom: 1px solid #ccc;
@@ -33,7 +38,7 @@
     /* background-color: aqua; */
     font-size: 20px;
 }
-.friendInfoList li:first-child{
+.friendInfoList li:first-child>img{
     background-color: #FBB00E;
     width: 150px;
     height: 150px;
