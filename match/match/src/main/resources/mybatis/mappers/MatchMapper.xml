@@ -76,4 +76,9 @@
     <update id="updateStatus">
         update match_tbl set status = #{status} where matchId = #{matchId}
     </update>
+
+    <!-- 매칭 참여 -->
+    <insert id="selectJoinMatch">
+        SELECT count(*) from matchparticipant_tbl where participantId = #{userId} and matchId = #{matchId};
+    </insert>
 </mapper>

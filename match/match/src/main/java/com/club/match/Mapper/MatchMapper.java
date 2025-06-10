@@ -22,4 +22,5 @@ public interface MatchMapper {
     int updateStatus(int status, long matchId);
 
     List<String> getTags(Long matchId);
+    int selectJoinMatch(Long matchId, String userId);
 }

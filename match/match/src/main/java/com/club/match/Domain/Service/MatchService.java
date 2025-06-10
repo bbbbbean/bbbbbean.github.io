@@ -138,4 +138,8 @@ public class MatchService {
     public void updateStatus(int status, long matchId){
         matchMapper.updateStatus(status, matchId);
     }
+
+    public int selectJoinMatch(Long matchId, String userId) {
+        return matchMapper.selectJoinMatch(matchId,userId);
+    }
 }

@@ -108,6 +108,8 @@ public class MatchController {
     // 단건 매치 detail
     @PostMapping("/detail")
     public ResponseEntity<?> selectOneMatch(@RequestBody Map<String,Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
         Long matchId = ((Integer)req.get("matchId")).longValue();
         MatchOneDto oneMatch = matchService.selectOneMatch(matchId);
         oneMatch.setStartTime(oneMatch.getStartTime());
@@ -115,11 +117,19 @@ public class MatchController {
         List<String> tags = matchService.getTags(matchId);
         oneMatch.setTags(tags);
         log.info("oneMatch"+oneMatch);
+        if(oneMatch.getUserId().equals(userId)){ // 호스트인지
+            oneMatch.setHosted(1);
+        } else {
+            int isOk = matchService.selectJoinMatch(matchId,userId);
+            if (isOk > 0){
+                oneMatch.setHosted(2); // 참여자인지
+            } else {
+                oneMatch.setHosted(3);
+            }
+        }
 
-        // 비교값 호스트(0), 참가자(1) = 로그인한 유저
+        // 비교값 호스트(1), 참가자(2) = 로그인한 유저
         // 참가자 아이디 set1 / && 호스트 아이디 set0
-        if(oneMatch)
-        oneMatch.setHosted(1);
 
         return ResponseEntity.ok().body(oneMatch);
     }
@@ -143,7 +153,7 @@ public class MatchController {
             return ResponseEntity.badRequest().body(null);
         }
         // 성별
-        if(matchOneDto.getGenderCondi() == 1 && matchOneDto.getGender()!=userDTO.getGender()){
+        if(matchOneDto.getGenderCondi() == 1 && matchOneDto.getGender().equals(userDTO.getGender())){
             log.info("nonononononononononononono");
             return ResponseEntity.badRequest().body(null);
         }
