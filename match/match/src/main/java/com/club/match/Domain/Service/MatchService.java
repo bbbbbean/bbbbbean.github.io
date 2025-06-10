@@ -142,4 +142,22 @@ public class MatchService {
     public int selectJoinMatch(Long matchId, String userId) {
         return matchMapper.selectJoinMatch(matchId,userId);
     }
+
+    // 매칭 삭제
+    public void deleteMatch(Long matchId){
+        matchMapper.deleteMatch(matchId);
+    }
+    // 매칭 참여 취소
+    public void cancelMatch(Long matchId,String userId){
+        matchMapper.cancelMatch(matchId,userId);
+    }
+    // 그룹 채팅방 삭제
+    public void deleteGroupChat(int chatCode){
+        matchMapper.deleteGroupChat(chatCode);
+    }
+
+    // 그룹 채팅방 나가기
+    public void exitGroupChat(int chatCode, String userId){
+        matchMapper.exitGroupChat(chatCode,userId);
+    }
 }

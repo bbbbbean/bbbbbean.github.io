@@ -38,7 +38,7 @@ public class MatchController {
 
         if(matchDto.getStartTime().isBefore(LocalDateTime.now())){
             warnning.put("warnning","선택할 수 없는 날짜입니다.");
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(warnning);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -126,6 +126,7 @@ public class MatchController {
             } else {
                 oneMatch.setHosted(3);
             }
+            log.info("isOk"+isOk);
         }
 
         // 비교값 호스트(1), 참가자(2) = 로그인한 유저
@@ -166,6 +167,55 @@ public class MatchController {
         // 사람수 비교 후 status 상태 업데이트
         if(matchOneDto.getCountPeople()+1 == matchOneDto.getPeople()){
             matchService.updateStatus(1, matchId);
+        }
+
+        return ResponseEntity.ok().body(null);
+    }
+
+    // 매칭 삭제
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteMatch(@RequestBody Map<String,Object> req){
+        Long matchId = ((Integer)req.get("matchId")).longValue();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
+        String userId = (String)authentication.getName();
+
+        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+
+        if(matchOneDto.getUserId().equals(userId)) {
+            matchService.deleteMatch(matchId);
+
+            int chatCode = matchOneDto.getChatCode();
+
+            // 그룹 채팅 삭제
+            matchService.deleteGroupChat(chatCode);
+        }
+
+        return ResponseEntity.ok().body(null);
+    }
+
+    // 참여 취소
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelMatch(@RequestBody Map<String,Object> req){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = (String)authentication.getName();
+
+        Long matchId = ((Integer)req.get("matchId")).longValue();
+
+        // 매칭 참여 테이블에서 삭제
+        matchService.cancelMatch(matchId, userId);
+
+        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+        int chatCode = matchOneDto.getChatCode();
+        // 채팅방 나오기
+        matchService.exitGroupChat(chatCode,userId);
+        log.info("people : "+matchOneDto.getCountPeople());
+
+        // 사람수 비교 후 status 상태 업데이트
+        if(matchOneDto.getCountPeople()<matchOneDto.getPeople()){
+            matchService.updateStatus(0,matchId);
         }
 
         return ResponseEntity.ok().body(null);
