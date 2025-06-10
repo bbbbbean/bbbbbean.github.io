@@ -19,6 +19,7 @@ public interface MatchMapper {
     List<Long> userBookmark(String userId);
     MatchOneDto selectMatchOne(long matchId);
     List<MatchDto> matchTypeList(String type);
+    int updateStatus(int status, long matchId);
 
     List<String> getTags(Long matchId);
 }

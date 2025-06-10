@@ -5,10 +5,9 @@ import mark2 from "../../image/image_match/bookmark.svg";
 import { useNavigate } from "react-router-dom";
 import { WebSocketContext } from "../../WebSocket";
 
-
 const MatchModal = ({ selectMatch, setSelectMatch }) => {
-
   const { client } = useContext(WebSocketContext);
+  const isAuth = localStorage.getItem("isAuth");
 
   const navigate = useNavigate();
 
@@ -31,7 +30,8 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
 
   useEffect(() => {
     console.log("Fetching match data for ID:", selectMatch);
-    api.post("/match/detail", { matchId: selectMatch })
+    api
+      .post("/match/detail", { matchId: selectMatch })
       .then((response) => {
         console.log("Match data:", response.data);
         if (response.status === 200) {
@@ -48,7 +48,7 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
   // 상태 정보들
   match.anonymousCondi = match.anonymousCondi == 0 ? "익명" : "실명";
 
-  if (match.genderCondi === "0") {
+  if (match.genderCondi === 0) {
     if (match.gender === "female") {
       match.genderCondi = "여성만";
     } else {
@@ -121,14 +121,20 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
   const handleJoin = () => {
     const chatCode = match.chatCode;
     api
-      .post("/match/join", { "matchId": selectMatch, chatCode })
+      .post("/match/join", { matchId: selectMatch, chatCode })
       .then((response) => {
-        client.publish({
-          destination: "/pub/matchJoin",
-          body: JSON.stringify({ "matchId": selectMatch })
-        });
-        navigate(`/friend`, { state: { chatCode: match.chatCode } });
-      }).catch((err) => {
+        if (response.status == 200) {
+          client.publish({
+            destination: "/pub/matchJoin",
+            body: JSON.stringify({ matchId: selectMatch }),
+          });
+          navigate(`/friend`, { state: { chatCode: match.chatCode } });
+        }else{
+          console.error("신청 실패:", response.data);
+          alert("신청에 실패했습니다. 조건을 확인해주세요");
+        }
+      })
+      .catch((err) => {
         console.error("신청 실패:", err);
       });
     setSelectMatch(null);
@@ -141,7 +147,11 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
         <div className="match-modal-header">
           <div className="match-info-tag">
             <span>{kategorieName(match.kategorie)}</span>
-            {match.isBookmarked && <span><img src={mark2} /></span>}
+            {match.isBookmarked && (
+              <span>
+                <img src={mark2} />
+              </span>
+            )}
           </div>
           <div className="match-modal-title">
             <p>{match.title}</p>
@@ -198,26 +208,32 @@ const MatchModal = ({ selectMatch, setSelectMatch }) => {
                 className={
                   match.status === 0 && match.countPeople < match.people
                     ? "match-modal-btn-el ok"
-                    : "match-modal-btn no"
+                    : "match-modal-btn-el no"
                 }
                 disabled={
                   !(match.status === 0 && match.countPeople < match.people)
                 }
-                onClick={() => setShowJoinConfirm(true)}
+                onClick={() => {isAuth?setShowJoinConfirm(true): navigate("/user/Login")}}
               >
                 {match.status === 0 && match.countPeople < match.people
                   ? "신청하기"
                   : "모집 완료"}
               </button>
+              {}
+              <button></button>
               {showJoinConfirm && (
                 <div className="custom-confirm-modal">
                   <div className="custom-confirm-content">
                     <p>신청 하시겠습니까?</p>
                     <button onClick={handleJoin}>확인</button>
-                    <button onClick={() => {
-                      setShowJoinConfirm(false);
-                      setSelectMatch(null);
-                    }}>취소</button>
+                    <button
+                      onClick={() => {
+                        setShowJoinConfirm(false);
+                        setSelectMatch(null);
+                      }}
+                    >
+                      취소
+                    </button>
                   </div>
                 </div>
               )}

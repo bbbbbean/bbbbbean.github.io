@@ -70,4 +70,9 @@
     <select id="getTags">
         SELECT tag from matchtag_tbl where matchId = #{matchId};
     </select>
+
+    <!-- status 업데이트 -->
+    <update id="updateStatus">
+        update match_tbl set status = #{status} where matchId = #{matchId}
+    </update>
 </mapper>

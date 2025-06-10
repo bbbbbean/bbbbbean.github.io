@@ -119,8 +119,8 @@ const MyPageSection = () => {
                   placeholder="태그추가"
                   value={tag}
                   onChange={(e) => {
-                    if (e.target.value.length > 10) {
-                      e.target.value = e.target.value.substring(0, 10);
+                    if (e.target.value.length > 6) {
+                      e.target.value = e.target.value.substring(0, 6);
                     }
                     setTag(e.target.value);
                     setErrorTag("");

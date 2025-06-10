@@ -132,4 +132,10 @@ public class MatchService {
     public List<String> getTags(Long matchId) {
         return matchMapper.getTags(matchId);
     }
+
+    // status 변경
+    @Transactional(rollbackFor = Exception.class)
+    public void updateStatus(int status, long matchId){
+        matchMapper.updateStatus(status, matchId);
+    }
 }
