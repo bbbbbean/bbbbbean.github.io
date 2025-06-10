@@ -77,9 +77,10 @@ const Regist = () => {
             function (resp) {
                 const value = resp.imp_uid;
                 if (resp.success) {
-                    setAuth(true);
-                    setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
+                    
                 }
+                setAuth(true);
+                setFormData((prev) => ({ ...prev, ["imp_uid"]: value }));
             },
         );
     };
