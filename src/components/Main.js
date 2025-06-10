@@ -78,8 +78,8 @@ useEffect(() => {
   useEffect(() => {
     async function fetchMatchList() {
       try {
-        const res = await api.get("/api/main/matches"); // 예시 엔드포인트
-        setNewMatchList(res.data);
+        const res = await api.post("/api/main/matches"); // 예시 엔드포인트
+        setNewMatchList(res.data.matches);
       } catch (err) {
         console.error("매치 리스트 불러오기 실패", err.response?.data || err.message);
       }
@@ -223,7 +223,7 @@ useEffect(() => {
                 <li className={`main-matchlist-els ${index}`} key={match.id || index}>
                   <ul>
                     <li className="main-matchlist-el-bg">
-                      <span className="main-matchlist-tag">{match.kategorie}</span>
+                      <span className="main-matchlist-tag">{categoryMap[match.kategorie] || "기타"}</span>
                     </li>
                   </ul>
                   <div className="main-matchlist-el">
@@ -234,7 +234,14 @@ useEffect(() => {
                       <div className="main-matchlist-el-info">
                         <span>{match.location}</span>
                         <span>{match.people}명</span>
-                        <span>1/23</span>
+                        <span>{(() => {
+                          const date = new Date(match.startTime);
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const hour = String(date.getHours()).padStart(2, '0');
+                          const minute = String(date.getMinutes()).padStart(2, '0');
+                          return `${month}월${day}일 ${hour}시${minute}분`;
+                        })()}</span>
                       </div>
                       <img src={searchIcon} alt="돋보기" />
                     </a>
