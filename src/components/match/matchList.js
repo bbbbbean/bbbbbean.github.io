@@ -12,6 +12,9 @@ import MatchModal from "./matchModal";
 import api from "../../axios";
 import newMatch from "./newMatch";
 
+//검색 결과용
+import { useSearchParams } from "react-router-dom";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -73,6 +76,17 @@ const MatchList = () => {
 
   // 날짜
   const formatDateInfo = (startTimeStr) => {
+
+      console.log("formatDateInfo 호출:", startTimeStr);
+  if (!startTimeStr) {
+    console.warn("startTime이 없어요:", startTimeStr);
+    return {
+      month: "-",
+      day: "-",
+      weekday: "-"
+    };
+  }
+
     console.log(startTimeStr);
     const date = new Date(startTimeStr.replace(" ", "T"));
     const month = date.getMonth() + 1;
@@ -207,6 +221,22 @@ const MatchList = () => {
       );
     }
   };
+
+  //검색 결과용
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword");
+
+useEffect(() => {
+  if (keyword) {
+    api.post("/api/main/findMatch", { keyword })
+      .then((res) => setMatches(res.data.matches))
+      .catch((err) => console.error("검색 실패", err));
+  } else {
+    api.get(`/match/list?type=${type}`)
+      .then((res) => setMatches(res.data))
+      .catch((err) => console.error("전체 리스트 실패", err));
+  }
+}, [keyword, type]);
 
   return (
     <div className="match-page">
