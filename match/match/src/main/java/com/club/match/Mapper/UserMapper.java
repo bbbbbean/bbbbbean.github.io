@@ -1,5 +1,6 @@
 package com.club.match.Mapper;
 
+import com.club.match.Domain.DTO.PrevMatchDto;
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
@@ -39,4 +40,5 @@ public interface UserMapper {
     int deleteUserTag(String userId, String tag);
 
     List<UserBookMarkDTO> bookMarkSelectAll(LocalDateTime now, String userId);
+    List<PrevMatchDto> prevMatchSelectAll(String userId);
 }

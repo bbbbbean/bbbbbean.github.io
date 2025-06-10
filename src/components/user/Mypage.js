@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { useEffect } from "react";
-import api from "../../axios"
+import api from "../../axios";
 import UserCalendar from "../calendar/UserCalendar";
 
 import "../../css/user_css/myPage.css";
 
 const MyPageSection = () => {
-
   const [tags, setTags] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
+  const [preMatches, setPreMatches] = useState([]);
   const [tag, setTag] = useState("");
   const [errorTag, setErrorTag] = useState("");
 
   useEffect(() => {
-    const prevMatchScroll = document.querySelector('.prev-match');
-    const bookMarkScroll = document.querySelector('.book-mark-container');
+    const prevMatchScroll = document.querySelector(".prev-match");
+    const bookMarkScroll = document.querySelector(".book-mark-container");
 
     prevMatchScroll.addEventListener("wheel", (e) => {
       e.preventDefault();
@@ -25,22 +25,32 @@ const MyPageSection = () => {
       bookMarkScroll.scrollTop += e.deltaY / 5;
     });
 
-    api.post("/api/user/getTag")
+    api
+      .post("/api/user/getTag")
       .then((response) => {
         setTags([...response.data.tags]);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, []);
 
   useEffect(() => {
-    api.post("/api/user/bookMark")
+    api
+      .post("/api/user/bookMark")
       .then((response) => {
         console.log(response.data);
         setBookmarks([...response.data]);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
+  }, []);
+
+  useEffect(() => {
+    api
+      .post("/api/user/prevMatch")
+      .then((response) => {
+        console.log(response.data);
+        setPreMatches([...response.data]);
+      })
+      .catch((error) => {});
   }, []);
 
   const tagAdd = (e) => {
@@ -48,7 +58,8 @@ const MyPageSection = () => {
     if (tag.trim() === "") {
       return;
     }
-    api.post("/api/user/addTag", { "tag": tag.trim() })
+    api
+      .post("/api/user/addTag", { tag: tag.trim() })
       .then((response) => {
         if (response.status !== 200) {
           setErrorTag(response.data.error);
@@ -62,33 +73,26 @@ const MyPageSection = () => {
         console.log(error);
         setTag("");
       });
-    ;
   };
 
   const tagDel = (e) => {
     const tag = e.currentTarget.dataset.tag;
-    api.post("/api/user/delTag", { tag })
+    api
+      .post("/api/user/delTag", { tag })
       .then((response) => {
         setTags([...response.data.tags]);
       })
-      .catch((error) => {
-      });
-    ;
-  }
+      .catch((error) => {});
+  };
 
+  const formatDate = (localDate) => {
+    const date = new Date(localDate);
+    const year = String(date.getFullYear()).slice(2);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
-  const matches = Array(10).fill({
-    date: "23.10.01",
-    description: "시흥 서울대학교 스포츠파크(풋살) 11VS11"
-  });
-
-  const bookmarks1 = Array(4).fill({
-    day: "1월 22일",
-    type: "5vs5",
-    mode: "온라인",
-    title: "발로란트 내전 5vs5 너만오면 고",
-    tag: "게임"
-  });
+    return `${year}년 ${month}월 ${day}일`;
+  };
 
   return (
     <div className="info-right">
@@ -102,15 +106,25 @@ const MyPageSection = () => {
       <div className="user-info-tag info-title">
         <span>My</span>
         <span>Tag</span>
-        <span style={{ paddingLeft: "5px", color: '#dd3e3e', fontWeight: "bold" }}>{errorTag}</span>
+        <span
+          style={{ paddingLeft: "5px", color: "#dd3e3e", fontWeight: "bold" }}
+        >
+          {errorTag}
+        </span>
+        <p>엔터를 치면 태그가 등록됩니다</p>
         <div className="date-tag">
           {tags.map((tag, idx) => (
-            <div key={idx} className="tag-item drag-prevent" data-tag={tag} onClick={tagDel}>
+            <div
+              key={idx}
+              className="tag-item drag-prevent"
+              data-tag={tag}
+              onClick={tagDel}
+            >
               {tag}
               <span>-</span>
             </div>
           ))}
-          {tags.length < 10 &&
+          {tags.length < 10 && (
             <div className="tag-add">
               <form onSubmit={tagAdd}>
                 <input
@@ -127,7 +141,8 @@ const MyPageSection = () => {
                   }}
                 />
               </form>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
 
@@ -139,17 +154,20 @@ const MyPageSection = () => {
             <div className="title">지난 매치</div>
             <span></span>
             <div className="prev-match">
-              {matches.map((match, idx) => (
-                <React.Fragment key={idx}>
-                  <a href="#">
-                    <div className="prev-match-item">
-                      <span>{match.date}</span>
-                      <span>{match.description}</span>
-                    </div>
-                  </a>
-                  <span></span>
-                </React.Fragment>
-              ))}
+              {preMatches.map((match, idx) => {
+                return (
+                  <React.Fragment>
+                    <a href="#">
+                      <div className="prev-match-item">
+                        <span>{formatDate(match.startTime)}</span>
+                        <span>{match.title}</span>
+                        <span>{match.location}</span>
+                      </div>
+                    </a>
+                    <span></span>
+                  </React.Fragment>
+                );
+              })}
             </div>
             <span></span>
           </div>
@@ -160,7 +178,9 @@ const MyPageSection = () => {
               {bookmarks.map((item, idx) => (
                 <div key={idx} className="book-mark-item">
                   <a href="#">
-                    <div className="day">{item.month}월 {item.day}일</div>
+                    <div className="day">
+                      {item.month}월 {item.day}일
+                    </div>
                     <div className="info">
                       <span>{item.location}</span>
                     </div>

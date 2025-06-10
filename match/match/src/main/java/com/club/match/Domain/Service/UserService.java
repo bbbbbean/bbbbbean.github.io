@@ -1,5 +1,6 @@
 package com.club.match.Domain.Service;
 
+import com.club.match.Domain.DTO.PrevMatchDto;
 import com.club.match.Domain.DTO.SocialLinkDTO;
 import com.club.match.Domain.DTO.UserBookMarkDTO;
 import com.club.match.Domain.DTO.UserDTO;
@@ -96,6 +97,11 @@ public class UserService {
             }
         }
 
+        return list;
+    }
+    @Transactional(rollbackFor = Exception.class)
+    public List<PrevMatchDto> prevMatchSelectAll(String userId){
+        List<PrevMatchDto> list = userMapper.prevMatchSelectAll(userId);
         return list;
     }
 }
