@@ -15,4 +15,7 @@ public interface MainMapper {
     List<MatchDto> getAllMatches();
 
     List<MatchDto> getRandomMatch();
+
+    List<MatchDto> getMatchSearchByKeyword(@Param("keyword") String keyword);
+
 }

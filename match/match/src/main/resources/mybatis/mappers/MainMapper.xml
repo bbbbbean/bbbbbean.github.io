@@ -39,6 +39,20 @@
         WHERE status = 0
     </select>
 
+    <select id="getMatchSearchByKeyword" resultType="com.club.match.Domain.DTO.MatchDto">
+        SELECT DISTINCT
+        m.matchId,
+        m.title,
+        t.tag
+        FROM
+        match_tbl m
+        INNER JOIN
+        matchtag_tbl t ON m.matchId = t.matchId
+        WHERE
+        m.title LIKE CONCAT('%', #{keyword}, '%')
+        OR t.tag LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
 
 
 </mapper>
