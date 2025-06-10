@@ -27,6 +27,8 @@ const MatchList = () => {
   const [bookmark, setBookmark] = useState({});
   const [matchOne, setMatchOne] = useState({});
 
+  const isAuth = localStorage.getItem("isAuth");
+
   console.log("type", type);
 
   // 전체 조회해서 데이터 들고오기 + 닉네임, 젠더 추가
@@ -252,10 +254,9 @@ const MatchList = () => {
       </div>
 
       <div className="match-list">
-        {/* 로그인 여부에 따라 이동 변경 */}
         <button
           className="match-reg-btn"
-          onClick={() => navigate("/match/newMatch")}
+          onClick={() => isAuth?navigate("/match/newMatch"):navigate("/user/login")}
         >
           매칭 등록
         </button>
