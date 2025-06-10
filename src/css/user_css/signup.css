@@ -11,7 +11,6 @@
 
     -ms-overflow-style: none;
 }
-
 a {
     text-decoration: none;
     color: black;
@@ -19,6 +18,11 @@ a {
 
 li {
     list-style: none;
+}
+
+.join-form-wrap{
+    width: 980px;
+    margin: 0 auto;
 }
 
 .login-section {
@@ -31,60 +35,89 @@ li {
     text-align: center;
 }
 
-.login-section>img {
-    width: 220px;
+.join-form-section {
+    width: 100%;
+    margin: 60px auto 0 auto;
+    padding: 20px 60px;
+    border-radius: 2px;
+    text-align: center;
+}
+#login-form{
+    margin-left: 7px;
 }
 
-.login-section>h2 {
-    margin-bottom: 20px;
+.join-form-title{
+    width: 100%;
+    border-bottom: 2px solid #6ec3ff;
+    display: flex;
+    justify-content: left;
+}
+.join-form-title p{
+    font-size: 30px;
+    padding: 15px 20px;
+    border-bottom: 2px solid #6ec3ff;
+}
+.join-form-title p span{
+    font-weight: 700;
 }
 
+.join-form-part{
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    padding-left: 20px;
+    padding-top: 25px;
+    border-bottom: 1px solid #c2c2c2;
+}
+.join-form-part label{
+    width: 150px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 18px;
+    padding: 10px 0 20px;
+}
 
-#login-form {
+.join-form-part input{
+    width: 300px;
+}
+
+#login-form>#join-form-plus{
     display: flex;
     flex-direction: column;
 }
+#login-form>#join-form-plus div{
+    display: flex;
+}
+#login-form>#join-form-plus div span{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-left: 20px;
+}
+#login-form>#join-form-plus p{
+    align-self: flex-start;
+    color: #a0a0a0;
+    padding: 7px 0 11px;
+    font-size: 14px;
+}
+
+#login-form{
+    width: 97%;
+}
 
 #login-form input {
-    width: 100%;
     padding: 10px;
     margin: 4px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: var(--color-Light-Grays-3-rgba);
+    outline-color: #6ec3ff;
 }
 
-#login-form .auth-btn {
+.join-form-wrap button {
     width: 100%;
-    height: 20px;
-    border: 1px solid;
-    line-height: 20px;
-    padding: 20px;
-    font-family: Medium;
-    background-color: var(--color-RockON-3);
-    cursor: pointer;
-    transition-duration: 0.4s;
-    background-color: #f0f0f0;
-    font-size: .9rem;
-}
-
-#login-form .auth-btn:hover {
-    background-color: var(--color-Big-Machine-5);
-}
-
-#login-form .duplicate-message {
-    display: none;
-    color: var(--color-RockON-5);
-    text-align: left;
-    font-size: var(--font-size-extralight);
-}
-
-#login-form .duplicate-message[active] {
-    display: block;
-}
-
-#login-form>button {
-    margin: 15px 0;
+    margin-top: 20px;
     padding: 10px 0;
     border: none;
     border-radius: 4px;
@@ -93,6 +126,18 @@ li {
     cursor: pointer;
     color: #fff;
     transition: 0.2s;
+}
+.submit{
+    padding: 20px;
+}
+
+.join-form-error{
+    padding-top: 10px;
+    padding-left: 30px;
+    color: #dd3e3e;
+    font-weight: bold;
+    display: flex;
+    justify-content: left;
 }
 
 #login-form>button:hover {
@@ -116,7 +161,6 @@ li {
 
 #login-btn {
     border: none;
-    background-color: unset;
     border-radius: 4px;
     cursor: pointer;
     margin-bottom: 20px;
@@ -131,7 +175,40 @@ li {
     font-size: var(--font-size-light);
 }
 
+.join-form-wrap .join-form-login-btn{
+    width: 100%;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 2px;
+    color: #5e5e5e;
+}
 
+#login-form .success{
+    background-color: #4ebf8a;
+}
+
+
+
+
+
+.login-section>img {
+    width: 220px;
+}
+.login-section>h2 {
+    margin-bottom: 20px;
+}
+#login-form .duplicate-message {
+    display: none;
+    color: var(--color-RockON-5);
+    text-align: left;
+    font-size: var(--font-size-extralight);
+}
+
+#login-form .duplicate-message[active] {
+    display: block;
+}
 .no-account-section {
     width: var(--main-width);
     margin: 10px auto;
@@ -145,8 +222,4 @@ li {
 .no-account-section>a {
     color: var(--color-RockON-5);
     font-family: Medium;
-}
-
-#login-form .success{
-    background-color: #4ebf8a;
 }
