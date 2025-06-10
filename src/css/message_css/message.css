@@ -51,7 +51,7 @@
     border: 1px solid;
     border-radius: 10px;
     padding: 5px;
-    width: 588px;
+    width: 452px;
     z-index: 100;
     display: none;
 }
@@ -204,7 +204,7 @@
     border: none;
     background-color: white;
     height: 35px;
-    left: 550px;
+    left: 440px;
     margin-top: 10px;
     /* border: 1px solid; */
     /* height: 20px; */
@@ -215,7 +215,7 @@
     position: absolute;
     border: 1px solid #6B6B6B;
     margin-top: 35px;
-    left: 555px;
+    left: 440px;
     font-size: 17px;
     width: 100px;
     height: 100px;
@@ -439,7 +439,7 @@ background-color: rgb(110, 195, 255, 0.55);
 .searchResult>.person>.requestbuttons {
     /* cursor: pointer; */
     position: absolute;
-    left: 502px;
+    left: 370px;
     height: 30px;
 }
 .searchResult>.person>.requestbuttons>.accept {
