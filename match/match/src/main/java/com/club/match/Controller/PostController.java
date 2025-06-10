@@ -1,8 +1,6 @@
 package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.PostDTO;
-import com.club.match.Domain.DTO.PostDetailResultDTO;
-import com.club.match.Domain.DTO.PostListDTO;
 import com.club.match.Domain.DTO.PostListResponseDTO;
 import com.club.match.Domain.Service.FileService;
 import com.club.match.Domain.Service.PostService;
@@ -109,7 +107,7 @@ public class PostController {
     }
 
     // 게시글 조회
-    @GetMapping("/community/post/{postId}")
+    @GetMapping("/post/{postId}")
     public ResponseEntity<?> getPostDetail(@PathVariable("postId") Long postId) {
         log.info("게시글 상세 조회 요청 수신. postId: {}", postId);
         try {
@@ -156,6 +154,35 @@ public class PostController {
         }
     }
 
+//    // 게시글 수정
+//    @PutMapping("/update/{postId}")
+//    public ResponseEntity<Map<String, Object>> updatePost(
+//            @PathVariable Long postId,
+//            @RequestPart("postDTO") PostDTO postDTO, // JSON 데이터를 PostDTO로 바인딩
+//            @RequestPart(value = "files", required = false) List<MultipartFile> files) { // 첨부파일 (선택적)
+//        try {
+//            // postDTO에 postId 설정 (경로 변수로 받은 postId를 DTO에 넣어주는 것이 일반적)
+//            postDTO.setPostId(postId);
+//
+//            // 서비스 레이어에서 게시글 수정 및 파일 처리 로직 호출
+//            PostDTO updatedPost = postService.updatePost(postDTO, files);
+//
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("success", true);
+//            response.put("message", "게시글이 성공적으로 수정되었습니다.");
+//            response.put("postId", updatedPost.getPostId()); // 수정된 게시글 ID 반환
+//
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            // 예외 처리 (로그 출력 등)
+//            e.printStackTrace();
+//            Map<String, Object> errorResponse = new HashMap<>();
+//            errorResponse.put("success", false);
+//            errorResponse.put("message", "게시글 수정 중 오류가 발생했습니다: " + e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//        }
+//    }
+
     // 게시글 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable Long postId){
@@ -194,6 +221,4 @@ public class PostController {
         PostListResponseDTO response = postService.getPaginatedPostList(postCodeId, page, limit, search);
         return ResponseEntity.ok(response);
     }
-
-
 }

@@ -1,20 +1,12 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import Quill from "quill";
 import "../../css/CSS_community-page/community_page_write.css";
-import api from "../../axios";
-import imageApi from "../../ImageAxios";
 import postImageApi from "../../postImageAxios";
 import file_icons from "./images/file_icon.svg";
 
 import "quill/dist/quill.snow.css"; // For Snow theme
 import { ImageResize } from "quill-image-resize-module-ts";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 if (typeof window !== "undefined" && window.Quill) {
   window.Quill = Quill;
@@ -38,6 +30,11 @@ function Community_page_write() {
   const [selectedPostCodeId, setSelectedPostCodeId] = useState(5); // 게시판 코드 ID, 5는 자유게시판(디폴트)
   const [uploadFiles, setUploadFiles] = useState([]);
   const navigate = useNavigate();
+  const { postId, postCodeNumber } = useParams();
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // 이미지 업로드 핸들러
   const handleFileUpload = useCallback(() => {
@@ -136,18 +133,62 @@ function Community_page_write() {
     };
   }, []);
 
-  // 밑에 단순 보여주기용. 나중에 삭제하거나 해야함
-  const handleSaveContent = useCallback(() => {
-    console.log("Editor Content:", editorContent);
-  }, [editorContent]);
+  // 게시글 데이터 불러와서 수정
+  useEffect(() => {
+    if (postId) {
+      setIsEditMode(true);
+      setLoading(true);
+      setError(null);
+
+      const fetchPost = async () => {
+        try {
+          const response = await postImageApi.get(`/post/${postId}`);
+          const postData = response.data;
+
+          setTitle(postData.title);
+          setSelectedPostCodeId(postData.postCodeId);
+
+          if (quillInstance.current) {
+            quillInstance.current.root.innerHTML = postData.content;
+            setEditorContent(postData.content);
+          } else {
+            setEditorContent(postData.content);
+          }
+        } catch (err) {
+          console.error("게시글 불러오기 실패:", err);
+          setError("게시글을 불러오는 데 실패했습니다.");
+          setEditorContent(""); // 에러 발생 시 내용 비우기
+          setTitle("");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchPost();
+    } else {
+      // postId가 없으면 글쓰기 모드
+      setIsEditMode(false);
+      setTitle("");
+      setSelectedPostCodeId(postCodeNumber ? parseInt(postCodeNumber, 10) : 5); // 기본 카테고리 '자유게시판'으로 초기화
+      if (quillInstance.current) {
+        quillInstance.current.root.innerHTML = ""; // 에디터 내용 비우기
+      }
+      setEditorContent("");
+      setUploadFiles([]); // 파일 목록 초기화
+      setLoading(false); // 글쓰기 모드는 즉시 로딩 완료
+    }
+  }, [postId, postCodeNumber]);
 
   // 저장 버튼 누르면 실행
-  const uploadpost = () => {
-    console.log("글 저장합니다");
-    const currentEditorContent = quillInstance.current
-      ? quillInstance.current.root.innerHTML
-      : "";
-    setEditorContent(currentEditorContent);
+  const handleSubmit = async () => {
+    if (!title.trim() || !quillInstance.current.root.innerHTML.trim()) {
+      alert("제목과 내용을 모두 입력해주세요.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const currentEditorContent = quillInstance.current.root.innerHTML;
 
     const formData = new FormData();
     formData.append(
@@ -176,33 +217,48 @@ function Community_page_write() {
       });
     }
 
-    // Postservice.savePost 호출
-    postImageApi
-      .post("/post/save", formData)
-      .then((response) => {
-        console.log("게시글 저장 : ", response.data);
-        if (response.data.success) {
-          alert("게시글 저장 성공!");
-          navigate(`/community/list/${selectedPostCodeId}`); // 성공 시 이동. 나중에 방금 쓴 글로 이동하게 하기
-        } else {
-          alert("오류발생! 게시글을 저장하지 못했습니다.");
-        }
-      })
-      .catch((error) => {
-        console.error("게시글 저장 중 오류 발생 : ", error);
-        if (error.response) {
-          console.error("게시글 오류 응답 데이터 : ", error.response.data);
-          console.error("게시글 오류 응답 상태 : ", error.response.status);
-          alert(
-            "오류발생! 게시글을 저장하지 못했습니다. (응답 상태: " +
-              error.response.status +
-              ")"
-          );
-        } else {
-          console.log("게시글 저장 중 알 수 없는 오류 발생...");
-          alert("오류발생! 게시글 저장 중 알 수 없는 오류 발생...");
-        }
-      });
+    try {
+      let response;
+      if (isEditMode) {
+        response = await postImageApi.put(`/post/update/${postId}`, formData); // API 경로 확인
+        alert("게시글이 성공적으로 수정되었습니다.");
+      } else {
+        response = await postImageApi.post("/post/save", formData);
+        alert("게시글이 성공적으로 작성되었습니다.");
+      }
+      console.log("게시글 처리 성공 : ", response.data);
+      const newPostId = response.data.postId || postId; // 새 글은 response.data.postId, 수정은 기존 postId
+      navigate(`/community/select/${newPostId}`);
+    } catch (error) {
+      console.error("게시글 저장/수정 중 오류 발생 : ", error);
+      if (error.response) {
+        console.error("게시글 오류 응답 데이터 : ", error.response.data);
+        console.error("게시글 오류 응답 상태 : ", error.response.status);
+        alert(
+          `오류 발생! 게시글을 ${
+            isEditMode ? "수정" : "저장"
+          }하지 못했습니다. (응답 상태: ${error.response.status})`
+        );
+      } else {
+        console.log("게시글 처리 중 알 수 없는 오류 발생...");
+        alert(
+          `오류 발생! 게시글 ${
+            isEditMode ? "수정" : "저장"
+          } 중 알 수 없는 오류 발생...`
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 취소 버튼 핸들러 추가
+  const handleCancel = () => {
+    if (isEditMode && postId) {
+      navigate(`/community/select/${postId}`); // 수정 모드면 상세 페이지로 돌아가기
+    } else {
+      navigate(`/community/list/${selectedPostCodeId}`); // 글쓰기 모드면 해당 카테고리 목록으로 돌아가기
+    }
   };
 
   const handleAttachedFileChange = (e) => {
@@ -214,47 +270,84 @@ function Community_page_write() {
   };
 
   return (
-    <div>
-      <h3>여기에 운동, 게임, 자유게시판 등 어느게시판에 올릴지 표시</h3>
-      <select
-        value={selectedPostCodeId}
-        onChange={(e) => setSelectedPostCodeId(parseInt(e.target.value))}
-      >
-        <option value="1">운동</option>
-        <option value="2">게임</option>
-        <option value="3">취미</option>
-        <option value="4">여행</option>
-        <option value="5">자유게시판</option>
-      </select>
-      <input
-        type="text"
-        placeholder="제목을 입력하세요"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-      />
-      <input
-        type="file"
-        multiple // 여러 파일 선택 가능하도록
-        onChange={handleAttachedFileChange} // 파일 목록을 배열로 저장
-        style={{ marginTop: "1px" }}
-      />
-      <div
-        ref={editorRef}
-        style={{ height: "300px", border: "1px solid #ccc" }}
-      ></div>
+    <div className="community-write-wrap">
+      <div className="community-write-container">
+        <h2>{isEditMode ? "게시글 수정" : "새 게시글 작성"}</h2>
 
-      <div className="button_area">
-        <button className="uploadpost" onClick={uploadpost}>
-          저장하기
-        </button>
-      </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <div className="form-group">
+            <label htmlFor="category">카테고리:</label>
+            <select
+              id="category"
+              value={selectedPostCodeId}
+              onChange={(e) => setSelectedPostCodeId(parseInt(e.target.value))}
+              disabled={isEditMode}
+            >
+              <option value="1">운동</option>
+              <option value="2">게임</option>
+              <option value="3">취미</option>
+              <option value="4">여행</option>
+              <option value="5">자유게시판</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="title">제목:</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="attach-file">첨부 파일:</label>
+            <input
+              type="file"
+              id="attach-file"
+              multiple // 여러 파일 선택 가능하도록
+              onChange={handleAttachedFileChange} // 파일 목록을 배열로 저장
+              style={{ marginTop: "1px" }}
+            />
+            {/* ⭐ 현재 첨부된 파일 목록 표시 */}
+            {uploadFiles.length > 0 && (
+              <div style={{ marginTop: "5px" }}>
+                <p>첨부된 파일:</p>
+                <ul>
+                  {uploadFiles.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+          <div
+            ref={editorRef}
+            style={{ height: "300px", border: "1px solid #ccc" }}
+          ></div>
 
-      <p>↓↓↓↓HTML 표시형식(나중에 삭제 또는 invisible)</p>
-      <div style={{ border: "1px solid #eee", padding: "10px" }}>
-        {editorContent}
+          <div className="button-area">
+            <button
+              type="button"
+              onClick={handleCancel}
+              disabled={loading}
+              className="cancel-button"
+            >
+              취소
+            </button>
+            <button type="submit" className="uploadpost" disabled={loading}>
+              {isEditMode ? "수정 완료" : "작성 완료"}
+            </button>
+          </div>
+        </form>
       </div>
-      <button onClick={handleSaveContent}>Log Editor Content</button>
     </div>
   );
 }

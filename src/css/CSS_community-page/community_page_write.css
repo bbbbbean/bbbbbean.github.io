@@ -11,21 +11,30 @@
 
   margin: 2px 0;
 }
+.button-area {
+  display: flex;
+  justify-content: right;
+}
+.cancel-button,
 .uploadpost {
   background-color: #6ec3ff;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 5px;
   padding: 10px 20px;
+  margin: 10px;
   cursor: pointer;
   font-size: 1.2rem;
   color: #fff;
   border-bottom: 1px solid #ffffff;
   display: flex;
+  justify-content: space-around;
   align-items: center;
   overflow: hidden;
   max-height: 45px;
+  max-width: 500px;
 
   transition: all 0.1s ease;
 }
+.cancel-button:hover,
 .uploadpost:hover {
   opacity: 0.8;
 }
