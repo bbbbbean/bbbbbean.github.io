@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from 'react';
 import moreIcon from "../../image/image_message/more-icon.svg"
 import api from "../../axios";
 import { WebSocketContext } from '../../WebSocket'
+import addpersonIcon from "../../image/image_message/addperson-icon.svg"
 
 const FriendLeft = () => {
   const [friendRequest, setFriendRequest] = useState([]);
@@ -34,6 +35,11 @@ const FriendLeft = () => {
       setFriendSearch(response.data.friendFind);
     });
   })
+  useEffect(() => {
+  if (friendfindValue.trim() === "") {
+    setFriendSearch([]);
+  }
+}, [friendfindValue]);
   //요청보내기
   const sendFriendRequest = (friendId) => {
     api.post('/api/friend/addFriend', {
@@ -178,6 +184,7 @@ const FriendLeft = () => {
             ))}
           </div>
         </div>
+        {friendRequest.length > 0 && (
         <div className="friendalart">
           <h1>친구 요청</h1>
           {friendRequest.map((friend, idx) => (
@@ -194,6 +201,9 @@ const FriendLeft = () => {
             </div>
           ))}
         </div>
+        )}
+        {bestFriends.length > 0 && (
+        <>
         <div className="usually">
           <h1>즐겨찾는 친구</h1>
         </div>
@@ -216,6 +226,10 @@ const FriendLeft = () => {
             </div>
           </div>
         ))}
+          </>
+        )}
+        {friends.length > 0 && (
+        <>
         <hr />
         {friends.map((friend, idx) => (
           <div onClick={() => { setUserInfomation(friend.userId) }} className="person">
@@ -236,6 +250,19 @@ const FriendLeft = () => {
             </div>
           </div>
         ))}
+        </>
+        )}
+        {/* 친구가 아예 없는 상태일 때 */}
+        {friends.length === 0 && bestFriends.length === 0 && friendRequest.length === 0 && (
+          <div className="no-friend">
+            <img src={addpersonIcon} alt="친구없음"></img>
+            <div className="no-friends-message">
+              친구가 없습니다. <br/>
+              친구를 추가해보세요!
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   )
