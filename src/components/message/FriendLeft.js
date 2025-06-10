@@ -21,10 +21,11 @@ const FriendLeft = () => {
 
   useEffect(() => {
     api.post("/api/friend/list").then((response) => {
+      const data = response.data ?? {};
       console.log(response.data.commonFriend);
-      setFriends(response.data.commonFriend);
-      setBestFriends(response.data.bestFriend);
-      setFriendRequest(response.data.friendRequest);
+      setFriends(response.data.commonFriend ?? []);
+      setBestFriends(response.data.bestFriend ?? []);
+      setFriendRequest(response.data.friendRequest ?? []);
     });
   }, [friendUpdate])
   //유저찾기
