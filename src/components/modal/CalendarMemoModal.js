@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import "../../css/modal/calendarMemo.css"
 import api from "../../axios";
 
-const CalendarMemoViewModal = ({ calendarId, setviewModal, setHasUpdated }) => {
+const CalendarMemoViewModal = ({ calendarId, itemType, setviewModal, setHasUpdated }) => {
 
     const [content, setContent] = useState("");
     const [oldContent, setOldContent] = useState("");
     const [date, setDate] = useState("");
     const [editMemo, setEditMemo] = useState(false);
+
+
 
     useEffect(() => {
         if (itemType === "note") {
@@ -19,11 +21,11 @@ const CalendarMemoViewModal = ({ calendarId, setviewModal, setHasUpdated }) => {
                     setOldContent(response.data.noteData.content);
                 });
         }else if (itemType === "match") {
-            api.post("api/calendar/get~~", { matchId })
+            api.post("api/calendar/get~~", { matchId: calendarId })
                 .then((response) => {
-                    setDate(response.data);
-                    setContent(response.data);
-                    setOldContent(response.data);
+                    setDate(response.data.matchData);
+                    setContent(response.data.matchData);
+                    setOldContent(response.data.matchData);
                 });   
         }
     }, [calendarId, itemType]);
