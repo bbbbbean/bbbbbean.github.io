@@ -67,6 +67,7 @@
         WHERE
         m.title LIKE CONCAT('%', #{keyword}, '%')
         OR t.tag LIKE CONCAT('%', #{keyword}, '%')
+        AND m.status = 0
     </select>
 
 
