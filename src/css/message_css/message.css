@@ -1,16 +1,21 @@
 .friend-container {
-    width: 100%;
+    width: 80%;
     display: flex;
+    margin: 0 auto;
 }
 
 .friend-container>section {
     width: 50%;
     margin-top: 20px;
+    padding: 3px;
+    
+    /* background-color: #FBB00E; */
 }
 
 .friend-container>.left>.all {
     /* position: relative; */
-    width: 640px;
+    width: 100%;
+    /* background-color: #0559f3; */
 }
 
 .friend-container>.left>.all>.friend {
@@ -35,6 +40,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    /* background-color: aqua; */
+    width: 100%;
 }
 .searchResult{
     position: absolute;
@@ -52,19 +59,20 @@
 .friend-container>.left>.all>.find>input {
     border: 1px solid #6EC3FF;
     border-radius: 49px 49px 49px 49px;
-    width: 588px;
+    width: 90%;
     height: 50px;
     margin-left: 24px;
-    margin-top: 25px;
-    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 19px;
     padding-left: 5%;
 }
 
 .friend-container>.left>.all>.find>button {
-    background-color: white;
+    /* background-color: white; */
     border: none;
     position: absolute;
-    top: 31px;
+    top: 22px;
     right: 45px;
     width: 40px;
     height: 40px;
@@ -76,19 +84,22 @@
 }
 .friend-container>.left>.all>.friendalart{
     border-bottom: 1px solid #6EC3FF;
-    height: 170px;
+    /* height: 170px; */
     position: relative;
+    /* background-color: thistle; */
 }
 .friend-container>.left>.all>.friendalart>h1{
     margin-left: 24px;
     font-size: 20px;
-    font-weight: 350;
+    font-weight: 600;
     color: #6B6B6B;
+    padding-bottom: 10px;
 }
 .friend-container>.left>.all>.friendalart>.person {
     display: flex;
     margin-bottom: 20px;
     position: relative;
+    /* background-color: cadetblue; */
     /* border: 1px solid; */
     /* width: 400px; */
 }
@@ -106,6 +117,7 @@
     width: 200px;
     height: 30px;
     margin-left: 10px;
+    /* background-color: bisque; */
 }
 
 .friend-container>.left>.all>.friendalart>.person>.word1>.name {
@@ -122,32 +134,32 @@
 .friend-container>.left>.all>.friendalart>.person>.requestbuttons {
     /* cursor: pointer; */
     position: absolute;
-    left: 502px;
-    height: 30px;
+    left: 370px;
+    height: 100%;
+    /* background-color: blueviolet; */
+    display: flex;
+    align-items: center;
+}
+.requestbuttons>.accept, .reject {
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background-color: #6EC3FF;
+    color: white;
+    width: 50px;
+    height: 35px;
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 8px;
 }
 .friend-container>.left>.all>.friendalart>.person>.requestbuttons>.accept {
-    border: none;
-    background-color: #6EC3FF;
-    color: white;
-    width: 55px;
-    height: 40px;
-    border-radius: 10px 10px 10px 10px;
-    margin-right: 10px;
+    margin-right: 7px;
 }
-.friend-container>.left>.all>.friendalart>.person>.requestbuttons>.reject {
-    border: none;
-    background-color: #6EC3FF;
-    color: white;
-    width: 55px;
-    height: 40px;
-    border-radius: 10px 10px 10px 10px;
-    margin-right: 10px;
-}
+
 
 .friend-container>.left>.all>.usually>h1 {
     margin-left: 24px;
     font-size: 20px;
-    font-weight: 350;
+    font-weight: 600;
     color: #6B6B6B;
 }
 
