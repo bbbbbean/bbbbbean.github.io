@@ -3,6 +3,7 @@ import api from '../../axios';
 import Chat from '../chat/Chat';
 import { WebSocketContext } from '../../WebSocket';
 import { useLocation } from "react-router-dom";
+import chatIcon from "../../image/image_message/chat-icon.svg"
 
 
 const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
@@ -92,6 +93,7 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
       {!openChat &&
         <div className='chatroom-wrapper' style={mergedStyle2}>
           {activeTab === 'friend' ? (
+            rooms.filter(room => room.type === 'friend').length > 0 ? (
             rooms.filter(room => room.type === 'friend').map((room, index) => (
               <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
                 <div className="chatimage">
@@ -104,7 +106,17 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
                 {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
               </div>
             ))
-          ) : (
+              ) : (
+                    <div className="no-chat-message">
+                      <img src={chatIcon} alt="채팅없음"></img>
+                      <div>
+                        친구 목록에 친구가 없습니다.<br/>
+                        친구를 추가해보세요!
+                      </div>
+                    </div>
+                  )
+              ) : (
+                    rooms.filter(room => room.type === 'group').length > 0 ? (
             rooms.filter(room => room.type === 'group').map((room, index) => (
               <div style={{ display: openChat ? 'none' : 'flex' }} className="chatroom show" key={index} onClick={handleOpenChat} data-room-id={room.chatCode}>
                 <div className="chatimage">
@@ -117,6 +129,15 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
                 {room.unreadCount > 0 && <div className='chatnum'>{room.unreadCount}</div>}
               </div>
             ))
+            ) : (
+              <div className="no-chat-message">
+                <img src={chatIcon} alt="채팅없음"></img>
+                <div>
+                  참여한 매칭이 없습니다.<br/>
+                  매칭에 참여해보세요!
+                </div>
+              </div>
+            )
           )}
         </div>
       }
