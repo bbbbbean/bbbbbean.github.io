@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   z-index: 100;
-  
+
 }
 
 .match-modal {
@@ -31,10 +31,10 @@
 }
 
 .match-info-tag {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 5px 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 5px 5px 5px;
 }
 
 .match-info-tag span:first-child {
@@ -44,9 +44,11 @@
   font-weight: 500;
   font-size: 16px;
 }
+
 .match-info-tag span:last-child img {
   height: 35px;
 }
+
 .match-modal-title {
   font-size: 26px;
   font-weight: 800;
@@ -72,18 +74,19 @@
   margin-left: 6px;
 }
 
-.match-info-tags{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+.match-info-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
 }
-.match-info-content>.match-info-tags p{
-    border: 1px solid #6ec2fe;
-    border-radius: 30px;
-    padding: 5px 20px;
-    font-weight: 400;
-    font-size: 14px;
+
+.match-info-content>.match-info-tags p {
+  border: 1px solid #6ec2fe;
+  border-radius: 30px;
+  padding: 5px 20px;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .match-info-content p {
@@ -91,9 +94,10 @@
   font-size: 24px;
   font-weight: 800;
 }
-.match-info-content>.match-info-content-location{
-    font-size: 26px;
-    margin-top: 12px;
+
+.match-info-content>.match-info-content-location {
+  font-size: 26px;
+  margin-top: 12px;
 }
 
 .match-info-content a {
@@ -103,18 +107,18 @@
   cursor: pointer;
 }
 
-.match-info-content-map{
-    margin-top: 20px;
-    background-color: #e2e2e2;
-    width: 400px;
-    height: 150px;
+.match-info-content-map {
+  margin-top: 20px;
+  background-color: #e2e2e2;
+  width: 400px;
+  height: 150px;
 }
 
 .match-modal-info-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .match-symbol-container {
@@ -124,6 +128,7 @@
   gap: 15px;
 
 }
+
 .match-symbol-el {
   display: flex;
   flex-direction: column;
@@ -175,12 +180,13 @@
   margin-top: 50px;
 }
 
-.match-modal-btn p{
-    margin-bottom: 15px;
-    color: #959595;
+.match-modal-btn p {
+  margin-bottom: 15px;
+  color: #959595;
 }
-.match-modal-btn>p>span{
-    color: orange;
+
+.match-modal-btn>p>span {
+  color: orange;
 }
 
 .match-modal-btn-el {
@@ -196,11 +202,71 @@
   align-items: center;
   justify-content: center;
 }
+
 .ok {
   background-color: #6ec2fe;
 }
+
 .no {
   background-color: #dcdcdc;
   color: #959595;
   cursor: default;
+}
+
+.custom-confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 어두운 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.custom-confirm-content {
+  background-color: white;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  min-width: 280px;
+}
+
+.custom-confirm-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.custom-confirm-content button {
+  margin: 0 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.custom-confirm-content button:first-of-type {
+  background-color: #4CAF50;
+  /* 확인 - 초록색 */
+  color: white;
+}
+
+.custom-confirm-content button:first-of-type:hover {
+  background-color: #45a049;
+}
+
+.custom-confirm-content button:last-of-type {
+  background-color: #f44336;
+  /* 취소 - 빨간색 */
+  color: white;
+}
+
+.custom-confirm-content button:last-of-type:hover {
+  background-color: #d32f2f;
 }

@@ -1,10 +1,7 @@
 package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.*;
-import com.club.match.Domain.Service.ChatService;
-import com.club.match.Domain.Service.NotificationService;
-import com.club.match.Domain.Service.PostService;
-import com.club.match.Domain.Service.UserService;
+import com.club.match.Domain.Service.*;
 import com.club.match.Mapper.ChatMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -40,6 +37,9 @@ public class ChatController {
     ChatService chatService;
 
     @Autowired
+    MatchService matchService;
+
+    @Autowired
     NotificationService notificationService;
 
     @Autowired
@@ -52,6 +52,8 @@ public class ChatController {
     private SimpUserRegistry simpUserRegistry;
 
     private final SimpMessagingTemplate template;       // 특정 사용자에게 메시지를 보내는데 사용되는 STOMP을 이용한 템플릿입니다.
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public ChatController(SimpMessagingTemplate template) {
@@ -98,8 +100,7 @@ public class ChatController {
     public ResponseEntity<?> getChattingMessage(@RequestBody Map<String,Object> req) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-
-        String chatCode = (String)req.get("chatCode");
+        String chatCode = req.get("chatCode").toString();
         String userId = authentication.getName();
 
         log.info("chatCode : " + chatCode);
@@ -199,13 +200,21 @@ public class ChatController {
                 .notificationCode(2)
                 .build();
 
+        String nickName = chatService.getNickName(principal.getName());
+
         if(status.equals("add")){ // 친구요청
 
-            notificationDTO.setContent(principal.getName()+"님이 친구신청을 하였습니다.");
+            notificationDTO.setContent(
+                    "<span style=\"color: #1E90FF; font-weight: bold;\">" + nickName +
+                            "</span>님이<br/> <span style=\"color: #32CD32; font-weight: bold;\">친구신청</span>을 하였습니다."
+            );
 
         } else if(status.equals("acc")){ // 친구수락
 
-            notificationDTO.setContent(principal.getName()+"님이 친구요청을 수락하였습니다.");
+            notificationDTO.setContent(
+                    "<span style=\"color: #1E90FF; font-weight: bold;\">" + nickName +
+                            "</span>님이<br/> <span style=\"color: #32CD32; font-weight: bold;\">친구신청</span>을 수락하였습니다."
+            );
         }
 
         notificationService.sendNotification(notificationDTO);
@@ -214,6 +223,33 @@ public class ChatController {
 
         template.convertAndSend("/sub/user/"+friendId, resp);
         template.convertAndSend("/sub/user/"+principal.getName(), resp);
+    }
+
+    @MessageMapping("/matchJoin")
+    public void matchJoin(@RequestBody Map<String,Object> req, Principal principal) throws InterruptedException {
+        Long matchId = ((Integer)req.get("matchId")).longValue();
+
+        String nickName = chatService.getNickName(principal.getName());
+
+        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+        Map<String,Object> resp = new HashMap<>();
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .userId(matchOneDto.getUserId())
+                .receivedAt(LocalDateTime.now())
+                .content("<span style='font-weight: bold; color: #1E90FF;'>" + nickName +
+                        "</span>님이<br/>" +
+                        "\"<span style='font-weight: bold; color: #7B68EE;'>" + matchOneDto.getTitle() +
+                        "</span>\"<br/>" +
+                        "매칭에 참여하였습니다.")
+                .notificationCode(1)
+                .build();
+
+
+        notificationService.sendNotification(notificationDTO);
+
+        resp.put("matchAlert","ok");
+
+        template.convertAndSend("/sub/user/"+matchOneDto.getUserId(), resp);
     }
 
     @MessageMapping("/comment")
@@ -233,6 +269,10 @@ public class ChatController {
 
         resp.put("commentAlert","ok");
 
+        String trimmedPostTitle = postDTO.getTitle().length() > 8
+                ? postDTO.getTitle().substring(0, 8) + "..."
+                : postDTO.getTitle();
+
         if(childId == null){ // 댓글
             // 자기자신 알람 방지
             if(principal.getName().equals(postDTO.getUserId()))
@@ -240,7 +280,11 @@ public class ChatController {
                 return;
             }
             notificationDTO.setUserId(postDTO.getUserId());
-            notificationDTO.setContent("게시글에 답글이 달렸습니다.");
+            notificationDTO.setContent(
+                    "<span style=\"color: #7B68EE; font-weight: bold;\">\"" + trimmedPostTitle +
+                            "\"</span><br/> 게시글에 <span style=\"color: #1E90FF; font-weight: bold;\">" + principal.getName() +
+                            "</span>님이<br/> 댓글을 달았습니다."
+            );
             notificationService.sendNotification(notificationDTO);
 
             template.convertAndSend("/sub/user/"+postDTO.getUserId(), resp);
@@ -249,6 +293,10 @@ public class ChatController {
 
             CommentDTO commentDTO = chatMapper.selectOneComment(childId);
 
+            String trimmedComment = commentDTO.getContent().length() > 8
+                    ? commentDTO.getContent().substring(0, 8) + "..."
+                    : commentDTO.getContent();
+
             // 자기자신 알람 방지
             if(principal.getName().equals(commentDTO.getUserId()))
             {
@@ -256,7 +304,11 @@ public class ChatController {
             }
 
             notificationDTO.setUserId(commentDTO.getUserId());
-            notificationDTO.setContent("답글에 댓글이 달렸습니다.");
+            notificationDTO.setContent(
+                    "<span style=\"color: #7B68EE; font-weight: bold;\">\"" + trimmedComment +
+                            "\"</span><br/> 답글에 <span style=\"color: #1E90FF; font-weight: bold;\">" + principal.getName() +
+                            "</span>님이<br/> 댓글을 달았습니다."
+            );
             notificationService.sendNotification(notificationDTO);
 
             template.convertAndSend("/sub/user/"+commentDTO.getUserId(), resp);

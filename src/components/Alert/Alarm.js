@@ -35,7 +35,7 @@ const Alarm = ({ openAlarm, alarmList }) => {
                                         <div className="alert-type">{item.type}</div>
                                         <button className="close" onClick={() => delNotification(item.notificationId)}>x</button>
                                     </div>
-                                    <span className="alert-message">{item.content}</span>
+                                    <div className="alert-message" dangerouslySetInnerHTML={{ __html: item.content }} />
                                     {item.from !== null &&
                                         <Link to={`/community/select/${item.from}`}>
                                             <span>바로가기</span>

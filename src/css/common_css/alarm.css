@@ -44,6 +44,6 @@
     border-bottom: 1px solid #ccc;
     width: 100%;
 }
-.alert-type{
-    border-bottom: 1px solid #ccc;
+.alert-message{
+    text-align: center;
 }
