@@ -3,7 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    margin: 25px;
+    margin-top: 10px;
 }
 
 .info-container>.info-right>.user-info-tag>.date-tag>.tag-item,
