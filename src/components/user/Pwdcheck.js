@@ -33,11 +33,10 @@ const PasswordCheck = ({ password, setPassword, setOk }) => {
                 <div className="user-info-content">
                     <span></span>
                     <div className="password-check">
-                        <div className="password-check-form info-edit">
+                        <div className="password-check-form">
                             <h2>비밀번호를 확인하세요</h2>
                             <p>비밀번호를 입력하여 계속하세요</p>
                             <span style={{ color: '#dd3e3e', fontWeight:"bold" }}>{message}</span>
-                            <br />
                             <form onSubmit={handleConfirmClick}>
                                 <input
                                     id="password"
@@ -53,7 +52,6 @@ const PasswordCheck = ({ password, setPassword, setOk }) => {
                                         setMessage("");
                                     }}
                                 />
-                                <br />
                                 {(password.length >= 4) ?
                                     <button className="btn-submit-password my-page-btn" type="submit">
                                         확인

@@ -129,7 +129,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
-                    <label></label><span style={{color:'red', fontWeight:'bold'}}>{errorMessage}</span>
+                    <label></label>
                     {/* {editField !== "phone" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
                     ) : (
@@ -259,6 +259,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                     )}
                 </div>
                 <span></span>
+                <p style={{color:'red', fontWeight:'bold'}}>{errorMessage}</p>
             </div>
         </div>
     );

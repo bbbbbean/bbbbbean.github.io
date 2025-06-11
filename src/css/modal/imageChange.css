@@ -23,14 +23,19 @@
 }
 
 .image-modal-content>.image-drag>img {
-    min-width: 300px;
-    min-height: 300px;
-    width: 300px;
-    height: 300px;
+    min-width: 150px;
+    min-height: 150px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     transition: all 1s ease;
     object-fit: cover;
-    margin: 10px;
+    margin-top: 60px;
+}
+
+.image-drag p{
+    margin-top: 30px;
+    color: #4d4d4d;
 }
 
 .image-modal-content>.image-drag>.no{
@@ -47,7 +52,7 @@
     border-radius: 5px;
     background-color: #6EC3FF;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     margin-left: 5px;
     transition: all 0.3s ease;
