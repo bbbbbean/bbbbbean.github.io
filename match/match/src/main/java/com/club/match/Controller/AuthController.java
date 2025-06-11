@@ -264,12 +264,16 @@ public class AuthController {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(Duration.ofDays(1))
                 .build();
 
         ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(Duration.ofDays(1))
                 .build();
 
