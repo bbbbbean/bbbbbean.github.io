@@ -1,5 +1,5 @@
 import searchIcon from "../../image/image_event/search_icon.svg";
-import "../../css/event/event.css";
+import "../../css/event_css/event.css";
 
 const EventPage = () => {
     return (

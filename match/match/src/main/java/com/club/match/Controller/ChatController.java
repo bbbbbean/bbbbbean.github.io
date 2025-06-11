@@ -260,10 +260,10 @@ public class ChatController {
 
             resp.put("matchAlert","ok");
 
-
-
-
             for(String userId : list){
+                if(!principal.getName().equals(userId)){
+                    continue;
+                }
                 NotificationDTO notificationDTO = NotificationDTO.builder()
                         .userId(userId)
                         .receivedAt(LocalDateTime.now())

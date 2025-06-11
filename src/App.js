@@ -38,7 +38,7 @@ function AppComponent() {
               <Route path="/mypage/*" element={<MyPageLayout />} />
               <Route path="/community/*" element={<CommunityLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
-              <Route path="/ok" element={<SuccessLogin />} />
+              <Route path="/oauth2/:platform" element={<SuccessLogin />} />
             </Routes>
           </div>
           <Footer />

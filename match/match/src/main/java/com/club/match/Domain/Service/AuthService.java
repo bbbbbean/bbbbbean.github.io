@@ -49,6 +49,13 @@ public class AuthService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     String KAKAO_CLIENT_ID;
+
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    String NAVER_CLIENT_ID;
+
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    String NAVER_CLIENT_SECRET;
+
     String RESPONSE_TYPE = "code";
 
     @Transactional(rollbackFor = Exception.class)
@@ -173,6 +180,47 @@ public class AuthService {
         return portOneDTO;
     }
 
+    public ResponseEntity<NaverDTO> naverOauth(String code, String redirect_url) {
+
+
+        String url = "https://nid.naver.com/oauth2.0/token";
+
+        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", NAVER_CLIENT_ID);
+        params.add("client_secret",NAVER_CLIENT_SECRET);
+        params.add("code", code);
+        params.add("state","STATE_STRING");
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+
+        ResponseEntity<NaverDTO> response =
+                rt.exchange(url, HttpMethod.POST, entity, NaverDTO.class);
+
+        return response;
+    }
+
+
+    public ResponseEntity<NaverDTO> getUserNaverId(String accessToken) {
+        String url = "https://openapi.naver.com/v1/nid/me";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        RestTemplate rt = new RestTemplate();
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<NaverDTO> response = rt.exchange(url, HttpMethod.POST, entity, NaverDTO.class);
+
+        return response;
+    }
 
     public ResponseEntity<KakaoDTO> kakaoOauth(String code, String redirect_url) {
 
@@ -224,4 +272,5 @@ public class AuthService {
         boolean isDelete = userMapper.deleteUser(userId) > 0;
         return isDelete;
     }
+
 }
