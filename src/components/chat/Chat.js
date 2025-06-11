@@ -16,6 +16,8 @@ const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
     const [entered, setEntered] = useState(true);
     const [file, setFile] = useState(null);
     const [inputFileName, setInputFileName] = useState("");
+    const [openChatUsers, setOpenChatUsers] = useState(false);
+    const [users, setUsers] = useState([]);
 
     const onDrop = useCallback(acceptedFiles => {
         setInputMessage("");
@@ -143,8 +145,18 @@ const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
         height: style2 && style2.height ? style2.height : "82%"
     };
 
+    const openMatchUser = () =>{
+        setOpenChatUsers(prev => (!prev))
+        api.post("/api/chat/users",{"roomId":openChat}).then((response)=>{
+            setUsers(response.data);
+            console.log(response.data);
+        }).catch((error) =>{
+
+        });
+    }
+
     return (
-        <div className="match-chat-container" style={{marginRight:"10px", marginLeft:"0", height: "770px", ...style4}}>
+        <div className="match-chat-container" style={{ marginRight: "10px", marginLeft: "0", height: "770px", ...style4 }}>
             <div className="match-chat-title">
                 <div className="match-chat-img">
                     <img
@@ -155,8 +167,10 @@ const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
                 {userCount != 0 ?
                     <div className="match-chat-name">
                         <p>{title}</p>
-                        <span className="material-symbols-outlined">Person</span>
-                        <span>{userCount}</span>
+                        <div onClick={openMatchUser} className="userCount">
+                            <span className="material-symbols-outlined">Person</span>
+                            <span>{userCount}</span>
+                        </div>
                     </div>
                     :
                     <div className="match-chat-name">
@@ -166,9 +180,11 @@ const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
                     <span className="material-symbols-outlined" onClick={handleClose}>Close</span>
                 </div>
             </div>
-            <div className="match-chat-user-wrap">
+            <div className="match-chat-user-wrap" style={openChatUsers ? { display: "block" } : {}}>
                 <ul className="match-chat-user">
-                    <li className="match-chat-user-el"></li>
+                    {users.map((user) => (
+                        <li onClick={() => { setUserInfomation(user) }} className="match-chat-user-el">{user}</li>
+                    ))}
                 </ul>
             </div>
             <div className="match-chat-line"></div>

@@ -99,6 +99,7 @@
     padding: 3px 15px;
     border-radius: 50px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .match-chat-content {
@@ -310,5 +311,9 @@
     right: 10px;
     font-size: 30px;
     color: #6ec2fe;
+    cursor: pointer;
+}
+.match-chat-name>.userCount{
+    margin-top: 5px;
     cursor: pointer;
 }

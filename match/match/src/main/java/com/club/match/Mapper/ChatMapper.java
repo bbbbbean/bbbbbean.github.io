@@ -65,4 +65,6 @@ public interface ChatMapper {
 
 
     CommentDTO selectOneComment(String commentId);
+
+    List<String> allUser(String chatCode);
 }

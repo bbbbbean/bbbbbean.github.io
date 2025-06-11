@@ -62,6 +62,14 @@ public class ChatController {
         this.template = template;
     }
 
+
+    @PostMapping("/users")
+    public ResponseEntity<?> users(@RequestBody ChatDTO chatDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<String> users = chatService.allUser(chatDTO.getRoomId());
+        return ResponseEntity.ok().body(users);
+    }
+
     @PostMapping("/alarm/list")
     public ResponseEntity<?> alarmList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

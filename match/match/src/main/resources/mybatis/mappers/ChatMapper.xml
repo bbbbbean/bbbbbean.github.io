@@ -195,6 +195,9 @@
         DELETE FROM bb.chat_tbl WHERE chatCode = #{chatCode}
     </delete>
 
+    <select id="allUser">
+        select userId from chatparticipant_tbl where chatCode = #{chatCode}
+    </select>
 
 
 </mapper>

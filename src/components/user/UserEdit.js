@@ -14,7 +14,7 @@ const UserEditForm = ({ profile, setProfile }) => {
         birthday: localStorage.getItem("birthday"),
         name: localStorage.getItem("name"),
         nickName: localStorage.getItem("nickName"),
-        private: localStorage.getItem("isPrivate"),
+        isPrivate: localStorage.getItem("isPrivate"),
         gender: localStorage.getItem("gender"),
         address: localStorage.getItem("address"),
         phone: localStorage.getItem("phone"),
@@ -52,7 +52,7 @@ const UserEditForm = ({ profile, setProfile }) => {
         api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "type": btnClass[0] })
             .then((response) => {
                 if (response.status !== 200) {
-                setErrorMessage(response.data.error);
+                    setErrorMessage(response.data.error);
                     return;
                 }
                 if (btnClass[0] === "nickname") {
@@ -60,27 +60,20 @@ const UserEditForm = ({ profile, setProfile }) => {
                 }
                 setUserDTO(response.data.userDTO);
                 const {
-                    userId,
-                    birthday,
-                    name,
                     nickName,
-                    points,
-                    private:isPrivate,
-                    manner,
-                    gender,
+                    private: isPrivate,
                     introduction,
                 } = response.data.userDTO;
+                setUserDTO(prev => ({
+                    ...prev,
+                    nickName,
+                    isPrivate,
+                    introduction,
+                }));
 
-                localStorage.setItem("userId", userId);
-                localStorage.setItem("birthday", birthday);
-                localStorage.setItem("name", name);
                 localStorage.setItem("nickName", nickName);
-                localStorage.setItem("points", points);
                 localStorage.setItem("isPrivate", isPrivate);
-                localStorage.setItem("manner", manner);
-                localStorage.setItem("gender", gender);
                 localStorage.setItem("introduction", introduction);
-                localStorage.setItem("loginPlatform", 0);
             });
         setEditField(null);
     };
@@ -129,7 +122,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
-                    <label></label><span style={{color:'red', fontWeight:'bold'}}>{errorMessage}</span>
+                    <label></label><span style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</span>
                     {/* {editField !== "phone" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
                     ) : (
@@ -147,7 +140,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                     <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
                 <span></span>
-                <div className="introduction"> 
+                <div className="introduction">
                     <label>소개</label>
                     <div>{userDTO.introduction}</div>
                     {editField !== "introduction" ? (
@@ -230,7 +223,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 <span></span>
                 <div className="isPrivate">
                     <label>프로필 공개</label>
-                    <span>{userDTO.private ? "공개" : "비공개"}</span>
+                    <span>{userDTO.isPrivate ? "공개" : "비공개"}</span>
                     {editField !== "isPrivate" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("isPrivate")}>수정하기</button>
                     ) : (

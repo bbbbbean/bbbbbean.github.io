@@ -217,4 +217,8 @@ public class ChatService {
     public boolean saveFile(ChatFileDTO fileDTO) {
         return chatMapper.insertChatFile(fileDTO) > 0;
     }
+
+    public List<String> allUser(String chatCode) {
+        return chatMapper.allUser(chatCode);
+    }
 }
