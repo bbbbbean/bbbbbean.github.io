@@ -296,7 +296,7 @@ const FriendLeft = () => {
                     <li onClick={() => friendStatus(friend.userId, 4)}>
                       친구 삭제
                     </li>
-                    <li>신고하기</li>
+                    <li onClick={() => alert("아직 준비중인 기능이에요")}>신고하기</li>
                   </ul>
                 </div>
               </div>
@@ -330,7 +330,7 @@ const FriendLeft = () => {
                     <li onClick={() => friendStatus(friend.userId, 4)}>
                       친구 삭제
                     </li>
-                    <li>신고하기</li>
+                    <li onClick={() => alert("아직 준비중인 기능이에요")}>신고하기</li>
                   </ul>
                 </div>
               </div>
