@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import MainHeader from "./components/MainHeader";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
-import EventList from "./components/event/EventList";
 import MyPageLayout from "./components/layout/MypageLayout";
 import MatchLayout from "./components/layout/MatchLayout";
 import AdminPage from "./AdminPage";
@@ -15,6 +14,7 @@ import AccordionModal from "./components/modal/AccordionModal";
 import CommunityLayout from "./components/layout/CommunityLayout";
 import { WebSocketProvider } from "./WebSocket";
 import InformationPro from "./components/myInfo/InformationPro";
+import EventLayout from "./components/layout/EventLayout";
 
 function AppComponent() {
   //로그인 여부 확인
@@ -30,7 +30,7 @@ function AppComponent() {
             <MainHeader />
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route path="/event/list" element={<EventList />} />
+              <Route path="/event/*" element={<EventLayout />} />
               <Route path="/friend" element={<FriendLoyout />} />
               <Route path="/match/*" element={<MatchLayout />} />
               <Route path="/mypage/*" element={<MyPageLayout />} />

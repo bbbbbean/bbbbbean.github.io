@@ -140,7 +140,7 @@ const MainHeader = () => {
             </ul>
           </li>
           <li className="mainmenu">
-            <NavLink to="/event/list">이벤트</NavLink>
+            <NavLink to="/event/list/6">이벤트</NavLink>
           </li>
         </ul>
       </nav>
@@ -179,7 +179,11 @@ const MainHeader = () => {
         )}
       </nav>
       <div className="line" />
-      <Alarm openAlarm={openAlarm} alarmList={alarmList} setOpenAlarm={setOpenAlarm} />
+      <Alarm
+        openAlarm={openAlarm}
+        alarmList={alarmList}
+        setOpenAlarm={setOpenAlarm}
+      />
     </header>
   );
 };

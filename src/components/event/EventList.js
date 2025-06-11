@@ -63,7 +63,7 @@ const EventList = () => {
 
   // 메뉴 버튼 눌러서 바뀌었을 때
   useEffect(() => {
-    const newMenuId = postCodeId ? Number(postCodeId) : 5;
+    const newMenuId = postCodeId ? Number(postCodeId) : 6;
     if (newMenuId !== selectedMenu) {
       setSelectedMenu(newMenuId);
     }
@@ -89,7 +89,7 @@ const EventList = () => {
     if (searchInputRef.current) {
       searchInputRef.current.value = "";
     }
-    navigate(`/community/list/${selected}`);
+    navigate(`/event/list/${selected}`);
   };
 
   // 검색 버튼 클릭
@@ -129,11 +129,8 @@ const EventList = () => {
 
   // 카테고리 매핑 (숫자 ID와 이름 매핑)
   const categories = [
-    { id: 1, name: "운동" },
-    { id: 2, name: "게임" },
-    { id: 3, name: "취미" },
-    { id: 4, name: "여행" },
-    { id: 5, name: "자유게시판" },
+    { id: 6, name: "공지사항" },
+    { id: 7, name: "이벤트" },
   ];
 
   return (
@@ -160,7 +157,7 @@ const EventList = () => {
             {categories.map((category) => (
               <NavLink
                 key={category.id}
-                to={`/community/list/${category.id}`}
+                to={`/event/list/${category.id}`}
                 data-type={category.id}
                 onClick={handlerSelectMenu}
                 className={({ isActive }) =>
@@ -189,27 +186,21 @@ const EventList = () => {
         </div>
         <ul className="event-board-main">
           <li className="event-board-main-grid event-board-header">
-            <p>글번호</p>
+            <p></p>
             <p>제목</p>
-            <p>좋아요</p>
-            <p>싫어요</p>
             <p>조회수</p>
-            <p>작성자</p>
             <p>작성일</p>
           </li>
           {posts.length > 0 ? (
             posts.map((post) => (
               <li key={post.postId} className="event-board-main-el">
                 <Link
-                  to={`/community/select/${post.postId}`}
+                  to={`/event/select/${post.postId}`}
                   className="event-board-main-grid clickable-post-row"
                 >
-                  <p>{post.postId}</p>
+                  <p></p>
                   <p>{post.title}</p>
-                  <p>{post.likeCount}</p>
-                  <p>{post.dislikeCount}</p>
                   <p>{post.viewCount}</p>
-                  <p>{post.nickName}</p>
                   <p>{new Date(post.createAt).toLocaleDateString()}</p>
                 </Link>
               </li>
@@ -324,16 +315,16 @@ const EventList = () => {
               </button>
             </div>
           </div>
-          {localStorage.getItem("isAuth") && (
+          {/* {localStorage.getItem("isAuth") && (
             <div className="event-board-write">
               <NavLink
-                to={`/community/write/${postCodeId}`}
+                to={`/event/write/${postCodeId}`}
                 className="write-button"
               >
                 글쓰기
               </NavLink>
             </div>
-          )}
+          )} */}
         </ul>
       </div>
     </div>
