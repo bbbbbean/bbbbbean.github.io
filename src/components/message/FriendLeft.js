@@ -213,7 +213,9 @@ const FriendLeft = () => {
         </div>
         {friendRequest.length > 0 && (
           <div className="friendalart">
-            <h1>친구 요청</h1>
+            <div className="friendalart-title">
+              <h1>친구 요청</h1>
+            </div>
             {friendRequest.map((friend, idx) => (
               <div className="person" >
                 <img
@@ -244,7 +246,7 @@ const FriendLeft = () => {
         )}
         {bestFriends.length > 0 && (
           <>
-            <div className="usually">
+            <div className="friendalart-title">
               <h1>즐겨찾는 친구</h1>
             </div>
             {bestFriends.map((friend, idx) => (
