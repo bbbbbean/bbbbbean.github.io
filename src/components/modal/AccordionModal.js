@@ -41,159 +41,74 @@ const AccordionModal = () => {
 
   return (
     <div className="Accordion-modal">
-      <div
-        id="Accordion_wrap"
-        className={
-          activeAccordion === 1 ? "accChat" :
-            activeAccordion === 2 ? "accCalendar" :
-              activeAccordion === 3 ? "" : ""
-        }
-        style={{ width: isOpen ? '140px' : '40px' }}
-      >
-<<<<<<< HEAD
-        <div className="Accordion-modal">
-          <div
-            id="Accordion_wrap"
-            className={
-              activeAccordion === 1 ? "accChat" :
-                activeAccordion === 2 ? "accCalendar" :
-                  activeAccordion === 3 ? "" : ""
-            }
-            style={{ width: isOpen ? '140px' : '40px' }}
-          >
-            <button
-              className="accordion-button"
-              onClick={(e) => {
-                if (wasDragging) {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  return;
-                }
-                setIsOpen(!isOpen);
-                setActiveAccordion(null);
-              }}
-              style={{
-                height: !isOpen && AccordionFilter.length * 45,
-                top: isOpen && '-20px',
-                right: isOpen && '0px'
-              }}
-            >
-              {isOpen ? ">" : "<"}
-            </button>
-
-            {/* Accordion 리스트 */}
-            {AccordionFilter.map((item) => (
-              <div key={item.index}>
-                <div
-                  className={`que ${activeAccordion === item.index ? 'on' : ''}`}
-                  onClick={(e) => handleAccordionClick(item.index, e)}
-                >
-                  <img src={item.icon} alt="아이콘" className="main-aco-icon"/>
-                  <span>{item.title}</span>
-                </div>
-
-                {/* 채팅 */}
-                {item.title === "채팅" && (
-                  <div className="anw" style={{ height: activeAccordion === item.index ? '600px' : '0px' }}>
-                    <div className="friend-container" style={{ width: '100%' }}>
-                      <FriendRight
-                        style1={{ width: '100%' }}
-                        style2={{ height: '440px' }}
-                        style3={{ height: '450px' }}
-                        style4={{ border: 'none', backgroundColor: '#fcfcfc' }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* 달력 */}
-                {item.title === "달력" && (
-                  <div className="anw" style={{
-                    height: activeAccordion === item.index ? '530px' : '0px'
-                  }}>
-                    <UserCalendar />
-                  </div>
-                )}
-
-                {/* 1:1 문의 */}
-                {item.title === "1:1 문의" && (
-                  <div className="anw" style={{ height: activeAccordion === item.index ? '40px' : '0px' }}>
-                    <div>챗봇 연결</div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </Draggable>
-
-      {wasDragging && (
+      <div className="Accordion-modal">
         <div
-          style={{
-            position: 'fixed',
-            top: 0, left: 0, right: 0, bottom: 0,
-            zIndex: 9999,
-            backgroundColor: 'transparent',
-            cursor: 'grabbing',
-          }}
-=======
-        <button
-          className="accordion-button"
->>>>>>> 9443ef9c9705bf688ae80e6446a93ceab94d2c1b
-          onClick={(e) => {
-            setIsOpen(!isOpen);
-            setActiveAccordion(null);
-          }}
-          style={{
-            height: !isOpen && AccordionFilter.length * 45,
-            top: isOpen && '-20px',
-            right: isOpen && '0px'
-          }}
+          id="Accordion_wrap"
+          className={
+            activeAccordion === 1 ? "accChat" :
+              activeAccordion === 2 ? "accCalendar" :
+                activeAccordion === 3 ? "" : ""
+          }
+          style={{ width: isOpen ? '140px' : '40px' }}
         >
-          {isOpen ? ">" : "<"}
-        </button>
+          <button
+            className="accordion-button"
+            onClick={(e) => {
+              setIsOpen(!isOpen);
+              setActiveAccordion(null);
+            }}
+            style={{
+              height: !isOpen && AccordionFilter.length * 45,
+              top: isOpen && '-20px',
+              right: isOpen && '0px'
+            }}
+          >
+            {isOpen ? ">" : "<"}
+          </button>
 
-        {/* Accordion 리스트 */}
-        {AccordionFilter.map((item) => (
-          <div key={item.index}>
-            <div
-              className={`que ${activeAccordion === item.index ? 'on' : ''}`}
-              onClick={(e) => handleAccordionClick(item.index, e)}
-            >
-              <img src={item.icon} alt="아이콘" className="main-aco-icon" />
-              <span>{item.title}</span>
-            </div>
+          {/* Accordion 리스트 */}
+          {AccordionFilter.map((item) => (
+            <div key={item.index}>
+              <div
+                className={`que ${activeAccordion === item.index ? 'on' : ''}`}
+                onClick={(e) => handleAccordionClick(item.index, e)}
+              >
+                <img src={item.icon} alt="아이콘" className="main-aco-icon" />
+                <span>{item.title}</span>
+              </div>
 
-            {/* 채팅 */}
-            {item.title === "채팅" && (
-              <div className="anw" style={{ height: activeAccordion === item.index ? '600px' : '0px' }}>
-                <div className="friend-container">
-                  <FriendRight
-                    style1={{ width: '100%' }}
-                    style2={{ height: '440px' }}
-                    style3={{ height: '450px' }}
-                  />
+              {/* 채팅 */}
+              {item.title === "채팅" && (
+                <div className="anw" style={{ height: activeAccordion === item.index ? '600px' : '0px' }}>
+                  <div className="friend-container" style={{ width: '100%' }}>
+                    <FriendRight
+                      style1={{ width: '100%' }}
+                      style2={{ height: '440px' }}
+                      style3={{ height: '450px' }}
+                      style4={{ border: 'none', backgroundColor: '#fcfcfc' }}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* 달력 */}
-            {item.title === "달력" && (
-              <div className="anw" style={{
-                height: activeAccordion === item.index ? '530px' : '0px'
-              }}>
-                <UserCalendar />
-              </div>
-            )}
+              {/* 달력 */}
+              {item.title === "달력" && (
+                <div className="anw" style={{
+                  height: activeAccordion === item.index ? '530px' : '0px'
+                }}>
+                  <UserCalendar />
+                </div>
+              )}
 
-            {/* 1:1 문의 */}
-            {item.title === "1:1 문의" && (
-              <div className="anw" style={{ height: activeAccordion === item.index ? '40px' : '0px' }}>
-                <div>챗봇 연결</div>
-              </div>
-            )}
-          </div>
-        ))}
+              {/* 1:1 문의 */}
+              {item.title === "1:1 문의" && (
+                <div className="anw" style={{ height: activeAccordion === item.index ? '40px' : '0px' }}>
+                  <div>챗봇 연결</div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
