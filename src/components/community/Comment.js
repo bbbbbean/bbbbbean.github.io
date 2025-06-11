@@ -234,7 +234,7 @@ const Comment = ({ postId }) => {
           >
             <div className="comment-img" onClick={() => { setUserInfomation(parent.userId) }}>
               <img
-                src={`http://localhost:8100/profile/${parent.userId}`}
+                src={`https://blogproject.shop/profile/${parent.userId}`}
                 alt="profile"
               />
             </div>
@@ -305,7 +305,7 @@ const Comment = ({ postId }) => {
                     >
                       <div className="comment-img" onClick={() => { setUserInfomation(child.userId) }}>
                         <img
-                          src={`http://localhost:8100/profile/${child.userId}`}
+                          src={`https://blogproject.shop/profile/${child.userId}`}
                           alt="profile"
                         />
                       </div>
