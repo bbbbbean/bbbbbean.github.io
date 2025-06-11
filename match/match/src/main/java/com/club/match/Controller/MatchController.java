@@ -2,15 +2,18 @@ package com.club.match.Controller;
 
 import com.club.match.Domain.DTO.*;
 import com.club.match.Domain.Service.MatchService;
+import com.club.match.Domain.Service.NotificationService;
 import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,12 @@ public class MatchController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    SimpMessagingTemplate template;
+
+    @Autowired
+    NotificationService notificationService;
 
     @PostMapping("/list/newMatch")
     public ResponseEntity<?> matchNew(@RequestBody @Validated MatchDto matchDto){
@@ -148,12 +157,15 @@ public class MatchController {
         log.info("thiiiiis"+userId+matchId+chatCode);
         // 조건 검사 : condi 값들, 유저의 gender, 공개여부
         // 실명
-        if(matchOneDto.getAnonymousCondi() == 0 && userDTO.isPrivate()){
+        log.info("usususus : " + userDTO.isPrivate());
+        log.info("usususus : " + matchOneDto.getGender());
+        log.info("usususus : " + userDTO.getGender());
+        if(matchOneDto.getAnonymousCondi() == 1 && !userDTO.isPrivate()){
             log.info("nononononononononono");
             return ResponseEntity.badRequest().body(null);
         }
         // 성별
-        if(matchOneDto.getGenderCondi() == 1 && matchOneDto.getGender().equals(userDTO.getGender())){
+        if(matchOneDto.getGenderCondi() == 0 && !matchOneDto.getGender().equals(userDTO.getGender())){
             log.info("nonononononononononononono");
             return ResponseEntity.badRequest().body(null);
         }
@@ -174,14 +186,22 @@ public class MatchController {
     // 매칭 삭제
     @PostMapping("/delete")
     public ResponseEntity<?> deleteMatch(@RequestBody Map<String,Object> req){
+
         Long matchId = ((Integer)req.get("matchId")).longValue();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-
         String userId = (String)authentication.getName();
 
         MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+
+        Duration duration = Duration.between(LocalDateTime.now(), matchOneDto.getStartTime());
+
+        long days = duration.toDays();
+
+        if(days == 1){
+            return ResponseEntity.badRequest().body("매치 하루전에는 삭제할수 없습니다.");
+        }
 
         if(matchOneDto.getUserId().equals(userId)) {
             matchService.deleteMatch(matchId);
@@ -190,6 +210,27 @@ public class MatchController {
 
             // 그룹 채팅 삭제
             matchService.deleteGroupChat(chatCode);
+        }
+
+        List<String> list = matchService.allUser(matchId);
+
+        log.info("매칭 참여자 : " + list);
+
+        Map<String,Object> resp = new HashMap<>();
+
+        resp.put("matchAlert","ok");
+
+        for(String sendUserId : list){
+            NotificationDTO notificationDTO = NotificationDTO.builder()
+                    .userId(sendUserId)
+                    .receivedAt(LocalDateTime.now())
+                    .content("\"<span style='font-weight: bold; color: #7B68EE;'>" + matchOneDto.getTitle() +
+                            "</span>\"<br/>" +
+                            "매칭이 삭제 되었습니다.")
+                    .notificationCode(1)
+                    .build();
+            notificationService.sendNotification(notificationDTO);
+            template.convertAndSend("/sub/user/"+sendUserId, resp);
         }
 
         return ResponseEntity.ok().body(null);
@@ -203,10 +244,20 @@ public class MatchController {
 
         Long matchId = ((Integer)req.get("matchId")).longValue();
 
+
+        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
+
+        Duration duration = Duration.between(LocalDateTime.now(), matchOneDto.getStartTime());
+
+        long days = duration.toDays();
+
+        if(days == 1){
+            return ResponseEntity.badRequest().body("매치 하루전에는 취소할수 없습니다.");
+        }
+
         // 매칭 참여 테이블에서 삭제
         matchService.cancelMatch(matchId, userId);
 
-        MatchOneDto matchOneDto = matchService.selectOneMatch(matchId);
         int chatCode = matchOneDto.getChatCode();
         // 채팅방 나오기
         matchService.exitGroupChat(chatCode,userId);

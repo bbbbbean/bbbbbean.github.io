@@ -65,7 +65,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                     name,
                     nickName,
                     points,
-                    isPrivate,
+                    private:isPrivate,
                     manner,
                     gender,
                     introduction,

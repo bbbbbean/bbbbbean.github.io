@@ -41,4 +41,6 @@ public interface UserMapper {
 
     List<UserBookMarkDTO> bookMarkSelectAll(LocalDateTime now, String userId);
     List<PrevMatchDto> prevMatchSelectAll(String userId);
+
+    int matchPartiCheck(String userId);
 }

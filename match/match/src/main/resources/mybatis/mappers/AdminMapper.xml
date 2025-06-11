@@ -39,5 +39,9 @@
         AND status != 3;
     </update>
 
+    <select id="nextDayMatch">
+        SELECT matchId FROM bb.match_tbl where month(startTime) = #{nextMonth} and day(startTime) = #{nextDayOfMonth};
+    </select>
+
 </mapper>
 

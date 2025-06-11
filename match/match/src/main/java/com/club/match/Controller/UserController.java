@@ -151,6 +151,15 @@ public class UserController {
             };
         }
 
+        if(type.equals("isPrivate")){
+            int isOk = userService.matchPartiCheck(userId);
+            if(isOk > 0){
+                resp.put("error","비공개로 전환하려면 실명매칭을 취소해야합니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+            }
+        }
+
+
         if(type.equals("phone")) {
             log.info("폰번호 변경");
         } else { // 나머지

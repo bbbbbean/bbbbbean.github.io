@@ -26,6 +26,7 @@ const SuccessLogin = () => {
           gender,
           phone,
           address,
+          private:isPrivate,
           introduction,
           profile,
         } = response.data.userDTO;
@@ -39,6 +40,7 @@ const SuccessLogin = () => {
         localStorage.setItem("gender", gender);
         localStorage.setItem("phone", phone);
         localStorage.setItem("address", address);
+        localStorage.setItem("isPrivate", isPrivate);
         localStorage.setItem("introduction", introduction);
         localStorage.setItem("profile", profile);
         localStorage.setItem("loginPlatform", platform);

@@ -7,6 +7,7 @@ import { WebSocketContext } from "../../WebSocket";
 
 const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
   const { client, setUserInfomation } = useContext(WebSocketContext);
+  const [matchError, setMatchError] = useState("");
   const isAuth = localStorage.getItem("isAuth");
 
   const navigate = useNavigate();
@@ -131,26 +132,23 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
             destination: "/pub/matchJoin",
             body: JSON.stringify({ matchId: selectMatch, ok: "join" }),
           });
+          setSelectMatch(null);
           navigate(`/friend`, { state: { chatCode: match.chatCode } });
         } else {
-          console.error("신청 실패:", response.data);
-          alert("신청에 실패했습니다. 조건을 확인해주세요");
+          setMatchError("매칭 조건을 다시 한번 확인해주세요.");
+          setTimeout(() => {
+            setMatchError("");
+          }, 1500)
         }
       })
       .catch((err) => {
         console.error("신청 실패:", err);
       });
-    setSelectMatch(null);
     setShowJoinConfirm(false);
   };
 
   const handleDelete = () => {
     if (match.hosted == 1) {
-
-      client.publish({
-        destination: "/pub/matchJoin",
-        body: JSON.stringify({ matchId: selectMatch, ok: "del" }),
-      });
 
       api
         .post("/match/delete", { matchId: selectMatch })
@@ -161,7 +159,10 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
             setReload((prev) => !prev);
 
           } else {
-            console.error("매치 삭제 실패:", response.data);
+            setMatchError(response.data);
+            setTimeout(() => {
+              setMatchError("");
+            }, 1500)
           }
         })
         .catch((error) => {
@@ -176,7 +177,10 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
             setSelectMatch(null);
             setReload((prev) => !prev);
           } else {
-            console.error("매치 참여 취소 실패:", response.data);
+            setMatchError(response.data);
+            setTimeout(() => {
+              setMatchError("");
+            }, 1500)
           }
         })
         .catch((error) => {
@@ -249,36 +253,38 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
               <p>
                 현재 참여 인원 <span>{match.countPeople}</span>/{match.people}
               </p>
-              {match.hosted === 3 &&
-                <button
-                  className={
-                    match.status === 0 && match.countPeople < match.people
-                      ? "match-modal-btn-el ok"
-                      : "match-modal-btn-el no"
-                  }
-                  disabled={
-                    !(match.status === 0 && match.countPeople < match.people)
-                  }
-                  onClick={() => {
-                    isAuth ? setShowJoinConfirm(true) : navigate("/user/Login");
-                  }}
-                >
-                  {match.status === 0 && match.countPeople < match.people
-                    ? "신청하기"
-                    : "모집 완료"}
-                </button>
-              }
-
-              {match.hosted === 1 && (
-                <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
-                  매치 삭제
-                </button>
-              )}
-              {match.hosted == 2 && (
-                <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
-                  참여 취소
-                </button>
-              )}
+              <div className="match-button-contaier">
+                <span className="match-error" style={matchError ? { opacity: "1" } : {}}>{matchError}</span>
+                {match.hosted === 3 &&
+                  <button
+                    className={
+                      match.status === 0 && match.countPeople < match.people
+                        ? "match-modal-btn-el ok"
+                        : "match-modal-btn-el no"
+                    }
+                    disabled={
+                      !(match.status === 0 && match.countPeople < match.people)
+                    }
+                    onClick={() => {
+                      isAuth ? setShowJoinConfirm(true) : navigate("/user/Login");
+                    }}
+                  >
+                    {match.status === 0 && match.countPeople < match.people
+                      ? "신청하기"
+                      : "모집 완료"}
+                  </button>
+                }
+                {match.hosted === 1 && (
+                  <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
+                    매치 삭제
+                  </button>
+                )}
+                {match.hosted == 2 && (
+                  <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
+                    참여 취소
+                  </button>
+                )}
+              </div>
               {showJoinConfirm && (
                 <div className="custom-confirm-modal">
                   <div className="custom-confirm-content">
@@ -286,8 +292,8 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
                     <button onClick={handleJoin}>확인</button>
                     <button
                       onClick={() => {
-                        setShowJoinConfirm(false);
                         setSelectMatch(null);
+                        setShowJoinConfirm(false);
                       }}
                     >
                       취소
@@ -298,12 +304,12 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
               {showDeleteConfirm && (
                 <div className="custom-confirm-modal">
                   <div className="custom-confirm-content">
-                    <p>취소 하시겠습니까?</p>
+                    <p>{match.hosted === 1 ? "삭제" : "취소"} 하시겠습니까?</p>
                     <button onClick={handleDelete}>확인</button>
                     <button
                       onClick={() => {
-                        setShowDeleteConfirm(false);
                         setSelectMatch(null);
+                        setShowDeleteConfirm(false);
                       }}
                     >
                       취소

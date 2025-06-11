@@ -99,5 +99,9 @@
         where status = 3 and participantId = #{userID}
     </select>
 
+    <select id="matchPartiCheck" resultType="int">
+        SELECT count(*) FROM (SELECT * FROM matchparticipant_tbl where participantId = #{userId}) a inner join match_tbl b on a.matchId = b.matchId where anonymousCondi = 1 and status !=3;
+    </select>
+
 </mapper>
 

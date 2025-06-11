@@ -34,6 +34,7 @@ const LoginForm = () => {
         })
             .then((response) => {
                 localStorage.setItem("isAuth", true);
+                console.log(response.data.userDTO);
 
                 const {
                     userId,
@@ -46,6 +47,7 @@ const LoginForm = () => {
                     phone,
                     address,
                     introduction,
+                    private: isPrivate,
                     profile,
                 } = response.data.userDTO;
 
@@ -58,6 +60,7 @@ const LoginForm = () => {
                 localStorage.setItem("gender", gender);
                 localStorage.setItem("phone", phone);
                 localStorage.setItem("address", address);
+                localStorage.setItem("isPrivate", isPrivate);
                 localStorage.setItem("introduction", introduction);
                 localStorage.setItem("profile", profile);
                 localStorage.setItem("loginPlatform", 0);

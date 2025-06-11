@@ -104,4 +104,9 @@ public class UserService {
         List<PrevMatchDto> list = userMapper.prevMatchSelectAll(userId);
         return list;
     }
+
+    public int matchPartiCheck(String userId){
+        return userMapper.matchPartiCheck(userId);
+    }
+
 }

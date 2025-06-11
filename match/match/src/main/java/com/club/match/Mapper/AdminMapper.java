@@ -18,4 +18,6 @@ public interface AdminMapper {
     public List<LineChartDTO> registCount();
 
     int matchCheck(LocalDateTime now);
+
+    List<Long> nextDayMatch(int nextMonth, int nextDayOfMonth);
 }
