@@ -399,4 +399,42 @@ public class AuthController {
         resp.put("success",true);
         return ResponseEntity.ok().body(resp);
     }
+
+    @PostMapping("/naverLink")
+    public ResponseEntity<?> naverLink(@RequestBody Map<String, Object> req) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<String,Object> resp = new HashMap<>();
+
+        String code = (String) req.get("code");
+        String redirect_url = ((String) req.get("url")).split("&")[0];
+
+        ResponseEntity<NaverDTO> oauthResponse = authService.naverOauth(code,redirect_url);
+
+        ResponseEntity<NaverDTO> naverUserInfoResponse = authService.getUserNaverId(oauthResponse.getBody().access_token);
+
+        String userId = authentication.getName();
+        String linkedID = naverUserInfoResponse.getBody().getResponse().getId();
+        String email = naverUserInfoResponse.getBody().getResponse().getEmail();
+
+        SocialLinkDTO socialLinkDTO = SocialLinkDTO.builder()
+                .userId(userId)
+                .platformType("1")
+                .linkedId(linkedID)
+                .email(email)
+                .build();
+
+        List<SocialLinkDTO> socialLinkDTO1  = (List<SocialLinkDTO>)userService.searchUserAccountLink(socialLinkDTO).get("socialLinkDTO");
+        if(socialLinkDTO1.size() > 0) {
+            resp.put("FailCode","1");
+            resp.put("success",false);
+            return ResponseEntity.ok().body(resp);
+        }
+
+        boolean isAdded = authService.addSocialLink(socialLinkDTO);
+
+        resp.put("success",true);
+        return ResponseEntity.ok().body(resp);
+    }
 }

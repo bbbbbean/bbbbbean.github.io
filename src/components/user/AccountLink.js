@@ -22,6 +22,7 @@ export default function AccountLink() {
 
         switch (platform) {
             case "1": // 네이버
+                NaverLinkApi(code)
                 break;
             case "2": // 카카오
                 KakaoLinkApi(code)
@@ -99,8 +100,32 @@ export default function AccountLink() {
     };
 
     const handleNaverLink = (item) => {
-        console.log("네이버 계정 연결:", item);
+        const RESPONSE_TYPE = "code";
+        const url = "https://nid.naver.com/oauth2.0/authorize" +
+            `?client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}` +
+            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=1" +
+            "&state=STATE_STRING" +
+            "&response_type=" + RESPONSE_TYPE;
+        alert(url);
+
+        window.location.href = url;
     };
+
+    const NaverLinkApi = (code) => {
+        api.post("/api/auth/naverLink", {
+            code,
+            "url": window.location.href
+        })
+            .then((response) => {
+                if (response.data.success) {
+                    window.location.href = "/mypage/account_link"
+                } else {
+                    window.location.href = "/mypage/account_link?FailCode=" + response.data.FailCode;
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
 
     const handleGoogleLink = (item) => {
         console.log("구글 계정 연결:", item);
