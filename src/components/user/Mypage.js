@@ -11,6 +11,7 @@ const MyPageSection = () => {
   const [preMatches, setPreMatches] = useState([]);
   const [tag, setTag] = useState("");
   const [errorTag, setErrorTag] = useState("");
+  const [showUsingCalendarInfo, setShowUsingCalendarInfo] = useState(false);
 
   useEffect(() => {
     const prevMatchScroll = document.querySelector(".prev-match");
@@ -197,6 +198,15 @@ const MyPageSection = () => {
       <div className="user-info-calendar info-title">
         <span>My</span>
         <span>Calendar</span>
+        <div className="mypageCalendarInfo" onClick={() => setShowUsingCalendarInfo(prev => !prev)}>?</div>
+        {showUsingCalendarInfo && (
+          <p className="usingCalendarInfo">
+            날짜를 클릭하여 메모를 입력합니다<br/>
+            메모는 우클릭하여 확인이 가능합니다<br/>
+            입력된 메모는 shift + 우클릭으로 삭제합니다<br/>
+            북마크한 매치 / 본인이 등록한 매치 / 매칭된 매치는 달력에 입력됩니다<br/>
+          </p>
+        )}
         <div className="calendar-container">
           <UserCalendar />
         </div>
