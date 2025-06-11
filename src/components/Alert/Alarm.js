@@ -8,11 +8,17 @@ const Alarm = ({ openAlarm, alarmList, setOpenAlarm }) => {
 
     const { setAlarmUpdate } = useContext(WebSocketContext);
 
-    console.log(alarmList);
-
     const delNotification = (notificationId) =>{
-        console.log(notificationId);
         api.post("api/chat/alarm/del",{notificationId})
+        .then(response =>{
+            setAlarmUpdate(prev => (!prev));
+        }).catch(error =>{
+
+        })
+    }
+
+    const delAllNotification = () =>{
+        api.post("api/chat/alarm/del",{"notificationId":null})
         .then(response =>{
             setAlarmUpdate(prev => (!prev));
         }).catch(error =>{
@@ -28,6 +34,7 @@ const Alarm = ({ openAlarm, alarmList, setOpenAlarm }) => {
                     <button className="close" onClick={() => setOpenAlarm(false)}>x</button>
                 </div>
                 <div className="alert-list">
+                    {alarmList.length != 0 && <button onClick={delAllNotification}>전체삭제</button>}
                     <ul>
                         {alarmList.map((item) => {
                             return (

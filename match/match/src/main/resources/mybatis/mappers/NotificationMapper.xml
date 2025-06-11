@@ -15,7 +15,11 @@
     </update>
 
     <delete id="delete">
-        DELETE FROM notificationone_tbl where userId = #{userId} and notificationId = #{notificationId};
+            DELETE FROM notificationone_tbl
+            WHERE userId = #{userId}
+            <if test="notificationId != null">
+                AND notificationId = #{notificationId}
+            </if>
     </delete>
 
 </mapper>
