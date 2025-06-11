@@ -125,11 +125,12 @@ const AccordionModal = () => {
                 {/* 채팅 */}
                 {item.title === "채팅" && (
                   <div className="anw" style={{ height: activeAccordion === item.index ? '600px' : '0px' }}>
-                    <div className="friend-container">
+                    <div className="friend-container" style={{ width: '100%' }}>
                       <FriendRight
                         style1={{ width: '100%' }}
                         style2={{ height: '440px' }}
                         style3={{ height: '450px' }}
+                        style4={{ border: 'none', backgroundColor: '#fcfcfc' }}
                       />
                     </div>
                   </div>

@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import chatIcon from "../../image/image_message/chat-icon.svg"
 
 
-const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
+const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, style4={}, ...props }) => {
   // 기본 style에 style prop이 있으면 덮어쓰기
   const mergedStyle = {
     ...style1,
@@ -79,7 +79,7 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
 
   return (
     <section className="right" style={mergedStyle} {...props}>
-      {openChat && <Chat pos={activeTab} openChat={openChat} setOpenChat={setOpenChat} style2={style2} />}
+      {openChat && <Chat pos={activeTab} openChat={openChat} setOpenChat={setOpenChat} style2={style2} style4={style4}/>}
       <div className="friendlist" style={{ display: openChat ? 'none' : 'flex' }}>
         <div className={`myfriend ${activeTab === 'friend' ? 'active' : ''}`}
           onClick={() => setActiveTab('friend')}>친구</div>

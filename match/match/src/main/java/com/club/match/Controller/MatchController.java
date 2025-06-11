@@ -198,6 +198,7 @@ public class MatchController {
         Duration duration = Duration.between(LocalDateTime.now(), matchOneDto.getStartTime());
 
         long days = duration.toDays();
+        log.info("days"+days);
 
         if(days == 1){
             return ResponseEntity.badRequest().body("매치 하루전에는 삭제할수 없습니다.");

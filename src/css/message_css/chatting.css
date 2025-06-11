@@ -81,6 +81,25 @@
     font-weight: 300;
     top: -5px;
 }
+/* 참가자 */
+.match-chat-user-wrap{
+    width: 100%;
+    padding: 0 20px 10px;
+    display: none;
+}
+.match-chat-user{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap:4px;
+    flex-wrap: wrap;
+}
+.match-chat-user-el{
+    border: 1px solid #6ec2fe;
+    padding: 3px 15px;
+    border-radius: 50px;
+    font-size: 14px;
+}
 
 .match-chat-content {
     height: 75%;
