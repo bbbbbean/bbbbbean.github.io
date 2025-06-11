@@ -67,19 +67,19 @@ const AccordionModal = () => {
   return (
     <>
       <Draggable
-        position={position}
-        onStart={() => {
-          setDragging(true);
-          setWasDragging(false);
-        }}
-        onDrag={() => {
-          setWasDragging(true);
-        }}
-        onStop={(e, data) => {
-          setDragging(false);
-          setPosition({ x: data.x, y: data.y });
-          setTimeout(() => setWasDragging(false), 100);
-        }}
+        // position={position}
+        // onStart={() => {
+        //   setDragging(true);
+        //   setWasDragging(false);
+        // }}
+        // onDrag={() => {
+        //   setWasDragging(true);
+        // }}
+        // onStop={(e, data) => {
+        //   setDragging(false);
+        //   setPosition({ x: data.x, y: data.y });
+        //   setTimeout(() => setWasDragging(false), 100);
+        // }}
       >
         <div className="Accordion-modal">
           <div

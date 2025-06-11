@@ -1,12 +1,18 @@
 /* �ϴ� ���� ���ڵ�� �Ŵ� */
 
-.Accordion-modal{
+/* .Accordion-modal{
   position: absolute;
   right: 2rem;
   bottom: 1rem;
   z-index: 2000;
   top: 550px;
   right: 0px;
+} */
+.Accordion-modal{
+  position: fixed;
+  bottom: 20px;
+  right: 3px;
+  z-index: 2000;
 }
 .accordion-button{
   position: absolute;
