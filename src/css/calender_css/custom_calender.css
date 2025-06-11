@@ -71,7 +71,7 @@ abbr[title] {
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
  background: #90d1ff;
- color: white;
+ color: #6750b4;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
  background-color: #97D4FF;
@@ -89,7 +89,7 @@ abbr[title] {
 .react-calendar__tile--rangeEnd {
  border-radius: 3px;
  background: #98d4ff;
- color: white;
+ color: #6750b4;
 }
 
 .calendar-content{

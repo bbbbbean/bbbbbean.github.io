@@ -5,7 +5,7 @@ import mark2 from "../../image/image_match/bookmark.svg";
 import { useNavigate } from "react-router-dom";
 import { WebSocketContext } from "../../WebSocket";
 import check from "../../image/image_match/check.svg";
-import groups from "../../image/image_match/groups.svg";  
+import groups from "../../image/image_match/groups.svg";
 import gender from "../../image/image_match/gender.svg";
 
 const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
@@ -35,7 +35,6 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
   });
 
   useEffect(() => {
-    console.log("Fetching match data for ID:", selectMatch);
     api
       .post("/match/detail", { matchId: selectMatch })
       .then((response) => {
@@ -50,19 +49,6 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
         console.error("Error fetching match data:", error);
       });
   }, [selectMatch]);
-
-  // 상태 정보들
-  match.anonymousCondi = match.anonymousCondi == 0 ? "익명" : "실명";
-
-  if (match.genderCondi === 0) {
-    if (match.gender === "female") {
-      match.genderCondi = "여성만";
-    } else {
-      match.genderCondi = "남성만";
-    }
-  } else {
-    match.genderCondi = "남녀 모두";
-  }
 
   // 날짜
   const formatDateInfo = (startTimeStr) => {
@@ -89,21 +75,23 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
     return kategorie;
   };
 
-  console.log("Select : " + selectMatch);
   useEffect(() => {
     const matchModal = document.querySelector(".match-modal");
 
     let modalOut = true;
     matchModal.addEventListener("mouseenter", (e) => {
-      modalOut = !modalOut;
+      modalOut = false;
+      console.log(modalOut);
     });
     matchModal.addEventListener("mouseleave", (e) => {
-      modalOut = !modalOut;
+      modalOut = true;
+      console.log(modalOut);
     });
 
     const matchModalContainer = document.querySelector(
       ".match-modal-container"
     );
+    
     matchModalContainer.addEventListener("click", (e) => {
       if (modalOut) setSelectMatch(null);
     });
@@ -233,19 +221,20 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
               </a>
             )}
           </div>
+          
           <div className="match-modal-info-left">
             <div className="match-symbol-container">
               {[check, groups, gender].map((icon, i) => (
                 <div className="match-symbol-el" key={i}>
                   <div className="match-symbol">
-                    <img src={icon}/>
+                    <img src={icon} />
                   </div>
                   <p>
                     {
                       [
                         match.people + "명",
-                        match.anonymousCondi,
-                        match.genderCondi,
+                        match.anonymousCondi === 0 ? "익명": "실명",
+                        match.genderCondi !== 0 ? "남녀모두" : match.gender === "female" ? "여성만" : "남성만",
                       ][i]
                     }
                   </p>
@@ -295,7 +284,6 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
                     <button onClick={handleJoin}>확인</button>
                     <button
                       onClick={() => {
-                        setSelectMatch(null);
                         setShowJoinConfirm(false);
                       }}
                     >
@@ -311,7 +299,6 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
                     <button onClick={handleDelete}>확인</button>
                     <button
                       onClick={() => {
-                        setSelectMatch(null);
                         setShowDeleteConfirm(false);
                       }}
                     >
