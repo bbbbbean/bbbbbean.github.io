@@ -79,7 +79,7 @@ const ChangePassword = () => {
       <div className="user-info-content">
         <span></span>
         <div className="password">
-          <div className="password-edit info-edit">
+          <div className="password-edit">
             <p>새로운 비밀번호를 입력하세요</p>
             {(!pwError && !pwSuccess) && <br />}<p style={{ color: "#dd3e3e", fontWeight: "bold" }}>{pwError}{pwSuccess}</p>
             <form onSubmit={handleSubmit}>
