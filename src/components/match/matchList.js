@@ -15,6 +15,7 @@ import newMatch from "./newMatch";
 
 //검색 결과용
 import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -231,19 +232,28 @@ const MatchList = () => {
 
   //검색 결과용
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const keyword = searchParams.get("keyword");
 
-  useEffect(() => {
-    if (keyword) {
-      api.post("/api/main/findMatch", { keyword })
-        .then((res) => setMatches(res.data.matches))
-        .catch((err) => console.error("검색 실패", err));
-    } else {
-      api.get(`/match/list?type=${type}`)
-        .then((res) => setMatches(res.data))
-        .catch((err) => console.error("전체 리스트 실패", err));
+useEffect(() => {
+  const fetchMatches = async () => {
+    try {
+      if (keyword) {
+        const res = await api.post("/api/main/findMatch", { keyword });
+        setMatches(res.data.matches);
+      } else {
+        const res = await api.get(`/match/list?type=${type}`);
+        setMatches(res.data);
+      }
+    } catch (err) {
+      console.error("데이터 가져오기 실패", err.response?.data || err.message);
     }
-  }, [keyword, type]);
+  };
+
+  fetchMatches();
+}, [keyword, type, location.key]); 
+
+
 
   const nullMatch = (matches.length === 0) ? (
     <div className="match-list-no-matches">

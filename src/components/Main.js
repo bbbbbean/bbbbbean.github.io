@@ -39,26 +39,40 @@ const Main = () => {
 
   //검색 코드
   const [matchFindValue, setMatchFindValue] = useState("");
-  const matchFind = () => {
-    console.log("검색어:", matchFindValue);
-    api.post("/api/main/findMatch", { keyword: matchFindValue })
-      .then((response) => {
-        console.log(response.data.matches);
-        setNewMatchList(response.data.matches);
-      })
-      .catch((error) => {
-        console.error("검색 실패:", error.response?.data || error.message);
-        setNewMatchList([]); 
-      });
-  };
+  // const matchFind = () => {
+  //   console.log("검색어:", matchFindValue);
+  //   api.post("/api/main/findMatch", { keyword: matchFindValue })
+  //     .then((response) => {
+  //       console.log(response.data.matches);
+  //       setNewMatchList(response.data.matches);
+  //     })
+  //     .catch((error) => {
+  //       console.error("검색 실패:", error.response?.data || error.message);
+  //       setNewMatchList([]); 
+  //     });
+  // };
 
   //검색 후 페이지 이동
   const navigate = useNavigate();
-  const handleSearch = () => {
-    if (matchFindValue.trim()) {
-       navigate(`/match/list/all?keyword=${encodeURIComponent(matchFindValue)}`);
+const handleSearch = async () => {
+  if (matchFindValue.trim()) {
+    try {
+      const response = await api.post("/api/main/findMatch", {
+        keyword: matchFindValue.trim(),
+      });
+      const matches = response.data.matches;
+
+      if (matches.length === 0) {
+        alert("검색 결과가 없습니다.");
+      } else {
+        navigate(`/match/list/all?keyword=${matchFindValue.trim()}`);
+      }
+    } catch (error) {
+      console.error("검색 오류:", error);
+      alert("검색 중 오류가 발생했습니다.");
     }
-  };
+  }
+};
 
 
   const [tags, setTags] = useState([]);
