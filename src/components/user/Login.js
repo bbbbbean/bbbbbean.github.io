@@ -143,7 +143,7 @@ const LoginForm = () => {
                     <span>SNS 계정으로 간편하게 로그인하세요</span>
                     <ul>
                         <li>
-                            <a href="#"></a>
+                            <Link to="http://localhost:8100/oauth2/authorization/naver" />
                         </li>
                         <li>
                             <Link to="http://localhost:8100/oauth2/authorization/kakao" />

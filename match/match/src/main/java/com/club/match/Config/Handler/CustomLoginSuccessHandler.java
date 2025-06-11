@@ -3,8 +3,10 @@ package com.club.match.Config.Handler;
 import java.io.IOException;
 import java.time.Duration;
 
+import com.club.match.Config.auth.PrincipalDetails;
 import com.club.match.Config.auth.provider.JwtTokenProvider;
 import com.club.match.Domain.DTO.JwtTokenDTO;
+import com.club.match.Domain.DTO.UserDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +31,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     }
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
-        System.out.println("");
+        System.out.println("소셜로그인 성공" + auth);
+
+        UserDTO userDTO = (UserDTO) ((PrincipalDetails) auth.getPrincipal()).getUserDto();
+
+        String platform = userDTO.getPlatform();
 
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(auth);
         Cookie cookie1 = new Cookie("accessToken", jwtTokenDTO.getAccessToken());
@@ -55,6 +61,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         if(session!=null)
             session.invalidate();
 
-        resp.sendRedirect(url+"/ok?userId="+auth.getName());
+        resp.sendRedirect(url+"/oauth2/"+platform);
     }
 }

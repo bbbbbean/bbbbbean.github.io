@@ -106,7 +106,6 @@ export default function AccountLink() {
             "&redirect_uri=http://localhost:3000/mypage/account_link?platform=1" +
             "&state=STATE_STRING" +
             "&response_type=" + RESPONSE_TYPE;
-        alert(url);
 
         window.location.href = url;
     };

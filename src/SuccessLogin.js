@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import instance from "./axios"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "./store"
 
@@ -10,8 +10,9 @@ const SuccessLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { platform } = useParams();
+
   useEffect(() => {
-    const userId = new URL(window.location.href).search.split("=")[1];
     localStorage.setItem("isAuth", true);
     instance.post("/api/auth/oAuthLogin")
       .then((response) => {
@@ -40,7 +41,7 @@ const SuccessLogin = () => {
         localStorage.setItem("address", address);
         localStorage.setItem("introduction", introduction);
         localStorage.setItem("profile", profile);
-        localStorage.setItem("loginPlatform", 2);
+        localStorage.setItem("loginPlatform", platform);
 
         dispatch(login());
 

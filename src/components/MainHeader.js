@@ -179,7 +179,7 @@ const MainHeader = () => {
         )}
       </nav>
       <div className="line" />
-      <Alarm openAlarm={openAlarm} alarmList={alarmList} />
+      <Alarm openAlarm={openAlarm} alarmList={alarmList} setOpenAlarm={setOpenAlarm} />
     </header>
   );
 };
