@@ -166,6 +166,11 @@ const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
                     <span className="material-symbols-outlined" onClick={handleClose}>Close</span>
                 </div>
             </div>
+            <div className="match-chat-user-wrap">
+                <ul className="match-chat-user">
+                    <li className="match-chat-user-el"></li>
+                </ul>
+            </div>
             <div className="match-chat-line"></div>
             <div className="match-chat-content" style={chatContentStyle}>
                 {messages.map((msg, index) => (

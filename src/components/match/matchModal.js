@@ -4,6 +4,9 @@ import "../../css/matching_css/matchModalContent.css";
 import mark2 from "../../image/image_match/bookmark.svg";
 import { useNavigate } from "react-router-dom";
 import { WebSocketContext } from "../../WebSocket";
+import check from "../../image/image_match/check.svg";
+import groups from "../../image/image_match/groups.svg";  
+import gender from "../../image/image_match/gender.svg";
 
 const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
   const { client, setUserInfomation } = useContext(WebSocketContext);
@@ -232,10 +235,10 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
           </div>
           <div className="match-modal-info-left">
             <div className="match-symbol-container">
-              {["Check", "Groups", "Wc"].map((icon, i) => (
+              {[check, groups, gender].map((icon, i) => (
                 <div className="match-symbol-el" key={i}>
                   <div className="match-symbol">
-                    <span className="material-symbols-outlined">{icon}</span>
+                    <img src={icon}/>
                   </div>
                   <p>
                     {

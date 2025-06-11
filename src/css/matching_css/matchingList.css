@@ -77,6 +77,10 @@ button {
   color: white;
 }
 
+.match-symbol img{
+  width: 30px;
+}
+
 .pm-match-title {
   padding: 25px;
   color: white;
