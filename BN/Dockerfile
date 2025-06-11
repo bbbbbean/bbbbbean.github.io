@@ -9,10 +9,10 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # 빌드한 JAR 복사
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar match-0.0.1-SNAPSHOT.jar
 
 # 외부 접근을 위한 포트 설정
 EXPOSE 8100
 
 # JAR 실행
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "match-0.0.1-SNAPSHOT.jar"]

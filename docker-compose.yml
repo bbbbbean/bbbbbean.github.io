@@ -46,7 +46,7 @@ services:
       custom-network:
         # ipv4_address: 192.168.1.30
     ports:
-      - "3306:3306"
+      - "3308:3306"
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
       interval: 30s
