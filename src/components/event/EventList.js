@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import api from "../../axios";
-import "../../css/CSS_community-page/community_page_list.css";
+import "../../css/event_css/EventList.css";
 import searchIcons from "../../../src/image/image_event/search_icon.svg";
 
 const Community_page_list = () => {
   const { postCodeId } = useParams();
   const [selectedMenu, setSelectedMenu] = useState(() => {
-    return postCodeId ? Number(postCodeId) : 5;
+    return postCodeId ? Number(postCodeId) : 6;
   });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -121,10 +121,10 @@ const Community_page_list = () => {
 
   // 로딩 및 에러 상태 처리
   if (loading) {
-    return <div className="forum-wrap">게시글을 불러오는 중...</div>;
+    return <div className="event-wrap">게시글을 불러오는 중...</div>;
   }
   if (error) {
-    return <div className="forum-wrap error-message">{error}</div>;
+    return <div className="event-wrap error-message">{error}</div>;
   }
 
   // 카테고리 매핑 (숫자 ID와 이름 매핑)
@@ -137,10 +137,26 @@ const Community_page_list = () => {
   ];
 
   return (
-    <div className="forum-wrap">
-      <div className="forum">
-        <div className="forum-menu">
-          <div className="forum-menu-el">
+    <div className="event-wrap">
+      <div className="event-section">
+        <span>
+          진행 중인 <p>이벤트</p>
+        </span>
+        <ul>
+          {[...Array(3)].map((_, idx) => (
+            <li key={idx}>
+              <a href="#">
+                <p>신규회원 이벤트!</p>
+                <p>이벤트 배너</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="event-board">
+        <div className="event-board-menu">
+          <div className="event-board-menu-el">
             {categories.map((category) => (
               <NavLink
                 key={category.id}
@@ -155,7 +171,7 @@ const Community_page_list = () => {
               </NavLink>
             ))}
           </div>
-          <div className="forum-menu-serch">
+          <div className="event-board-menu-serch">
             <input
               type="text"
               placeholder="검색어를 입력하세요"
@@ -171,8 +187,8 @@ const Community_page_list = () => {
             </button>
           </div>
         </div>
-        <ul className="forum-main">
-          <li className="forum-main-grid forum-header">
+        <ul className="event-board-main">
+          <li className="event-board-main-grid event-board-header">
             <p>글번호</p>
             <p>제목</p>
             <p>좋아요</p>
@@ -183,10 +199,10 @@ const Community_page_list = () => {
           </li>
           {posts.length > 0 ? (
             posts.map((post) => (
-              <li key={post.postId} className="forum-main-el">
+              <li key={post.postId} className="event-board-main-el">
                 <Link
                   to={`/community/select/${post.postId}`}
-                  className="forum-main-grid clickable-post-row"
+                  className="event-board-main-grid clickable-post-row"
                 >
                   <p>{post.postId}</p>
                   <p>{post.title}</p>
@@ -199,12 +215,12 @@ const Community_page_list = () => {
               </li>
             ))
           ) : (
-            <li className="forum-main-no-posts">
+            <li className="event-board-main-no-posts">
               <p>게시글이 없습니다.</p>
             </li>
           )}
         </ul>
-        <ul className="forum-listnum">
+        <ul className="event-board-listnum">
           <div className="page">
             {/* << 버튼 */}
             <div>
@@ -309,7 +325,7 @@ const Community_page_list = () => {
             </div>
           </div>
           {localStorage.getItem("isAuth") && (
-            <div className="forum-write">
+            <div className="event-board-write">
               <NavLink
                 to={`/community/write/${postCodeId}`}
                 className="write-button"
