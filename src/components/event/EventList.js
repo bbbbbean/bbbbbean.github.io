@@ -4,7 +4,7 @@ import api from "../../axios";
 import "../../css/event_css/EventList.css";
 import searchIcons from "../../../src/image/image_event/search_icon.svg";
 
-const Community_page_list = () => {
+const EventList = () => {
   const { postCodeId } = useParams();
   const [selectedMenu, setSelectedMenu] = useState(() => {
     return postCodeId ? Number(postCodeId) : 6;
@@ -340,4 +340,4 @@ const Community_page_list = () => {
   );
 };
 
-export default Community_page_list;
+export default EventList;
