@@ -49,19 +49,23 @@
   z-index: 10;
   display: none;
   position: absolute;
+<<<<<<< HEAD
   top: 100px;
   height: 470px;
   overflow-y: scroll;
 }
 .searchResult::-webkit-scrollbar{
   display: none;
+=======
+  top: 80px;
+>>>>>>> 6ff536ce02a2a432d21b23698b12ab98e3af2da8
 }
 .findinput {
   border: 1px solid #6ec3ff;
   border-radius: 49px;
   width: 90%;
   height: 48px;
-  margin: 25px auto 8px;
+  margin: 25px auto;
   display: flex;
   align-items: center;
   padding-left: 24px;
@@ -88,38 +92,45 @@
 }
 .friend-container > .left > .all > .friendalart {
   border-bottom: 1px solid #6ec3ff;
-  position: relative;
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-.friend-container > .left > .all > .friendalart > h1 {
-  margin-left: 24px;
+.friendalart-title{
+    width: 100%;
+}
+.friendalart-title h1 {
+  width: 25%;
+  margin: 20px 10px;
+  padding-left: 12px;
+  padding-bottom: 11px;
   font-size: 20px;
-  font-weight: 600;
-  color: #6b6b6b;
-  padding-bottom: 10px;
+  font-weight: 800;
+  color: #444444;
+  justify-self: left;
+  border-bottom: 3px solid #6ec3ff;
 }
 .friend-container > .left > .all > .friendalart > .person {
   display: flex;
-  margin-bottom: 20px;
-  position: relative;
-  /* background-color: cadetblue; */
-  /* border: 1px solid; */
-  /* width: 400px; */
+  align-items: center;
+  justify-content: start;
+  width: 90%;
+  padding: 16px 0;
+}
+.friend-container > .left > .all > .friendalart > .person:not(:last-child){
+    border-bottom: 1px solid #c0c0c0;
 }
 
 .friend-container > .left > .all > .friendalart > .person > .profile {
   border-radius: 50%;
   width: 52px;
-  height: 52px;
   background-color: #fbb00e;
-  margin-left: 24px;
 }
 
 .friend-container > .left > .all > .friendalart > .person > .word1 {
-  /* border: 1px solid; */
-  width: 200px;
-  height: 30px;
+  width: 300px;
   margin-left: 10px;
-  /* background-color: bisque; */
 }
 
 .friend-container > .left > .all > .friendalart > .person > .word1 > .name {
@@ -128,22 +139,14 @@
 }
 
 .friend-container > .left > .all > .friendalart > .person > .word1 > .oneline {
-  /* border: 1px solid; */
   font-size: 16px;
-  /* width: 100px; */
   color: #6b6b6b;
 }
 .friend-container > .left > .all > .friendalart > .person > .requestbuttons {
-  /* cursor: pointer; */
-  position: absolute;
-  left: 370px;
-  height: 100%;
-  /* background-color: blueviolet; */
   display: flex;
   align-items: center;
 }
-.requestbuttons > .accept,
-.reject {
+.requestbuttons > .accept{
   cursor: pointer;
   position: relative;
   border: none;
@@ -151,8 +154,25 @@
   color: white;
   width: 50px;
   height: 35px;
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 5px;
   margin-bottom: 8px;
+}
+.requestbuttons > .accept:hover {
+  opacity: 0.8;
+}
+.requestbuttons > .reject{
+   cursor: pointer;
+  position: relative;
+  border: none;
+  background-color: #d6d6d6;
+  color: white;
+  width: 50px;
+  height: 35px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+.requestbuttons > .reject:hover {
+  background-color: #ff4545;
 }
 .friend-container
   > .left
@@ -175,8 +195,6 @@
   display: flex;
   margin-bottom: 20px;
   position: relative;
-  /* border: 1px solid; */
-  /* width: 400px; */
 }
 
 .friend-container > .left > .all > .person > .profile {
@@ -224,15 +242,22 @@
   border: 1px solid #6b6b6b;
   margin-top: 35px;
   left: 440px;
-  font-size: 17px;
+  font-size: 16px;
   width: 100px;
-  height: 100px;
   text-align: center;
-  color: #6b6b6b;
-  padding: 10px 0;
+  color: #363636;
+  padding: 4px 0;
   border-radius: 0px 10px 10px 10px;
   background-color: white;
   z-index: 3;
+  overflow: hidden;
+}
+.friendmenu li{
+  cursor: pointer;
+  padding: 4px 0;
+}
+.friendmenu li:hover {
+  background-color: #f1f1f1;
 }
 
 .friend-container > .left > .all > .person > .friendmenu.show {
@@ -287,17 +312,17 @@
 .friend-container > .right > .friendlist > .myfriend,
 .im-in {
   cursor: pointer;
-  border: 3px solid #6ec3ff;
+  border: 2px solid #6ec3ff;
   border-radius: 30px;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 16px;
   margin-bottom: 20px;
   margin-right: 10px;
-  padding: 10px 20px;
+  padding: 5px 20px;
 }
 
 .friend-container > .right > .friendlist > .active {
   background-color: rgb(110, 195, 255, 0.55);
+  font-weight: 700;
 }
 /* //------------------------------------- */
 .friend-container > .right > .chatroom-wrapper {
@@ -311,7 +336,7 @@
 .friend-container > .right > .chatroom-wrapper > .chatroom {
   display: flex;
   border: 1px solid #6ec3ff;
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 12px;
   width: 100%;
   height: 100px;
   align-items: center;
@@ -343,7 +368,6 @@
 }
 .friend-container > .right > .chatroom-wrapper > .chatroom > .word1 {
   width: 74%;
-  height: 30px;
   margin-left: 10px;
 }
 .friend-container
@@ -491,14 +515,17 @@
 .no-chat-message {
   justify-items: center;
   text-align: center;
-  padding-top: 212px;
+  padding-top: 170px;
 }
 .no-chat-message > img {
-  width: 100px;
+  width: 80px;
   align-self: center;
 }
-.no-chat-message > div {
+.no-chat-text p:first-child {
   font-size: 20px;
-  color: #6ec3ff;
-  font-weight: 700;
+}
+.no-chat-text p:last-child {
+  font-size: 16px;
+  margin-top: 7px;
+    color: #707070;
 }

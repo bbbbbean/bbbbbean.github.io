@@ -134,7 +134,7 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
           navigate(`/friend`, { state: { chatCode: match.chatCode } });
         } else {
           console.error("신청 실패:", response.data);
-          alert("신청에 실패했습니다. 조건을 확인해주세요");
+          alert("신청에 실패했습니다. 조건을 확인해주세요.");
         }
       })
       .catch((err) => {
