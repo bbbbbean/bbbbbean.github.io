@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "http://localhost:8100",
+    baseURL: "https://blogproject.shop",
     timeout: 2000,
 });
 
@@ -33,7 +33,7 @@ api.interceptors.response.use(
         if (error.response.data.message && error.response.data.message.includes("refresh")) {
             try {
                 await axios.post(
-                    "http://localhost:8100/api/auth/reneToken",
+                    "https://blogproject.shop/api/auth/reneToken",
                     {},
                     { withCredentials: true, headers: { 'refresh': 'refresh' } }
                 );
