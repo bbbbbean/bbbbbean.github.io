@@ -131,20 +131,20 @@ export default function AccountLink() {
       });
   };
 
-  const handleGoogleLink = (item) => {
+  const handleKakaoLink = () => {
+    const RESPONSE_TYPE = "code";
     const url =
-      "https://accounts.google.com/o/oauth2/v2/auth" +
-      `?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}` +
-      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=3" +
-      "&response_type=code" +
-      "&scope=email%20profile%20openid";
+      "https://kauth.kakao.com/oauth/authorize" +
+      `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
+      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
+      "&response_type=" +
+      RESPONSE_TYPE;
 
     window.location.href = url;
   };
-
-  const GoogleLinkApi = (code) => {
+  const KakaoLinkApi = (code) => {
     api
-      .post("/api/auth/googleLink", {
+      .post("/api/auth/kakaoLink", {
         code,
         url: window.location.href,
       })
@@ -161,20 +161,20 @@ export default function AccountLink() {
       });
   };
 
-  const handleKakaoLink = () => {
-    const RESPONSE_TYPE = "code";
+  const handleGoogleLink = (item) => {
     const url =
-      "https://kauth.kakao.com/oauth/authorize" +
-      `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
-      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
-      "&response_type=" +
-      RESPONSE_TYPE;
+      "https://accounts.google.com/o/oauth2/v2/auth" +
+      `?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}` +
+      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=3" +
+      "&response_type=code" +
+      "&scope=email%20profile%20openid";
 
     window.location.href = url;
   };
-  const KakaoLinkApi = (code) => {
+
+  const GoogleLinkApi = (code) => {
     api
-      .post("/api/auth/kakaoLink", {
+      .post("/api/auth/googleLink", {
         code,
         url: window.location.href,
       })

@@ -451,10 +451,10 @@ public class AuthController {
         log.info(redirect_url);
 
         ResponseEntity<GoogleDTO> oauthResponse = authService.googleOauth(code, redirect_url);
-        log.info("구글 DTO {}",oauthResponse.getBody().getAccess_token());
+//        log.info("구글 DTO {}",oauthResponse.getBody().getAccess_token());
 
         ResponseEntity<GoogleDTO> googleUserInfoResponse = authService.getUserGoogleId(oauthResponse.getBody().getAccess_token());
-        log.info("구글 유저정보{}", String.valueOf(googleUserInfoResponse));
+//        log.info("구글 유저정보{}", String.valueOf(googleUserInfoResponse));
 
         SocialLinkDTO socialLinkDTO = SocialLinkDTO.builder()
                 .userId(authentication.getName())
