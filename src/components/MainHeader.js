@@ -4,7 +4,7 @@ import "../css/common_css/custom.css";
 import logo from "../image/로고_color.png";
 import loginIcon from "../image/image_index/login-b-icon.svg";
 import noticeIcon from "../image/image_index/notice-b-icon.svg";
-import menuIcon from "../image/image_index/menu-icon.svg";
+import accountIcon from "../image/image_main/account.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsAuth } from "../store";
 import { useEffect, useState, useContext } from "react";
@@ -104,7 +104,7 @@ const MainHeader = () => {
             <NavLink to="/friend">친구</NavLink>
           </li>
           <li className="mainmenu">
-            <NavLink key={"5"} to="/community/list/5">
+            <NavLink to="#">
               커뮤니티
             </NavLink>
             <ul className="submenu">
@@ -163,7 +163,7 @@ const MainHeader = () => {
             </li>
             <li>
               <NavLink to="/mypage/">
-                <img src={menuIcon} alt="" />
+                <img src={accountIcon} alt="" />
               </NavLink>
             </li>
           </ul>
