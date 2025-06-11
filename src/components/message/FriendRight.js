@@ -105,9 +105,9 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
               ) : (
                     <div className="no-chat-message">
                       <img src={chatIcon} alt="채팅없음"></img>
-                      <div>
-                        친구 목록에 친구가 없습니다.<br/>
-                        친구를 추가해보세요!
+                      <div className='no-chat-text'>
+                        <p>친구 목록에 친구가 없습니다</p>
+                        <p>친구를 추가해보세요!</p>
                       </div>
                     </div>
                   )
@@ -128,9 +128,9 @@ const FriendRight = ({ style1 = {}, style2 = {}, style3 = {}, ...props }) => {
             ) : (
               <div className="no-chat-message">
                 <img src={chatIcon} alt="채팅없음"></img>
-                <div>
-                  참여한 매칭이 없습니다.<br/>
-                  매칭에 참여해보세요!
+                <div className='no-chat-text'>
+                  <p>참여한 매칭이 없습니다</p>
+                  <p>매칭에 참여해보세요!</p>
                 </div>
               </div>
             )

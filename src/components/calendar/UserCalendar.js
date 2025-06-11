@@ -123,7 +123,7 @@ function UserCalendar() {
                 const itemDate = new Date(item.startTime);
                 if (itemDate.getFullYear() === date.getFullYear() && itemDate.getMonth() === date.getMonth() && itemDate.getDate() === date.getDate()) {
                   return item.matchId ? (
-                    <p key={item.matchId} data-id={item.matchId} data-type="match" style={{ overflow:'hidden', whiteSpace: 'nowrap', color: 'black', backgroundColor: '#eff9ff', width: '100%', marginTop: '2px' }} onContextMenu={handleRightClick}>{item.title}</p>
+                    <p key={item.matchId} data-id={item.matchId} data-type="match" style={{ overflow:'hidden', whiteSpace: 'nowrap', backgroundColor: '#eff9ff', width: '100%', marginTop: '2px' }} onContextMenu={handleRightClick}>{item.title}</p>
                   ) : null;
                 }
                 return null;
