@@ -25,6 +25,8 @@ const MainHeader = () => {
 
   const { alarmUpdate } = useContext(WebSocketContext);
 
+  const profileImg = localStorage.getItem("profile");
+
   const readAlarm = () => {
     api
       .post("/api/chat/alarm/read")
@@ -163,7 +165,7 @@ const MainHeader = () => {
             </li>
             <li>
               <NavLink to="/mypage/">
-                <img src={accountIcon} alt="" />
+                <img src={profileImg} alt="" />
               </NavLink>
             </li>
           </ul>

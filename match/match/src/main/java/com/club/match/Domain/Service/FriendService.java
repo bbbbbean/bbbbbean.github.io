@@ -137,8 +137,8 @@ public class FriendService {
         return friendMapper.deleteFriendRequest(dto.getUserId(), dto.getFriendId()) > 0;
     }
 
-    public List<UserDTO> findFriendByNickName(String nickName) {
-        List<UserDTO> userDTOList = friendMapper.findUserByNickName(nickName);
+    public List<UserDTO> findFriendByNickName(String nickName, String userId) {
+        List<UserDTO> userDTOList = friendMapper.findUserByNickName(nickName, userId);
         log.info("userDTOList : " + userDTOList);
         List<UserDTO> userDTOList1 = new ArrayList<>();
         for (UserDTO userDTO : userDTOList) {

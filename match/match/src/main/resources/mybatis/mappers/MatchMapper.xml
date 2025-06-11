@@ -41,7 +41,7 @@
         FROM match_tbl m
         INNER JOIN matchparticipant_tbl mp ON m.matchId = mp.matchId
         LEFT JOIN matchtag_tbl t ON m.matchId = t.matchId
-        WHERE kategorie = #{type}
+        WHERE kategorie = #{type} and status != 3
         GROUP BY m.matchId, startTime, title, people, status, tag, kategorie;
     </select>
 

@@ -18,7 +18,7 @@ public interface FriendMapper {
 
     UserDTO findUserById(@Param("userId") String userId);
 
-    List<UserDTO> findUserByNickName(String nickName);
+    List<UserDTO> findUserByNickName(String nickName, String userId);
 
     List<FriendDTO> findRequestsByFriendId(@Param("friendId") String friendId);
 

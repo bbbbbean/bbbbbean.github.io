@@ -199,9 +199,17 @@ public class MatchController {
 
         long days = duration.toDays();
 
-        if(days == 1){
+        log.info("매칭 취소 : " + duration.toDays());
+
+        if(days == 1 || days == 0){
             return ResponseEntity.badRequest().body("매치 하루전에는 삭제할수 없습니다.");
         }
+
+
+
+        List<String> list = matchService.allUser(matchId);
+
+        log.info("매칭 참여자 : " + list);
 
         if(matchOneDto.getUserId().equals(userId)) {
             matchService.deleteMatch(matchId);
@@ -211,10 +219,6 @@ public class MatchController {
             // 그룹 채팅 삭제
             matchService.deleteGroupChat(chatCode);
         }
-
-        List<String> list = matchService.allUser(matchId);
-
-        log.info("매칭 참여자 : " + list);
 
         Map<String,Object> resp = new HashMap<>();
 
@@ -251,8 +255,10 @@ public class MatchController {
 
         long days = duration.toDays();
 
-        if(days == 1){
-            return ResponseEntity.badRequest().body("매치 하루전에는 취소할수 없습니다.");
+        log.info("매칭 취소 : " + duration.toDays());
+
+        if(days == 1 || days == 0){
+            return ResponseEntity.badRequest().body("매치 하루전에는 삭제할수 없습니다.");
         }
 
         // 매칭 참여 테이블에서 삭제
