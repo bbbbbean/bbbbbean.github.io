@@ -7,38 +7,44 @@ import { WebSocketContext } from '../../WebSocket';
 
 const Logout = () => {
 
-    const {client} = useContext(WebSocketContext);
+    const { client } = useContext(WebSocketContext);
 
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
 
-    useEffect(() => {
+    const platformNum = Number(localStorage.getItem("loginPlatform"));
 
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,{},{
+    console.log(platformNum);
+
+    localStorage.clear();
+
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, {}, {
             withCredentials: true
         }).catch((error) => {
         });
 
-        const platform = Number(localStorage.getItem("loginPlatform"));
-
-        localStorage.clear();
         dispatch(logout());
 
-        switch (platform) {
+
+        switch (platformNum) {
             case 1: // 네이버
-                return;
+                window.open('https://nid.naver.com/nidlogin.logout');
+                break;
             case 2: // 카카오
                 window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&logout_redirect_uri=http://localhost:3000/user/login`;
                 return;
             case 3: // 구글
                 return;
         }
-        if (client){
+
+        navigate("/user/login")
+
+        if (client) {
             client.deactivate();
         }
-        navigate("/user/login");
     }, []);
 };
 

@@ -4,7 +4,7 @@ import api from "../../axios"
 import { WebSocketContext } from '../../WebSocket'
 import { useContext } from "react";
 
-const Alarm = ({ openAlarm, alarmList }) => {
+const Alarm = ({ openAlarm, alarmList, setOpenAlarm }) => {
 
     const { setAlarmUpdate } = useContext(WebSocketContext);
 
@@ -25,6 +25,7 @@ const Alarm = ({ openAlarm, alarmList }) => {
             <div className="alert-content">
                 <div className="alert-header">
                     <h2>알림</h2>
+                    <button className="close" onClick={() => setOpenAlarm(false)}>x</button>
                 </div>
                 <div className="alert-list">
                     <ul>
