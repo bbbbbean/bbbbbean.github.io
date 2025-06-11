@@ -1,5 +1,5 @@
 import searchIcon from "../../image/image_message/search-icon.svg";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef, use } from "react";
 import moreIcon from "../../image/image_message/more-icon.svg";
 import api from "../../axios";
 import { WebSocketContext } from "../../WebSocket";
@@ -31,6 +31,12 @@ const FriendLeft = () => {
   //유저찾기
   const friendfind = () => {
     console.log(friendfindValue);
+
+    if (friendfindValue.trim() === "") {
+      // 입력이 없으면 아무 동작 안 함 + 검색 결과 숨김
+      setFriendSearch([]);
+      return;
+    }
     api
       .post("/api/friend/findFriend", { nickName: friendfindValue })
       .then((response) => {
@@ -167,7 +173,25 @@ const FriendLeft = () => {
       .catch((error) => {
         console.error("상태 변경 실패:", error);
       });
-  };
+    };
+
+    const friendMenuRef = useRef(null);
+    const searchRef = useRef(null);
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if(friendMenuRef.current && !friendMenuRef.current.contains(e.target)) {
+          setOpenMenuKey(null);
+        }
+        if(searchRef.current && !searchRef.current.contains(e.target)) {
+          setFriendSearch([]);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
   return (
     <section className="left">
       <div className="all">
@@ -189,6 +213,7 @@ const FriendLeft = () => {
             </button>
           </div>
           <div
+            ref={searchRef}
             style={{ display: friendSearch.length !== 0 ? "block" : "none" }}
             className="searchResult"
           >
@@ -260,6 +285,7 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
+                  ref={friendMenuRef}
                   className={`friendmenu ${openMenuKey === `best-${idx}` ? "show" : ""
                     }`}
                 >
@@ -293,6 +319,7 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
+                  ref={friendMenuRef}
                   className={`friendmenu ${openMenuKey === `common-${idx}` ? "show" : ""
                     }`}
                 >
