@@ -11,7 +11,6 @@ const FriendLeft = () => {
   const [friends, setFriends] = useState([]);
   const [friendSearch, setFriendSearch] = useState([]);
   const [friendfindValue, setFriendfindValue] = useState("");
-  const [menuOpen, setMenuOpen] = useState({});
   const [openMenuKey, setOpenMenuKey] = useState(null);
   const handleMenuToggle = (key) => {
     setOpenMenuKey((prev) => (prev === key ? null : key));
@@ -194,13 +193,10 @@ const FriendLeft = () => {
             className="searchResult"
           >
             {friendSearch.map((friend, idx) => (
-              <div
-                onClick={() => {
+              <div className="person">
+                <img onClick={() => {
                   setUserInfomation(friend.userId);
-                }}
-                className="person"
-              >
-                <img src={friend.profile} className="profile"></img>
+                }} src={friend.profile} className="profile"></img>
                 <div className="word1">
                   <p className="name">{friend.nickName}</p>
                   <p className="oneline">{friend.introduction}</p>
@@ -219,13 +215,11 @@ const FriendLeft = () => {
           <div className="friendalart">
             <h1>친구 요청</h1>
             {friendRequest.map((friend, idx) => (
-              <div
-                onClick={() => {
-                  setUserInfomation(friend.userId);
-                }}
-                className="person"
-              >
-                <img src={friend.profile} className="profile"></img>
+              <div className="person" >
+                <img
+                  onClick={() => {
+                    setUserInfomation(friend.userId);
+                  }} src={friend.profile} className="profile"></img>
                 <div className="word1">
                   <div className="name">{friend.nickName}</div>
                   <div className="oneline">{friend.introduction}</div>
@@ -264,9 +258,8 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
-                  className={`friendmenu ${
-                    openMenuKey === `best-${idx}` ? "show" : ""
-                  }`}
+                  className={`friendmenu ${openMenuKey === `best-${idx}` ? "show" : ""
+                    }`}
                 >
                   <ul>
                     <li onClick={() => friendStatus(friend.userId, 0)}>
@@ -286,13 +279,10 @@ const FriendLeft = () => {
           <>
             <hr />
             {friends.map((friend, idx) => (
-              <div
-                onClick={() => {
+              <div className="person">
+                <img onClick={() => {
                   setUserInfomation(friend.userId);
-                }}
-                className="person"
-              >
-                <img src={friend.profile} className="profile"></img>
+                }} src={friend.profile} className="profile"></img>
                 <div className="word1">
                   <div className="name">{friend.nickName}</div>
                   <div className="oneline">{friend.introduction}</div>
@@ -301,9 +291,8 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
-                  className={`friendmenu ${
-                    openMenuKey === `common-${idx}` ? "show" : ""
-                  }`}
+                  className={`friendmenu ${openMenuKey === `common-${idx}` ? "show" : ""
+                    }`}
                 >
                   <ul>
                     <li onClick={() => friendStatus(friend.userId, 1)}>
