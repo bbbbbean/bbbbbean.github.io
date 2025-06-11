@@ -56,6 +56,15 @@ public class AuthService {
     @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
     String NAVER_CLIENT_SECRET;
 
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    String GOOGLE_CLIENT_ID;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    String GOOGLE_CLIENT_SECRET;
+
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    String GOOGLE_CLIENT_REDIRECT_URL;
+
     String RESPONSE_TYPE = "code";
 
     @Transactional(rollbackFor = Exception.class)
@@ -182,7 +191,6 @@ public class AuthService {
 
     public ResponseEntity<NaverDTO> naverOauth(String code, String redirect_url) {
 
-
         String url = "https://nid.naver.com/oauth2.0/token";
 
         HttpHeaders headers = new HttpHeaders();
@@ -224,7 +232,6 @@ public class AuthService {
 
     public ResponseEntity<KakaoDTO> kakaoOauth(String code, String redirect_url) {
 
-
         String url = "https://kauth.kakao.com/oauth/token";
 
         HttpHeaders headers = new HttpHeaders();
@@ -262,6 +269,47 @@ public class AuthService {
 
         return response;
     }
+
+    public ResponseEntity<GoogleDTO> googleOauth(String code, String redirect_url) {
+
+        String url = "https://oauth2.googleapis.com/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("client_id", GOOGLE_CLIENT_ID);
+        params.add("client_secret",GOOGLE_CLIENT_SECRET);
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("redirect_uri",redirect_url);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+
+//        ResponseEntity<String> response =
+//                rt.exchange(url, HttpMethod.POST, entity, String.class);
+
+                ResponseEntity<GoogleDTO> response =
+                rt.exchange(url, HttpMethod.POST, entity, GoogleDTO.class);
+//        log.info(response.getBody());
+        return response;
+    }
+
+    public ResponseEntity<GoogleDTO> getUserGoogleId(String access_token) {
+
+        String url = "https://www.googleapis.com/userinfo/v2/me";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + access_token);
+        RestTemplate rt = new RestTemplate();
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(headers);
+        ResponseEntity<GoogleDTO> response = rt.exchange(url, HttpMethod.GET, entity, GoogleDTO.class);
+//log.info("엔티티{}",response.getBody());
+
+        return response;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public UserDTO phoneCkeck(String phone) {
         return userMapper.selectUserPhone(phone);

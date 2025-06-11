@@ -102,7 +102,6 @@ const Community_page_list = () => {
   const handlePageChange = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
-      fetchPosts();
     }
   };
 

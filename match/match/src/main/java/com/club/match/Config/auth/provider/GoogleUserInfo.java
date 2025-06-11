@@ -10,47 +10,31 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class GoogleUserInfo implements OAuth2UserInfo{
+    private String id;
+    private Map<String,Object> attributes;
+
     @Override
     public String getName() {
-        return "";
+        return attributes.get("name").toString();
     }
 
     @Override
     public String getEmail() {
-        return "";
+        return attributes.get("email").toString();
     }
 
     @Override
     public String getProvider() {
-        return "";
+        return "3";
     }
 
     @Override
     public String getProviderId() {
-        return "";
+        return this.id;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return Map.of();
+        return this.attributes;
     }
-//    private Long id;
-//    private LocalDateTime created_at;
-//    private Map<String,Object> properties;
-//    private Map<String,Object> google_account;
-//
-//    @Override
-//    public String getName() {
-//        return id;
-//    }
-//
-//    @Override
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    @Override
-//    public String getProvider() {
-//        return "3";
-//    }
 }
