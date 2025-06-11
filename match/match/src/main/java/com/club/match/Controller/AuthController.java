@@ -1,5 +1,6 @@
 package com.club.match.Controller;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -423,6 +424,43 @@ public class AuthController {
                 .platformType("1")
                 .linkedId(linkedID)
                 .email(email)
+                .build();
+
+        List<SocialLinkDTO> socialLinkDTO1  = (List<SocialLinkDTO>)userService.searchUserAccountLink(socialLinkDTO).get("socialLinkDTO");
+        if(socialLinkDTO1.size() > 0) {
+            resp.put("FailCode","1");
+            resp.put("success",false);
+            return ResponseEntity.ok().body(resp);
+        }
+
+        boolean isAdded = authService.addSocialLink(socialLinkDTO);
+
+        resp.put("success",true);
+        return ResponseEntity.ok().body(resp);
+    }
+
+    @PostMapping("/googleLink")
+    public ResponseEntity<?> googleLink(@RequestBody Map<String, Object> req) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<String,Object> resp = new HashMap<>();
+
+        String code = (String) req.get("code");
+        String redirect_url = ((String) req.get("url")).split("&")[0];
+        log.info(code);
+        log.info(redirect_url);
+
+        ResponseEntity<GoogleDTO> oauthResponse = authService.googleOauth(code, redirect_url);
+        log.info("구글 DTO {}",oauthResponse.getBody().getAccess_token());
+
+        ResponseEntity<GoogleDTO> googleUserInfoResponse = authService.getUserGoogleId(oauthResponse.getBody().getAccess_token());
+        log.info("구글 유저정보{}", String.valueOf(googleUserInfoResponse));
+
+        SocialLinkDTO socialLinkDTO = SocialLinkDTO.builder()
+                .userId(authentication.getName())
+                .platformType("3")
+                .linkedId(googleUserInfoResponse.getBody().getId())
+                .email(googleUserInfoResponse.getBody().getEmail())
                 .build();
 
         List<SocialLinkDTO> socialLinkDTO1  = (List<SocialLinkDTO>)userService.searchUserAccountLink(socialLinkDTO).get("socialLinkDTO");

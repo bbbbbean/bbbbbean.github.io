@@ -15,6 +15,7 @@ import CommunityLayout from "./components/layout/CommunityLayout";
 import { WebSocketProvider } from "./WebSocket";
 import InformationPro from "./components/myInfo/InformationPro";
 import EventLayout from "./components/layout/EventLayout";
+import TokenCheck from "./components/user/tokenCheck";
 
 function AppComponent() {
   //로그인 여부 확인
@@ -37,6 +38,10 @@ function AppComponent() {
               <Route path="/community/*" element={<CommunityLayout />} />
               <Route path="/user/*" element={<UserLayout />} />
               <Route path="/oauth2/:platform" element={<SuccessLogin />} />
+              {/* <Route
+                path="mypage/account_link?platform=3"
+                element={<TokenCheck />}
+              /> */}
             </Routes>
           </div>
           <Footer />

@@ -132,8 +132,12 @@ export default function AccountLink() {
   };
 
   const handleGoogleLink = (item) => {
-    const RESPONSE_TYPE = "code";
-    const url = "";
+    const url =
+      "https://accounts.google.com/o/oauth2/v2/auth" +
+      `?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}` +
+      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=3" +
+      "&response_type=code" +
+      "&scope=email%20profile%20openid";
 
     window.location.href = url;
   };
