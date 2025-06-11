@@ -49,7 +49,16 @@
   z-index: 10;
   display: none;
   position: absolute;
+<<<<<<< HEAD
+  top: 100px;
+  height: 470px;
+  overflow-y: scroll;
+}
+.searchResult::-webkit-scrollbar{
+  display: none;
+=======
   top: 80px;
+>>>>>>> 6ff536ce02a2a432d21b23698b12ab98e3af2da8
 }
 .findinput {
   border: 1px solid #6ec3ff;
