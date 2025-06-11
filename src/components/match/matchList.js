@@ -1,6 +1,7 @@
 import "../../css/matching_css/matchingList.css";
 import mark1 from "../../image/image_match/bookmark_border.svg";
 import mark2 from "../../image/image_match/bookmark.svg";
+import nomatch from "../../image/image_match/matchlist.svg";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -244,6 +245,14 @@ const MatchList = () => {
     }
   }, [keyword, type]);
 
+  const nullMatch = (matches.length === 0) ? (
+    <div className="match-list-no-matches">
+      <img src={nomatch}/>
+      <p className="match-list-no-word">매칭이 없습니다</p>
+      <p className="match-list-no-word-l">매칭을 등록해보세요</p>
+    </div>
+  ) : "";
+
   return (
     <div className="match-page">
       {topHeader(type)}
@@ -296,6 +305,7 @@ const MatchList = () => {
         >
           매칭 등록
         </button>
+        <div className="match-list-no-wrap">{nullMatch}</div>
         {sortedGroupList.map(([dayKey, matchArray]) => {
           const [month, day] = dayKey.split("/");
           const weekday = ["일", "월", "화", "수", "목", "금", "토"][

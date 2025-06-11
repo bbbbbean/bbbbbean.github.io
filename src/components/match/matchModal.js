@@ -270,12 +270,12 @@ const MatchModal = ({ selectMatch, setSelectMatch, setReload }) => {
               }
 
               {match.hosted === 1 && (
-                <button className="match-modal-btn-el" onClick={() => { setShowDeleteConfirm(true) }}>
+                <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
                   매치 삭제
                 </button>
               )}
               {match.hosted == 2 && (
-                <button className="match-modal-btn-el" onClick={() => { setShowDeleteConfirm(true) }}>
+                <button className="match-modal-btn-delete" onClick={() => { setShowDeleteConfirm(true) }}>
                   참여 취소
                 </button>
               )}
