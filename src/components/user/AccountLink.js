@@ -1,206 +1,257 @@
 import { useEffect, useState } from "react";
-import api from "../../axios"
+import api from "../../axios";
 import { useLocation } from "react-router-dom";
+import { error } from "jquery";
 
 export default function AccountLink() {
+  const [naverEmail, setNaverEmail] = useState("미연동");
+  const [kakaoEmail, setKakaoEmail] = useState("미연동");
+  const [googleEmail, setGoogleEmail] = useState("미연동");
 
-    const [naverEmail, setNaverEmail] = useState("미연동");
-    const [kakaoEmail, setKakaoEmail] = useState("미연동");
-    const [googleEmail, setGoogleEmail] = useState("미연동");
+  const [naverFail, setNaverFail] = useState("");
+  const [kakaoFail, setKakaoFail] = useState("");
+  const [googleFail, setGoogleFail] = useState("");
+  const location = useLocation();
 
-    const [naverFail, setNaverFail] = useState("");
-    const [kakaoFail, setKakaoFail] = useState("");
-    const [googleFail, setGoogleFail] = useState("");
-    const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const platform = params.get("platform");
+    const code = params.get("code");
+    const failCode = params.get("FailCode");
 
-    useEffect(() => {
+    switch (platform) {
+      case "1": // 네이버
+        NaverLinkApi(code);
+        break;
+      case "2": // 카카오
+        KakaoLinkApi(code);
+        break;
+      case "3": // 구글
+        GoogleLinkApi(code);
+        break;
+    }
 
-        const params = new URLSearchParams(location.search);
-        const platform = params.get("platform");
-        const code = params.get("code");
-        const failCode = params.get("FailCode");
+    switch (failCode) {
+      case "1": // 네이버
+        setNaverFail("이미 연결된 네이버 계정입니다.");
+        break;
+      case "2": // 카카오
+        setKakaoFail("이미 연결된 카카오 계정입니다.");
+        break;
+      case "3": // 구글
+        setGoogleFail("이미 연결된 구글 계정입니다.");
+        break;
+    }
 
-        switch (platform) {
+    api
+      .post("/api/user/getAccountLink")
+      .then((response) => {
+        const socialLinkDTO = response.data.socialLinkDTO;
+        socialLinkDTO.forEach((item) => {
+          const platform = item.platformType;
+          const email = item.email;
+          switch (platform) {
             case "1": // 네이버
-                NaverLinkApi(code)
-                break;
+              setNaverEmail(email);
+              break;
             case "2": // 카카오
-                KakaoLinkApi(code)
-                break;
+              setKakaoEmail(email);
+              break;
             case "3": // 구글
-                break;
+              setGoogleEmail(email);
+              break;
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const handleUnLink = (e) => {
+    const platformType = e.target.className.split(" ")[0];
+    api.post("/api/auth/unLink", { platformType }).then((response) => {
+      if (response.status == 200) {
+        switch (platformType) {
+          case "1": // 네이버
+            setNaverEmail("미연동");
+            break;
+          case "2": // 카카오
+            setKakaoEmail("미연동");
+            break;
+          case "3": // 구글
+            setGoogleEmail("미연동");
+            break;
         }
-
-        switch (failCode) {
-            case '1': // 네이버
-                setNaverFail("이미 연결된 네이버 계정입니다.");
-                break;
-            case '2': // 카카오
-                setKakaoFail("이미 연결된 카카오 계정입니다.");
-                break;
-            case '3': // 구글
-                setGoogleFail("이미 연결된 구글 계정입니다.");
-                break;
+      } else {
+        switch (platformType) {
+          case "1": // 네이버
+            setNaverFail("연동해제 실패");
+            break;
+          case "2": // 카카오
+            setKakaoFail("연동해제 실패");
+            break;
+          case "3": // 구글
+            setGoogleFail("연동해제 실패");
+            break;
         }
+      }
+    });
+  };
 
-        api.post("/api/user/getAccountLink")
-            .then((response) => {
-                const socialLinkDTO = response.data.socialLinkDTO;
-                socialLinkDTO.forEach((item) => {
-                    const platform = item.platformType;
-                    const email = item.email;
-                    switch (platform) {
-                        case '1': // 네이버
-                            setNaverEmail(email);
-                            break;
-                        case '2': // 카카오
-                            setKakaoEmail(email);
-                            break;
-                        case '3': // 구글
-                            setGoogleEmail(email);
-                            break;
-                    }
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+  const handleNaverLink = (item) => {
+    const RESPONSE_TYPE = "code";
+    const url =
+      "https://nid.naver.com/oauth2.0/authorize" +
+      `?client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}` +
+      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=1" +
+      "&state=STATE_STRING" +
+      "&response_type=" +
+      RESPONSE_TYPE;
 
-    const handleUnLink = (e) => {
-        const platformType = e.target.className.split(" ")[0];
-        api.post("/api/auth/unLink", { platformType })
-            .then((response) => {
-                if (response.status == 200) {
-                    switch (platformType) {
-                        case '1': // 네이버
-                            setNaverEmail("미연동");
-                            break;
-                        case '2': // 카카오
-                            setKakaoEmail("미연동");
-                            break;
-                        case '3': // 구글
-                            setGoogleEmail("미연동");
-                            break;
-                    }
-                } else {
-                    switch (platformType) {
-                        case '1': // 네이버
-                            setNaverFail("연동해제 실패");
-                            break;
-                        case '2': // 카카오
-                            setKakaoFail("연동해제 실패");
-                            break;
-                        case '3': // 구글
-                            setGoogleFail("연동해제 실패");
-                            break;
-                    }
-                }
-            });
-    };
+    window.location.href = url;
+  };
 
-    const handleNaverLink = (item) => {
-        const RESPONSE_TYPE = "code";
-        const url = "https://nid.naver.com/oauth2.0/authorize" +
-            `?client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}` +
-            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=1" +
-            "&state=STATE_STRING" +
-            "&response_type=" + RESPONSE_TYPE;
+  const NaverLinkApi = (code) => {
+    api
+      .post("/api/auth/naverLink", {
+        code,
+        url: window.location.href,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          window.location.href = "/mypage/account_link";
+        } else {
+          window.location.href =
+            "/mypage/account_link?FailCode=" + response.data.FailCode;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-        window.location.href = url;
-    };
+  const handleGoogleLink = (item) => {
+    const RESPONSE_TYPE = "code";
+    const url = "";
 
-    const NaverLinkApi = (code) => {
-        api.post("/api/auth/naverLink", {
-            code,
-            "url": window.location.href
-        })
-            .then((response) => {
-                if (response.data.success) {
-                    window.location.href = "/mypage/account_link"
-                } else {
-                    window.location.href = "/mypage/account_link?FailCode=" + response.data.FailCode;
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-    }
+    window.location.href = url;
+  };
 
-    const handleGoogleLink = (item) => {
-        console.log("구글 계정 연결:", item);
-    };
+  const GoogleLinkApi = (code) => {
+    api
+      .post("/api/auth/googleLink", {
+        code,
+        url: window.location.href,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          window.location.href = "/mypage/account_link";
+        } else {
+          window.location.href =
+            "/mypage/account_link?FailCode=" + response.data.FailCode;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    const handleKakaoLink = () => {
-        const RESPONSE_TYPE = "code";
-        const url = "https://kauth.kakao.com/oauth/authorize" +
-            `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
-            "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
-            "&response_type=" + RESPONSE_TYPE;
+  const handleKakaoLink = () => {
+    const RESPONSE_TYPE = "code";
+    const url =
+      "https://kauth.kakao.com/oauth/authorize" +
+      `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
+      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
+      "&response_type=" +
+      RESPONSE_TYPE;
 
-        window.location.href = url;
-    };
-    const KakaoLinkApi = (code) => {
-        api.post("/api/auth/kakaoLink", {
-            code,
-            "url": window.location.href
-        })
-            .then((response) => {
-                if (response.data.success) {
-                    window.location.href = "/mypage/account_link"
-                } else {
-                    window.location.href = "/mypage/account_link?FailCode=" + response.data.FailCode;
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-    }
+    window.location.href = url;
+  };
+  const KakaoLinkApi = (code) => {
+    api
+      .post("/api/auth/kakaoLink", {
+        code,
+        url: window.location.href,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          window.location.href = "/mypage/account_link";
+        } else {
+          window.location.href =
+            "/mypage/account_link?FailCode=" + response.data.FailCode;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    return (
-        <div className="info-right">
-            <div className="user-info-title">
-                <div className="info-title">
-                    <span>계정</span>
-                    <span>연동</span>
-                </div>
-            </div>
-            <div className="user-info-content">
-                <span></span>
-                <div className="naver-link">
-                    <label>네이버</label>
-                    <span>{naverEmail}   </span>
-                    <span>{naverFail}</span>
-                    {naverEmail.indexOf("미연동") ?
-                        <button className="1 btn-link my-page-btn" onClick={handleUnLink}>연결해제</button>
-                        :
-                        <button className="btn-edit-naver btn-link my-page-btn" onClick={handleNaverLink}>연결하기</button>
-                    }
-
-                </div>
-                <span></span>
-                <div className="kakao-link">
-                    <label>카카오</label>
-                    <span>{kakaoEmail}   </span>
-                    <span>{kakaoFail}</span>
-                    {kakaoEmail.indexOf("미연동") ?
-                        <button className="2 btn-link  my-page-btn" onClick={handleUnLink}>연결해제</button>
-                        :
-                        <button className="btn-edit-kakao btn-link  my-page-btn" onClick={handleKakaoLink}>연결하기</button>
-                    }
-
-                </div>
-                <span></span>
-                <div className="google-link">
-                    <label>구글</label>
-                    <span>{googleEmail}   </span>
-                    <span>{googleFail}</span>
-                    {googleEmail.indexOf("미연동") ?
-                        <button className="3 btn-link my-page-btn" onClick={handleUnLink}>연결해제</button>
-                        :
-                        <button className="btn-edit-google btn-link my-page-btn" onClick={handleGoogleLink}>연결하기</button>
-                    }
-                </div>
-                <span></span>
-            </div>
-        </div >
-    );
+  return (
+    <div className="info-right">
+      <div className="user-info-title">
+        <div className="info-title">
+          <span>계정</span>
+          <span>연동</span>
+        </div>
+      </div>
+      <div className="user-info-content">
+        <span></span>
+        <div className="naver-link">
+          <label>네이버</label>
+          <span>{naverEmail} </span>
+          <span>{naverFail}</span>
+          {naverEmail.indexOf("미연동") ? (
+            <button className="1 btn-link my-page-btn" onClick={handleUnLink}>
+              연결해제
+            </button>
+          ) : (
+            <button
+              className="btn-edit-naver btn-link my-page-btn"
+              onClick={handleNaverLink}
+            >
+              연결하기
+            </button>
+          )}
+        </div>
+        <span></span>
+        <div className="kakao-link">
+          <label>카카오</label>
+          <span>{kakaoEmail} </span>
+          <span>{kakaoFail}</span>
+          {kakaoEmail.indexOf("미연동") ? (
+            <button className="2 btn-link  my-page-btn" onClick={handleUnLink}>
+              연결해제
+            </button>
+          ) : (
+            <button
+              className="btn-edit-kakao btn-link  my-page-btn"
+              onClick={handleKakaoLink}
+            >
+              연결하기
+            </button>
+          )}
+        </div>
+        <span></span>
+        <div className="google-link">
+          <label>구글</label>
+          <span>{googleEmail} </span>
+          <span>{googleFail}</span>
+          {googleEmail.indexOf("미연동") ? (
+            <button className="3 btn-link my-page-btn" onClick={handleUnLink}>
+              연결해제
+            </button>
+          ) : (
+            <button
+              className="btn-edit-google btn-link my-page-btn"
+              onClick={handleGoogleLink}
+            >
+              연결하기
+            </button>
+          )}
+        </div>
+        <span></span>
+      </div>
+    </div>
+  );
 }

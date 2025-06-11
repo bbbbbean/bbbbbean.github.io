@@ -67,6 +67,10 @@ public class PrincipalDetailsOAuth2Service extends DefaultOAuth2UserService {
 
         } else if(request.getRequestURI().contains("google")) {
 
+            //구글 로그인시
+            String id = attributes.get("id").toString();
+
+
         }
 
         System.out.println("oAuth2UserInfo : " + oAuth2UserInfo.getProvider());
