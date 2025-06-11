@@ -3,7 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    margin: 25px;
+    margin-top: 10px;
 }
 
 .info-container>.info-right>.user-info-tag>.date-tag>.tag-item,
@@ -161,14 +161,12 @@
 .user-info-calendar>.usingCalendarInfo{
     display: inline-block;
     margin-left: 5px;
-    font-size: 16px;
-    color: #6B6B6B;
+    font-size: 14px;
+    color: #ffffff;
     background-color: #fbb00e;
-    border-radius: 15px 15px 15px 0;
-    padding-top: 7px;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-bottom: 3px;
+    border-radius: 10px 10px 10px 0;
+    padding: 10px 20px;
     position:absolute;
     top: -65px;
+    line-height: 18px;
 }
