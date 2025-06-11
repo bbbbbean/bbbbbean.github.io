@@ -94,9 +94,41 @@ button {
   font-weight: bold;
 }
 
+/* 매칭 X */
+.match-list-no-wrap{
+  padding-top: 1px;
+}
+.match-list-no-matches{
+  width: 100%;
+  border-top: 2px solid #6ec2fe;
+  padding-top: 50px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.match-list-no-word{
+  font-size: 26px;
+  font-weight: bold;
+}
+.match-list-no-word-l{
+  font-size: 17px;
+  margin-top: 10px;
+  color: #585858;
+}
+.match-list-no-matches img{
+  width: 100px;
+  height: 100px;
+  margin-top: 20px;
+  rotate: -20deg;
+}
+
+
 .match-list {
   position: relative;
   margin-top: 50px;
+  min-height: 1000px;
 }
 .match-btn-box{
   display: flex;

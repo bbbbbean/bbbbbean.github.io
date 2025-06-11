@@ -67,19 +67,19 @@ const AccordionModal = () => {
   return (
     <>
       <Draggable
-        position={position}
-        onStart={() => {
-          setDragging(true);
-          setWasDragging(false);
-        }}
-        onDrag={() => {
-          setWasDragging(true);
-        }}
-        onStop={(e, data) => {
-          setDragging(false);
-          setPosition({ x: data.x, y: data.y });
-          setTimeout(() => setWasDragging(false), 100);
-        }}
+        // position={position}
+        // onStart={() => {
+        //   setDragging(true);
+        //   setWasDragging(false);
+        // }}
+        // onDrag={() => {
+        //   setWasDragging(true);
+        // }}
+        // onStop={(e, data) => {
+        //   setDragging(false);
+        //   setPosition({ x: data.x, y: data.y });
+        //   setTimeout(() => setWasDragging(false), 100);
+        // }}
       >
         <div className="Accordion-modal">
           <div
@@ -118,7 +118,7 @@ const AccordionModal = () => {
                   className={`que ${activeAccordion === item.index ? 'on' : ''}`}
                   onClick={(e) => handleAccordionClick(item.index, e)}
                 >
-                  <img src={item.icon} alt="아이콘" />
+                  <img src={item.icon} alt="아이콘" className="main-aco-icon"/>
                   <span>{item.title}</span>
                 </div>
 
