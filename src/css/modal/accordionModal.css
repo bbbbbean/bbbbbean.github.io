@@ -10,7 +10,7 @@
 }
 .accordion-button{
   position: absolute;
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 3px 0px 0px 3px;
   border: none;
   background-color: #F9AF0E;
   cursor: pointer;
@@ -46,12 +46,14 @@
   cursor: pointer;
   font-size: 1.2rem;
   color: #fff;
+  border-top: 1px solid #ffffff;
   border-bottom: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
   display: flex;
   align-items: center;
   overflow: hidden;
   max-height: 45px;
-  box-shadow : -2px -2px 4px 1px #337aac inset;
+  /* box-shadow : -2px -2px 4px 1px #337aac inset; */
 }
 .que>img{
   overflow: hidden;
@@ -64,7 +66,7 @@
 
 .que.on{
   background-color: #F9AF0E;
-  box-shadow : -2px -2px 4px 1px #b17d0b inset;
+  /* box-shadow : -2px -2px 4px 1px #b17d0b inset; */
 }
 .que.on>span{
   font-weight: 700;
@@ -76,7 +78,7 @@
   height: 0px;
   overflow: hidden;
   border-radius: 5px;
-  background-color: #f4f4f2;
+  background-color: #fcfcfc;
   font-size: 1rem;
   transition: all 1s ease;
 }
