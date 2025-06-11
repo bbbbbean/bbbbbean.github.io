@@ -7,7 +7,7 @@ const CommunityLayout = () => {
   return (
     <Routes>
       <Route path="/list" element={<Community_page_list />} />
-      <Route path="/list/:postCodeNumber" element={<Community_page_list />} />
+      <Route path="/list/:postCodeId" element={<Community_page_list />} />
       <Route path="/select/:postNumber" element={<Community_page_select />} />
       <Route path="/write/:postCodeNumber" element={<Community_page_write />} />
       <Route path="/edit/:postId" element={<Community_page_write />} />
