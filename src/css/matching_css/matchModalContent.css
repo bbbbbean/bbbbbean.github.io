@@ -203,6 +203,23 @@
   justify-content: center;
 }
 
+.match-modal-btn-delete {
+  text-align: center;
+  line-height: 70px;
+  width: 270px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgb(255, 71, 39);
+}
+
 .ok {
   background-color: #6ec2fe;
 }
@@ -230,7 +247,7 @@
 .custom-confirm-content {
   background-color: white;
   padding: 24px 32px;
-  border-radius: 16px;
+  border-radius: 3px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
   min-width: 280px;
@@ -238,31 +255,33 @@
 
 .custom-confirm-content p {
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  color: #2c2c2c;
+  font-weight: 700;
 }
 
 .custom-confirm-content button {
-  margin: 0 8px;
-  padding: 8px 16px;
+  margin: 0 4px;
+  padding: 8px 20px;
   font-size: 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .custom-confirm-content button:first-of-type {
-  background-color: #4CAF50;
+  background-color: #6ec2fe;
   /* 확인 - 초록색 */
   color: white;
 }
 
 .custom-confirm-content button:first-of-type:hover {
-  background-color: #45a049;
+  opacity: 0.8;
 }
 
 .custom-confirm-content button:last-of-type {
-  background-color: #f44336;
+  background-color: hsl(0, 0%, 74%);
   /* 취소 - 빨간색 */
   color: white;
 }
