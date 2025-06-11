@@ -178,7 +178,7 @@ public class ChatController {
 
                 ChatFileDTO fileDTO = ChatFileDTO.builder()
                         .messageId(respMessageDTO.getMessageId())
-                        .attachmentUrl("http://localhost:8100/chatFile/"+userId+"/"+ fileName+"/"+contentType)
+                        .attachmentUrl("http://blogproject.shop/chatFile/"+userId+"/"+ fileName+"/"+contentType)
                         .originalFileName(originalFileName)
                         .contentType(contentType)
                         .build();

@@ -25,7 +25,7 @@ public class ChatService {
         List<ChatRoomDTO> chatFriendRoomDTOs = new ArrayList<>();
         for(String chatCode : friendChat){
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatFriendRoom(userId,chatCode);
-            chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
+            chatRoomDTO.setImageUrl("http://blogproject.shop/profile/"+chatRoomDTO.getUserId());
             if(chatRoomDTO.getLastMessage() == null){
                 chatRoomDTO.setLastMessage("");
             }
@@ -46,7 +46,7 @@ public class ChatService {
         List<ChatRoomDTO> chatGroupRoomDTOs = new ArrayList<>();
         for(String chatCode : groupChat){
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatGroupRoom(userId,chatCode);
-            chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
+            chatRoomDTO.setImageUrl("http://blogproject.shop/profile/"+chatRoomDTO.getUserId());
             if(chatRoomDTO.getLastMessage() == null || chatRoomDTO.getLastMessageAt().isBefore(chatRoomDTO.getUserCreateAt())){
                 chatRoomDTO.setLastMessage("");
             }
@@ -122,7 +122,7 @@ public class ChatService {
 
             RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
                     .title(userDTO.getNickName())
-                    .mainImage("http://localhost:8100/profile/"+userDTO.getUserId())
+                    .mainImage("http://blogproject.shop/profile/"+userDTO.getUserId())
                     .messages(messageDTOs)
                     .userCount(0)
                     .build();
@@ -165,7 +165,7 @@ public class ChatService {
 
             RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
                     .title(chatRoomDTO.getNickName())                                    //###################### 임시 챗 타이틀 vs 매칭 제목
-                    .mainImage("http://localhost:8100/profile/"+chatRoomDTO.getUserId()) //###################### 매칭 생성 유저 프로필 vs 매칭에서 프로필 등록
+                    .mainImage("http://blogproject.shop/profile/"+chatRoomDTO.getUserId()) //###################### 매칭 생성 유저 프로필 vs 매칭에서 프로필 등록
                     .messages(messageDTOs)
                     .userCount(userCount)
                     .build();

@@ -126,7 +126,7 @@ public class AuthController {
                 .birthday(portOneDTO.getResponse().getBirthday())
                 .introduction("기본 소개")
                 .address("지역을 설정해주세요")
-                .profile("http://localhost:8100/profile/"+signDTO.getUserId())
+                .profile("http://blogproject.shop/profile/"+signDTO.getUserId())
                 .manner(100)
                 .points(0)
                 .isPrivate(false)
