@@ -40,7 +40,7 @@
 .match-chat-container {
     position: relative;
     border: 1px solid rgb(246, 246, 246);
-    border-radius: 25px;
+    border-radius: 13px;
     height: 100%;
     margin-left: 10px;
     background-color: rgb(246, 246, 246);

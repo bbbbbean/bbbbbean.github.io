@@ -91,10 +91,14 @@ abbr[title] {
  background: #98d4ff;
  color: white;
 }
+
 .calendar-content{
-    display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     height: 35px;
+    overflow-y: scroll;
+}
+
+.calendar-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
