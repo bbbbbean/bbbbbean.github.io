@@ -7,7 +7,7 @@ import FileIcon from "../../image/file.svg"
 import UploadIcon from "../../image/upload.svg"
 import "../../css/message_css/chatting.css";
 
-const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
+const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
 
     const [mainImage, setMainImage] = useState("");
     const [title, setTitle] = useState("");
@@ -144,7 +144,7 @@ const Chat = ({ pos, openChat, setOpenChat, style2 }) => {
     };
 
     return (
-        <div className="match-chat-container" style={{marginRight:"10px", marginLeft:"0", height: "770px"}}>
+        <div className="match-chat-container" style={{marginRight:"10px", marginLeft:"0", height: "770px", ...style4}}>
             <div className="match-chat-title">
                 <div className="match-chat-img">
                     <img
