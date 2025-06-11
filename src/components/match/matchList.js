@@ -39,6 +39,7 @@ const MatchList = () => {
 
   // 전체 조회해서 데이터 들고오기 + 닉네임, 젠더 추가
   useEffect(() => {
+
     api
       .get(`/match/list?type=${type}`)
       .then(async (res) => {
@@ -236,25 +237,22 @@ const MatchList = () => {
   const keyword = searchParams.get("keyword");
 
 useEffect(() => {
-  console.log("keyword:", keyword);
   const fetchMatches = async () => {
     try {
       if (keyword) {
         const res = await api.post("/api/main/findMatch", { keyword });
-        console.log("검색 결과:", res.data.matches);
-        setMatches(res.data.matches);
+        setMatches(res.data.matches || []);
       } else {
         const res = await api.get(`/match/list?type=${type}`);
-        console.log("전체 리스트:", res.data);
-        setMatches(res.data);
+        setMatches(res.data || []);
       }
     } catch (err) {
-      console.error("데이터 가져오기 실패", err.response?.data || err.message);
+      console.error("매칭 데이터 가져오기 실패:", err.response?.data || err.message);
     }
   };
 
   fetchMatches();
-}, [keyword, type, location.key]); 
+}, [keyword, type, location.key, reload]);
 
 
 

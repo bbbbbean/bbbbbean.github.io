@@ -60,6 +60,7 @@ const handleSearch = async () => {
       const response = await api.post("/api/main/findMatch", {
         keyword: matchFindValue.trim(),
       });
+      console.log("검색 결과:", response.data.matches);
       const matches = response.data.matches;
 
       if (matches.length === 0) {
