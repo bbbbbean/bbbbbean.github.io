@@ -31,7 +31,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     }
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
-        System.out.println("소셜로그인 성공" + auth);
+        System.out.println("LoginSuccess" + auth);
+
+        log.info("auth.getPrincipal()" + auth.getPrincipal());
 
         UserDTO userDTO = (UserDTO) ((PrincipalDetails) auth.getPrincipal()).getUserDto();
 

@@ -1,5 +1,6 @@
 package com.club.match.Config.auth;
 
+import com.club.match.Config.auth.provider.GoogleUserInfo;
 import com.club.match.Config.auth.provider.KakaoUserInfo;
 import com.club.match.Config.auth.provider.NaverUserInfo;
 import com.club.match.Config.auth.provider.OAuth2UserInfo;
@@ -64,12 +65,13 @@ public class PrincipalDetailsOAuth2Service extends DefaultOAuth2UserService {
             Map<String,Object> kakao_account = (Map<String,Object>) attributes.get("kakao_account");
             oAuth2UserInfo = new KakaoUserInfo(id,connected_at,properties,kakao_account);
 
-
         } else if(request.getRequestURI().contains("google")) {
 
             //구글 로그인시
-            String id = attributes.get("id").toString();
-
+            log.info("어트리뷰트{}",attributes.toString());
+            String id = attributes.get("sub").toString();
+            String email = attributes.get("email").toString();
+            oAuth2UserInfo = new GoogleUserInfo(id, email);
         }
 
         System.out.println("oAuth2UserInfo : " + oAuth2UserInfo.getProvider());

@@ -11,16 +11,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class GoogleUserInfo implements OAuth2UserInfo{
     private String id;
-    private Map<String,Object> attributes;
+    private String email;
 
     @Override
     public String getName() {
-        return attributes.get("name").toString();
+        return id;
     }
 
     @Override
     public String getEmail() {
-        return attributes.get("email").toString();
+        return email;
     }
 
     @Override
@@ -30,11 +30,11 @@ public class GoogleUserInfo implements OAuth2UserInfo{
 
     @Override
     public String getProviderId() {
-        return this.id;
+        return id;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return this.attributes;
+        return null;
     }
 }
