@@ -80,73 +80,70 @@ export const WebSocketProvider = ({ children }) => {
         setConnected(false);
         hasConnectedRef.current = true;
 
-        setTimeout(() => {
-            let sub;
-            const stompClient = new Client({
-                webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),
-                onConnect: () => {
-                    console.log('Connected');
-                    const userId = localStorage.getItem("userId");
-                    console.log('User ID:', userId);
-                    sub = stompClient.subscribe(`/sub/user/${userId}`, (message) => {
-                        const data = JSON.parse(message.body);
+        let sub;
+        const stompClient = new Client({
+            webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`, null, { withCredentials: true }),
+            onConnect: () => {
+                console.log('Connected');
+                const userId = localStorage.getItem("userId");
+                console.log('User ID:', userId);
+                sub = stompClient.subscribe(`/sub/user/${userId}`, (message) => {
+                    const data = JSON.parse(message.body);
 
-                        if (data.friendAlert) {
-                            setFriendUpdate(prev => (!prev));
-                            setAlarmUpdate(prev => (!prev));
-                        }
+                    if (data.friendAlert) {
+                        setFriendUpdate(prev => (!prev));
+                        setAlarmUpdate(prev => (!prev));
+                    }
 
-                        if (data.commentAlert || data.matchAlert) {
-                            setAlarmUpdate(prev => (!prev));
-                        }
+                    if (data.commentAlert || data.matchAlert) {
+                        setAlarmUpdate(prev => (!prev));
+                    }
 
-                        const roomId = data.chatCode;
-                        if (roomId === openChatRef.current) {
-                            showMessageInChat(data);
-                        } else {
-                            incrementUnreadCount(roomId, data);
-                        }
-                    });
+                    const roomId = data.chatCode;
+                    if (roomId === openChatRef.current) {
+                        showMessageInChat(data);
+                    } else {
+                        incrementUnreadCount(roomId, data);
+                    }
+                });
 
-                    setClient(stompClient);
-                    setConnected(true);
-                },
-                onWebSocketError: (error) => {
-                    console.error('웹소켓 연결 실패:', error);
-                },
-                onStompError: (frame) => {
-                    console.error('STOMP error', frame);
-                },
-                onDisconnect: () => {
-                    console.log('Disconnected');
-                    if (sub) sub.unsubscribe();
-                    clientRef.current = null;
-                    setClient(null);
-                    setConnected(false);
-                    setOpenChat(null);
-                    setMessages([]);
-                    setRooms([]);
-                    hasConnectedRef.current = false;
-                    openChatRef.current = null;
-                    setConnected(false);
-                    stompClient.deactivate();
-                },
-                onWebSocketClose: () => {
-                    api.post("/api").then((response) => {
-                    }).catch((error) => {
-                        if (isAuth) {
-                            window.location.reload();
-                        }
-                    });
-                }
-            });
+                setClient(stompClient);
+                setConnected(true);
+            },
+            onWebSocketError: (error) => {
+                console.error('웹소켓 연결 실패:', error);
+            },
+            onStompError: (frame) => {
+                console.error('STOMP error', frame);
+            },
+            onDisconnect: () => {
+                console.log('Disconnected');
+                if (sub) sub.unsubscribe();
+                clientRef.current = null;
+                setClient(null);
+                setConnected(false);
+                setOpenChat(null);
+                setMessages([]);
+                setRooms([]);
+                hasConnectedRef.current = false;
+                openChatRef.current = null;
+                setConnected(false);
+                stompClient.deactivate();
+            },
+            onWebSocketClose: () => {
+                api.post("/api").then((response) => {
+                }).catch((error) => {
+                    if (isAuth) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
 
-            stompClient.activate();
+        stompClient.activate();
 
-            clientRef.current = stompClient;
-
-        }, 1000);
-
+        clientRef.current = stompClient;
+        
         return () => {
             if (clientRef.current && clientRef.current.connected) {
                 clientRef.current.deactivate();
@@ -162,7 +159,7 @@ export const WebSocketProvider = ({ children }) => {
 
     return (
         <WebSocketContext.Provider value={
-            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate, userInfomation, setUserInfomation}
+            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate, userInfomation, setUserInfomation }
         }>
             {children}
         </WebSocketContext.Provider>

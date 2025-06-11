@@ -200,22 +200,31 @@ header {
   height: 1px;
   background-color: #20a2ff;
 }
-.chatnum-parent{
+
+.chatnum-parent {
   position: relative;
 }
 
 .chatnum {
-    position: absolute;
-    min-width: 25px;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: #6EC3FF;
-    text-align: center;
-    top: -7px;
-    right: 6px;
-    padding-top: 5px;
-  }
+  position: absolute;
+  min-width: 25px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #6EC3FF;
+  text-align: center;
+  top: -7px;
+  right: 6px;
+  padding-top: 5px;
+}
+
+
+.icon>ul>li>a>img:last-child {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
 
 /* .line {
   position: absolute;

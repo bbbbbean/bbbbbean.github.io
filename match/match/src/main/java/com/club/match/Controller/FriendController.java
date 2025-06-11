@@ -31,10 +31,13 @@ public class FriendController {
     //유저 검색(조회) - 1
     @PostMapping("/findFriend")
     public ResponseEntity<?> findFriend(@RequestBody Map<Object, String> req) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();  // 로그인한 사용자 ID
         String nickName = req.get("nickName");
         log.info("a : " + nickName);
         Map<String, Object> resp = new HashMap<>();
-        List<UserDTO> userList = friendService.findFriendByNickName(nickName);
+        List<UserDTO> userList = friendService.findFriendByNickName(nickName, userId);
 
         resp.put("friendFind", userList);
         return ResponseEntity.ok().body(resp);
