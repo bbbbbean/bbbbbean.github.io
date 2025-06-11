@@ -105,7 +105,9 @@ header {
   font-size: .8rem;
 }
 
-
+.main-header-cursor{
+  cursor: default;
+}
 /* 메인 네비 드롭메뉴 설정 */
 .menu-box>ul>li>.submenu {
   width: 120px;
@@ -202,6 +204,7 @@ header {
 }
 .chatnum-parent{
   position: relative;
+  cursor: pointer;
 }
 
 .chatnum {
