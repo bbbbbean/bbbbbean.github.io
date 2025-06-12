@@ -62,12 +62,12 @@ const UserEditForm = ({ profile, setProfile }) => {
 
                 setUserDTO(updated);
 
-                console.log("aaaaa : " + updated.isPrivate);
+                console.log("aaaaa : " + updated.private);
 
                 localStorage.setItem("nickName", updated.nickName);
                 localStorage.setItem("introduction", updated.introduction);
                 localStorage.setItem("address", updated.address);
-                localStorage.setItem("isPrivate", updated.isPrivate ? "true" : "false");
+                localStorage.setItem("isPrivate", updated.private ? "true" : "false");
             });
 
         setEditField(null);
