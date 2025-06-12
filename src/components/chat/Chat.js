@@ -50,6 +50,7 @@ const Chat = ({ pos, openChat, setOpenChat, style2, style4 }) => {
                     ...msg,
                     createAt: new Date(msg.createAt).toLocaleString("ko-KR", {
                         hour12: false,
+                        timeZone: "Asia/Seoul",
                         month: "2-digit",
                         day: "2-digit",
                         hour: "2-digit",
