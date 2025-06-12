@@ -87,39 +87,39 @@ const UserEditForm = ({ profile, setProfile }) => {
                     <span>관리</span>
                 </div>
             </div>
-
+            <span></span>
             <div className="user-info-content">
                 <div className="userid">
                     <label>아이디</label>
                     <span>{userDTO.userId}</span>
                 </div>
-
+                <span></span>
                 <div className="username">
                     <label>이름</label>
                     <span>{userDTO.name}</span>
                 </div>
-
+                <span></span>
                 <div className="gender">
                     <label>성별</label>
                     <span>{userDTO.gender === "male" ? "남자" : "여자"}</span>
                 </div>
-
+                <span></span>
                 <div className="birthday">
                     <label>생일</label>
                     <span>{userDTO.birthday}</span>
                 </div>
-
+                <span></span>
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
                 </div>
-
+                <span></span>
                 <div className="profile">
                     <label>이미지</label>
                     <img src={profile} style={{ maxWidth: "50px", maxHeight: "50px", borderRadius: "50%" }} alt="프로필" />
                     <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
-
+                <span></span>
                 <div className="introduction">
                     <label>소개</label>
                     <div>{userDTO.introduction}</div>
@@ -142,7 +142,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-
+                <span></span>
                 <div className="nickname">
                     <label>닉네임</label>
                     <span>{userDTO.nickName}</span>
@@ -161,7 +161,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-
+                <span></span>
                 <div className="address">
                     <label>활동지역</label>
                     <span>{userDTO.address}</span>
@@ -193,7 +193,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-
+                <span></span>
                 <div className="isPrivate">
                     <label>프로필 공개</label>
                     <span>{userDTO.isPrivate ? "공개" : "비공개"}</span>
@@ -209,7 +209,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-
+                <span></span>
                 <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
             </div>
         </div>
