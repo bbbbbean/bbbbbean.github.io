@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const imageApi = axios.create({
-  baseURL: "http://localhost:8100",
+  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   timeout: 2000,
 });
 
@@ -31,7 +31,7 @@ imageApi.interceptors.response.use(
     if (error.response.data.message.includes("refresh")) {
       try {
         const response = await axios.post(
-          "http://localhost:8100/api/auth/reneToken",
+          `${process.env.REACT_APP_SERVER_URL}/api/auth/reneToken`,
           {},
           { withCredentials: true, headers: { refresh: "refresh" } }
         );
