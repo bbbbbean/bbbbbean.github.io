@@ -5,46 +5,46 @@
 
     <!--  INSERT  -->
     <insert id="uploadFile" useGeneratedKeys="true" keyProperty="postAttachmentId">
-        INSERT INTO postattachment_tbl (userId, attachmentUrl, originalFileName, contentType, postId)
+        INSERT INTO postAttachment_tbl (userId, attachmentUrl, originalFileName, contentType, postId)
         VALUES (#{userId}, #{attachmentUrl}, #{originalFileName}, #{contentType}, #{postId});
     </insert>
 
     <!--  SELECT  -->
     <select id="selectAt" resultType="AttachmentFileDTO">
-        SELECT * FROM postattachment_tbl WHERE postAttachmentId=#{postAttachmentId};
+        SELECT * FROM postAttachment_tbl WHERE postAttachmentId=#{postAttachmentId};
     </select>
 
     <select id="selectFilesByPostId">
-        SELECT * FROM postattachment_tbl WHERE postId = #{postId};
+        SELECT * FROM postAttachment_tbl WHERE postId = #{postId};
     </select>
 
     <select id="selectFileList">
-        SELECT postId, attachmentUrl FROM postattachment_tbl WHERE userId = #{userId};
+        SELECT postId, attachmentUrl FROM postAttachment_tbl WHERE userId = #{userId};
     </select>
 
     <select id="selectTempFileByUserId">
-        SELECT * FROM postattachment_tbl WHERE userId = #{userId} AND postId IS NULL;
+        SELECT * FROM postAttachment_tbl WHERE userId = #{userId} AND postId IS NULL;
     </select>
 
     <!--  UPDATE  -->
     <update id="updatePostAttachmentUrl">
-        SET attachmentUrl = #{newAttachmentUrl}, postId = #{postId}
+        UPDATE postAttachment_tbl SET attachmentUrl = #{newAttachmentUrl}, postId = #{postId}
         WHERE attachmentUrl = #{oldAttachmentUrl};
     </update>
 
     <update id="updatePostId">
-        UPDATE postattachment_tbl
+        UPDATE postAttachment_tbl
         SET postId = #{postId}
         WHERE attachmentUrl = #{attachmentUrl};
     </update>
 
     <!--  DELETE  -->
     <delete id="deleteFile">
-        DELETE FROM postattachment_tbl WHERE postAttachmentId = #{postAttachmentId};
+        DELETE FROM postAttachment_tbl WHERE postAttachmentId = #{postAttachmentId};
     </delete>
 
     <delete id="deleteTempFileList">
-        DELETE FROM postattachment_tbl WHERE postId IS NULL AND userId = #{userId};
+        DELETE FROM postAttachment_tbl WHERE postId IS NULL AND userId = #{userId};
     </delete>
 
 

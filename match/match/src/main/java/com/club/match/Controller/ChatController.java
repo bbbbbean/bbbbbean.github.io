@@ -151,12 +151,11 @@ public class ChatController {
         String fileName = UUID.randomUUID()+fileExtension;
 
         log.info("fileName : " + fileName);
-
         if(file==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        Path userPath = Paths.get("src/main/resources/Users/" + userId + "/chat");
+        Path userPath = Paths.get("/home/sinhw00065/match/src/main/resources/Users/" + userId + "/chat");
         File userFile = new File(userPath+"/"+fileName);
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(),userFile);
@@ -178,7 +177,7 @@ public class ChatController {
 
                 ChatFileDTO fileDTO = ChatFileDTO.builder()
                         .messageId(respMessageDTO.getMessageId())
-                        .attachmentUrl("http://blogproject.shop/chatFile/"+userId+"/"+ fileName+"/"+contentType)
+                        .attachmentUrl("https://blogproject.shop/chatFile/"+userId+"/"+ fileName+"/"+contentType)
                         .originalFileName(originalFileName)
                         .contentType(contentType)
                         .build();

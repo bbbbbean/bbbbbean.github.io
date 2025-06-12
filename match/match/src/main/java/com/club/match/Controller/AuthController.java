@@ -133,8 +133,8 @@ public class AuthController {
                 .createAt(LocalDate.now())
                 .build();
 
-        String Path = "src/main/resources/defaultUser"; // 복사할 원본 폴더
-        String copyPath = "src/main/resources/Users/" + signDTO.getUserId(); // 복사할 위치
+        String Path = "/home/sinhw00065/match/src/main/resources/defaultUser"; // 복사할 원본 폴더
+        String copyPath = "/home/sinhw00065/match/src/main/resources/Users/" + signDTO.getUserId(); // 복사할 위치
 
         File Dir = new File(Path);
         File copyDir = new File(copyPath);
@@ -338,12 +338,16 @@ public class AuthController {
             ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
                     .httpOnly(true)
                     .path("/")
+                    .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                    .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                     .maxAge(Duration.ofDays(1))
                     .build();
 
             ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
                     .httpOnly(true)
                     .path("/")
+                    .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                    .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                     .maxAge(Duration.ofDays(1))
                     .build();
 
