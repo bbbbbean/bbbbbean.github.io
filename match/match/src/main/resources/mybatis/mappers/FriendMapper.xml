@@ -11,13 +11,8 @@
     </select>
 
     <!-- 닉네임으로 유저 검색 -->
-    <select id="findUserByNickName" resultType="com.club.match.Domain.DTO.UserDTO" parameterType="map">
-        SELECT *
-        FROM user_tbl
-        WHERE nickName LIKE #{nickName}
-        AND userId NOT IN (SELECT friendId FROM friend_tbl WHERE userId = #{userId})
-        AND userId != #{userId}
-        AND role != 'ADMIN'
+    <select id="findUserByNickName" resultType="com.club.match.Domain.DTO.UserDTO">
+        SELECT * FROM user_tbl WHERE nickName LIKE CONCAT('%', #{nickName}, '%') and userId Not in (SELECT friendId FROM friend_tbl where userId = #{userId}) and userId != #{userId} AND role != 'ADMIN';
     </select>
 
     <!-- 친구 요청 존재 여부 확인 -->
