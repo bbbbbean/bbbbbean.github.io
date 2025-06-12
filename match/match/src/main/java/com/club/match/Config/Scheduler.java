@@ -39,7 +39,7 @@ public class Scheduler {
         log.info("updateMatchStatus Count : "+ ok);
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 0 */1 * * *")
     public void alarm() {
 
         LocalDateTime now = LocalDateTime.now();
