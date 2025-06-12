@@ -79,7 +79,7 @@ const MainHeader = () => {
       <nav className="menu-box">
         <ul>
           <li className="mainmenu">
-            <NavLink to="#"><p className="main-header-cursor">매칭</p></NavLink>
+            <NavLink to="#">매칭</NavLink>
             <ul className="submenu">
               <li>
                 <NavLink to="/match/list/all">전체</NavLink>
@@ -107,7 +107,7 @@ const MainHeader = () => {
           </li>
           <li className="mainmenu">
             <NavLink to="#">
-              <p className="main-header-cursor">커뮤니티</p>
+              커뮤니티
             </NavLink>
             <ul className="submenu">
               <li>

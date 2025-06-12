@@ -39,52 +39,43 @@
 
 .info-container>.info-left>.info-user-profile>img {
     width: 100%;
-    max-width: 180px;
+    max-width: 300px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #262626;
 }
 
 .info-container>.info-left>.info-user {
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: lighter;
     color: #6B6B6B;
 }
 
 .info-container>.info-left>.info-user>.user-name {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: bold;
     color: black;
-}
-.user-id{
-    margin-top: 5px;
 }
 
 .info-container>.info-left>.info-menu {
     text-align: center;
-    font-size: 18px;
+    font-size: 22px;
     color: #262626;
 }
 
 .info-container>.info-left>.info-menu>div {
-    margin: 23px;
+    margin: 25px;
 }
 
 .info-container>.info-left>.info-menu>.active {
     font-weight: bold;
-    font-size: 22px;
-    background-color: #f0f0f0;
-    width: 65%;
-    margin: 7px auto;
-    padding: 16px 0;
-    border-radius: 3px;
+    font-size: 26px;
 }
 
 .info-container>.info-left>.info-menu>span {
     display: block;
-    width: 65%;
+    width: 80%;
     margin: 0 auto;
     height: 1px;
     background-color: #6EC3FF;

@@ -126,7 +126,6 @@ img{
   width: 52px;
   height: 52px;
   /* background-color: #fbb00e; */
-  cursor: pointer;
 }
 
 .friend-container > .left > .all > .friendalart > .person > .word1 {
@@ -204,7 +203,6 @@ img{
   height: 52px;
   /* background-color: #fbb00e; */
   margin-left: 24px;
-  cursor: pointer;
 }
 
 .friend-container > .left > .all > .person > .word1 {
@@ -456,7 +454,6 @@ img{
   height: 52px;
   /* background-color: #fbb00e; */
   margin-left: 12px;
-  cursor: pointer;
 }
 
 .searchResult > .person > .word1 {
