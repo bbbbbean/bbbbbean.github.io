@@ -10,12 +10,12 @@ const Footer = () => {
             <img src={logo} alt="로고" />
           </div>
           <span className="footer-info">
-            보통어떤말이들어가있지대충회사정보랑이런저런정보들을넣어놓은장소입니다
+            회사소개 | 비즈니스 | 맞춤형광고 | 제휴문의 | 인재채용
           </span>
           <ul className="footer-sns">
             <li>
               <a href="">
-                <span>유툽</span>
+                <span>유투브</span>
               </a>
             </li>
             <li>
@@ -36,7 +36,7 @@ const Footer = () => {
           </ul>
         </div>
         <div className="footer-down">
-          <span className="footer-info">CompanyName @ 202X. All rights reserved.</span>
+          <span className="footer-info">CompanyName @ 2025. All rights reserved.</span>
         </div>
       </div>
     </footer>
