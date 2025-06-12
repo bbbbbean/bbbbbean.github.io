@@ -60,7 +60,10 @@ const UserEditForm = ({ profile, setProfile }) => {
 
                 dispatch(setUserName(updated.nickName));
 
-                setUserDTO(updated);
+                setUserDTO({
+                    ...updated,
+                    isPrivate: updated.private === 1 || updated.private === "1"
+                });
 
                 console.log("aaaaa : " + updated.private);
 
