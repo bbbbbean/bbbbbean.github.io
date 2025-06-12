@@ -14,7 +14,7 @@
     <select id="findUserByNickName" resultType="com.club.match.Domain.DTO.UserDTO" parameterType="map">
         SELECT *
         FROM user_tbl
-        WHERE nickName LIKE #{nickNamePattern}
+        WHERE nickName LIKE #{nickName}
         AND userId NOT IN (SELECT friendId FROM friend_tbl WHERE userId = #{userId})
         AND userId != #{userId}
         AND role != 'ADMIN'
