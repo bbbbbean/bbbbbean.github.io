@@ -6,7 +6,6 @@ import ChangeImage from "../modal/ChangeImageModal";
 import PasswordCheck from "./Pwdcheck";
 
 const UserEditForm = ({ profile, setProfile }) => {
-
     const dispatch = useDispatch();
 
     const [userDTO, setUserDTO] = useState({
@@ -14,7 +13,7 @@ const UserEditForm = ({ profile, setProfile }) => {
         birthday: localStorage.getItem("birthday"),
         name: localStorage.getItem("name"),
         nickName: localStorage.getItem("nickName"),
-        isPrivate: localStorage.getItem("isPrivate"),
+        isPrivate: localStorage.getItem("isPrivate") === "1",
         gender: localStorage.getItem("gender"),
         address: localStorage.getItem("address"),
         phone: localStorage.getItem("phone"),
@@ -22,22 +21,21 @@ const UserEditForm = ({ profile, setProfile }) => {
     });
 
     const [editField, setEditField] = useState(null);
-
     const [errorMessage, setErrorMessage] = useState("");
-
-    let privateV = "";
-
     const [formData, setFormData] = useState({
-        nickname: "",
-        phone: "",
-        address: "",
+        nickname: userDTO.nickName,
+        phone: userDTO.phone,
+        address: userDTO.address,
         introduction: userDTO.introduction,
-        isPrivate: ""
+        isPrivate: userDTO.isPrivate ? "1" : "0"
     });
+
     useEffect(() => {
-        privateV = userDTO.private ? "1" : "0";
-        setFormData(prev => ({ ...prev, ["isPrivate"]: privateV }));
-    }, [userDTO])
+        setFormData(prev => ({
+            ...prev,
+            isPrivate: userDTO.isPrivate ? "1" : "0"
+        }));
+    }, [userDTO]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -46,43 +44,35 @@ const UserEditForm = ({ profile, setProfile }) => {
     };
 
     const showEdit = (field) => setEditField(field);
+
     const hideEdit = (e) => {
-        const btnClass = e.target.className.split(" ");
-        console.log(btnClass[0]);
-        api.post("/api/user/infoUpdate", { "value": formData[btnClass[0]], "type": btnClass[0] })
+        const type = e.target.className.split(" ")[0];
+        const value = formData[type];
+
+        api.post("/api/user/infoUpdate", { value, type })
             .then((response) => {
                 if (response.status !== 200) {
                     setErrorMessage(response.data.error);
                     return;
                 }
-                if (btnClass[0] === "nickname") {
-                    dispatch(setUserName(response.data.userDTO.nickName));
-                }
-                setUserDTO(response.data.userDTO);
-                const {
-                    nickName,
-                    private: isPrivate,
-                    introduction,
-                } = response.data.userDTO;
-                setUserDTO(prev => ({
-                    ...prev,
-                    nickName,
-                    isPrivate,
-                    introduction,
-                }));
 
-                localStorage.setItem("nickName", nickName);
-                localStorage.setItem("isPrivate", isPrivate);
-                localStorage.setItem("introduction", introduction);
+                const { userDTO: updated } = response.data;
+
+                dispatch(setUserName(updated.nickName));
+
+                setUserDTO(updated);
+
+                localStorage.setItem("nickName", updated.nickName);
+                localStorage.setItem("introduction", updated.introduction);
+                localStorage.setItem("address", updated.address);
+                localStorage.setItem("isPrivate", updated.isPrivate ? "1" : "0");
             });
+
         setEditField(null);
     };
 
     const [showModal, setShowModal] = useState(false);
-
-    const handleImage = () => {
-        showModal ? setShowModal(false) : setShowModal(true);
-    }
+    const handleImage = () => setShowModal(!showModal);
 
     useEffect(() => {
         setShowModal(false);
@@ -97,49 +87,39 @@ const UserEditForm = ({ profile, setProfile }) => {
                     <span>관리</span>
                 </div>
             </div>
+
             <div className="user-info-content">
-                <span></span>
                 <div className="userid">
                     <label>아이디</label>
                     <span>{userDTO.userId}</span>
                 </div>
-                <span></span>
+
                 <div className="username">
                     <label>이름</label>
                     <span>{userDTO.name}</span>
                 </div>
-                <span></span>
+
                 <div className="gender">
                     <label>성별</label>
                     <span>{userDTO.gender === "male" ? "남자" : "여자"}</span>
                 </div>
-                <span></span>
+
                 <div className="birthday">
                     <label>생일</label>
                     <span>{userDTO.birthday}</span>
                 </div>
-                <span></span>
+
                 <div className="phone">
                     <label>연락처</label>
                     <span>{userDTO.phone}</span>
-                    <label></label>
-                    {/* {editField !== "phone" ? (
-                        <button className="btn-edit my-page-btn" onClick={() => showEdit("phone")}>수정하기</button>
-                    ) : (
-                        <div className="info-edit">
-                            <label></label>
-                            <button className="btn-code-phone my-page-btn">본인인증</button>
-                            <button className="address my-page-btn" onClick={hideEdit}>완료</button>
-                        </div>
-                    )} */}
                 </div>
-                <span></span>
+
                 <div className="profile">
                     <label>이미지</label>
-                    <img src={profile} style={{ maxWidth: "50px", maxHeight: "50px", position: "absolute", borderRadius: "50%" }}></img>
+                    <img src={profile} style={{ maxWidth: "50px", maxHeight: "50px", borderRadius: "50%" }} alt="프로필" />
                     <button className="profile my-page-btn" onClick={handleImage}>이미지 변경</button>
                 </div>
-                <span></span>
+
                 <div className="introduction">
                     <label>소개</label>
                     <div>{userDTO.introduction}</div>
@@ -147,7 +127,6 @@ const UserEditForm = ({ profile, setProfile }) => {
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("introduction")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
-                            <label></label>
                             <textarea
                                 name="introduction"
                                 placeholder="자기소개 입력"
@@ -163,7 +142,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-                <span></span>
+
                 <div className="nickname">
                     <label>닉네임</label>
                     <span>{userDTO.nickName}</span>
@@ -171,7 +150,6 @@ const UserEditForm = ({ profile, setProfile }) => {
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("nickname")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
-                            <label></label>
                             <input
                                 type="text"
                                 name="nickname"
@@ -183,7 +161,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-                <span></span>
+
                 <div className="address">
                     <label>활동지역</label>
                     <span>{userDTO.address}</span>
@@ -191,12 +169,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("address")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
-                            <label></label>
-                            <select
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInput}
-                            >
+                            <select name="address" value={formData.address} onChange={handleInput}>
                                 <option value="">선택하세요</option>
                                 <option value="서울">서울</option>
                                 <option value="부산">부산</option>
@@ -220,7 +193,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                         </div>
                     )}
                 </div>
-                <span></span>
+
                 <div className="isPrivate">
                     <label>프로필 공개</label>
                     <span>{userDTO.isPrivate ? "공개" : "비공개"}</span>
@@ -228,46 +201,28 @@ const UserEditForm = ({ profile, setProfile }) => {
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("isPrivate")}>수정하기</button>
                     ) : (
                         <div className="info-edit">
-                            <label></label>
-                            <label className={formData.isPrivate === "1" ? "select" : "noselect"} htmlFor="pro-true">
-                                공개
-                            </label>
-                            <input
-                                id="pro-true"
-                                type="radio"
-                                name="isPrivate"
-                                value="1"
-                                onChange={handleInput}
-                            />
+                            <label className={formData.isPrivate === "1" ? "select" : "noselect"} htmlFor="pro-true">공개</label>
+                            <input id="pro-true" type="radio" name="isPrivate" value="1" onChange={handleInput} />
                             <label className={formData.isPrivate === "0" ? "select" : "noselect"} htmlFor="pro-false">비공개</label>
-                            <input
-                                id="pro-false"
-                                type="radio"
-                                name="isPrivate"
-                                value="0"
-                                onChange={handleInput}
-                            />
+                            <input id="pro-false" type="radio" name="isPrivate" value="0" onChange={handleInput} />
                             <button className="isPrivate my-page-btn" onClick={hideEdit}>완료</button>
                         </div>
                     )}
                 </div>
-                <span></span>
+
                 <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMessage}</p>
             </div>
         </div>
     );
-
-}
+};
 
 const UserEdit = ({ profile, setProfile }) => {
-
     const [password, setPassword] = useState("");
     const [ok, setOk] = useState(false);
 
-    return (
-        ok ? <UserEditForm profile={profile} setProfile={setProfile} /> : <PasswordCheck password={password} setPassword={setPassword} setOk={setOk} />
-    );
-}
-
+    return ok
+        ? <UserEditForm profile={profile} setProfile={setProfile} />
+        : <PasswordCheck password={password} setPassword={setPassword} setOk={setOk} />;
+};
 
 export default UserEdit;
