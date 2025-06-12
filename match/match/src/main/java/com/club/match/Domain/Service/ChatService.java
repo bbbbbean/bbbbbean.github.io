@@ -4,6 +4,7 @@ import com.club.match.Domain.DTO.*;
 import com.club.match.Mapper.ChatMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,9 @@ public class ChatService {
     @Autowired
     ChatMapper chatMapper;
 
+    @Value("${server.url}")
+    private String BASE_URL;
+
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> chatRoomSearch(String userId) {
         Map<String,Object> resp = new HashMap<>();
@@ -25,7 +29,7 @@ public class ChatService {
         List<ChatRoomDTO> chatFriendRoomDTOs = new ArrayList<>();
         for(String chatCode : friendChat){
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatFriendRoom(userId,chatCode);
-            chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
+            chatRoomDTO.setImageUrl(BASE_URL + "profile/"+chatRoomDTO.getUserId());
             if(chatRoomDTO.getLastMessage() == null){
                 chatRoomDTO.setLastMessage("");
             }
@@ -46,7 +50,7 @@ public class ChatService {
         List<ChatRoomDTO> chatGroupRoomDTOs = new ArrayList<>();
         for(String chatCode : groupChat){
             ChatRoomDTO chatRoomDTO = chatMapper.selectChatGroupRoom(userId,chatCode);
-            chatRoomDTO.setImageUrl("http://localhost:8100/profile/"+chatRoomDTO.getUserId());
+            chatRoomDTO.setImageUrl(BASE_URL + "profile/"+chatRoomDTO.getUserId());
             if(chatRoomDTO.getLastMessage() == null || chatRoomDTO.getLastMessageAt().isBefore(chatRoomDTO.getUserCreateAt())){
                 chatRoomDTO.setLastMessage("");
             }
@@ -122,7 +126,7 @@ public class ChatService {
 
             RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
                     .title(userDTO.getNickName())
-                    .mainImage("http://localhost:8100/profile/"+userDTO.getUserId())
+                    .mainImage(BASE_URL+"profile/"+userDTO.getUserId())
                     .messages(messageDTOs)
                     .userCount(0)
                     .build();
@@ -165,7 +169,7 @@ public class ChatService {
 
             RespMessageDTO reactMessageDTO = RespMessageDTO.builder()
                     .title(chatRoomDTO.getNickName())                                    //###################### 임시 챗 타이틀 vs 매칭 제목
-                    .mainImage("http://localhost:8100/profile/"+chatRoomDTO.getUserId()) //###################### 매칭 생성 유저 프로필 vs 매칭에서 프로필 등록
+                    .mainImage(BASE_URL+"profile/"+chatRoomDTO.getUserId()) //###################### 매칭 생성 유저 프로필 vs 매칭에서 프로필 등록
                     .messages(messageDTOs)
                     .userCount(userCount)
                     .build();

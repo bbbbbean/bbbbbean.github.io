@@ -32,37 +32,38 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
         System.out.println("LoginSuccess" + auth);
-
         log.info("auth.getPrincipal()" + auth.getPrincipal());
 
         UserDTO userDTO = (UserDTO) ((PrincipalDetails) auth.getPrincipal()).getUserDto();
-
         String platform = userDTO.getPlatform();
 
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.createToken(auth);
-        Cookie cookie1 = new Cookie("accessToken", jwtTokenDTO.getAccessToken());
-        cookie1.setHttpOnly(true);
-        cookie1.setPath("/");
-        cookie1.setMaxAge((int) Duration.ofDays(1).getSeconds());
 
-        Cookie cookie2 = new Cookie("refreshToken", jwtTokenDTO.getRefreshToken());
-        cookie2.setHttpOnly(true);
-        cookie2.setPath("/");
-        cookie2.setMaxAge((int) Duration.ofDays(1).getSeconds());
+        long maxAge = Duration.ofDays(1).getSeconds();
 
-        Cookie cookie3 = new Cookie("JSESSIONID", "");
-        cookie3.setHttpOnly(true);
-        cookie3.setPath("/");
-        cookie3.setMaxAge(0);
+        // Set-Cookie 직접 설정 (HttpOnly, Secure, SameSite=None)
+        resp.addHeader("Set-Cookie", "accessToken=" + jwtTokenDTO.getAccessToken() +
+                "; Max-Age=" + maxAge +
+                "; Path=/" +
+                "; HttpOnly" +
+                "; Secure" +
+                "; SameSite=None");
 
-        resp.addCookie(cookie1);
-        resp.addCookie(cookie2);
-        resp.addCookie(cookie3);
+        resp.addHeader("Set-Cookie", "refreshToken=" + jwtTokenDTO.getRefreshToken() +
+                "; Max-Age=" + maxAge +
+                "; Path=/" +
+                "; HttpOnly" +
+                "; Secure" +
+                "; SameSite=None");
 
-        HttpSession session =  req.getSession(false);
-        if(session!=null)
-            session.invalidate();
+        // 기존 JSESSIONID 제거
+        resp.addHeader("Set-Cookie", "JSESSIONID=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=None");
 
-        resp.sendRedirect(url+"/oauth2/"+platform);
+        // 세션 무효화
+        HttpSession session = req.getSession(false);
+        if (session != null) session.invalidate();
+
+        // 리다이렉트
+        resp.sendRedirect(url + "/oauth2/" + platform);
     }
 }

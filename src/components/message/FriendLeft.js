@@ -140,12 +140,14 @@ const FriendLeft = () => {
         // 상태에 따라 friends / bestFriends 목록 갱신
         if (newStatus === 1) {
           // 즐겨찾기 설정: friends → bestFriends
+          console.log(movedFriend);
           const movedFriend = friends.find((f) => f.friendId === userId);
           if (movedFriend) {
             setFriends((prev) => prev.filter((f) => f.friendId !== userId));
             setBestFriends((prev) => [...prev, movedFriend]);
           }
         } else if (newStatus === 0) {
+          console.log(movedFriend);
           // 즐겨찾기 해제: bestFriends → friends
           const movedFriend = bestFriends.find((f) => f.friendId === userId);
           if (movedFriend) {
@@ -173,24 +175,24 @@ const FriendLeft = () => {
       .catch((error) => {
         console.error("상태 변경 실패:", error);
       });
-    };
+  };
 
-    const friendMenuRef = useRef(null);
-    const searchRef = useRef(null);
-    useEffect(() => {
-      const handleClickOutside = (e) => {
-        if(friendMenuRef.current && !friendMenuRef.current.contains(e.target)) {
-          setOpenMenuKey(null);
-        }
-        if(searchRef.current && !searchRef.current.contains(e.target)) {
-          setFriendSearch([]);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+  const friendMenuRef = useRef(null);
+  const searchRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (friendMenuRef.current && !friendMenuRef.current.contains(e.target)) {
+        setOpenMenuKey(null);
+      }
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setFriendSearch([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <section className="left">
@@ -219,9 +221,13 @@ const FriendLeft = () => {
           >
             {friendSearch.map((friend, idx) => (
               <div className="person">
-                <img onClick={() => {
-                  setUserInfomation(friend.userId);
-                }} src={friend.profile} className="profile"></img>
+                <img
+                  onClick={() => {
+                    setUserInfomation(friend.userId);
+                  }}
+                  src={friend.profile}
+                  className="profile"
+                ></img>
                 <div className="word1">
                   <p className="name">{friend.nickName}</p>
                   <p className="oneline">{friend.introduction}</p>
@@ -242,11 +248,14 @@ const FriendLeft = () => {
               <h1>친구 요청</h1>
             </div>
             {friendRequest.map((friend, idx) => (
-              <div className="person" >
+              <div className="person">
                 <img
                   onClick={() => {
                     setUserInfomation(friend.userId);
-                  }} src={friend.profile} className="profile"></img>
+                  }}
+                  src={friend.profile}
+                  className="profile"
+                ></img>
                 <div className="word1">
                   <div className="name">{friend.nickName}</div>
                   <div className="oneline">{friend.introduction}</div>
@@ -286,8 +295,9 @@ const FriendLeft = () => {
                 </button>
                 <div
                   ref={friendMenuRef}
-                  className={`friendmenu ${openMenuKey === `best-${idx}` ? "show" : ""
-                    }`}
+                  className={`friendmenu ${
+                    openMenuKey === `best-${idx}` ? "show" : ""
+                  }`}
                 >
                   <ul>
                     <li onClick={() => friendStatus(friend.userId, 0)}>
@@ -296,7 +306,9 @@ const FriendLeft = () => {
                     <li onClick={() => friendStatus(friend.userId, 4)}>
                       친구 삭제
                     </li>
-                    <li onClick={() => alert("아직 준비중인 기능이에요")}>신고하기</li>
+                    <li onClick={() => alert("아직 준비중인 기능이에요")}>
+                      신고하기
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -308,9 +320,13 @@ const FriendLeft = () => {
             <hr />
             {friends.map((friend, idx) => (
               <div className="person">
-                <img onClick={() => {
-                  setUserInfomation(friend.userId);
-                }} src={friend.profile} className="profile"></img>
+                <img
+                  onClick={() => {
+                    setUserInfomation(friend.userId);
+                  }}
+                  src={friend.profile}
+                  className="profile"
+                ></img>
                 <div className="word1">
                   <div className="name">{friend.nickName}</div>
                   <div className="oneline">{friend.introduction}</div>
@@ -320,8 +336,9 @@ const FriendLeft = () => {
                 </button>
                 <div
                   ref={friendMenuRef}
-                  className={`friendmenu ${openMenuKey === `common-${idx}` ? "show" : ""
-                    }`}
+                  className={`friendmenu ${
+                    openMenuKey === `common-${idx}` ? "show" : ""
+                  }`}
                 >
                   <ul>
                     <li onClick={() => friendStatus(friend.userId, 1)}>
@@ -330,7 +347,9 @@ const FriendLeft = () => {
                     <li onClick={() => friendStatus(friend.userId, 4)}>
                       친구 삭제
                     </li>
-                    <li onClick={() => alert("아직 준비중인 기능이에요")}>신고하기</li>
+                    <li onClick={() => alert("아직 준비중인 기능이에요")}>
+                      신고하기
+                    </li>
                   </ul>
                 </div>
               </div>

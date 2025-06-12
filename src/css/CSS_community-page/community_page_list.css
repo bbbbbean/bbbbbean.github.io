@@ -185,7 +185,6 @@
 
 /* 글쓰기 버튼 */
 .forum-write {
-  position: absolute;
   right: 10px;
   display: flex;
   justify-content: right;

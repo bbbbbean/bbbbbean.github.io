@@ -13,12 +13,12 @@ public interface MatchMapper {
     int insertChatparticipant(ChatParticipantDto chatParticipantDto);
     int insertTag(MatchTagDto matchTagDto);
     int joinMatch(MatchParticipantDto matchParticipantDto);
-    List<MatchDto> matchAllList();
+    List<MatchDto> matchAllList(String keyword);
     int addBookmark(BookmarkDto bookmarkDto);
     int removeBookmark(BookmarkDto bookmarkDto);
     List<Long> userBookmark(String userId);
     MatchOneDto selectMatchOne(long matchId);
-    List<MatchDto> matchTypeList(String type);
+    List<MatchDto> matchTypeList(String type, String keyword);
     int updateStatus(int status, long matchId);
 
     List<String> getTags(Long matchId);

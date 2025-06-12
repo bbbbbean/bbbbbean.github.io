@@ -18,7 +18,7 @@ const EventList = () => {
   const searchInputRef = useRef(null);
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:8100";
+  const API_BASE_URL = process.env.REACT_APP_SERVER_URL;
 
   const PAGES_PER_BLOCK = 10;
 

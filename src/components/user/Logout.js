@@ -36,8 +36,8 @@ const Logout = () => {
         window.open("https://nid.naver.com/nidlogin.logout");
         break;
       case 2: // 카카오
-        window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&logout_redirect_uri=http://localhost:3000/user/login`;
-        return;
+        // window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&logout_redirect_uri=http://localhost:3000/user/login`;
+        break;
       case 3: // 구글
         break;
     }

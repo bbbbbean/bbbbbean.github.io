@@ -7,6 +7,7 @@ import com.club.match.Mapper.MatchMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -61,6 +62,12 @@ public class ChatController {
     public ChatController(SimpMessagingTemplate template) {
         this.template = template;
     }
+
+    @Value("${file.upload.root-dir}")
+    private String BASE_UPLOAD_ROOT_DIR;
+
+    @Value("${server.url}")
+    private String BASE_URL;
 
 
     @PostMapping("/users")
@@ -156,7 +163,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        Path userPath = Paths.get("src/main/resources/Users/" + userId + "/chat");
+        Path userPath = Paths.get(BASE_UPLOAD_ROOT_DIR + userId + "/chat");
         File userFile = new File(userPath+"/"+fileName);
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(),userFile);
@@ -178,7 +185,7 @@ public class ChatController {
 
                 ChatFileDTO fileDTO = ChatFileDTO.builder()
                         .messageId(respMessageDTO.getMessageId())
-                        .attachmentUrl("http://localhost:8100/chatFile/"+userId+"/"+ fileName+"/"+contentType)
+                        .attachmentUrl(BASE_URL+"chatFile/"+userId+"/"+ fileName+"/"+contentType)
                         .originalFileName(originalFileName)
                         .contentType(contentType)
                         .build();

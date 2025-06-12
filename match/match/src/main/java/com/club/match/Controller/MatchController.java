@@ -84,11 +84,13 @@ public class MatchController {
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> matchAllList(@RequestParam Map<String,Object> req){
+    @PostMapping("/list")
+    public ResponseEntity<?> matchAllList(@RequestBody Map<String,Object> req){
         String type = (String)req.get("type");
+        String keyword = (String) req.get("keyword");
+        log.info("키워드"+keyword);
         log.info("type"+type);
-        List<MatchListDto> resp = matchService.MatchAllList(type);
+        List<MatchListDto> resp = matchService.MatchAllList(type,keyword);
         log.info("resp"+resp);
         return ResponseEntity.ok().body(resp);
     }

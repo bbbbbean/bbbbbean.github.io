@@ -104,7 +104,7 @@ export default function AccountLink() {
     const url =
       "https://nid.naver.com/oauth2.0/authorize" +
       `?client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}` +
-      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=1" +
+      `&redirect_uri=${process.env.REACT_APP_SERVER_URL}/mypage/account_link?platform=1` +
       "&state=STATE_STRING" +
       "&response_type=" +
       RESPONSE_TYPE;
@@ -136,7 +136,7 @@ export default function AccountLink() {
     const url =
       "https://kauth.kakao.com/oauth/authorize" +
       `?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
-      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=2" +
+      `&redirect_uri=${process.env.REACT_APP_SERVER_URL}/mypage/account_link?platform=2` +
       "&response_type=" +
       RESPONSE_TYPE;
 
@@ -165,7 +165,7 @@ export default function AccountLink() {
     const url =
       "https://accounts.google.com/o/oauth2/v2/auth" +
       `?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}` +
-      "&redirect_uri=http://localhost:3000/mypage/account_link?platform=3" +
+      `&redirect_uri=${process.env.REACT_APP_SERVER_URL}/mypage/account_link?platform=3` +
       "&response_type=code" +
       "&scope=email%20profile%20openid";
 

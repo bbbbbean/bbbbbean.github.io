@@ -72,13 +72,13 @@ public class MatchService {
 
     // 태그 모아 출력
     @Transactional(rollbackFor = Exception.class)
-    public List<MatchListDto> MatchAllList(String type) {
+    public List<MatchListDto> MatchAllList(String type, String keyword) {
         // 태그마다 한줄씩 생성 - 여기 태그는 string tag에 저장
         List<MatchDto> list = new ArrayList<>();
         if(type.equals("all")){
-            list = matchMapper.matchAllList();
+            list = matchMapper.matchAllList(keyword);
         } else {
-            list = matchMapper.matchTypeList(type);
+            list = matchMapper.matchTypeList(type,keyword);
         }
         Set<Long> matchId = new HashSet<>();
 

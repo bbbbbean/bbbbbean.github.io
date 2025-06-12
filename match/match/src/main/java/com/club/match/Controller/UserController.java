@@ -9,6 +9,7 @@ import com.club.match.Domain.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpEntity;
@@ -44,6 +45,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Value("${file.upload.root-dir}")
+    private String BASE_UPLOAD_ROOT_DIR;
 
     @PostMapping("/myInfoPwdCheck")
     public ResponseEntity<?> pwdCheck(@RequestBody Map<String, Object> req) {
@@ -197,7 +201,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        Path userPath = Paths.get("src/main/resources/Users/" + userId + "/profile");
+        Path userPath = Paths.get(BASE_UPLOAD_ROOT_DIR + userId + "/profile");
         File userDir = new File(userPath+"");
         File userFile = new File(userPath+"/profile."+fileExtension);
         try {

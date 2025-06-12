@@ -13,6 +13,11 @@ import MatchModal from "./matchModal";
 import api from "../../axios";
 import newMatch from "./newMatch";
 
+import categoryimage1 from "../../image/image_match_category/운동.png";
+import categoryimage2 from "../../image/image_match_category/여행.jpg";
+import categoryimage3 from "../../image/image_match_category/게임.jpg";
+import categoryimage4 from "../../image/image_match_category/기타.jpg";
+
 //검색 결과용
 import { useSearchParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -37,19 +42,24 @@ const MatchList = () => {
 
   console.log("type", type);
 
+  //검색 결과용
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword");
+
   // 전체 조회해서 데이터 들고오기 + 닉네임, 젠더 추가
   useEffect(() => {
+    console.log("키워드" + keyword);
 
     api
-      .get(`/match/list?type=${type}`)
+      .post(`/match/list`, { type, keyword })
       .then(async (res) => {
         // match 전체 데이터
         const matches = res.data;
 
-        console.log(matches);
+        console.log("else 매치", matches);
 
         const fullMatch = matches.map((match, i) => ({
-          ...match
+          ...match,
         }));
 
         setMatches(fullMatch);
@@ -62,7 +72,7 @@ const MatchList = () => {
 
         setTopMatches(sortedTop5);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   }, [type, reload]);
 
   // 북마크 조회해서 기본 적용
@@ -76,20 +86,18 @@ const MatchList = () => {
         map[matchId] = true;
       });
       setBookmark(map);
-
     });
   }, []);
 
   // 날짜
   const formatDateInfo = (startTimeStr) => {
-
     console.log("formatDateInfo 호출:", startTimeStr);
     if (!startTimeStr) {
       console.warn("startTime이 없어요:", startTimeStr);
       return {
         month: "-",
         day: "-",
-        weekday: "-"
+        weekday: "-",
       };
     }
 
@@ -231,45 +239,44 @@ const MatchList = () => {
     }
   };
 
-  //검색 결과용
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
-  const keyword = searchParams.get("keyword");
+  // useEffect(() => {
+  //   const fetchMatches = async () => {
+  //     try {
+  //       if (keyword) {
+  //         const res = await api.post("/api/main/findMatch", { keyword });
+  //         setMatches(res.data.matches || []);
+  //       } else {
+  //         const res = await api.get(`/match/list?type=${type}`);
+  //         setMatches(res.data || []);
+  //       }
+  //     } catch (err) {
+  //       console.error(
+  //         "매칭 데이터 가져오기 실패:",
+  //         err.response?.data || err.message
+  //       );
+  //     }
+  //   };
 
-useEffect(() => {
-  const fetchMatches = async () => {
-    try {
-      if (keyword) {
-        const res = await api.post("/api/main/findMatch", { keyword });
-        setMatches(res.data.matches || []);
-      } else {
-        const res = await api.get(`/match/list?type=${type}`);
-        setMatches(res.data || []);
-      }
-    } catch (err) {
-      console.error("매칭 데이터 가져오기 실패:", err.response?.data || err.message);
-    }
-  };
+  //   fetchMatches();
+  // }, [keyword, type, reload]);
 
-  fetchMatches();
-}, [keyword, type, location.key, reload]);
-
-
-
-  const nullMatch = (matches.length === 0) ? (
-    <div className="match-list-no-matches">
-      <img src={nomatch}/>
-      <p className="match-list-no-word">매칭이 없습니다</p>
-      <p className="match-list-no-word-l">매칭을 등록해보세요</p>
-    </div>
-  ) : "";
+  const nullMatch =
+    matches.length === 0 ? (
+      <div className="match-list-no-matches">
+        <img src={nomatch} />
+        <p className="match-list-no-word">매칭이 없습니다</p>
+        <p className="match-list-no-word-l">매칭을 등록해보세요</p>
+      </div>
+    ) : (
+      ""
+    );
 
   return (
     <div className="match-page">
       {topHeader(type)}
       <div className="pm-center">
         {/* Swiper component */}
-        {topMatches.length > 4 &&
+        {topMatches.length > 4 && (
           <Swiper
             slidesPerView={4}
             loop={true}
@@ -291,6 +298,19 @@ useEffect(() => {
                     setMatchOne(item);
                     setSelectMatch(item.matchId);
                   }}
+                  style={{
+                    backgroundImage: `url(${
+                      item.kategorie === 1
+                        ? categoryimage1
+                        : item.kategorie === 2
+                        ? categoryimage2
+                        : item.kategorie === 3
+                        ? categoryimage3
+                        : categoryimage4
+                    })`,
+                    backgroundSize: "cover", // 배경 이미지 크기 조정
+                    backgroundPosition: "center", // 이미지를 중앙에 배치
+                  }}
                 >
                   <div className="pm-match-container">
                     <p>{formatDate(item.startTime)}</p>
@@ -306,13 +326,15 @@ useEffect(() => {
               </SwiperSlide>
             ))}
           </Swiper>
-        }
+        )}
       </div>
 
       <div className="match-list">
         <button
           className="match-reg-btn"
-          onClick={() => isAuth ? navigate("/match/newMatch") : navigate("/user/login")}
+          onClick={() =>
+            isAuth ? navigate("/match/newMatch") : navigate("/user/login")
+          }
         >
           매칭 등록
         </button>
@@ -354,7 +376,7 @@ useEffect(() => {
                           <button
                             className={
                               match.status === 0 &&
-                                match.countPeople < match.people
+                              match.countPeople < match.people
                                 ? "ok"
                                 : "no"
                             }
@@ -364,7 +386,7 @@ useEffect(() => {
                           >
                             {/* 0:신청 가능 1: 모집완료 */}
                             {match.status === 0 &&
-                              match.countPeople < match.people
+                            match.countPeople < match.people
                               ? "신청 가능"
                               : "모집 완료"}
                           </button>
@@ -380,7 +402,11 @@ useEffect(() => {
         })}
       </div>
       {selectMatch != null && (
-        <MatchModal selectMatch={selectMatch} setSelectMatch={setSelectMatch} setReload={setReload} />
+        <MatchModal
+          selectMatch={selectMatch}
+          setSelectMatch={setSelectMatch}
+          setReload={setReload}
+        />
       )}
     </div>
   );

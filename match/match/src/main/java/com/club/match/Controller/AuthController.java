@@ -18,6 +18,7 @@ import com.club.match.Domain.Service.UserService;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,15 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Value("${file.upload.root-dir}")
+    private String BASE_UPLOAD_ROOT_DIR;
+
+    @Value("${file.upload.root-default-dir}")
+    private String BASE_UPLOAD_ROOT_DEFAULT_DIR;
+
+    @Value("${server.url}")
+    private String BASE_URL;
 
     @PostMapping("/check-id")
     public ResponseEntity<?> userCheck(@RequestBody Map<String,String> req) {
@@ -126,15 +136,15 @@ public class AuthController {
                 .birthday(portOneDTO.getResponse().getBirthday())
                 .introduction("기본 소개")
                 .address("지역을 설정해주세요")
-                .profile("http://localhost:8100/profile/"+signDTO.getUserId())
+                .profile(BASE_URL+"profile/"+signDTO.getUserId())
                 .manner(100)
                 .points(0)
                 .isPrivate(false)
                 .createAt(LocalDate.now())
                 .build();
 
-        String Path = "src/main/resources/defaultUser"; // 복사할 원본 폴더
-        String copyPath = "src/main/resources/Users/" + signDTO.getUserId(); // 복사할 위치
+        String Path = BASE_UPLOAD_ROOT_DEFAULT_DIR; // 복사할 원본 폴더
+        String copyPath = BASE_UPLOAD_ROOT_DIR + signDTO.getUserId(); // 복사할 위치
 
         File Dir = new File(Path);
         File copyDir = new File(copyPath);
@@ -241,7 +251,7 @@ public class AuthController {
 
         String userId = authentication.getName();
 
-        String userPath = "src/main/resources/Users/" + userId;
+        String userPath = BASE_UPLOAD_ROOT_DIR + userId;
 
         File userDir = new File(userPath);
 
@@ -264,12 +274,16 @@ public class AuthController {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(Duration.ofDays(1))
                 .build();
 
         ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(Duration.ofDays(1))
                 .build();
 
@@ -334,12 +348,16 @@ public class AuthController {
             ResponseCookie cookie1 = ResponseCookie.from("accessToken", jwtTokenDTO.getAccessToken())
                     .httpOnly(true)
                     .path("/")
+                    .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                    .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                     .maxAge(Duration.ofDays(1))
                     .build();
 
             ResponseCookie cookie2 = ResponseCookie.from("refreshToken", jwtTokenDTO.getRefreshToken())
                     .httpOnly(true)
                     .path("/")
+                    .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                    .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                     .maxAge(Duration.ofDays(1))
                     .build();
 
@@ -465,7 +483,7 @@ public class AuthController {
 
         List<SocialLinkDTO> socialLinkDTO1  = (List<SocialLinkDTO>)userService.searchUserAccountLink(socialLinkDTO).get("socialLinkDTO");
         if(socialLinkDTO1.size() > 0) {
-            resp.put("FailCode","1");
+            resp.put("FailCode","3");
             resp.put("success",false);
             return ResponseEntity.ok().body(resp);
         }

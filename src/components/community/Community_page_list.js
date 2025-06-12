@@ -15,10 +15,13 @@ const Community_page_list = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [tempSearchKeyword, setTempSearchKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
   const searchInputRef = useRef(null);
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:8100";
+  const API_BASE_URL = process.env.REACT_APP_SERVER_URL;
 
   const PAGES_PER_BLOCK = 10;
 
@@ -26,10 +29,6 @@ const Community_page_list = () => {
     setLoading(true);
     setError(null);
     try {
-      const currentSearchKeyword = searchInputRef.current
-        ? searchInputRef.current.value
-        : "";
-
       const url = API_BASE_URL + "/list/" + selectedMenu;
       console.log(
         "링크 : ",
@@ -37,7 +36,7 @@ const Community_page_list = () => {
         "페이지 :",
         currentPage,
         "검색어 :",
-        currentSearchKeyword,
+        searchKeyword,
         "현재 selectedMenu :",
         selectedMenu
       );
@@ -46,7 +45,7 @@ const Community_page_list = () => {
         params: {
           page: currentPage, // 현재 페이지 번호
           limit: 10, // 한 페이지당 게시글 수
-          search: currentSearchKeyword, // 검색어
+          search: searchKeyword, // 검색어
         },
       });
       setPosts(response.data.posts);
@@ -59,7 +58,7 @@ const Community_page_list = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedMenu, currentPage, postCodeId]);
+  }, [selectedMenu, currentPage, postCodeId, searchKeyword]);
 
   // 메뉴 버튼 눌러서 바뀌었을 때
   useEffect(() => {
@@ -68,16 +67,15 @@ const Community_page_list = () => {
       setSelectedMenu(newMenuId);
     }
     setCurrentPage(1);
-    if (searchInputRef.current) {
-      searchInputRef.current.value = "";
-    }
+    setSearchKeyword("");
+    setTempSearchKeyword("");
   }, [postCodeId]);
 
   // 재렌더링 조건
   // 메뉴 눌렀을 때, 페이지 이동했을 때, 검색어 입력 후 엔터했을때
   useEffect(() => {
     fetchPosts();
-  }, [selectedMenu, currentPage, fetchPosts]);
+  }, [selectedMenu, currentPage, fetchPosts, searchKeyword]);
 
   // 게시판 메뉴 클릭시
   const handlerSelectMenu = (e) => {
@@ -86,16 +84,15 @@ const Community_page_list = () => {
     setSelectedMenu(selected);
     console.log("바꾼거", selectedMenu);
     setCurrentPage(1);
-    if (searchInputRef.current) {
-      searchInputRef.current.value = "";
-    }
+    setSearchKeyword("");
+    setTempSearchKeyword("");
     navigate(`/community/list/${selected}`);
   };
 
   // 검색 버튼 클릭
   const handleSearchSubmit = () => {
     setCurrentPage(1); // 검색 시 페이지를 1로 초기화
-    fetchPosts();
+    setSearchKeyword(tempSearchKeyword);
   };
 
   // 페이지 번호 클릭
@@ -158,7 +155,10 @@ const Community_page_list = () => {
             <input
               type="text"
               placeholder="검색어를 입력하세요"
-              ref={searchInputRef}
+              value={tempSearchKeyword}
+              onChange={(e) => {
+                setTempSearchKeyword(e.target.value);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearchSubmit();
