@@ -65,7 +65,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 localStorage.setItem("nickName", updated.nickName);
                 localStorage.setItem("introduction", updated.introduction);
                 localStorage.setItem("address", updated.address);
-                localStorage.setItem("isPrivate", updated.isPrivate ? "1" : "0");
+                localStorage.setItem("isPrivate", updated.isPrivate ? "true" : "false");
             });
 
         setEditField(null);
