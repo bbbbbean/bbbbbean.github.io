@@ -242,7 +242,7 @@ const Community_page_select = () => {
           />
 
           {/* 첨부 파일 영역 */}
-          {post && currentUserId && currentUserId === post.userId && (
+          {post && currentUserId && (
             <div className="post-attachments">
               <h3>첨부 파일</h3>
               <ul>
