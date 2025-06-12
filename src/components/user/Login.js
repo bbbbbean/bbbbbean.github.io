@@ -152,21 +152,21 @@ const LoginForm = () => {
               <Link
                 to={`${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/naver`}
               >
-                Naver
+                
               </Link>
             </li>
             <li>
               <Link
                 to={`${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/kakao`}
               >
-                Kakao
+                
               </Link>
             </li>
             <li>
               <Link
                 to={`${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`}
               >
-                google
+                
               </Link>
             </li>
           </ul>
