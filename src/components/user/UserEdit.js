@@ -201,8 +201,7 @@ const UserEditForm = ({ profile, setProfile }) => {
                 <span></span>
                 <div className="isPrivate">
                     <label>프로필 공개</label>
-                    {userDTO.isPrivate}
-                    <span>{userDTO.isPrivate === "0" ? "공개" : "비공개"}</span>
+                    <span>{userDTO.isPrivate === "1" ? "공개" : "비공개"}</span>
                     {editField !== "isPrivate" ? (
                         <button className="btn-edit my-page-btn" onClick={() => showEdit("isPrivate")}>수정하기</button>
                     ) : (
