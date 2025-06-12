@@ -62,6 +62,8 @@ const UserEditForm = ({ profile, setProfile }) => {
 
                 setUserDTO(updated);
 
+                console.log("aaaaa : " + updated.isPrivate);
+
                 localStorage.setItem("nickName", updated.nickName);
                 localStorage.setItem("introduction", updated.introduction);
                 localStorage.setItem("address", updated.address);
