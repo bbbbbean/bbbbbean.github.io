@@ -12,7 +12,7 @@
 
     <!-- 닉네임으로 유저 검색 -->
     <select id="findUserByNickName" resultType="com.club.match.Domain.DTO.UserDTO">
-        SELECT * FROM user_tbl WHERE nickName LIKE CONCAT('%', #{nickName}, '%') and userId Not in (SELECT friendId FROM friend_tbl where userId = #{userId}) and userId != #{userId};
+        SELECT * FROM user_tbl WHERE nickName LIKE CONCAT('%', #{nickName}, '%') and userId Not in (SELECT friendId FROM friend_tbl where userId = #{userId}) and userId != #{userId} AND role != 'ADMIN';
     </select>
 
     <!-- 친구 요청 존재 여부 확인 -->
