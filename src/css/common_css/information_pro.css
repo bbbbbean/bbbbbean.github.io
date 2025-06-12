@@ -14,30 +14,60 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ccc;
+    background-color: #6EC3FF;
     font-weight: bold;
+    color: #fff;
 }
 .friendInfoList{
     background-color: white;
-    /* background-color: #f09292; */
     height: 100vh;
     width: 299px;
-    padding-top: 20px;
+    padding-top: 50px;
     overflow-y: scroll;
     scrollbar-width: none;
+    margin-bottom: 20px;
 }
+.friendInfoList .info-nick{
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+.friendInfoList .info-id{
+    color: #aaaaaa;
+    font-weight: 300;
+}
+.friendInfoList .info-intro{
+    background-color: #f8f8f8;
+    padding: 25px 20px;
+    margin: 20px auto 10px;
+}
+.friendInfoList .info-etc{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+}
+.friendInfoList .info-etc p{
+    display: flex;
+    align-items: center;
+    color: #4b4b4b;
+}
+.friendInfoList .info-etc img{
+    height: 16px;
+    margin-left: 5px;
+}
+.friendInfoList .info-etc p:last-child img{
+    rotate: 45deg;
+}
+
 .friendInfoList li{
-    list-style: none;
-    padding: 15px;
-    border-bottom: 1px solid #ccc;
     display: flex;
     justify-content: center;  
     align-items: center;
-    margin-left: auto;
-    /* background-color: aqua; */
-    font-size: 20px;
+    font-size: 16px;
 }
+
 .friendInfoList li:first-child>img{
     background-color: #FBB00E;
     width: 150px;
@@ -63,4 +93,5 @@
     background-color: #cceaff;
     transition: 0.5s;
     cursor: pointer;
+    font-size: 14px;
 }

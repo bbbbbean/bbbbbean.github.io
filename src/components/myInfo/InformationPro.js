@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import "../../css/common_css/information_pro.css"
 import { WebSocketContext } from "../../WebSocket";
+import cake from "../../image/image_index/cake.svg";
+import location from "../../image/image_index/pin.svg";
 
 const InformationPro = () => {
     const { userInfomation, setUserInfomation } = useContext(WebSocketContext);
@@ -27,13 +29,11 @@ const InformationPro = () => {
                 </div>
                 <div className="friendInfoList">
                     <ul>
-                        <li><img src={info.profile} /></li>
-                        <li>{info.nickName}</li>
-                        <li>{info.userId}</li>
-                        <li>{info.introduction}</li>
-                        {info.name ? <li>{info.name} / {info.gender}</li> : <li>비공개</li>}
-                        {info.name ? <li>{info.birthdayMonth}월 {info.birthdayDay}일</li> : <li>비공개</li>}
-                        <li>{info.address}</li>
+                        <li className="info-profile"><img src={info.profile} /></li>
+                        <li className="info-nick">{info.nickName}</li>
+                        <li className="info-id">{info.userId}</li>
+                        <li className="info-intro"><p>{info.introduction}</p></li>
+                        {info.name && <li className="info-etc"><p>{info.name}</p><p>{info.gender}</p><p><img src={cake}/>{info.birthdayMonth}/{info.birthdayDay}</p><p><img src={location}/>{info.address}</p></li>  }
                     </ul>
                     {tags.map((tag, idx) => (
                         <span key={idx} className="tag">{tag}</span>
