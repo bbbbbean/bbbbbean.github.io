@@ -85,7 +85,7 @@ const UserEditForm = ({ profile, setProfile }) => {
 
     return (
         <div className="info-right">
-            {showModal && <ChangeImage setProfile={setProfile} />}
+            {showModal && <ChangeImage setProfile={setProfile} setShowModal={setShowModal} />}
             <div className="user-info-title">
                 <div className="info-title">
                     <span>내정보</span>
