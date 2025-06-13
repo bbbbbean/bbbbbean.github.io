@@ -159,7 +159,7 @@ export const WebSocketProvider = ({ children }) => {
 
     return (
         <WebSocketContext.Provider value={
-            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, alarmUpdate, setAlarmUpdate, userInfomation, setUserInfomation }
+            { client, openChat, setOpenChat, messages, setMessages, rooms, setRooms, friendUpdate, setFriendUpdate, alarmUpdate, setAlarmUpdate, userInfomation, setUserInfomation }
         }>
             {children}
         </WebSocketContext.Provider>

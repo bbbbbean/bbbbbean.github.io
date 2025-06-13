@@ -16,7 +16,7 @@ const FriendLeft = () => {
     setOpenMenuKey((prev) => (prev === key ? null : key));
   };
 
-  const { client, friendUpdate, setUserInfomation } =
+  const { client, friendUpdate, setUserInfomation, setFriendUpdate } =
     useContext(WebSocketContext);
 
   useEffect(() => {
@@ -153,7 +153,7 @@ const FriendLeft = () => {
             setFriends((prev) => [...prev, movedFriend]);
           }
         }
-
+        setFriendUpdate(prev=>(!prev));
         api.post("/api/friend/list").then((response) => {
           setFriends(response.data.commonFriend);
           setBestFriends(response.data.bestFriend);
