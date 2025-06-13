@@ -234,7 +234,7 @@ const Comment = ({ postId }) => {
           >
             <div className="comment-img" onClick={() => { setUserInfomation(parent.userId) }}>
               <img
-                src={`http://localhost:8100/profile/${parent.userId}`}
+                src={`${process.env.REACT_APP_SERVER_URL}/profile/${parent.userId}`}
                 alt="profile"
               />
             </div>
@@ -305,7 +305,7 @@ const Comment = ({ postId }) => {
                     >
                       <div className="comment-img" onClick={() => { setUserInfomation(child.userId) }}>
                         <img
-                          src={`http://localhost:8100/profile/${child.userId}`}
+                          src={`${process.env.REACT_APP_SERVER_URL}/profile/${child.userId}`}
                           alt="profile"
                         />
                       </div>
