@@ -321,11 +321,15 @@ public class AuthController {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(0)
                 .build();
         ResponseCookie cookie2 = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .path("/")
+                .secure(true)                // HTTPS 환경에서만 쿠키가 전송되도록
+                .sameSite("None")            // cross-site 요청에도 쿠키가 전송되도록
                 .maxAge(0)
                 .build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie1.toString(), cookie2.toString()).body(null);

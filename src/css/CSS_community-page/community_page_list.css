@@ -91,6 +91,7 @@
   display: grid;
   grid-template-columns: 80px auto 80px 80px 80px 80px 120px;
   text-align: center;
+  padding: 10px 0;
 }
 .forum-main-no-posts {
   display: grid;
@@ -102,9 +103,6 @@
 
 .forum-main-el {
   border-top: 1px solid #aaaaaa;
-  padding: 6px 0;
-
-  height: 60px;
 }
 .forum-main-el > a {
   width: 100%;
