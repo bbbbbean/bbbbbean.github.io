@@ -72,7 +72,7 @@ const Community_page_select = () => {
   const handleReaction = async (reactionType) => {
     if (!currentUserId) {
       alert("로그인이 필요합니다.");
-      navigate("/login");
+      navigate("/user/login");
       return;
     }
     try {

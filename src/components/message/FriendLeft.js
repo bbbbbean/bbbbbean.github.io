@@ -140,14 +140,12 @@ const FriendLeft = () => {
         // 상태에 따라 friends / bestFriends 목록 갱신
         if (newStatus === 1) {
           // 즐겨찾기 설정: friends → bestFriends
-          console.log(movedFriend);
           const movedFriend = friends.find((f) => f.friendId === userId);
           if (movedFriend) {
             setFriends((prev) => prev.filter((f) => f.friendId !== userId));
             setBestFriends((prev) => [...prev, movedFriend]);
           }
         } else if (newStatus === 0) {
-          console.log(movedFriend);
           // 즐겨찾기 해제: bestFriends → friends
           const movedFriend = bestFriends.find((f) => f.friendId === userId);
           if (movedFriend) {
