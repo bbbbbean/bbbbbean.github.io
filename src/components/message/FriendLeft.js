@@ -292,7 +292,7 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
-                  ref={friendMenuRef}
+                  // ref={friendMenuRef}
                   className={`friendmenu ${
                     openMenuKey === `best-${idx}` ? "show" : ""
                   }`}
@@ -333,7 +333,7 @@ const FriendLeft = () => {
                   <img src={moreIcon} alt="친구메뉴" />
                 </button>
                 <div
-                  ref={friendMenuRef}
+                  // ref={friendMenuRef}
                   className={`friendmenu ${
                     openMenuKey === `common-${idx}` ? "show" : ""
                   }`}

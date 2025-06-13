@@ -61,6 +61,7 @@ public class SecurityConfig {
                             "/match/detail",
                             "/chatFile/**",
                             "/list/**",
+                            "/post/**",
                             "/community/post/**",
                             "/get/comment",
                             "/api/user/information",
